@@ -1,7 +1,11 @@
-# data, embeddings and run outputs live on Kaggle Datasets, not in git
-data/
-results/
-logs/
+# Only the TOP-LEVEL run-output folders are ignored (leading "/" anchors to the repo root).
+# Unanchored "data/" previously also matched src/data/ and hid source code from git.
+# tests/test_repo_layout.py fails if any source file is ignored or untracked.
+/data/
+/results/
+/logs/
+
+# Python caches (safe anywhere: never source code)
 __pycache__/
-.pytest_cache/
 *.pyc
+.pytest_cache/
