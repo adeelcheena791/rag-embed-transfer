@@ -5,6 +5,8 @@ Normalisation: Unicode NFKC, lowercase, every non-alphanumeric char -> space,
 collapse whitespace, strip. A BEIR query joins only if its normalised text matches
 NQ-open entries whose answer lists are all identical; otherwise it is 'ambiguous'
 and dropped. Denominator of the join rate = BEIR test queries with >=1 relevant qrel.
+Pass criterion (addendum v0.2.2): n_joined >= join.min_joined (1,000). The v0.2 rule "join rate >= 0.70"
+is still evaluated and recorded as v0_2_rule_would_pass, but no longer gates the pipeline.
 
 Outputs (processed, regenerable):
   data/processed/nq_joined.jsonl     {qid, question, answers, gold_pids}
@@ -91,13 +93,17 @@ def main(argv=None) -> int:
     (proc / "nq_joined.jsonl.tmp").replace(proc / "nq_joined.jsonl")
     write_lines_atomic(proc / "nq_query_order.txt", order)
 
-    min_rate = cfg["join"]["min_rate"]
-    stats.update(run_id=run_id, min_rate=min_rate, passed=stats["join_rate"] >= min_rate, seed=cfg["seed"])
+    # v0.2.2 (deviation D1): the v0.2 criterion "join rate >= 0.70" was replaced, before any retrieval or
+    # answer outcome was seen, by "n_joined >= min_joined". The rate is still recorded and reported.
+    min_joined = cfg["join"]["min_joined"]
+    stats.update(run_id=run_id, min_joined=min_joined, passed=stats["n_joined"] >= min_joined,
+                 v0_2_rate_threshold=0.70, v0_2_rule_would_pass=stats["join_rate"] >= 0.70, seed=cfg["seed"])
     AppendOnlyJSONL(cpath(cfg, "results_raw") / "join.jsonl").append(stats)
     write_json_atomic(proc / "nq_join_stats.json", stats)
     log.info("join: %s", stats)
-    log.info("P3 %s: join rate %.3f (threshold %.2f)%s", "PASS" if stats["passed"] else "FAIL",
-             stats["join_rate"], min_rate, "" if stats["passed"] else " -> HotpotQA fallback per §2")
+    log.info("P3 %s: %d joined queries (floor %d); join rate %.3f (reported, not a gate since v0.2.2)%s",
+             "PASS" if stats["passed"] else "FAIL", stats["n_joined"], min_joined, stats["join_rate"],
+             "" if stats["passed"] else " -> STOP: fewer joined queries than the pre-registered floor (addendum v0.2.2)")
     return 0
 
 

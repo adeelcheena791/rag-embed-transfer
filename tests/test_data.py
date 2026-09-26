@@ -101,3 +101,33 @@ def test_load_qrels_handles_crlf_line_endings(tmp_path):
     p = tmp_path / "test.tsv"
     p.write_bytes(b"query-id\tcorpus-id\tscore\r\ntest0\tdoc0\t1\r\ntest0\tdoc1\t1\r\ntest1\tdoc6\t0\r\n")
     assert load_qrels(p) == {"test0": {"doc0": 1, "doc1": 1}}   # score 0 dropped, no stray '\r'
+
+
+def test_join_gate_is_min_joined_floor(project):
+    import json as _j
+    root, cfg = project
+    join_nq.main(["--config", str(cfg)])
+    s = _j.loads(open(root / "data" / "processed" / "nq_join_stats.json").read())
+    assert s["min_joined"] == 1000 and s["passed"] is False          # 2 joined < 1000
+    assert s["v0_2_rule_would_pass"] is False and s["v0_2_rate_threshold"] == 0.70
+
+
+def test_join_diagnostics_detects_train_hits_and_similarity(project):
+    import json as _j
+    import pyarrow as pa
+    import pyarrow.parquet as pq
+    from src.data import join_diagnostics
+    root, cfg = project
+    # q3 ("which planet is fourth from the sun") is absent from validation; put it in TRAIN
+    pq.write_table(pa.table({"question": ["which planet is fourth from the sun"], "answer": [["Mars"]]}),
+                   root / "data" / "raw" / "nq_open" / "nq_open" / "train-00000-of-00001.parquet")
+    join_nq.main(["--config", str(cfg)])
+    before = open(root / "data" / "processed" / "nq_joined.jsonl").read()
+    assert join_diagnostics.main(["--config", str(cfg)]) == 0
+    d = _j.loads(open(root / "data" / "processed" / "nq_join_diagnostics.json").read())
+    assert d["n_not_joined"] == 2                                      # q2 (ambiguous) + q3 (unmatched)
+    assert d["unmatched_in_nq_open_train_exact"] == 1                  # q3 found in train
+    assert sum(d["unmatched_max_jaccard_to_val_hist"].values()) == 2
+    top = {t["beir_qid"]: t for t in d["top10_most_similar_unmatched"]}
+    assert top["q2"]["jaccard"] == 1.0                                 # ambiguous: exact text exists in val
+    assert open(root / "data" / "processed" / "nq_joined.jsonl").read() == before   # never modifies the join

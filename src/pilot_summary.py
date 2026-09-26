@@ -31,7 +31,14 @@ def summarize(cfg: dict) -> list[str]:
     if js.exists():
         s = json.loads(js.read_text())
         out.append(f"P3  join rate {s['join_rate']:.3f} ({s['n_joined']}/{s['n_beir_judged']}; unmatched {s['n_unmatched']}, "
-                   f"ambiguous {s['n_ambiguous']}) -> {'PASS' if s['passed'] else 'FAIL'}")
+                   f"ambiguous {s['n_ambiguous']}) -> {'PASS' if s['passed'] else 'FAIL'} "
+                   f"(gate: n_joined >= {s.get('min_joined')})")
+    jd = cpath(cfg, "data_processed") / "nq_join_diagnostics.json"
+    if jd.exists():
+        d = json.loads(jd.read_text())
+        out.append(f"D1a not joined {d['n_not_joined']}: in NQ-open train {d['unmatched_in_nq_open_train_exact']}; "
+                   f"max-Jaccard to val {d['unmatched_max_jaccard_to_val_hist']} (median {d['unmatched_max_jaccard_median']}); "
+                   f"q-tokens {d['mean_question_tokens']}; gold/q {d['mean_gold_passages']}")
     else:
         out.append("P3  not run")
     b = _last(raw / "bm25.jsonl", n_docs=None) or (list(read_jsonl(raw / "bm25.jsonl")) or [None])[-1]

@@ -1,28 +1,43 @@
 """Minimum detectable difference (MDD) for the exact two-sided McNemar test.
-Analytic calculation, NOT an experiment. Assumes the number of discordant pairs
-n_d = round(n * p_d) and, under H1, P(discordant pair favours A) = (p_d + delta) / (2 p_d).
+Analytic calculation, NOT an experiment.
+
+Model: n_d = round(n * p_d) discordant pairs; under H1 a discordant pair favours A with
+probability q = (p_d + delta) / (2 p_d). The exact McNemar test is a two-sided binomial test of
+the n_d discordant pairs against 0.5, which rejects iff min(k, n_d - k) <= c, where c is the
+largest integer with 2 * BinomCDF(c; n_d, 0.5) <= alpha (symmetric null => this equals
+scipy's binomtest p-value <= alpha). Power = P(K <= c) + P(K >= n_d - c) under q.
 """
 import numpy as np
-from scipy.stats import binom, binomtest
+from scipy.stats import binom
 
-def power(n, p_d, delta, alpha):
+
+def critical_c(nd: int, alpha: float) -> int:
+    """Largest c with 2*P(K<=c | p=.5) <= alpha; -1 if no rejection region exists."""
+    cdf = binom.cdf(np.arange(nd + 1), nd, 0.5)
+    ok = np.nonzero(np.minimum(2 * cdf, 1.0) <= alpha)[0]
+    return int(ok[-1]) if len(ok) else -1
+
+
+def power(n: int, p_d: float, delta: float, alpha: float) -> float:
     nd = int(round(n * p_d))
     q = (p_d + delta) / (2 * p_d)
-    if q > 1: return 1.0
-    # rejection region of exact two-sided binomial test with p0 = 0.5
-    rej = np.array([binomtest(k, nd, 0.5).pvalue <= alpha for k in range(nd + 1)])
-    return binom.pmf(np.arange(nd + 1), nd, q)[rej].sum()
+    if q >= 1:
+        return 1.0
+    c = critical_c(nd, alpha)
+    if c < 0:
+        return 0.0
+    return float(binom.cdf(c, nd, q) + binom.sf(nd - c - 1, nd, q))
 
-def mdd(n, p_d, alpha, target=0.8):
+
+def mdd(n: int, p_d: float, alpha: float, target: float = 0.8) -> float:
     for d in np.arange(0.001, p_d, 0.001):
         if power(n, p_d, d, alpha) >= target:
-            return d
+            return float(d)
     return float("nan")
 
-rows = []
-for n in (1000, 3000):
-    for p_d in (0.05, 0.10, 0.15, 0.20, 0.30):
-        rows.append((n, p_d, mdd(n, p_d, 0.05), mdd(n, p_d, 0.05 / 21)))
-print("n     p_disc  MDD(alpha=.05)  MDD(alpha=.05/21, Holm worst case)")
-for n, p, a, b in rows:
-    print(f"{n:<5} {p:<7.2f} {a*100:>6.1f} pp        {b*100:>6.1f} pp")
+
+if __name__ == "__main__":
+    print("n     p_disc  MDD(alpha=.05)  MDD(alpha=.05/21, Holm worst case)")
+    for n in (1000, 2255, 3000):
+        for p_d in (0.05, 0.10, 0.15, 0.20, 0.30):
+            print(f"{n:<5} {p_d:<7.2f} {mdd(n, p_d, 0.05)*100:>6.1f} pp        {mdd(n, p_d, 0.05/21)*100:>6.1f} pp")
