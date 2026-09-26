@@ -1,0 +1,7 @@
+# data, embeddings and run outputs live on Kaggle Datasets, not in git
+data/
+results/
+logs/
+__pycache__/
+.pytest_cache/
+*.pyc

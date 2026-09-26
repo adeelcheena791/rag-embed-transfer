@@ -1,0 +1,91 @@
+# Pilot configuration (Batch 1 draft; completed with generation/judge/analysis keys in Batch 3).
+# Every value here is pre-registered in design v0.2 + addendum v0.2.1. Do not edit after runs start;
+# create a new config (the config hash is part of every run_id).
+experiment: pilot
+seed: 20260926
+root: .
+
+paths:
+  data_raw: data/raw
+  data_processed: data/processed
+  embeddings: data/embeddings
+  results_raw: results/raw
+  logs: logs
+
+datasets:                     # pinned commits, retrieved via the HF API on 2026-09-26
+  nq_corpus:
+    repo: BeIR/nq
+    revision: b7253e6c379163d024ddb1d6948152a91a2e3b46
+  nq_qrels:
+    repo: BeIR/nq-qrels
+    revision: 519acd4e48bb3e5da22b2b888ce36c614f4f2bc9
+    allow_patterns: ["test.tsv", "README.md"]
+  nq_open:
+    repo: google-research-datasets/nq_open
+    revision: 5dd9790a83002ad084ddeb7c420dc716852c6f28
+    allow_patterns: ["nq_open/validation-*", "README.md"]
+  scifact:
+    repo: BeIR/scifact
+    revision: b3b5335604bf5ee3c4447671af975ea25143d4f5
+  scifact_qrels:
+    repo: BeIR/scifact-qrels
+    revision: 2938d17dc3b09882fdb8c12bbbe2e2dc0e75a029
+    allow_patterns: ["test.tsv", "README.md"]
+
+join:
+  min_rate: 0.70
+
+samples:
+  pilot_n: 200                # pilot generation queries = first 200 of the seeded order
+
+subcorpus:
+  pilot_size: 50000           # pilot corpus (gold + BM25 negatives + random), addendum v0.2.1
+  main_size: 300000           # used only if the §2.1 rule says "subcorpus"
+  bm25_max_depth: 100         # depth = min(100, floor(0.5*(size-|gold|)/n_queries))
+
+retrievers: {}                # optional per-model revision overrides; otherwise configs/resolved_revisions.json
+
+query_task:                   # R6 (Qwen3-Embedding) instruction text
+  nq: "Given a question, retrieve Wikipedia passages that answer the question"
+  scifact: "Given a scientific claim, retrieve documents that support or refute the claim"
+
+encode:
+  max_seq_length: 256
+  batch_size: 128
+  fp16: true
+  shard_size: 100000
+
+throughput:
+  n_passages: 20000
+  warmup_passages: 1000
+  repeats: 3
+  cap_t4_hours: 6.0           # C2: full corpus only if all 6 models together need <= 6 T4-hours
+
+r6_cpu_fallback:
+  max_cpu_hours: 4.0          # F3 (was 8.0 in v0.2)
+
+bm25:                         # Appendix C
+  k1: 1.2
+  b: 0.75
+  method: lucene
+  topk: 100
+
+search:
+  topk: 100
+  faiss_threads: null         # null = FAISS default (all cores); the actual value is logged
+  latency_index_max_gb: 8
+
+latency:
+  warmup: 50
+  n: 500
+
+sanity:
+  max_seq_length: 512         # model-card setting for the reference numbers
+  batch_size: 64
+  tolerance: 0.02
+  reference_ndcg10:           # MTEB model-index values in each model card README (read 2026-09-26)
+    R2: 0.71275
+    R3: 0.74039
+    R4: 0.74607
+    R5: 0.71944
+    # R1 and R6: no SciFact value on the card -> reported as "no_reference"
