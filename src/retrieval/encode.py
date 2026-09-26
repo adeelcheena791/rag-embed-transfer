@@ -29,6 +29,10 @@ from src.retrieval.encoder import ModelDropped, encode_with_backoff, load_encode
 from src.retrieval.registry import S1_ORDER, resolve_revision
 
 
+class SelectionMismatch(RuntimeError):
+    """Existing embeddings were built for a different corpus selection. Never swallowed."""
+
+
 def encode_model(cfg, key, encoder, table, all_ids, rows, sel_hash, corpus_tag, queries, log, sinks):
     ec = cfg["encode"]
     d = cpath(cfg, "embeddings") / key / corpus_tag
@@ -36,7 +40,7 @@ def encode_model(cfg, key, encoder, table, all_ids, rows, sel_hash, corpus_tag, 
     mf = d / "manifest.json"
     manifest = read_json(mf) if mf.exists() else None
     if manifest and manifest.get("selection_hash") != sel_hash:
-        raise RuntimeError(f"{d}: existing embeddings were made for a different corpus selection")
+        raise SelectionMismatch(f"{d}: existing embeddings were made for a different corpus selection")
     if manifest and manifest.get("complete"):
         log.info("%s/%s already complete, skipping", key, corpus_tag)
         return manifest
@@ -85,6 +89,8 @@ def main(argv=None, encoder_factory=None) -> int:
     ap.add_argument("--models", default=",".join(S1_ORDER))
     ap.add_argument("--corpus", default="full")
     ap.add_argument("--device", default="cuda")
+    ap.add_argument("--max-passages", type=int, default=None,
+                    help="smoke test: encode only the first N passages (stored as <corpus>_smoke<N>)")
     args = ap.parse_args(argv)
     cfg = load_config(args.config)
     run_id = make_run_id(cfg)
@@ -96,10 +102,19 @@ def main(argv=None, encoder_factory=None) -> int:
     table = load_corpus_table(cpath(cfg, "data_raw") / "nq_corpus")
     all_ids = corpus_ids(table)
     rows, sel_hash = select_rows(cfg, all_ids, args.corpus)
+    corpus_tag = args.corpus
+    if args.max_passages:
+        # O1 smoke test: first N rows of the selection, stored under a separate tag so it can never
+        # be mistaken for (or resumed into) the real embeddings of that corpus.
+        rows = rows[: args.max_passages]
+        corpus_tag = f"{args.corpus}_smoke{args.max_passages}"
+        import hashlib
+        sel_hash = hashlib.sha256(rows.tobytes()).hexdigest()[:16]
     joined = [json.loads(l) for l in open(cpath(cfg, "data_processed") / "nq_joined.jsonl", encoding="utf-8")]
     queries = {r["qid"]: r["question"] for r in sorted(joined, key=lambda r: r["qid"])}
     factory = encoder_factory or load_encoder
     ec = cfg["encode"]
+    status = 0
 
     for key in [m for m in args.models.split(",") if m]:
         cp_a = vram.snapshot("CP-a before load", sinks["vram"], model=key)
@@ -111,22 +126,34 @@ def main(argv=None, encoder_factory=None) -> int:
                           cfg["query_task"]["nq"])
             vram.reset_peak()
             vram.snapshot("CP-b after load", sinks["vram"], model=key)
-            m = encode_model(cfg, key, enc, table, all_ids, rows, sel_hash, args.corpus, queries, log, sinks)
+            m = encode_model(cfg, key, enc, table, all_ids, rows, sel_hash, corpus_tag, queries, log, sinks)
             vram.snapshot("CP-c peak after encode", sinks["vram"], model=key)
-            sinks["encode"].append({"run_id": run_id, "model": key, "corpus": args.corpus,
+            sinks["encode"].append({"run_id": run_id, "model": key, "corpus": corpus_tag,
+                                    "smoke_test": bool(args.max_passages),
                                     **{k: v for k, v in m.items() if k != "shards"}})
+            log.info("%s on %s: OK (%d rows, dim %d)", key, corpus_tag, m["n_rows"], m["dim"])
             enc.close()
+        except SelectionMismatch:
+            raise                                   # integrity guard: stop, never continue
         except ModelDropped as e:
             sinks["failures"].append({"model": key, "stage": "encode", "dropped": True, "error": str(e)})
             log.error("%s DROPPED: %s", key, e)
             vram.release()
+            status = 4
+            continue
+        except Exception as e:  # noqa: BLE001 — record any load/encode failure (e.g. R6 on Turing), then report
+            sinks["failures"].append({"model": key, "stage": "load_or_encode", "dropped": False,
+                                      "error": f"{type(e).__name__}: {e}"[:2000]})
+            log.error("%s FAILED (%s) -> apply F3 if this is R6", key, type(e).__name__)
+            vram.release()
+            status = 4
             continue
         cp_d = vram.snapshot("CP-d after unload", sinks["vram"], model=key)
         if not vram.is_clean():
             log.error("CP-d failed after %s (allocated %.0f MiB): progress saved; restart the kernel",
                       key, cp_d.get("allocated_mib", -1))
             return 3
-    return 0
+    return status
 
 
 if __name__ == "__main__":

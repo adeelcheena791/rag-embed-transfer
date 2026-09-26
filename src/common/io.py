@@ -21,7 +21,10 @@ def utc_stamp() -> str:
 
 
 def make_run_id(cfg: dict) -> str:
-    return f"{utc_stamp()}_{cfg.get('_config_hash', 'nohash')}"
+    # microsecond resolution: two runs started in the same second must not collide (the run file
+    # would be refused by the no-overwrite guard). Lexicographic order == chronological order.
+    t = _dt.datetime.now(_dt.timezone.utc).strftime("%Y%m%dT%H%M%S%fZ")
+    return f"{t}_{cfg.get('_config_hash', 'nohash')}"
 
 
 def _default(o: Any):

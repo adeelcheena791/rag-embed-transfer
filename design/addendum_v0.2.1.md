@@ -114,3 +114,45 @@ Commands are exact.
 |  | `python -m src.retrieval.search --config configs/pilot.yaml --model R1 --corpus pilot --queries order:200` |
 |  | `python -m src.retrieval.search --config configs/pilot.yaml --model R4 --corpus pilot --queries order:200` |
 | P5–P8 | As in v0.2 §11. Scripts arrive in Batches 2–3. |
+
+## Follow-ups O1–O4 (2026-09-26, approved with addendum v0.2.1)
+
+**O1 — R6 smoke test (P4c).**
+- `encode.py --max-passages N` encodes only the first N passages of the selection. They are stored under the separate tag `<corpus>_smoke<N>`, so they can never be mixed with or resumed into real embeddings.
+- Any load or encode failure (not only OOM) is recorded in `results/raw/failures.jsonl`, and the script exits with code 4.
+- P4c runs **before** P4, so an R6 failure triggers F3 immediately.
+- Note: P4 also loads R6 on the T4. P4c is a fast early check, not the only one.
+
+**O2 — IDK detection for the F1 check** (implemented in Batch 2, `src/evaluation/answer.py`).
+- Regex: `^\s*i\s+do(?:n['’]?t|\s+not)\s+know\b`, case-insensitive.
+- One change from the requested pattern: it also accepts the typographic apostrophe `’`, because LLMs often emit it. The requested `(?:n'?t| not)` also allows only one space before "not"; `\s+` fixes that.
+- Every F1 output is classified as **idk**, **answer** (non-empty after normalisation) or **unparsed** (empty, or output only an explanation with no answer phrase). The unparsed rate is reported.
+
+**O3 — no manual RUN_ID.**
+- `subcorpus.py --bm25-run` defaults to `latest`.
+- `src/common/runs.py::find_latest_run` picks the newest `R0__full__*.jsonl` whose metadata covers the required queries (`joined`, or `order:N` with N ≥ n_queries), and fails loudly otherwise.
+- The helper lives in `src/common/` (the project's existing utilities package) rather than a new `src/utils/`.
+
+**Also fixed while implementing O1–O3** (both found by the unit tests):
+1. **Run-id collisions.** Two runs started in the same second got identical run ids, and the second run was refused by the no-overwrite guard. Run ids now use microsecond UTC timestamps.
+2. **Swallowed integrity guard.** The new catch-all in `encode.py` would have hidden the "existing embeddings were made for a different corpus selection" error. That error now has its own exception type, which is always re-raised.
+
+**O4 — pilot order, Part A** (runnable now; notebook `notebooks/pilot_part_a.ipynb`):
+
+| Step | Command |
+|---|---|
+| env | `python -m src.env_report --session pilot_A --out results/raw/env_pilot_A.json` |
+| P1 | `python -m src.data.download --config configs/pilot.yaml` |
+| P3 | `python -m src.data.join_nq --config configs/pilot.yaml` |
+| P3b | `python -m src.retrieval.bm25 --config configs/pilot.yaml --corpus full --queries order:200` |
+|  | `python -m src.data.subcorpus --config configs/pilot.yaml --size 50000 --n-queries 200 --name pilot` |
+| P2 | `python -m src.sanity.scifact --config configs/pilot.yaml --models R1,R2,R3,R4,R5,R6` |
+| P4c | `python -m src.retrieval.encode --config configs/pilot.yaml --models R6 --corpus pilot --max-passages 100` |
+| (F3, only if P4c fails) | `python -m src.retrieval.throughput --config configs/pilot.yaml --models R6 --n 2000 --device cpu` |
+| P4 | `python -m src.retrieval.throughput --config configs/pilot.yaml --models R1,R2,R3,R5,R4,R6 --n 20000 --batch 128` |
+| P4b | `python -m src.retrieval.encode --config configs/pilot.yaml --models R1,R4 --corpus pilot`, then `search` for R1 and R4 with `--queries order:200 --latency` |
+| summary | `python -m src.pilot_summary --config configs/pilot.yaml` |
+
+GPU steps are run with `CUDA_VISIBLE_DEVICES=0`.
+
+**Part B** (P5 reader, P6 judge, P7 discordance / N_gen, P8 lock file) is **NOT YET RUNNABLE**. Its scripts are Batches 2–3.
