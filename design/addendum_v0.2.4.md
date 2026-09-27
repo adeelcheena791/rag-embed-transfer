@@ -93,3 +93,8 @@ Kaggle's weekly GPU quota must have at least this remaining. If not, S3b and S4 
 - **Sample:** 200 items, stratified over the 7 retrievers (≈ 28–29 each) and balanced across judge labels where possible (seed 7).
 - **Interface:** I will build a small annotation page that exports a CSV.
 - **Needs 2 annotators** for inter-annotator κ. With only 1, human–judge κ is still reported, but inter-annotator κ is not, and that is stated as a limitation.
+
+## 8. Decisions recorded 2026-09-27 (user)
+
+- **Kaggle GPU quota remaining this week: 27 h 09 min.** The main run (≈ 12–13 h estimated) fits in this week's quota.
+- **One annotator only.** The human validation reports human–judge agreement (κ with 95% CI) from a single annotator. No inter-annotator κ is available, and this is stated as a limitation.
