@@ -110,3 +110,12 @@ Then:
 | P5 sanity (non-gating) | EM(GOLD) > EM(CB) expected | a failure means a bug is suspected; stop and inspect |
 | P6 | judge zero-shot on R1, R4, GOLD × first 100 queries | parse-failure rate → F2 (> 2% → few-shot for the main run; the pilot then also checks few-shot) |
 | P7 | p_d → N_gen; S3/S4 projections | F4 thresholds evaluated |
+
+## 6. D2 decision (2026-09-27): ACCEPTED
+
+RAGAS is not run. Limitations wording (agreed with the user):
+> "RAGAS was not run because its local deployment requires additional infrastructure untested on our hardware; our own single-prompt judge (Appendix B) is the primary faithfulness measure and is validated against human labels."
+
+The final clause is **conditional**. It becomes true only after the 200-item human validation (§5.4 of v0.2), and it is reworded if the result falls in the pre-registered κ bands:
+- κ < 0.4: "validated against human labels, with fair agreement (κ = …)".
+- κ < 0.2: judge results excluded from conclusions.
