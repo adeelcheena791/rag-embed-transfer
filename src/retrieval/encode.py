@@ -110,8 +110,8 @@ def main(argv=None, encoder_factory=None) -> int:
         corpus_tag = f"{args.corpus}_smoke{args.max_passages}"
         import hashlib
         sel_hash = hashlib.sha256(rows.tobytes()).hexdigest()[:16]
-    joined = [json.loads(l) for l in open(cpath(cfg, "data_processed") / "nq_joined.jsonl", encoding="utf-8")]
-    queries = {r["qid"]: r["question"] for r in sorted(joined, key=lambda r: r["qid"])}
+    from src.data.query_sets import judged
+    queries = {r["qid"]: r["question"] for r in judged(cfg)}      # all judged queries (M1 / D1b)
     factory = encoder_factory or load_encoder
     ec = cfg["encode"]
     status = 0

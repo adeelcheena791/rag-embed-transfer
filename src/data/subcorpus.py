@@ -11,6 +11,7 @@ Used twice: the pilot corpus (size 50,000; 200 pilot queries) and, only if the Â
 rule requires it, the main sub-corpus (size 300,000; N_gen queries).
 
     python -m src.data.subcorpus --config configs/pilot.yaml --size 50000 --n-queries 200 --name pilot
+    python -m src.data.subcorpus --config configs/main.yaml --size 300000 --population judged --name main
     (--bm25-run defaults to 'latest'; pass an explicit path to override)
 """
 from __future__ import annotations
@@ -66,7 +67,10 @@ def main(argv=None) -> int:
                     help="BM25 run jsonl over the FULL corpus, or 'latest' (newest R0 full-corpus run "
                          "that covers the first --n-queries queries)")
     ap.add_argument("--size", type=int, required=True)
-    ap.add_argument("--n-queries", type=int, required=True)
+    ap.add_argument("--population", default="order", choices=["order", "judged"],
+                    help="order: gold of joined queries + BM25 negatives for the first --n-queries (pilot); "
+                         "judged: gold + BM25 negatives for ALL judged queries (main run, addendum v0.2.3 M1)")
+    ap.add_argument("--n-queries", type=int, default=None, help="required for --population order")
     ap.add_argument("--name", required=True, help="e.g. pilot | main")
     args = ap.parse_args(argv)
     cfg = load_config(args.config)
@@ -76,12 +80,19 @@ def main(argv=None) -> int:
 
     table = load_corpus_table(cpath(cfg, "data_raw") / "nq_corpus")
     all_ids = corpus_ids(table)
-    joined = [json.loads(l) for l in open(proc / "nq_joined.jsonl", encoding="utf-8")]
-    gold = {p for r in joined for p in r["gold_pids"]}
-    order = read_lines(proc / "nq_query_order.txt")[: args.n_queries]
-    bm25_run = (find_latest_run(cfg, "R0", "full", args.n_queries) if args.bm25_run == "latest"
-                else args.bm25_run)
-    log.info("using BM25 run %s", bm25_run)
+    if args.population == "judged":
+        from src.data.query_sets import judged
+        pop = judged(cfg)
+        gold = {p for r in pop for p in r["gold_pids"]}
+        order, want = [r["qid"] for r in pop], "judged"
+    else:
+        if not args.n_queries:
+            raise ValueError("--n-queries is required for --population order")
+        joined = [json.loads(l) for l in open(proc / "nq_joined.jsonl", encoding="utf-8")]
+        gold = {p for r in joined for p in r["gold_pids"]}
+        order, want = read_lines(proc / "nq_query_order.txt")[: args.n_queries], f"order:{args.n_queries}"
+    bm25_run = find_latest_run(cfg, "R0", "full", want=want) if args.bm25_run == "latest" else args.bm25_run
+    log.info("population %s: %d queries, %d gold passages; BM25 run %s", args.population, len(order), len(gold), bm25_run)
     ranked = {r["qid"]: r["pids"] for r in read_jsonl(bm25_run)}
     missing = [q for q in order if q not in ranked]
     if missing:
@@ -90,7 +101,7 @@ def main(argv=None) -> int:
     ids, stats = build(all_ids, gold, ranked, order, args.size, cfg["subcorpus"]["bm25_max_depth"], cfg["seed"])
     out = proc / f"subcorpus_{args.name}_ids.txt"
     write_lines_atomic(out, ids)
-    stats.update(name=args.name, run_id=run_id, bm25_run=str(bm25_run), path=str(out))
+    stats.update(name=args.name, population=args.population, run_id=run_id, bm25_run=str(bm25_run), path=str(out))
     AppendOnlyJSONL(cpath(cfg, "results_raw") / "subcorpus.jsonl").append(stats)
     log.info("sub-corpus %s: %s", args.name, stats)
     return 0

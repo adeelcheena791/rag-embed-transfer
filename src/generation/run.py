@@ -30,13 +30,14 @@ from src.generation.passages import load_passages
 from src.generation.prompts import PROMPT_HASH, reader_messages
 
 
-def gen_path(cfg: dict, cond: str, k: int | None, prompt: str, corpus: str):
+def gen_path(cfg: dict, cond: str, k: int | None, prompt: str, corpus: str, tag_suffix: str = ""):
     if cond == "CB":
         tag = "CB_A2"                        # closed book always uses prompt A2
     elif cond == "GOLD":
         tag = f"GOLD_{prompt}"
     else:
         tag = f"{cond}_k{k}_{prompt}"
+    tag += f"_{tag_suffix}" if tag_suffix else ""
     return cpath(cfg, "results_raw") / "generations" / f"{cfg['experiment']}__{tag}__{corpus}.jsonl"
 
 
@@ -61,10 +62,11 @@ def check_resume(path, expect: dict) -> set[str]:
     return done
 
 
-def run_condition(cfg, backend, model_meta, cond, items, passages, prompt, corpus, k, run_id, run_file, log, chunk):
+def run_condition(cfg, backend, model_meta, cond, items, passages, prompt, corpus, k, run_id, run_file, log, chunk,
+                  tag_suffix=""):
     gc = cfg["generation"]
     variant = "A2" if cond == "CB" else prompt
-    path = gen_path(cfg, cond, k, prompt, corpus)
+    path = gen_path(cfg, cond, k, prompt, corpus, tag_suffix)
     expect = {"model_id": model_meta["model_id"], "model_revision": model_meta["model_revision"],
               "backend": backend.name, "prompt": variant, "prompt_hash": PROMPT_HASH[variant]}
     done = check_resume(path, expect)
@@ -88,6 +90,23 @@ def run_condition(cfg, backend, model_meta, cond, items, passages, prompt, corpu
         log.info("%s: %d/%d (%.1fs for %d)", cond, min(s + chunk, len(todo)), len(todo), wall, len(part))
 
 
+def load_with_eager_retry(kind, path, gc, tp, allow_retry, cfg, stage, log):
+    """Pre-registered first fallback (addendum v0.2.3 §3.6): same model, no CUDA graphs."""
+    try:
+        return load_backend(kind, path, gc, tensor_parallel_size=tp)
+    except Exception as e:  # noqa: BLE001
+        AppendOnlyJSONL(cpath(cfg, "results_raw") / "failures.jsonl").append(
+            {"stage": f"{stage}_engine_start", "backend": kind, "enforce_eager": gc.get("enforce_eager", False),
+             "error": f"{type(e).__name__}: {e}"[:2000], "time_utc": utc_stamp()})
+        if not allow_retry or kind != "vllm" or gc.get("enforce_eager"):
+            raise
+        log.error("engine start failed (%s); retrying once with enforce_eager=True", type(e).__name__)
+        from src.common import vram
+        vram.release()
+        gc["enforce_eager"] = True
+        return load_backend(kind, path, gc, tensor_parallel_size=tp)
+
+
 def main(argv=None, backend_factory=None) -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--config", required=True)
@@ -98,6 +117,9 @@ def main(argv=None, backend_factory=None) -> int:
     ap.add_argument("--prompt", default="A1", choices=["A1", "A3"])
     ap.add_argument("--backend", default=None, help="override generation.backend (vllm|transformers)")
     ap.add_argument("--model", default=None, help="override generation.model (pre-registered fallbacks only)")
+    ap.add_argument("--tag", default="", help="suffix for the output file name (e.g. A2rep for the determinism re-run)")
+    ap.add_argument("--auto-eager-retry", action="store_true",
+                    help="if the vLLM engine fails to start, retry once with enforce_eager (logged to failures.jsonl)")
     ap.add_argument("--enforce-eager", action="store_true",
                     help="vLLM without CUDA graphs (T4 workaround; recorded in the run metadata)")
     args = ap.parse_args(argv)
@@ -124,7 +146,7 @@ def main(argv=None, backend_factory=None) -> int:
     meta = {"model_id": model_id, "model_revision": revision}
     if backend_factory is None:
         path = fetch_weights(model_id, revision, gc["model_dir"])
-        backend = load_backend(kind, str(path), gc)
+        backend = load_with_eager_retry(kind, str(path), gc, 1, args.auto_eager_retry, cfg, "reader", log)
     else:
         backend = backend_factory(model_id)
     AppendOnlyJSONL(cpath(cfg, "results_raw") / "generation_runs.jsonl").append(
@@ -134,7 +156,7 @@ def main(argv=None, backend_factory=None) -> int:
     for c in conds:
         items, run_file = plans[c]
         run_condition(cfg, backend, meta, c, items, passages, args.prompt, args.corpus, args.k, run_id, run_file, log,
-                      gc["chunk"])
+                      gc["chunk"], args.tag)
     backend.close()
     return 0
 

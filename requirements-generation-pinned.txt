@@ -1,0 +1,10 @@
+# Main run, generation sessions (S3a/S3b/S4): pinned to the pilot's requirements-generation.lock.
+# vllm 0.30.0 itself pins torch==2.13.0; the others are pinned so the reader/judge stack is identical to the pilot.
+vllm==0.30.0
+transformers==5.17.0
+tokenizers==0.23.2
+huggingface_hub==1.33.0
+pyarrow==24.0.0
+numpy==2.0.2
+pyyaml>=6
+pytest>=8

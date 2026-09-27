@@ -1,0 +1,13 @@
+# Main run, retrieval sessions: the key packages pinned to the versions used in the pilot
+# (requirements-retrieval.lock, Kaggle image of 2026-09-26/27). If the Kaggle image is unchanged this is a no-op.
+# torch is NOT pinned here (Kaggle's CUDA build; recorded by env_report and compared by src.check_env).
+sentence-transformers==5.4.1
+transformers==5.0.0
+tokenizers==0.22.2
+huggingface_hub==1.11.0
+bm25s==0.3.11
+faiss-cpu==1.15.1
+pyarrow==24.0.0
+numpy==2.0.2
+pyyaml>=6
+pytest>=8

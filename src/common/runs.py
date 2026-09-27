@@ -11,19 +11,15 @@ from src.common.config import cpath
 from src.common.io import read_json
 
 
-def _covers(query_set: str, n_queries: int | None) -> bool:
-    if n_queries is None or query_set == "joined":
-        return True
-    if query_set.startswith("order:"):
-        return int(query_set.split(":", 1)[1]) >= n_queries
-    return False
-
-
-def find_latest_run(cfg: dict, retriever: str, corpus: str, n_queries: int | None = None) -> Path:
+def find_latest_run(cfg: dict, retriever: str, corpus: str, n_queries: int | None = None,
+                    want: str | None = None) -> Path:
+    """Newest run whose query set covers `want` ('judged' | 'joined' | 'order:N'); n_queries=N means 'order:N'."""
+    from src.data.query_sets import covers
+    want = want or (f"order:{n_queries}" if n_queries else None)
     d = cpath(cfg, "results_raw") / "runs"
     candidates = sorted(d.glob(f"{retriever}__{corpus}__*.jsonl"))
     for run in reversed(candidates):
         meta = run.with_name(run.name[: -len(".jsonl")] + ".meta.json")
-        if meta.exists() and _covers(read_json(meta).get("query_set", ""), n_queries):
+        if meta.exists() and (want is None or covers(read_json(meta).get("query_set", ""), want)):
             return run
-    raise FileNotFoundError(f"no {retriever} run on corpus '{corpus}' covering {n_queries} queries in {d}")
+    raise FileNotFoundError(f"no {retriever} run on corpus '{corpus}' covering query set {want!r} in {d}")

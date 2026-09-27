@@ -20,7 +20,7 @@ def _last(path, **match):
 
 def summarize(cfg: dict) -> list[str]:
     raw = cpath(cfg, "results_raw")
-    out = ["=== PILOT PART A SUMMARY ==="]
+    out = [f"=== {cfg['experiment'].upper()} SUMMARY: data + retrieval ==="]
     dl = list(read_jsonl(raw / "download.jsonl"))
     if dl:
         latest = {r["name"]: r for r in dl}
@@ -33,14 +33,14 @@ def summarize(cfg: dict) -> list[str]:
         out.append(f"P3  join rate {s['join_rate']:.3f} ({s['n_joined']}/{s['n_beir_judged']}; unmatched {s['n_unmatched']}, "
                    f"ambiguous {s['n_ambiguous']}) -> {'PASS' if s['passed'] else 'FAIL'} "
                    f"(gate: n_joined >= {s.get('min_joined')})")
+    else:
+        out.append("P3  not run")
     jd = cpath(cfg, "data_processed") / "nq_join_diagnostics.json"
     if jd.exists():
         d = json.loads(jd.read_text())
         out.append(f"D1a not joined {d['n_not_joined']}: in NQ-open train {d['unmatched_in_nq_open_train_exact']}; "
                    f"max-Jaccard to val {d['unmatched_max_jaccard_to_val_hist']} (median {d['unmatched_max_jaccard_median']}); "
                    f"q-tokens {d['mean_question_tokens']}; gold/q {d['mean_gold_passages']}")
-    else:
-        out.append("P3  not run")
     b = _last(raw / "bm25.jsonl", n_docs=None) or (list(read_jsonl(raw / "bm25.jsonl")) or [None])[-1]
     if b:
         out.append(f"P3b BM25 {b['n_docs']} docs, query_set {b['query_set']}, index {b['index_seconds']:.0f}s, "
@@ -99,7 +99,7 @@ def summarize_b(cfg: dict) -> list[str]:
     runs = list(read_jsonl(raw / "generation_runs.jsonl"))
     if not runs:
         return out
-    out.append("=== PILOT PART B (pilot sanity only - not results) ===")
+    out.append(f"=== {cfg['experiment'].upper()}: generation + judge" + (" (pilot sanity only - not results) ===" if cfg["experiment"] == "pilot" else " (raw counts; analysis happens offline) ==="))
     for r in runs:
         out.append(f"P5  reader {r['model_id']} @ {r['model_revision'][:10]} via {r.get('backend')} "
                    f"(vllm {r.get('vllm_version')}, load {r.get('load_seconds', 0):.0f}s, eager {r.get('enforce_eager')}) "

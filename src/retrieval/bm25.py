@@ -4,7 +4,7 @@
         [--queries joined|order:N] [--latency]
 
 --corpus full | pilot | main   (pilot/main = data/processed/subcorpus_<tag>_ids.txt)
---queries joined               all joined NQ queries (default)
+--queries judged|joined        all 3,452 judged | 2,255 joined NQ queries (default joined)
           order:N              first N of the seeded query order (e.g. order:200 for the pilot corpus)
 """
 from __future__ import annotations
@@ -50,14 +50,8 @@ def retrieve(retriever, doc_ids: list[str], queries: list[str], k: int):
 
 
 def load_query_set(cfg: dict, spec: str) -> list[dict]:
-    proc = cpath(cfg, "data_processed")
-    joined = {json.loads(l)["qid"]: json.loads(l) for l in open(proc / "nq_joined.jsonl", encoding="utf-8")}
-    if spec == "joined":
-        return [joined[q] for q in sorted(joined)]
-    if spec.startswith("order:"):
-        n = int(spec.split(":", 1)[1])
-        return [joined[q] for q in read_lines(proc / "nq_query_order.txt")[:n]]
-    raise ValueError(f"unknown query set {spec!r}")
+    from src.data.query_sets import resolve
+    return resolve(cfg, spec)
 
 
 def latency_bench(retriever, doc_ids, queries: list[str], warmup: int, n: int) -> dict:

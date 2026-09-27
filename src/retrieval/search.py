@@ -112,11 +112,8 @@ def main(argv=None) -> int:
     q_ids_all = read_lines(d / "query_ids.txt")
     pos = {q: i for i, q in enumerate(q_ids_all)}
 
-    proc = cpath(cfg, "data_processed")
-    if args.queries == "joined":
-        qids = q_ids_all
-    else:
-        qids = read_lines(proc / "nq_query_order.txt")[: int(args.queries.split(":", 1)[1])]
+    from src.data.query_sets import resolve
+    qids = [r["qid"] for r in resolve(cfg, args.queries)]
     q = q_all[[pos[x] for x in qids]]
 
     t0 = time.perf_counter()

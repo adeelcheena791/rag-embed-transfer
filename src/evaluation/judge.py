@@ -28,7 +28,7 @@ from src.evaluation.answer import classify
 from src.generation.backends import fetch_weights, load_backend
 from src.generation.passages import load_passages
 from src.generation.prompts import PROMPT_HASH, judge_messages
-from src.generation.run import check_resume, gen_path
+from src.generation.run import check_resume, gen_path, load_with_eager_retry
 
 VERDICT = re.compile(r"^\s*(SUPPORTED|NOT_SUPPORTED)\b")
 
@@ -46,6 +46,8 @@ def main(argv=None, backend_factory=None) -> int:
     ap.add_argument("--n", type=int, required=True, help="first N queries of the seeded order")
     ap.add_argument("--k", type=int, default=5)
     ap.add_argument("--variant", default="zero_shot", choices=["zero_shot", "few_shot"])
+    ap.add_argument("--auto-eager-retry", action="store_true",
+                    help="if the vLLM engine fails to start, retry once with enforce_eager (logged)")
     ap.add_argument("--enforce-eager", action="store_true",
                     help="vLLM without CUDA graphs (T4 workaround; recorded in the run metadata)")
     args = ap.parse_args(argv)
@@ -75,7 +77,8 @@ def main(argv=None, backend_factory=None) -> int:
     revision = resolve_model_revision(cfg, jc["model"])
     if backend_factory is None:
         path = fetch_weights(jc["model"], revision, cfg["generation"]["model_dir"])
-        backend = load_backend(jc["backend"], str(path), jc, tensor_parallel_size=jc["tensor_parallel_size"])
+        backend = load_with_eager_retry(jc["backend"], str(path), jc, jc["tensor_parallel_size"], args.auto_eager_retry,
+                                        cfg, "judge", log)
     else:
         backend = backend_factory(jc["model"])
     expect = {"model_id": jc["model"], "model_revision": revision, "backend": backend.name, "variant": args.variant,
