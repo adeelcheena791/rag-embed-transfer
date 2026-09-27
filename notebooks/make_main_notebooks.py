@@ -8,7 +8,8 @@ failed step stops "Save & Run All (Commit)" instead of silently continuing (a pl
 import json
 from pathlib import Path
 
-TAG = "main-v1"
+BRANCH = "main-v1"                                  # frozen: never pushed to again
+CODE_SHA = "22f161a6e48a188ce8114bc8f6d402bcf7fdf327"  # the commit main-v1 points to
 REPO = "https://github.com/adeelcheena791/rag-embed-transfer.git"
 C = "configs/main.yaml"
 ALL_R = "R0,R1,R2,R3,R4,R5,R6"
@@ -27,13 +28,14 @@ def sh(cmd):
 
 def setup(session, req_files, lock):
     installs = "\n".join(f'sh("pip install -q -r {r}")' for r in req_files)
-    return f'''# Cell 1 — hardware, code at tag {TAG}, pinned environment, environment check, tests
+    return f'''# Cell 1 — hardware, code frozen at {CODE_SHA[:7]} (branch {BRANCH}), pinned environment, check, tests
 sh("nvidia-smi --query-gpu=index,name,driver_version,memory.total --format=csv || true")
 sh("df -h / /tmp /kaggle/working && free -g && nproc")
 os.chdir("/kaggle/working")
-sh("git clone --depth 1 --branch {TAG} {REPO} rag")
+sh("git clone --depth 1 --branch {BRANCH} {REPO} rag")
 os.chdir("/kaggle/working/rag")
 sh("git log --oneline -1")
+sh("test \\"$(git rev-parse HEAD)\\" = {CODE_SHA} || (echo WRONG CODE COMMIT; exit 1)")
 {installs}
 sh("python -m src.check_env --lock {lock}")
 sh("python -m src.env_report --session {session} --out results/raw/env_{session}.json")

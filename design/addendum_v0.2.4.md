@@ -45,7 +45,9 @@ S4 has 8 conditions, not 7. v0.2 §5.4 includes GOLD "as a reference", and P7's 
 
 ## 4. Execution mode (implementation decisions)
 
-1. **The code is fixed at git tag `main-v1`**, and every main notebook clones exactly that tag.
+1. **The code is fixed at commit `22f161a`.** It is published as branch `main-v1`, which is never pushed to again.
+   - Every main notebook clones that branch and stops unless HEAD is exactly `22f161a6e48a188ce8114bc8f6d402bcf7fdf327`.
+   - A tag was intended, but the session's git access refused to push tags; branches push normally.
 2. **Pinned environments.** Sessions run with "Save & Run All (Commit)". Every command goes through a fail-fast helper, so a failure stops the notebook instead of the next cell silently running on missing inputs.
    - Environments are pinned to the pilot versions (`requirements-*-pinned.txt`).
    - `src.check_env` stops the session if a key package differs from the pilot lock. This is expected to pass; if Kaggle has changed its image, we decide before anything runs.
