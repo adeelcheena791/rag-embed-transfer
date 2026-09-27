@@ -5,8 +5,7 @@ from __future__ import annotations
 
 from pathlib import Path
 
-from src.common.config import root
-from src.common.io import read_json, write_json_atomic
+from src.common.models import resolve_model_revision
 
 BGE_QUERY = "Represent this sentence for searching relevant passages: "
 
@@ -34,24 +33,7 @@ def query_prefix(key: str, task: str | None = None) -> str:
     return p
 
 
-def _revisions_file(cfg: dict) -> Path:
-    return root(cfg) / "configs" / "resolved_revisions.json"
-
-
 def resolve_revision(cfg: dict, key: str, api=None) -> str:
-    """Pinned commit sha for a model. Order: config override -> resolved file -> Hub (then persisted)."""
+    """Pinned commit sha for a retriever (see src/common/models.py)."""
     override = (cfg.get("retrievers") or {}).get(key, {}).get("revision")
-    if override:
-        return override
-    f = _revisions_file(cfg)
-    known = read_json(f) if f.exists() else {}
-    model_id = RETRIEVERS[key]["model_id"]
-    if model_id in known:
-        return known[model_id]
-    if api is None:
-        from huggingface_hub import HfApi
-        api = HfApi()
-    sha = api.model_info(model_id).sha
-    known[model_id] = sha
-    write_json_atomic(f, known)
-    return sha
+    return resolve_model_revision(cfg, RETRIEVERS[key]["model_id"], override, api)

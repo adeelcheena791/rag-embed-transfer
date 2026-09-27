@@ -1,0 +1,6 @@
+# Generation environment (sessions S3/S4 and pilot Part B). Installed ON TOP of requirements-retrieval.txt,
+# after all retrieval steps of the session have finished (vLLM replaces Kaggle's torch).
+# vLLM 0.30.0 was checked on 2026-09-27: PyPI metadata requires torch==2.13.0 and transformers>=5.10.4;
+# its GPU docs list compute capability 7.5 (T4) as the minimum; its quantisation table marks AWQ as
+# supported on Turing. The exact resolved versions are frozen into requirements-generation.lock (P8).
+vllm==0.30.0

@@ -88,6 +88,50 @@ def summarize(cfg: dict) -> list[str]:
     out.append(f"failures.jsonl: {len(fails)} records" + (f" (non-R6: {len(non_r6)})" if non_r6 else ""))
     for f in fails[-5:]:
         out.append(f"    {f.get('model')} {f.get('stage')} bs={f.get('batch_size')}: {str(f.get('error'))[:160]}")
+    out += summarize_b(cfg)
+    return out
+
+
+def summarize_b(cfg: dict) -> list[str]:
+    """Part B lines (P5-P8). Pilot sanity numbers only; never reported as results."""
+    raw, proc = cpath(cfg, "results_raw"), cpath(cfg, "results_processed")
+    out = []
+    runs = list(read_jsonl(raw / "generation_runs.jsonl"))
+    if not runs:
+        return out
+    out.append("=== PILOT PART B (pilot sanity only - not results) ===")
+    for r in runs:
+        out.append(f"P5  reader {r['model_id']} @ {r['model_revision'][:10]} via {r.get('backend')} "
+                   f"(vllm {r.get('vllm_version')}, load {r.get('load_seconds', 0):.0f}s, eager {r.get('enforce_eager')}) "
+                   f"conds {r['conditions']} n={r['n']}")
+    gdir = raw / "generations"
+    for f in sorted(gdir.glob(f"{cfg['experiment']}__*.jsonl")):
+        rows = list(read_jsonl(f))
+        empty = sum(not (x.get("output") or "").strip() for x in rows)
+        fr = {}
+        for x in rows:
+            fr[x["finish_reason"]] = fr.get(x["finish_reason"], 0) + 1
+        out.append(f"    {f.stem}: n={len(rows)} empty={empty} ({empty / max(1, len(rows)):.1%}; gate <=1%) "
+                   f"finish={fr} mean prompt tokens={sum(x['n_prompt_tokens'] for x in rows) / max(1, len(rows)):.0f}")
+    sfile = proc / "answers" / f"{cfg['experiment']}__summary.json"
+    if sfile.exists():
+        tab = json.loads(sfile.read_text())
+        out.append("    answer sanity (EM / F1 / contain / unparsed): " + "; ".join(
+            f"{k.split('__')[1]} {v['em']:.3f}/{v['f1']:.3f}/{v['contain']:.3f}/{v['rate_unparsed']:.3f}" for k, v in tab.items()))
+    for p in sorted(raw.glob("judge_decision_*.json")):
+        d = json.loads(p.read_text())
+        per = "; ".join(f"{c} fail {v['n_parse_fail']}/{v['n_judged']} supp {v['rate_supported']}" for c, v in d["per_condition"].items())
+        out.append(f"P6  judge {d['variant']}: parse failures {d['n_parse_fail']}/{d['n_judged']} = {d['parse_fail_rate']:.3%} "
+                   f"(F2 threshold {d['threshold_f2']:.0%}) -> main variant {d.get('f2_main_variant', '-')}; {per}")
+    for p in sorted(raw.glob("pilot_power_*.json")):
+        d = json.loads(p.read_text())
+        pr = d["projections"]
+        out.append(f"P7  p_d={d['p_d']:.3f} (n={d['n_pilot_queries']}) -> N_gen={d['n_gen']}; MDD {d['mdd_at_n_gen_and_pilot_p_d']}; "
+                   f"S3 {pr['s3_t4_hours']:.2f} T4-h (F4.2 {pr['f4_2_triggered']}), S4 {pr.get('s4_t4_hours', float('nan')):.2f} T4-h "
+                   f"(F4.3 {pr.get('f4_3_triggered')}), S3+S4 {pr.get('s3_plus_s4', float('nan')):.2f} (F4.4 {pr.get('f4_4_triggered')})")
+    root = cpath(cfg, "results_raw").parents[1]
+    locks = [n for n in ("requirements-retrieval.lock", "requirements-generation.lock") if (root / n).exists()]
+    out.append(f"P8  lock files: {locks or 'none yet'}")
     return out
 
 

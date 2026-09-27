@@ -10,6 +10,7 @@ paths:
   data_processed: data/processed
   embeddings: data/embeddings
   results_raw: results/raw
+  results_processed: results/processed
   logs: logs
 
 datasets:                     # pinned commits, retrieved via the HF API on 2026-09-26
@@ -89,3 +90,41 @@ sanity:
     R4: 0.74607
     R5: 0.71944
     # R1 and R6: no SciFact value on the card -> reported as "no_reference"
+
+# ---------------- Batch 2: reader, judge, pilot power (addendum v0.2.3) ----------------
+generation:                   # design v0.2 §4, Appendix A
+  model: Qwen/Qwen2.5-7B-Instruct-AWQ
+  backend: vllm
+  fallbacks:                  # pre-registered order (§3.1); used only via --model/--backend after a logged failure
+    - {model: Qwen/Qwen2.5-7B-Instruct-AWQ, backend: transformers}
+    - {model: Qwen/Qwen2.5-3B-Instruct, backend: transformers}
+  model_dir: /tmp/models      # weights are downloaded here, pinned revision, and deleted after use
+  dtype: half                 # T4 (sm_75) has no bf16
+  max_model_len: 4096
+  gpu_memory_utilization: 0.85
+  enforce_eager: false
+  tokenizer_mode: hf          # explicit (exists in vLLM 0.30.0); prompts are token ids anyway
+  env: {}                     # e.g. {VLLM_ATTENTION_BACKEND: ...} only if the pilot needs it (logged)
+  max_tokens: 32
+  stop: ["\n"]
+  chunk: 500                  # checkpoint + F4 timing record every 500 items
+
+judge:                        # design v0.2 §5.4, Appendix B, addendum F2
+  model: mistralai/Mistral-7B-Instruct-v0.3
+  backend: vllm
+  tensor_parallel_size: 2     # fp16 weights split over the 2 T4s
+  extra_llm_kwargs: {disable_custom_all_reduce: true}   # 2 T4s share PCIe, no NVLink; use NCCL all-reduce
+  dtype: half
+  max_model_len: 4096
+  gpu_memory_utilization: 0.85
+  enforce_eager: false
+  tokenizer_mode: hf          # explicit; Mistral repos also ship mistral-common files
+  env: {}
+  max_tokens: 8               # v0.2 said 5; "NOT_SUPPORTED" may need >5 tokens (addendum v0.2.3)
+  few_shot_threshold: 0.02    # F2
+
+pilot_power:                  # design v0.2 §7.1, addenda v0.2.2 D1, F4
+  corpus: pilot
+  n_gen_rule: {p_d_threshold: 0.10, small: 1000}   # else all joined queries
+  n_judge: 500
+  f4: {s3_max_hours: 8.0, s4_max_hours: 6.0, s3_s4_max_hours: 14.0}
