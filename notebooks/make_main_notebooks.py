@@ -26,7 +26,7 @@ def sh(cmd):
         raise RuntimeError(f"FAILED (exit {p.returncode}): {cmd}")'''
 
 
-def setup(session, req_files, lock):
+def setup(session, req_files, lock, restores=False):
     installs = "\n".join(f'sh("pip install -q -r {r}")' for r in req_files)
     return f'''# Cell 1 — hardware, code frozen at {CODE_SHA[:7]} (branch {BRANCH}), pinned environment, check, tests
 sh("nvidia-smi --query-gpu=index,name,driver_version,memory.total --format=csv || true")
@@ -38,7 +38,7 @@ sh("git log --oneline -1")
 sh("test \\"$(git rev-parse HEAD)\\" = {CODE_SHA} || (echo WRONG CODE COMMIT; exit 1)")
 {installs}
 sh("python -m src.check_env --lock {lock}")
-sh("python -m src.env_report --session {session} --out results/raw/env_{session}.json")
+{"" if restores else f'sh("python -m src.env_report --session {session} --out results/raw/env_{session}.json")'}
 sh("python -m pytest -q -p no:cacheprovider 2>&1 | tail -3")'''
 
 
@@ -93,12 +93,14 @@ sh("python -m src.retrieval.throughput --config {C} --models {','.join(DENSE)} -
     nb("# Main S1 — retrieval (M1 corpus, 7 retrievers, efficiency)\n" + COMMON_MD.format(acc="**GPU T4 x2**", zip="main_s1_results", inp=""),
        s1, here / "main_s1_retrieval.ipynb")
 
-    restore_s1 = f'''# Cell 2 — restore S1 outputs (input: the S1 notebook's output) + re-download the pinned corpus text
-sh("python -m src.restore --name main_s1_results")
+    def restore_cell(name, what, session):
+        return f'''# Cell 2 — restore {what} FIRST (nothing may write results/ before this), then environment record + corpus text
+sh("python -m src.restore --name {name}")
+sh("python -m src.env_report --session {session} --out results/raw/env_{session}.json")
 sh("python -m src.data.download --config {C}")'''
     s3a = [
-        setup("main_S3a", ["requirements-retrieval-pinned.txt", "requirements-generation-pinned.txt"], "requirements-generation.lock"),
-        restore_s1,
+        setup("main_S3a", ["requirements-retrieval-pinned.txt", "requirements-generation-pinned.txt"], "requirements-generation.lock", True),
+        restore_cell("main_s1_results", "S1 outputs (input: the S1 notebook's output)", "main_S3a"),
         f'''# Cell 3 — main reader run: 9 conditions x 2,255 queries = 20,295 generations (~3.3 h)
 sh("CUDA_VISIBLE_DEVICES=0 python -m src.generation.run --config {C} --conditions {ALL_R},CB,GOLD --corpus main --n 2255 --k 5 --auto-eager-retry")''',
         f'''# Cell 4 — score answers (processed files; the analysis itself happens offline)
@@ -110,8 +112,8 @@ sh("python -m src.evaluation.answer --config {C} --prefix main")''',
        s3a, here / "main_s3a_reader.ipynb")
 
     s3b = [
-        setup("main_S3b", ["requirements-retrieval-pinned.txt", "requirements-generation-pinned.txt"], "requirements-generation.lock"),
-        restore_s1,
+        setup("main_S3b", ["requirements-retrieval-pinned.txt", "requirements-generation-pinned.txt"], "requirements-generation.lock", True),
+        restore_cell("main_s1_results", "S1 outputs (input: the S1 notebook's output)", "main_S3b"),
         f'''# Cell 3 — F1 robustness ("I don't know" prompt A3): R0, R1, R4, GOLD x first 200 queries
 sh("CUDA_VISIBLE_DEVICES=0 python -m src.generation.run --config {C} --conditions R0,R1,R4,GOLD --corpus main --n 200 --k 5 --prompt A3 --auto-eager-retry")''',
         f'''# Cell 4 — A2 determinism: re-run R3 (k=5, A1) on the first 100 queries into a separate file
@@ -127,10 +129,8 @@ sh("python -m src.evaluation.answer --config {C} --prefix main")''',
        s3b, here / "main_s3b_ablations.ipynb")
 
     s4 = [
-        setup("main_S4", ["requirements-retrieval-pinned.txt", "requirements-generation-pinned.txt"], "requirements-generation.lock"),
-        f'''# Cell 2 — restore S3a outputs (they include S1's) + re-download the pinned corpus text
-sh("python -m src.restore --name main_s3a_results")
-sh("python -m src.data.download --config {C}")''',
+        setup("main_S4", ["requirements-retrieval-pinned.txt", "requirements-generation-pinned.txt"], "requirements-generation.lock", True),
+        restore_cell("main_s3a_results", "S3a outputs (they include S1's)", "main_S4"),
         f'''# Cell 3 — judge (zero-shot, per P6): 7 retrievers + GOLD x first 500 queries = 4,000 judgements, TP=2 (~1 h)
 sh("python -m src.evaluation.judge --config {C} --conditions {ALL_R},GOLD --corpus main --n 500 --variant zero_shot --auto-eager-retry")''',
         package("main_s4_results"),

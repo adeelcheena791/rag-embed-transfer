@@ -57,3 +57,18 @@ def test_restore_names_match_package_names():
     produced = set(re.findall(r"/kaggle/working/(main_s\w+)\.zip", "".join(p.read_text() for p in NB)))
     restored = set(re.findall(r"src.restore --name (\w+)", "".join(p.read_text() for p in NB)))
     assert restored <= produced and restored == {"main_s1_results", "main_s3a_results"}
+
+
+def test_restore_runs_before_anything_writes_results():
+    """Regression for the S3a failure of 2026-09-28: env_report wrote results/raw/env.jsonl before
+    src.restore, which then (correctly) refused to overwrite it. In a notebook that restores, the only
+    src command allowed before the restore is the read-only src.check_env."""
+    for f in NB:
+        cmds = [line.strip() for cell in json.loads(f.read_text())["cells"]
+                for line in "".join(cell["source"]).splitlines() if line.strip().startswith('sh("')]
+        idx = [i for i, c in enumerate(cmds) if "python -m src.restore" in c]
+        if not idx:
+            continue
+        before = [c for c in cmds[: idx[0]] if "python -m src." in c]
+        assert all("python -m src.check_env" in c for c in before), (f.name, before)
+        assert any("src.env_report" in c for c in cmds[idx[0]:]), f"{f.name}: no environment record after restore"

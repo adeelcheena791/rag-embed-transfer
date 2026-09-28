@@ -162,3 +162,12 @@ The log line "F3: R6 CPU fallback … drop_R6" is **not** an F3 decision. F3 app
 - A restore rehearsal on the real zip with the frozen code (`22f161a`) resolves runs for all 7 retrievers covering all 2,255 generation queries.
 - **Pending:** gold coverage for the 1,197 non-joined queries. It is guaranteed by construction (gold is added first; n_gold = 4,201 is logged), but it is not yet checked on the file, because the BEIR qrels are not in the S1 zip. The S3a/S3b/S4 packaging now also includes `data/raw/nq_qrels/test.tsv` and the BEIR query file, so the check and all retrieval metrics can run offline. This concerns only the secondary D1b analysis; S3a uses joined queries only.
 - R6's CPU record is complete, not truncated: a warm-up plus 3 × 2,000 timed passages at 0.305 p/s ≈ 6 h 32 min, matching the log.
+
+## 11. S3a attempt 1 failed — step-order bug in the notebook (2026-09-28)
+
+- **What happened.** Cell 1 ran `src.env_report`, which appends to `results/raw/env.jsonl`. Cell 2's `src.restore` then found a different `results/raw/env.jsonl` in S1's zip and refused to overwrite it, as designed. The notebook stopped before any generation; no data was produced or altered.
+- **Cause (my error).** The restore rehearsal used a clean checkout and never ran Cell 1 first.
+- **Fix.** In every restoring notebook (S3a, S3b, S4), the restore runs before anything writes to `results/`, and `env_report` runs right after it. The code (`22f161a`) is unchanged; only the notebook cell order changed.
+- **Guards.**
+  - A new test asserts that no `src` command except the read-only `src.check_env` runs before a restore.
+  - The notebooks' real command order was replayed on the real S1 zip with the frozen code: the old order reproduces the Kaggle error, and the new order passes.
