@@ -45,7 +45,7 @@ sh("python -m pytest -q -p no:cacheprovider 2>&1 | tail -3")'''
 def package(name):
     return f'''# Last cell — summary + package (becomes this version's saved output)
 sh("python -m src.pilot_summary --config {C}")
-sh("zip -qr /kaggle/working/{name}.zip results data/processed configs/resolved_revisions.json logs requirements-*.lock")
+sh("zip -qr /kaggle/working/{name}.zip results data/processed configs/resolved_revisions.json logs requirements-*.lock data/raw/nq_qrels/test.tsv data/raw/nq_corpus/queries")
 sh("ls -la /kaggle/working/{name}.zip")
 sh("rm -rf /kaggle/working/rag/data/raw /tmp/models")   # re-downloadable; keeps the saved output small'''
 

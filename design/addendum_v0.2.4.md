@@ -141,3 +141,24 @@ The log line "F3: R6 CPU fallback … drop_R6" is **not** an F3 decision. F3 app
 - S1 therefore used 11 h 20 min of GPU-session time, against the planned ≈ 4.5 h, and came within 40 min of Kaggle's 12-hour session limit.
 - Data validity is not affected, but it consumed quota: 15 h 44 min remains, versus ≈ 9 h needed for S3a + S3b + S4.
 - **Lesson applied from now on:** every session gets a wall-time estimate computed from measured per-item speed, with ≥ 30% headroom under the 12-hour limit.
+
+## 10. S1 file-level verification (zip received 2026-09-28)
+
+- The sub-corpus id file has 300,000 unique ids.
+- All 2,816 gold passages of the 2,255 joined queries are in it.
+- All 7 main runs (R0–R6) have 3,452 unique queries × 100 passages, 0 ids outside the corpus, 0 duplicates, scores non-increasing, and query set `judged`.
+- Batch-1 search latency (median, ms, on the S1 CPU):
+
+| Retriever | Latency |
+|---|---|
+| R0 (BM25) | 21.9 |
+| R1 | 39.3 |
+| R2 | 38.8 |
+| R3 | 81.2 |
+| R5 | 81.5 |
+| R4 | 143.1 |
+| R6 | 142.0 |
+
+- A restore rehearsal on the real zip with the frozen code (`22f161a`) resolves runs for all 7 retrievers covering all 2,255 generation queries.
+- **Pending:** gold coverage for the 1,197 non-joined queries. It is guaranteed by construction (gold is added first; n_gold = 4,201 is logged), but it is not yet checked on the file, because the BEIR qrels are not in the S1 zip. The S3a/S3b/S4 packaging now also includes `data/raw/nq_qrels/test.tsv` and the BEIR query file, so the check and all retrieval metrics can run offline. This concerns only the secondary D1b analysis; S3a uses joined queries only.
+- R6's CPU record is complete, not truncated: a warm-up plus 3 × 2,000 timed passages at 0.305 p/s ≈ 6 h 32 min, matching the log.
