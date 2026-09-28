@@ -171,3 +171,33 @@ The log line "F3: R6 CPU fallback … drop_R6" is **not** an F3 decision. F3 app
 - **Guards.**
   - A new test asserts that no `src` command except the read-only `src.check_env` runs before a restore.
   - The notebooks' real command order was replayed on the real S1 zip with the frozen code: the old order reproduces the Kaggle error, and the new order passes.
+
+## 12. S3a execution record (log, 2026-09-28; zip not yet received) and the F4.2 decision
+
+**From the log:**
+- code `22f161a`; 11/11 packages match the generation lock; 152 tests passed;
+- restore ran before `env_report`, as fixed in §11 (31 files copied, 1 identical skipped); P1 shas match;
+- reader Qwen2.5-7B-Instruct-AWQ @ `b2503754`, vLLM 0.30.0, CUDA graphs on (no eager retry needed);
+- all 9 conditions × 2,255 completed; no FAILED line, no traceback.
+
+**Measured generation time:** 10,856 s = 3.02 h (session ≈ 3.1 h). Seconds per item at k = 5:
+
+| R0 | R1 | R2 | R3 | R4 | R5 | R6 | CB | GOLD |
+|---|---|---|---|---|---|---|---|---|
+| 0.557 | 0.601 | 0.650 | 0.676 | 0.693 | 0.743 | 0.691 | 0.022 | 0.181 |
+
+**S3b projection from these measurements** (prefill-dominated model: 0.022 s fixed per item + 0.954 ms per prompt token, ≈ 124 tokens per passage):
+
+| Part | Estimate |
+|---|---|
+| A1 | 3.54 h |
+| F1 | 7 min |
+| A2 | 1 min |
+| setup | 15 min |
+| **S3b total** | **≈ 3.9 h** (5.1 h with 30% headroom; under the 12 h session limit) |
+
+**F4.2 decision (pre-registered rule, clarified in §4.6):** S3a 3.1 h + projected S3b 3.9 h = 7.0 h ≤ 8 h, so **not triggered**. S3b runs in full: F1, A2, then A1 at k = 1, 3, 10 on all 2,255 queries. The margin is about 1 h.
+
+**Quota:** 12 h 40 min remaining (user report) versus ≈ 3.9 h (S3b) + ≈ 1.3 h (S4).
+
+**Main-run EM values reported by the user from the S3a summary:** these are **not yet verified** against the raw files, and **no comparison between retrievers is made** until the pre-registered statistics (§7: paired tests, Holm, bootstrap CIs; §5.3 decomposition) are computed from the raw generations.
