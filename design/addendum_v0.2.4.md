@@ -98,3 +98,46 @@ Kaggle's weekly GPU quota must have at least this remaining. If not, S3b and S4 
 
 - **Kaggle GPU quota remaining this week: 27 h 09 min.** The main run (≈ 12–13 h estimated) fits in this week's quota.
 - **One annotator only.** The human validation reports human–judge agreement (κ with 95% CI) from a single annotator. No inter-annotator κ is available, and this is stated as a limitation.
+
+## 9. S1 execution record (from the Kaggle log, 2026-09-27; zip not yet received)
+
+**Verified from the log:**
+- code at `22f161a` (commit check passed); 10/10 key packages match the pilot lock; 152 tests passed;
+- P1 all shas match; P3 2,255 / 3,452 joined;
+- M1 sub-corpus: 300,000 = 4,201 gold + 127,791 BM25 (depth 42, 3,452 queries) + 168,008 random;
+- R0 main run written; all 6 dense models encoded 300,000 rows (dims 384/384/768/768/1024/1024);
+- 6 dense runs written for the judged query set; no FAILED line, no traceback.
+
+**Not yet verified (needs `main_s1_results.zip`):**
+- run files (3,452 queries × 100 passages each, 7 retrievers);
+- that the gold passages of all judged queries are in the id file;
+- the latency records.
+
+**Encoding throughput (passages/s) — pilot P4 vs main S1, same protocol, same GPU type (M3 variability):**
+
+| Model | Pilot | Main | Change |
+|---|---|---|---|
+| R1 | 1,957 | 1,943 | −0.7% |
+| R2 | 1,205 | 1,198 | −0.6% |
+| R3 | 489 | 504 | +3.1% |
+| R5 | 485 | 496 | +2.3% |
+| R4 | 164 | 169 | +3.0% |
+| R6 | 64 | 66 | +3.1% |
+
+**CPU throughput (4 vCPU Xeon 2.0 GHz; passages/s):**
+
+| Model | Throughput |
+|---|---|
+| R1 | 38.7 |
+| R2 | 20.0 |
+| R3 | 6.39 |
+| R5 | 6.19 |
+| R4 | 1.92 |
+| R6 | 0.305 |
+
+The log line "F3: R6 CPU fallback … drop_R6" is **not** an F3 decision. F3 applies only if R6 fails on the GPU, and it did not. The CPU benchmark computes that rule unconditionally, and the frozen code prints it. **R6 is not dropped.** The implied figure (≈ 273 CPU-hours to encode 300k passages with R6 on this CPU) is reported only as an efficiency measurement.
+
+**Cost deviation — my estimation error.** I estimated the CPU benchmark (Cell 8) at ≈ 1 h; it took **8 h 24 min** (R6 6 h 32 min, R4 1 h 03 min).
+- S1 therefore used 11 h 20 min of GPU-session time, against the planned ≈ 4.5 h, and came within 40 min of Kaggle's 12-hour session limit.
+- Data validity is not affected, but it consumed quota: 15 h 44 min remains, versus ≈ 9 h needed for S3a + S3b + S4.
+- **Lesson applied from now on:** every session gets a wall-time estimate computed from measured per-item speed, with ≥ 30% headroom under the 12-hour limit.
