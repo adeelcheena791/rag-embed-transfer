@@ -9,3 +9,7 @@
 __pycache__/
 *.pyc
 .pytest_cache/
+
+# analysis outputs: released deliberately at the end, not committed piecemeal
+/tables/
+/figures/
