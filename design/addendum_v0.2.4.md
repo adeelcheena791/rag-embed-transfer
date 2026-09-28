@@ -201,3 +201,38 @@ The log line "F3: R6 CPU fallback … drop_R6" is **not** an F3 decision. F3 app
 **Quota:** 12 h 40 min remaining (user report) versus ≈ 3.9 h (S3b) + ≈ 1.3 h (S4).
 
 **Main-run EM values reported by the user from the S3a summary:** these are **not yet verified** against the raw files, and **no comparison between retrievers is made** until the pre-registered statistics (§7: paired tests, Holm, bootstrap CIs; §5.3 decomposition) are computed from the raw generations.
+
+## 13. S3b verified (zip, 2026-09-28)
+
+**File checks:**
+- All 14 generation files have the expected query sets: A1 2,255; F1 200; A2 100.
+- Each item received exactly its run's top-k (or the gold passages); the prompt hashes are unaltered; one reader revision throughout.
+- `failures.jsonl` is empty. The 16 S1 run files are byte-identical.
+
+**A2 (determinism) RESULT.** R3 (k = 5, A1) was re-run on the first 100 queries in a different Kaggle session and on a different day than S3a. **100 / 100 outputs and 100 / 100 prompt token counts are identical to S3a's**, so EM is identical (0.510 vs 0.510).
+
+**A1 (top-k) RESULT.** EM % with 95% CI; adjacent-k exact McNemar tests, Holm-corrected over 9 tests:
+
+| Retriever | k = 1 | k = 3 | k = 5 | k = 10 |
+|---|---|---|---|---|
+| R0 BM25 | 23.3 | 31.8 | 36.0 | 40.0 |
+| R1 MiniLM | 35.2 | 44.2 | 47.1 | 50.2 |
+| R4 bge-large | 42.1 | 49.3 | 50.3 | 52.0 |
+
+- Every adjacent step is significant, except R4 k = 3 → 5 (+1.1 pp [−0.3, +2.5], n.s.).
+- The k = 5 → 10 gains are: R0 +4.0, R1 +3.1, R4 +1.6 pp (p_Holm = 0.044).
+- Mean prompt tokens roughly double from k = 5 to k = 10.
+- *Exploratory, not pre-registered:* R4 at k = 1 vs R0 at k = 10: +2.2 pp [+0.1, +4.2], p = 0.044, a single post-hoc test.
+
+**F1 ("I don't know" prompt A3, first 200 queries) RESULT.**
+- IDK rates: R0 21.5%, R1 11.5%, R4 4.5%, GOLD 6.0%. The R4 and GOLD CIs overlap heavily: [2.0, 7.5] vs [3.0, 9.5].
+- **IDK is concentrated on retrieval misses.** IDK | gold in top-5 is 1.3–2.4%; IDK | gold not in top-5 is R0 34.7%, R1 27.6%, R4 13.9%.
+- EM change from A1 to A3: −1.0 to −3.0 pp; none significant at 0.05 (R4 p = 0.07).
+
+**A3 (R6 Matryoshka dimensions 256 / 512) was NOT run. This is my omission.**
+- v0.2.1 §6 marks A3 "cut first, keep if time permits".
+- When I wrote the main-run plan (§3), I left A3 out of S3b without recording a decision. F4 did not require the cut.
+- **Proposed:** run A3 as a separate, small session after S4. It needs only the saved S1 embeddings, truncated to 256 / 512 and renormalised, so no re-encoding is required. Estimated cost ≈ 1–1.5 GPU-hours.
+- If not run, the Limitations text of v0.2.1 §6 applies. **Decision pending (user).**
+
+**RQ3 / RQ4 analysis:** not yet done. I said I would do it during S3b and did not. It is next.
