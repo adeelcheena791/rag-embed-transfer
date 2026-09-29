@@ -16,3 +16,11 @@ __pycache__/
 /paper/figures/
 /paper/tables/
 /paper/derived_stats.json
+paper/latex/*.aux
+paper/latex/*.log
+paper/latex/*.bbl
+paper/latex/*.blg
+paper/latex/*.fls
+paper/latex/*.fdb_latexmk
+paper/latex/*.out
+paper/latex/main.pdf

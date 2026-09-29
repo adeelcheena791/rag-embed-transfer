@@ -1,0 +1,77 @@
+% ACL 2023/2024 two-column template (acl-org/acl-style-files @ d5adc82). Use [review] for anonymous submission.
+\documentclass[11pt]{article}
+\usepackage[final]{acl}
+\usepackage{times}
+\usepackage{latexsym}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{microtype}
+\IfFileExists{inconsolata.sty}{\usepackage{inconsolata}}{}  % present on Overleaf; missing in this build container
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{amsmath}
+\graphicspath{{figures/}{../figures/}}
+
+\title{How Much Retrieval Quality Reaches the Answer?\\
+Accuracy--Efficiency Trade-offs of Open-Source Embedding Models in RAG}
+\author{Adeel Cheena \\ \texttt{adeelcheena791@gmail.com}}
+
+\newcommand{\figstub}[4]{% #1 env, #2 file, #3 caption, #4 label
+  \begin{#1}[t]\centering
+  \includegraphics[width=\linewidth]{#2}
+  \caption{#3}\label{#4}
+  \end{#1}}
+
+\begin{document}
+\maketitle
+\input{sections/abstract}
+\input{sections/introduction}
+
+\figstub{figure*}{F1_architecture}{PLACEHOLDER caption: system architecture.}{fig:F1}
+
+\section{Related Work}\label{sec:related}
+PLACEHOLDER.
+
+\section{Method}\label{sec:method}
+PLACEHOLDER.
+\figstub{figure*}{F2_methodology}{PLACEHOLDER caption: stages S1, S3a, S3b, S4.}{fig:F2}
+\input{tables/T1}
+
+\section{Experimental Setup}\label{sec:setup}
+PLACEHOLDER.
+\input{tables/T2}
+
+\section{Results}\label{sec:results}
+PLACEHOLDER.
+\input{tables/T3}
+\figstub{figure}{F3_retrieval_comparison}{PLACEHOLDER caption: RQ1 retrieval.}{fig:F3}
+\input{tables/T5}
+\input{tables/T6}
+\input{tables/T4}
+\figstub{figure}{F4_retrieval_vs_latency}{PLACEHOLDER caption: retrieval vs latency.}{fig:F4}
+\figstub{figure}{F5_answer_quality_vs_efficiency}{PLACEHOLDER caption: EM vs efficiency.}{fig:F5}
+\figstub{figure*}{F6_pareto_frontier}{PLACEHOLDER caption: Pareto frontier.}{fig:F6}
+\figstub{figure}{F7_error_failure_analysis}{PLACEHOLDER caption: failure analysis.}{fig:F7}
+\figstub{figure}{F8_topk_ablation}{PLACEHOLDER caption: top-k ablation.}{fig:F8}
+
+\section{Discussion}\label{sec:discussion}
+PLACEHOLDER.
+
+\section*{Limitations}\label{sec:limitations}
+PLACEHOLDER.
+
+\section{Conclusion}\label{sec:conclusion}
+PLACEHOLDER.
+
+\bibliography{references}
+
+\appendix
+\section{Reader Prompts}\label{app:prompts}
+PLACEHOLDER.
+\section{Judge Prompt}\label{app:judge}
+PLACEHOLDER.
+\section{Additional Tables}\label{app:tables}
+PLACEHOLDER.
+\section{Pre-registration Addenda Summary}\label{app:prereg}
+PLACEHOLDER.
+\end{document}

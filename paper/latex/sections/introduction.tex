@@ -1,0 +1,36 @@
+\section{Introduction}
+\label{sec:intro}
+
+Retrieval-augmented generation (RAG) answers a question from passages that a retriever finds.
+In a dense RAG system, an embedding model decides which passages the reader sees.
+Retrieval benchmarks such as MTEB \citep{muennighoff2022mteb} rank embedding models by retrieval metrics.
+Such a rank does not state how much a retrieval gain changes the answers a reader produces.
+It also does not state what the gain costs to run.
+
+The work closest to ours leaves this link open.
+MTEB covers 8 tasks and 58 datasets and scores each embedding model without a downstream reader \citep{muennighoff2022mteb}.
+\citet{baidya2026choosing} adds latency and cost to embedding selection on four BEIR subsets.
+That report states that it ``does not measure end-to-end RAG answer quality''.
+RAGAS \citep{es2023ragas} scores faithfulness and relevance without reference answers, and it does not vary the retriever.
+ARES \citep{saadfalcon2024ares} compares retrievers, but each system retrieves one passage and changes retriever and generator together.
+Neither framework holds the reader fixed while the retriever varies.
+
+We ask four research questions.
+\begin{itemize}
+\item \textbf{RQ1:} How do open embedding models differ in retrieval quality on one fixed corpus?
+\item \textbf{RQ2:} How much of a retrieval gain transfers to end-to-end answer accuracy (EM)?
+\item \textbf{RQ3:} What does each model cost (encoding time, latency, index size, memory) on free hardware?
+\item \textbf{RQ4:} Which models are Pareto-optimal on quality vs cost?
+\end{itemize}
+
+In this paper, we make four contributions.
+\begin{itemize}
+\item \textbf{(C1) Controlled isolation.} We vary only the retriever: BM25 and six open-source encoders. The reader (Qwen2.5-7B-Instruct-AWQ), the corpus (300,000 BEIR-NQ passages) and the 2,255 queries stay fixed (\S\ref{sec:method}).
+\item \textbf{(C2) Transfer decomposition.} We report the ratio $\Delta\mathrm{EM}/\Delta\mathrm{Hit@5}$ against a reference retriever, with paired bootstrap confidence intervals and a pre-registered reporting rule (\S\ref{sec:method}).
+\item \textbf{(C3) Measured cost on free hardware.} We measure corpus encoding time, query latency, index size and peak GPU memory on one free T4 (\S\ref{sec:results}).
+\item \textbf{(C4) Pareto analysis with significance marks.} We mark each step of the quality--cost frontier as significant or not after Holm correction (\S\ref{sec:results}).
+\end{itemize}
+We are not aware of work that measures retrieval-to-answer transfer ratios jointly with measured cost on free hardware.
+
+Our lead finding is scoped to this setup: $\sim$20--25\% of Hit@5 gain appears as EM gain (\S\ref{sec:results}).
+Section~\ref{sec:related} reviews related work, Sections~\ref{sec:method}--\ref{sec:setup} describe the method and setup, Section~\ref{sec:results} reports results, and Sections~\ref{sec:discussion}--\ref{sec:conclusion} discuss them and state limits.
