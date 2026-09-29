@@ -13,3 +13,6 @@ __pycache__/
 # analysis outputs: released deliberately at the end, not committed piecemeal
 /tables/
 /figures/
+/paper/figures/
+/paper/tables/
+/paper/derived_stats.json
