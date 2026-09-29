@@ -33,3 +33,15 @@ def test_draw_takes_all_minority_items_when_scarce():
     items = draw(j, random.Random(7))
     r0 = [x for x in items if x["retriever"] == "R0"]
     assert sum(x["judge_verdict"] == "NOT_SUPPORTED" for x in r0) == 5
+
+
+def test_extract_passages_on_toy_corpus(project, tmp_path):
+    import json
+    from src.annotation import extract_passages
+    root, cfg = project
+    sample = tmp_path / "blind.json"
+    sample.write_text(json.dumps([{"item_id": "H001", "question": "q", "answer": "a", "pids": ["d0", "d7"]}]))
+    out = tmp_path / "passages.json"
+    assert extract_passages.main(["--config", str(cfg), "--sample", str(sample), "--out", str(out)]) == 0
+    got = json.loads(out.read_text())
+    assert got["d0"] == {"title": "Paris", "text": "Paris is the capital of France."} and set(got) == {"d0", "d7"}
