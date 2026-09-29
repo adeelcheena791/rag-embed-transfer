@@ -1,11 +1,12 @@
 \begin{abstract}
-Embedding benchmarks rank retrievers in isolation.
-Builders of retrieval-augmented generation (RAG) systems need two other numbers: how much a retrieval gain improves the final answer, and what that gain costs.
+This study asks how much of a retrieval gain reaches the final answer of a retrieval-augmented generation (RAG) system.
 We are not aware of work that measures retrieval-to-answer transfer ratios jointly with measured cost on free hardware.
-We fix the reader (Qwen2.5-7B-Instruct-AWQ) and the corpus (a 300,000-passage BEIR-NQ sub-corpus) and vary only the retriever: BM25 and six open-source encoders from 23M to 596M parameters.
-We record encoding time, query latency, index size and GPU memory on one free Tesla T4.
+We fix the reader (Qwen2.5-7B-Instruct-AWQ) and the corpus (a 300,000-passage BEIR-NQ sub-corpus) and vary only the retriever: BM25 and six open-source encoders from 22.7M to 595.8M parameters.
+We measure encoding time, query latency, index size and GPU memory on one free T4.
 On 2,255 Natural Questions queries, Hit@5 ranges from 66.4\% to 81.6\% across the dense encoders, but exact match (EM) ranges only from 47.1\% to 51.0\%.
-Relative to MiniLM-L6, the transfer ratio $\Delta\mathrm{EM}/\Delta\mathrm{Hit@5}$ lies between 0.19 and 0.25 for the other five dense encoders.
-Within our setup, bge-large and Qwen3-Embedding-0.6B need 3.0$\times$ and 7.5$\times$ the encoding time of e5-base-v2, retrieve significantly worse than it, and show no detectable EM gain.
-For choosing an embedding model in RAG, we argue that the transfer ratio and measured cost say more than the benchmark rank.
+Relative to all-MiniLM-L6-v2, the transfer ratio $\Delta\mathrm{EM}/\Delta\mathrm{Hit@5}$ lies between 0.19 and 0.25 for the other five dense encoders.
+$\sim$20--25\% of Hit@5 gain appears as EM gain, within our setup.
+bge-large-en-v1.5 and Qwen3-Embedding-0.6B need 3--7.5$\times$ the T4 encoding time of e5-base-v2.
+Both retrieve worse than e5-base-v2 on Hit@5 (exact McNemar test) and nDCG@10 (Wilcoxon signed-rank test), significant after Holm correction over 21 pairs.
+Both show no detectable EM gain over e5-base-v2.
 \end{abstract}
