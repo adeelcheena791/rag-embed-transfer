@@ -255,3 +255,7 @@ The log line "F3: R6 CPU fallback … drop_R6" is **not** an F3 decision. F3 app
 **Analysis tooling added:** `src/analysis/rq34.py` (RQ3 efficiency, RQ4 Pareto frontiers annotated with Holm significance).
 
 **Sensitivity view (post hoc).** Cost differences ≤ 5% are treated as ties, because the measured run-to-run variability is ≤ 3.1%. This is labelled as not pre-registered wherever it is reported.
+
+## §15 Decision: A3 (R6 Matryoshka dimension ablation) CUT (user, 2026-09-29)
+
+A3 is not run. Limitations text, verbatim from the user: "We did not evaluate Matryoshka dimension truncation for R6, so our dimension-cost conclusions come only from comparing different models. Those comparisons confound dimension with architecture and training."
