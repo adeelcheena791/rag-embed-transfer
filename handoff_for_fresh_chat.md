@@ -43,12 +43,14 @@ Encode 300k on T4 (s): 158 / 250 / 584 / 592 / 1,753 / 4,431. CPU encode (p/s): 
 
 **S4 faithfulness — UNVALIDATED (n = 500):** SUPPORTED BM25 79.0 · MiniLM 88.6 · bge-s 89.8 · bge-b 90.2 · bge-L 91.2 · e5-b 91.6 · Qwen3 89.6 · GOLD 96.6. 0/3,999 parse failures. Only BM25 vs dense significant. Interpret only after κ: ≥ 0.4 use; 0.2–0.4 report with sensitivity; < 0.2 exclude. Pilot hinted the judge is lenient.
 
-## 4. Source papers (from chat notes; PDFs were never read here — verify every detail before citing)
+## 4. Source papers (abstracts checked on arXiv 2026-09-29; user's analysis PDF read)
 
-1. **MTEB** (Muennighoff et al., EACL 2023). A large benchmark of text-embedding models across many tasks, retrieval included. It showed no single model wins every task. We use it as the standard source of retrieval scores and model-card numbers. It measures embedding quality in isolation, not downstream RAG answers. Our post-hoc SciFact check matched MTEB references (R1 0.645 vs 0.655 ours; R6 0.697 vs 0.699).
-2. **Baidya 2026, "Choosing a Text Embedding Model"** (arXiv 2607.23507 — ID and exact title UNVERIFIED; check). Practical benchmarking of embedding models on quality and cost. We cite it only as consistent with our observation that model family and training matter more than size. Do not attribute specific numbers until verified.
-3. **RAGAs** (Es et al., EACL 2024 demo). Reference-free LLM-based RAG metrics, including faithfulness. We planned to run it and dropped it (D2): local deployment needs infrastructure untested on our hardware. Our own single-prompt judge replaces it.
-4. **ARES** (Saad-Falcon et al., NAACL 2024). Automated RAG evaluation with trained LLM judges plus a small human-labelled set to calibrate them (prediction-powered inference). It motivates our human check of the judge on 200 items.
+Cite as: Muennighoff et al. 2022 (MTEB); Baidya 2026 (Practical Benchmarking); Es et al. 2023 (RAGAS); Saad-Falcon et al. 2024 (ARES).
+
+1. **MTEB** (arXiv 2210.07316; EACL 2023). 8 tasks, 58 datasets, 112 languages, 33 models. No model wins all tasks. Scores embeddings in isolation (nDCG@10 for retrieval); speed measured on one A100; no end-to-end RAG answers.
+2. **Baidya 2026** (arXiv 2607.23507, "Choosing a Text Embedding Model: A Practical Benchmarking and Decision Framework", IIT (BHU)). Benchmarks a commercial API model (T3EM) against BGE-M3, E5-large, mE5-L, LaBSE, mMPNet on FiQA, NFCorpus, SciFact, TREC-COVID. States verbatim that it "does not measure end-to-end RAG answer quality". Per user's analysis (not re-checked): T3EM nDCG 0.638 at 7–14× latency; mE5-L 0.546; training objective matters more than size.
+3. **RAGAS** (arXiv 2309.15217). Reference-free metrics: faithfulness, answer relevance, context relevance, via GPT-3.5. WikiEval: 50 pages. Never varies the retriever; no cost/latency; no CIs.
+4. **ARES** (arXiv 2311.09476; NAACL 2024). Fine-tuned DeBERTa-v3-Large judges on synthetic data (FLAN-T5 XXL) + PPI with ~150+ human labels. Compares BM25, OpenAI Ada, ColBERTv2 with several generators; "each RAG system only retrieves one passage". Retriever and generator vary together. Scores three component dimensions but does not split answer accuracy into retrieval vs reader contributions, and measures no cost.
 
 **Close prior work to position against (verify each):** BERGEN (RAG benchmarking library); Leto et al. 2024 (distracting passages hurt readers); Cirillo et al. 2026; RAGPerf; Oro et al. 2025; eRAG (retrieval evaluation via downstream LLM output). Novelty claim wording: "We are not aware of work that measures retrieval-to-answer transfer ratios jointly with measured cost on free hardware." Never "first".
 
