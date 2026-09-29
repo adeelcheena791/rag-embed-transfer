@@ -236,3 +236,22 @@ The log line "F3: R6 CPU fallback … drop_R6" is **not** an F3 decision. F3 app
 - If not run, the Limitations text of v0.2.1 §6 applies. **Decision pending (user).**
 
 **RQ3 / RQ4 analysis:** not yet done. I said I would do it during S3b and did not. It is next.
+
+## 14. S4 verified (zip + log, 2026-09-29) and next steps
+
+**S4 checks:**
+- code `22f161a`; 11/11 packages match; 152 tests passed; restore ran first;
+- judge Mistral-7B-Instruct-v0.3 @ `c170c708`, TP = 2, zero-shot;
+- 3,999 judgements: 7 × 500, plus GOLD 499 (one GOLD output had stopped at the token limit and is not judgeable); **0 parse failures**;
+- every verdict re-parses identically; S3a's generation files are byte-identical in the S4 zip.
+
+**Human-validation sample drawn** (`src/annotation/sample.py`, seed 7, commit `1ddb17d`):
+- 200 items: R0–R3 29 each, R4–R6 28 each; 14 NOT_SUPPORTED per retriever and the rest SUPPORTED.
+- Each item carries its inclusion probability, so population-level agreement can be estimated with inverse-probability weights.
+- The annotator file shows only the question, the answer and the passages.
+- The key (judge verdicts) is kept git-ignored and is joined only after annotation.
+- Passage texts come from a CPU-only Kaggle notebook (`notebooks/annotation_passages.ipynb`).
+
+**Analysis tooling added:** `src/analysis/rq34.py` (RQ3 efficiency, RQ4 Pareto frontiers annotated with Holm significance).
+
+**Sensitivity view (post hoc).** Cost differences ≤ 5% are treated as ties, because the measured run-to-run variability is ≤ 3.1%. This is labelled as not pre-registered wherever it is reported.

@@ -67,3 +67,10 @@ def test_transfer_ratio_reporting_rule():
     assert not small.estimable and "<= 2 pp" in small.reason
     ns = stats.transfer_ratio(hit_m, hit_ref, em_m, em_ref, idx, hit_p_holm=0.2, name="Rz")
     assert not ns.estimable and "not significant" in ns.reason
+
+
+def test_pareto_frontier():
+    from src.analysis.rq34 import pareto
+    pts = {"cheap_bad": (1, 0.3), "mid": (2, 0.5), "dominated": (3, 0.45), "best": (4, 0.6), "tie_cost_worse": (2, 0.4)}
+    assert pareto(pts) == ["cheap_bad", "mid", "best"]
+    assert pareto({"a": (1, 0.5), "b": (1, 0.5)}) == ["a", "b"]          # exact ties: neither dominates
