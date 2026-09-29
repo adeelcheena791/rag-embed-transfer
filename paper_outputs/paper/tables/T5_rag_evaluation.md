@@ -1,0 +1,15 @@
+**Table 5. End-to-end answers (n = 2,255; k = 5) and faithfulness.**
+
+| condition | EM [95% CI] | F1 | contains | Hit@5 | P(EM|hit) | P(EM|miss) | SUPPORTED (judge, UNVALIDATED) [95% CI] |
+|---|---|---|---|---|---|---|---|
+| Closed-book | 14.9 [13.5, 16.4] | 25.7 | 21.2 | - | - | - | - |
+| BM25 | 36.0 [34.0, 38.0] | 46.3 | 42.7 | 36.3 | 63.2 | 20.4 | 79.0 [75.4, 82.6] |
+| MiniLM-L6 | 47.1 [45.1, 49.2] | 59.1 | 56.4 | 66.4 | 58.4 | 24.9 | 88.6 [85.6, 91.4] |
+| bge-small | 48.4 [46.3, 50.5] | 60.8 | 58.1 | 72.9 | 56.8 | 25.9 | 89.8 [87.0, 92.4] |
+| Qwen3-Emb-0.6B | 49.2 [47.1, 51.2] | 61.2 | 58.6 | 74.4 | 57.2 | 26.0 | 89.6 [86.8, 92.2] |
+| bge-base | 49.3 [47.3, 51.3] | 61.9 | 60.0 | 77.0 | 56.4 | 25.7 | 90.2 [87.6, 92.6] |
+| bge-large | 50.3 [48.2, 52.4] | 62.7 | 60.8 | 79.6 | 56.8 | 25.2 | 91.2 [88.6, 93.6] |
+| e5-base-v2 | 51.0 [48.9, 53.0] | 63.6 | 61.9 | 81.6 | 56.9 | 24.4 | 91.6 [89.2, 94.0] |
+| Gold passage | 65.3 [63.3, 67.3] | 77.9 | 77.6 | - | - | - | 96.6 [95.0, 98.2] |
+
+*Faithfulness: LLM judge on the first 500 queries (gold: 499; one gold output hit the token limit); 0 unparsed verdicts. Not interpreted until human agreement (kappa) is known.*

@@ -1,0 +1,13 @@
+**Table 1. Retrievers compared.**
+
+| id | retriever | hf_model | revision | params_M | dim | query_prefix | passage_prefix | max_tokens | similarity |
+|---|---|---|---|---|---|---|---|---|---|
+| R0 | BM25 | bm25s 0.3.11 (k1=1.2, b=0.75) | - | - | - | - | - | - | BM25 score |
+| R1 | MiniLM-L6 | sentence-transformers/all-MiniLM-L6-v2 | 1110a243 | 22.7 | 384 | none | none | 256 | cosine (normalised inner product) |
+| R2 | bge-small | BAAI/bge-small-en-v1.5 | 5c38ec7c | 33.4 | 384 | BGE instruction | none | 256 | cosine (normalised inner product) |
+| R3 | bge-base | BAAI/bge-base-en-v1.5 | a5beb1e3 | 109.5 | 768 | BGE instruction | none | 256 | cosine (normalised inner product) |
+| R4 | bge-large | BAAI/bge-large-en-v1.5 | d4aa6901 | 335.1 | 1024 | BGE instruction | none | 256 | cosine (normalised inner product) |
+| R5 | e5-base-v2 | intfloat/e5-base-v2 | f52bf8ec | 109.5 | 768 | "query: " | "passage: " | 256 | cosine (normalised inner product) |
+| R6 | Qwen3-Emb-0.6B | Qwen/Qwen3-Embedding-0.6B | 97b0c614 | 595.8 | 1024 | task instruction | none | 256 | cosine (normalised inner product) |
+
+*Reader: Qwen/Qwen2.5-7B-Instruct-AWQ @ b2503754; judge: mistralai/Mistral-7B-Instruct-v0.3 @ c170c708.*

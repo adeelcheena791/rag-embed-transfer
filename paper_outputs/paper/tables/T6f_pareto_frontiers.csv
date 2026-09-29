@@ -1,0 +1,13 @@
+cost_axis|quality,frontier (cheap -> costly),dominated,"steps: quality gain (pp), significant"
+encode_gpu_s|em,BM25 -> MiniLM-L6 -> bge-small -> bge-base -> e5-base-v2,"bge-large, Qwen3-Emb-0.6B",BM25->MiniLM-L6 +11.2 sig; MiniLM-L6->bge-small +1.2 n.s.; bge-small->bge-base +0.9 n.s.; bge-base->e5-base-v2 +1.6 n.s.
+encode_gpu_s|ndcg@10,BM25 -> MiniLM-L6 -> bge-small -> bge-base -> e5-base-v2,"bge-large, Qwen3-Emb-0.6B",BM25->MiniLM-L6 +24.3 sig; MiniLM-L6->bge-small +6.0 sig; bge-small->bge-base +4.6 sig; bge-base->e5-base-v2 +4.1 sig
+encode_gpu_s|hit@5,BM25 -> MiniLM-L6 -> bge-small -> bge-base -> e5-base-v2,"bge-large, Qwen3-Emb-0.6B",BM25->MiniLM-L6 +30.1 sig; MiniLM-L6->bge-small +6.5 sig; bge-small->bge-base +4.1 sig; bge-base->e5-base-v2 +4.6 sig
+query_ms_gpu|em,BM25 -> MiniLM-L6 -> bge-small -> bge-base -> e5-base-v2,"bge-large, Qwen3-Emb-0.6B",BM25->MiniLM-L6 +11.2 sig; MiniLM-L6->bge-small +1.2 n.s.; bge-small->bge-base +0.9 n.s.; bge-base->e5-base-v2 +1.6 n.s.
+query_ms_gpu|ndcg@10,BM25 -> MiniLM-L6 -> bge-small -> bge-base -> e5-base-v2,"bge-large, Qwen3-Emb-0.6B",BM25->MiniLM-L6 +24.3 sig; MiniLM-L6->bge-small +6.0 sig; bge-small->bge-base +4.6 sig; bge-base->e5-base-v2 +4.1 sig
+query_ms_gpu|hit@5,BM25 -> MiniLM-L6 -> bge-small -> bge-base -> e5-base-v2,"bge-large, Qwen3-Emb-0.6B",BM25->MiniLM-L6 +30.1 sig; MiniLM-L6->bge-small +6.5 sig; bge-small->bge-base +4.1 sig; bge-base->e5-base-v2 +4.6 sig
+query_ms_cpu|em,BM25 -> MiniLM-L6 -> bge-small -> bge-base -> e5-base-v2,"bge-large, Qwen3-Emb-0.6B",BM25->MiniLM-L6 +11.2 sig; MiniLM-L6->bge-small +1.2 n.s.; bge-small->bge-base +0.9 n.s.; bge-base->e5-base-v2 +1.6 n.s.
+query_ms_cpu|ndcg@10,BM25 -> MiniLM-L6 -> bge-small -> bge-base -> e5-base-v2,"bge-large, Qwen3-Emb-0.6B",BM25->MiniLM-L6 +24.3 sig; MiniLM-L6->bge-small +6.0 sig; bge-small->bge-base +4.6 sig; bge-base->e5-base-v2 +4.1 sig
+query_ms_cpu|hit@5,BM25 -> MiniLM-L6 -> bge-small -> bge-base -> e5-base-v2,"bge-large, Qwen3-Emb-0.6B",BM25->MiniLM-L6 +30.1 sig; MiniLM-L6->bge-small +6.5 sig; bge-small->bge-base +4.1 sig; bge-base->e5-base-v2 +4.6 sig
+index_mb|em,bge-small -> e5-base-v2,"MiniLM-L6, bge-base, bge-large, Qwen3-Emb-0.6B",bge-small->e5-base-v2 +2.6 sig
+index_mb|ndcg@10,bge-small -> e5-base-v2,"MiniLM-L6, bge-base, bge-large, Qwen3-Emb-0.6B",bge-small->e5-base-v2 +8.7 sig
+index_mb|hit@5,bge-small -> e5-base-v2,"MiniLM-L6, bge-base, bge-large, Qwen3-Emb-0.6B",bge-small->e5-base-v2 +8.7 sig

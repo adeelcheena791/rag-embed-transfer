@@ -1,0 +1,106 @@
+metric,A,B,diff_pp (A-B),ci_lo,ci_hi,test,p,p_holm,significant_holm
+Hit@5,BM25,MiniLM-L6,-30.07,-32.42,-27.67,exact McNemar,3.25e-120,5.2e-119,yes
+Hit@5,BM25,bge-small,-36.59,-38.89,-34.28,exact McNemar,6.59e-169,1.12e-167,yes
+Hit@5,BM25,bge-base,-40.71,-43.02,-38.31,exact McNemar,4.14e-198,7.87e-197,yes
+Hit@5,BM25,bge-large,-43.28,-45.59,-40.98,exact McNemar,2.61e-225,5.23e-224,yes
+Hit@5,BM25,e5-base-v2,-45.32,-47.58,-43.01,exact McNemar,1.41e-240,2.96e-239,yes
+Hit@5,BM25,Qwen3-Emb-0.6B,-38.09,-40.40,-35.79,exact McNemar,1.18e-185,2.12e-184,yes
+Hit@5,MiniLM-L6,bge-small,-6.52,-8.38,-4.66,exact McNemar,9.63e-12,7.71e-11,yes
+Hit@5,MiniLM-L6,bge-base,-10.64,-12.55,-8.78,exact McNemar,1.19e-28,1.55e-27,yes
+Hit@5,MiniLM-L6,bge-large,-13.22,-15.12,-11.35,exact McNemar,1.27e-41,1.78e-40,yes
+Hit@5,MiniLM-L6,e5-base-v2,-15.25,-17.12,-13.35,exact McNemar,1.53e-54,2.3e-53,yes
+Hit@5,MiniLM-L6,Qwen3-Emb-0.6B,-8.03,-9.93,-6.16,exact McNemar,1.55e-16,1.7e-15,yes
+Hit@5,bge-small,bge-base,-4.12,-5.63,-2.62,exact McNemar,1.22e-07,6.12e-07,yes
+Hit@5,bge-small,bge-large,-6.70,-8.34,-5.06,exact McNemar,1.11e-15,1.11e-14,yes
+Hit@5,bge-small,e5-base-v2,-8.74,-10.38,-7.05,exact McNemar,6.6e-24,7.93e-23,yes
+Hit@5,bge-small,Qwen3-Emb-0.6B,-1.51,-3.28,0.27,exact McNemar,0.108,0.108,no
+Hit@5,bge-base,bge-large,-2.57,-4.04,-1.11,exact McNemar,0.000604,0.00242,yes
+Hit@5,bge-base,e5-base-v2,-4.61,-6.08,-3.10,exact McNemar,5.04e-09,3.52e-08,yes
+Hit@5,bge-base,Qwen3-Emb-0.6B,2.62,0.84,4.39,exact McNemar,0.00474,0.0142,yes
+Hit@5,bge-large,e5-base-v2,-2.04,-3.50,-0.53,exact McNemar,0.00903,0.0181,yes
+Hit@5,bge-large,Qwen3-Emb-0.6B,5.19,3.41,7.01,exact McNemar,1.9e-08,1.14e-07,yes
+Hit@5,e5-base-v2,Qwen3-Emb-0.6B,7.23,5.45,8.96,exact McNemar,3.29e-15,2.96e-14,yes
+nDCG@10,BM25,MiniLM-L6,-24.29,-25.96,-22.65,Wilcoxon signed-rank,2.99e-132,4.78e-131,yes
+nDCG@10,BM25,bge-small,-30.31,-31.94,-28.66,Wilcoxon signed-rank,9.05e-179,1.54e-177,yes
+nDCG@10,BM25,bge-base,-34.88,-36.57,-33.22,Wilcoxon signed-rank,4.4e-210,8.36e-209,yes
+nDCG@10,BM25,bge-large,-36.32,-38.01,-34.60,Wilcoxon signed-rank,1.74e-215,3.48e-214,yes
+nDCG@10,BM25,e5-base-v2,-39.00,-40.66,-37.35,Wilcoxon signed-rank,4.1e-234,8.62e-233,yes
+nDCG@10,BM25,Qwen3-Emb-0.6B,-32.32,-33.98,-30.62,Wilcoxon signed-rank,6.94e-191,1.25e-189,yes
+nDCG@10,MiniLM-L6,bge-small,-6.02,-7.28,-4.73,Wilcoxon signed-rank,4.03e-19,3.22e-18,yes
+nDCG@10,MiniLM-L6,bge-base,-10.59,-11.91,-9.28,Wilcoxon signed-rank,3.59e-51,4.67e-50,yes
+nDCG@10,MiniLM-L6,bge-large,-12.03,-13.38,-10.67,Wilcoxon signed-rank,1.64e-58,2.3e-57,yes
+nDCG@10,MiniLM-L6,e5-base-v2,-14.71,-16.09,-13.33,Wilcoxon signed-rank,3.75e-84,5.63e-83,yes
+nDCG@10,MiniLM-L6,Qwen3-Emb-0.6B,-8.03,-9.30,-6.72,Wilcoxon signed-rank,3.11e-32,3.42e-31,yes
+nDCG@10,bge-small,bge-base,-4.57,-5.60,-3.54,Wilcoxon signed-rank,1.78e-16,1.24e-15,yes
+nDCG@10,bge-small,bge-large,-6.01,-7.11,-4.91,Wilcoxon signed-rank,3.64e-26,3.64e-25,yes
+nDCG@10,bge-small,e5-base-v2,-8.69,-9.84,-7.55,Wilcoxon signed-rank,4.69e-46,5.63e-45,yes
+nDCG@10,bge-small,Qwen3-Emb-0.6B,-2.01,-3.23,-0.79,Wilcoxon signed-rank,0.000786,0.00157,yes
+nDCG@10,bge-base,bge-large,-1.44,-2.46,-0.42,Wilcoxon signed-rank,0.00293,0.00293,yes
+nDCG@10,bge-base,e5-base-v2,-4.12,-5.17,-3.07,Wilcoxon signed-rank,1.36e-13,8.18e-13,yes
+nDCG@10,bge-base,Qwen3-Emb-0.6B,2.56,1.35,3.79,Wilcoxon signed-rank,0.00011,0.000331,yes
+nDCG@10,bge-large,e5-base-v2,-2.68,-3.74,-1.60,Wilcoxon signed-rank,1.21e-06,4.85e-06,yes
+nDCG@10,bge-large,Qwen3-Emb-0.6B,4.00,2.73,5.27,Wilcoxon signed-rank,1.81e-09,9.07e-09,yes
+nDCG@10,e5-base-v2,Qwen3-Emb-0.6B,6.68,5.44,7.93,Wilcoxon signed-rank,2.51e-24,2.25e-23,yes
+EM,BM25,MiniLM-L6,-11.18,-13.13,-9.14,exact McNemar,2.84e-27,4.54e-26,yes
+EM,BM25,bge-small,-12.42,-14.41,-10.38,exact McNemar,1.34e-33,2.27e-32,yes
+EM,BM25,bge-base,-13.35,-15.39,-11.31,exact McNemar,4.17e-37,7.93e-36,yes
+EM,BM25,bge-large,-14.37,-16.36,-12.33,exact McNemar,3.57e-43,7.14e-42,yes
+EM,BM25,e5-base-v2,-14.99,-16.98,-12.95,exact McNemar,9.48e-47,1.99e-45,yes
+EM,BM25,Qwen3-Emb-0.6B,-13.22,-15.21,-11.18,exact McNemar,1.07e-36,1.93e-35,yes
+EM,MiniLM-L6,bge-small,-1.24,-2.97,0.40,exact McNemar,0.163,1,no
+EM,MiniLM-L6,bge-base,-2.17,-3.86,-0.44,exact McNemar,0.0138,0.162,no
+EM,MiniLM-L6,bge-large,-3.19,-4.92,-1.42,exact McNemar,0.00036,0.00504,yes
+EM,MiniLM-L6,e5-base-v2,-3.81,-5.50,-2.13,exact McNemar,9.09e-06,0.000136,yes
+EM,MiniLM-L6,Qwen3-Emb-0.6B,-2.04,-3.73,-0.35,exact McNemar,0.0195,0.195,no
+EM,bge-small,bge-base,-0.93,-2.44,0.49,exact McNemar,0.233,1,no
+EM,bge-small,bge-large,-1.95,-3.46,-0.40,exact McNemar,0.0135,0.162,no
+EM,bge-small,e5-base-v2,-2.57,-4.08,-1.06,exact McNemar,0.000967,0.0126,yes
+EM,bge-small,Qwen3-Emb-0.6B,-0.80,-2.39,0.80,exact McNemar,0.354,1,no
+EM,bge-base,bge-large,-1.02,-2.57,0.53,exact McNemar,0.211,1,no
+EM,bge-base,e5-base-v2,-1.64,-3.10,-0.18,exact McNemar,0.0322,0.271,no
+EM,bge-base,Qwen3-Emb-0.6B,0.13,-1.42,1.69,exact McNemar,0.912,1,no
+EM,bge-large,e5-base-v2,-0.62,-2.13,0.89,exact McNemar,0.462,1,no
+EM,bge-large,Qwen3-Emb-0.6B,1.15,-0.53,2.79,exact McNemar,0.184,1,no
+EM,e5-base-v2,Qwen3-Emb-0.6B,1.77,0.22,3.28,exact McNemar,0.0301,0.271,no
+F1,BM25,MiniLM-L6,-12.80,-14.72,-10.89,Wilcoxon signed-rank,4.94e-36,7.91e-35,yes
+F1,BM25,bge-small,-14.47,-16.37,-12.53,Wilcoxon signed-rank,4.55e-46,7.74e-45,yes
+F1,BM25,bge-base,-15.54,-17.45,-13.60,Wilcoxon signed-rank,7.21e-51,1.37e-49,yes
+F1,BM25,bge-large,-16.37,-18.26,-14.45,Wilcoxon signed-rank,3.56e-56,7.12e-55,yes
+F1,BM25,e5-base-v2,-17.31,-19.19,-15.41,Wilcoxon signed-rank,7.86e-62,1.65e-60,yes
+F1,BM25,Qwen3-Emb-0.6B,-14.89,-16.82,-12.98,Wilcoxon signed-rank,5.32e-47,9.57e-46,yes
+F1,MiniLM-L6,bge-small,-1.67,-3.26,-0.09,Wilcoxon signed-rank,0.0336,0.235,no
+F1,MiniLM-L6,bge-base,-2.74,-4.32,-1.11,Wilcoxon signed-rank,0.0007,0.0084,yes
+F1,MiniLM-L6,bge-large,-3.57,-5.18,-1.91,Wilcoxon signed-rank,1.54e-05,0.000216,yes
+F1,MiniLM-L6,e5-base-v2,-4.51,-6.05,-2.96,Wilcoxon signed-rank,9.06e-09,1.36e-07,yes
+F1,MiniLM-L6,Qwen3-Emb-0.6B,-2.09,-3.69,-0.52,Wilcoxon signed-rank,0.00642,0.0642,no
+F1,bge-small,bge-base,-1.07,-2.45,0.29,Wilcoxon signed-rank,0.123,0.617,no
+F1,bge-small,bge-large,-1.90,-3.31,-0.50,Wilcoxon signed-rank,0.01,0.0803,no
+F1,bge-small,e5-base-v2,-2.84,-4.28,-1.41,Wilcoxon signed-rank,9.36e-05,0.00122,yes
+F1,bge-small,Qwen3-Emb-0.6B,-0.42,-1.92,1.07,Wilcoxon signed-rank,0.574,0.84,no
+F1,bge-base,bge-large,-0.83,-2.24,0.59,Wilcoxon signed-rank,0.249,0.767,no
+F1,bge-base,e5-base-v2,-1.77,-3.10,-0.42,Wilcoxon signed-rank,0.0085,0.0765,no
+F1,bge-base,Qwen3-Emb-0.6B,0.65,-0.84,2.08,Wilcoxon signed-rank,0.42,0.84,no
+F1,bge-large,e5-base-v2,-0.95,-2.39,0.43,Wilcoxon signed-rank,0.192,0.767,no
+F1,bge-large,Qwen3-Emb-0.6B,1.47,-0.08,3.01,Wilcoxon signed-rank,0.0643,0.386,no
+F1,e5-base-v2,Qwen3-Emb-0.6B,2.42,0.96,3.88,Wilcoxon signed-rank,0.00121,0.0133,yes
+SUPPORTED (UNVALIDATED),BM25,MiniLM-L6,-9.60,-13.60,-5.60,exact McNemar,2.74e-06,4.38e-05,yes
+SUPPORTED (UNVALIDATED),BM25,bge-small,-10.80,-15.00,-6.80,exact McNemar,3.29e-07,5.59e-06,yes
+SUPPORTED (UNVALIDATED),BM25,bge-base,-11.20,-15.20,-7.20,exact McNemar,8.31e-08,1.58e-06,yes
+SUPPORTED (UNVALIDATED),BM25,bge-large,-12.20,-16.20,-8.20,exact McNemar,7.12e-09,1.42e-07,yes
+SUPPORTED (UNVALIDATED),BM25,e5-base-v2,-12.60,-16.40,-8.80,exact McNemar,2.66e-10,5.58e-09,yes
+SUPPORTED (UNVALIDATED),BM25,Qwen3-Emb-0.6B,-10.60,-14.40,-6.60,exact McNemar,1.61e-07,2.9e-06,yes
+SUPPORTED (UNVALIDATED),MiniLM-L6,bge-small,-1.20,-4.40,2.00,exact McNemar,0.545,1,no
+SUPPORTED (UNVALIDATED),MiniLM-L6,bge-base,-1.60,-4.80,1.60,exact McNemar,0.396,1,no
+SUPPORTED (UNVALIDATED),MiniLM-L6,bge-large,-2.60,-5.80,0.60,exact McNemar,0.142,1,no
+SUPPORTED (UNVALIDATED),MiniLM-L6,e5-base-v2,-3.00,-6.00,-0.20,exact McNemar,0.0581,0.871,no
+SUPPORTED (UNVALIDATED),MiniLM-L6,Qwen3-Emb-0.6B,-1.00,-4.20,2.40,exact McNemar,0.625,1,no
+SUPPORTED (UNVALIDATED),bge-small,bge-base,-0.40,-3.40,2.60,exact McNemar,0.899,1,no
+SUPPORTED (UNVALIDATED),bge-small,bge-large,-1.40,-4.40,1.60,exact McNemar,0.435,1,no
+SUPPORTED (UNVALIDATED),bge-small,e5-base-v2,-1.80,-4.60,1.00,exact McNemar,0.253,1,no
+SUPPORTED (UNVALIDATED),bge-small,Qwen3-Emb-0.6B,0.20,-2.80,3.20,exact McNemar,1,1,no
+SUPPORTED (UNVALIDATED),bge-base,bge-large,-1.00,-3.80,1.80,exact McNemar,0.576,1,no
+SUPPORTED (UNVALIDATED),bge-base,e5-base-v2,-1.40,-4.00,1.00,exact McNemar,0.349,1,no
+SUPPORTED (UNVALIDATED),bge-base,Qwen3-Emb-0.6B,0.60,-2.40,3.60,exact McNemar,0.791,1,no
+SUPPORTED (UNVALIDATED),bge-large,e5-base-v2,-0.40,-3.40,2.40,exact McNemar,0.892,1,no
+SUPPORTED (UNVALIDATED),bge-large,Qwen3-Emb-0.6B,1.60,-1.40,4.80,exact McNemar,0.374,1,no
+SUPPORTED (UNVALIDATED),e5-base-v2,Qwen3-Emb-0.6B,2.00,-0.80,4.80,exact McNemar,0.22,1,no

@@ -1,0 +1,14 @@
+**Table 4. Measured cost (one Tesla T4; 4-vCPU Xeon 2.0 GHz).**
+
+| retriever | params_M | dim | encode_300k_T4_s | gpu_peak_MiB | cpu_passages_per_s | q_enc_gpu_ms | q_enc_cpu_ms | search_ms | query_total_gpu_ms | query_total_cpu_ms | index_MB |
+|---|---|---|---|---|---|---|---|---|---|---|---|
+| BM25 |  |  | 0 | 0 |  | 0.0 | 0.0 | 21.9 | 21.9 | 21.9 |  |
+| MiniLM-L6 | 22.7 | 384 | 158 | 352 | 38.72 | 5.6 | 14.3 | 39.3 | 45.0 | 53.7 | 439 |
+| bge-small | 33.4 | 384 | 250 | 374 | 19.96 | 9.7 | 35.3 | 38.8 | 48.5 | 74.1 | 439 |
+| bge-base | 109.5 | 768 | 584 | 818 | 6.39 | 9.6 | 66.5 | 81.2 | 90.8 | 147.7 | 879 |
+| bge-large | 335.1 | 1024 | 1753 | 1427 | 1.92 | 17.4 | 259.4 | 143.1 | 160.5 | 402.5 | 1172 |
+| e5-base-v2 | 109.5 | 768 | 592 | 818 | 6.19 | 9.6 | 67.8 | 81.5 | 91.0 | 149.3 | 879 |
+| Qwen3-Emb-0.6B | 595.8 | 1024 | 4431 | 7548 | 0.31 | 46.9 | 719.7 | 142.0 | 188.9 | 861.7 | 1172 |
+
+*Latencies are batch-1 medians. Search is exact FAISS flat inner product on CPU over 300,000 passages.*
+*BM25 index size was not measured. Index size = 300,000 x dim x 4 bytes.*
