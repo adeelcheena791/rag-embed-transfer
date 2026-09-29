@@ -1,0 +1,45 @@
+\section{Related Work}
+\label{sec:related}
+
+\paragraph{Embedding benchmarks.}
+SentEval evaluates sentence representations on classification, natural language inference and sentence similarity tasks \citep{conneau2018senteval}.
+USEB, introduced with TSDAE, evaluates unsupervised sentence embeddings on four domain-specific datasets \citep{wang2021tsdae}.
+BEIR evaluates retrieval systems zero-shot on 18 datasets \citep{thakur2021beir}.
+Our corpus and relevance judgements come from its Natural Questions subset.
+MTEB covers 8 tasks and 58 datasets, one of which is retrieval \citep{muennighoff2022mteb}.
+These benchmarks score embeddings or ranked passages directly.
+None of them includes a downstream reader, and none reports how a retrieval gain changes answer accuracy.
+
+\paragraph{Embedding selection and deployment cost.}
+\citet{cirillo2026ge2} compare a hosted embedding model (Google Embeddings~2) with five open-source models on four BEIR subsets and measure per-query latency on CPU.
+They report that the hosted model reaches an average nDCG@10 of 0.638 at 231.6\,ms median latency, ``roughly 14$\times$ slower than the fastest local models''.
+Their quality measures are retrieval metrics.
+\citet{baidya2026choosing} proposes a decision framework for embedding selection by task, latency, cost and deployment constraints.
+It reports that ``training objective, not model size, is the dominant factor in retrieval quality''.
+It states that it ``does not measure end-to-end RAG answer quality''.
+
+\paragraph{RAG evaluation.}
+KILT evaluates knowledge-intensive tasks on downstream performance and on the provenance of the evidence a model uses \citep{petroni2021kilt}.
+RAGAS \citep{es2023ragas} defines reference-free metrics for faithfulness, answer relevance and context relevance.
+Its evaluation does not compare retrievers.
+ARES \citep{saadfalcon2024ares} trains lightweight judges and calibrates them with prediction-powered inference on a small human-annotated set.
+It scores RAG systems built from three retrievers and three generators, and each system retrieves one passage.
+ARES does not isolate the contribution of retrieval to answer quality and does not measure computational cost.
+eRAG \citep{salemi2024erag} evaluates each retrieved document by the reader's downstream output on it.
+Its authors report that retrieval evaluation based on query--document relevance labels ``shows a small correlation with the RAG system's downstream performance''.
+
+\paragraph{Retrieval quality and answer quality.}
+\citet{leto2024toward} vary the accuracy of approximate nearest-neighbour search in a RAG pipeline.
+They report that ``lowering search accuracy has minor implications for RAG performance while potentially increasing retrieval speed and memory efficiency''.
+They also report that adding non-gold documents lowers answer correctness relative to a gold-only context.
+Their study uses a single dense retriever.
+\citet{liu2024lost} show that readers use relevant information less well when it appears in the middle of a long context.
+BERGEN \citep{rau2024bergen} benchmarks retrievers, rerankers and LLMs for question answering and compares three retrievers across several LLMs.
+RAGPerf \citep{li2026ragperf} profiles RAG systems end to end, collecting throughput, memory and utilisation together with accuracy metrics.
+These studies show that retrieval choices affect answers and cost.
+They do not report a transfer ratio from a retrieval metric to answer accuracy with confidence intervals.
+
+\paragraph{Positioning.}
+We are not aware of work that measures retrieval-to-answer transfer ratios jointly with measured cost on free hardware.
+Our study holds one reader, one corpus and one query set fixed and varies seven retrieval methods.
+It reports paired tests for every pairwise comparison and measures cost on one free Tesla T4.
