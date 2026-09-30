@@ -25,3 +25,11 @@ paper/latex/*.fdb_latexmk
 paper/latex/*.out
 paper/latex/main.pdf
 paper/latex/errors-*
+paper/latex/main_author.pdf
+paper/latex/main_author.aux
+paper/latex/main_author.log
+paper/latex/main_author.bbl
+paper/latex/main_author.blg
+paper/latex/main_author.fls
+paper/latex/main_author.fdb_latexmk
+paper/latex/main_author.out

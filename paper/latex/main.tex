@@ -1,7 +1,11 @@
 % ACL two-column template (acl-org/acl-style-files @ d5adc82; acl.sty and acl_natbib.bst unmodified).
 % Review mode: anonymous, line numbers on. For the camera-ready version, use [final] and add authors.
 \documentclass[11pt]{article}
-\usepackage[review]{acl}
+\ifdefined\authorversion
+  \usepackage[final]{acl}   % author version: names shown, no line numbers
+\else
+  \usepackage[review]{acl}  % submission version: anonymous, line numbers
+\fi
 \usepackage{times}
 \usepackage{latexsym}
 \usepackage[T1]{fontenc}
@@ -18,8 +22,12 @@
 \input{numbers}
 
 \title{How Much Retrieval Quality Reaches the Answer?\\
-Accuracy--Efficiency Trade-offs of Open-Source Embedding Models in RAG}
-\author{Anonymous submission}
+Accuracy--Efficiency Trade-offs of Open-Source\\
+Embedding Models in RAG}
+\author{Muhammad Adeel \\
+  Zhengzhou University \\
+  \texttt{muhammadadeel167@stu.zzu.edu.cn} \\
+  \texttt{adeelcheena791@gmail.com}}
 
 % Figures are drawn at their final size (3.03 in or 6.30 in wide) and scaled only if wider than the column.
 \newcommand{\fig}[4]{% #1 env, #2 file, #3 caption, #4 label
