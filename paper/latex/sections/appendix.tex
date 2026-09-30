@@ -1,0 +1,87 @@
+\appendix
+
+\section{Reader Prompts}
+\label{app:prompts}
+The reader receives a system message and a user message through its chat template.
+Decoding is greedy, with at most 32 new tokens and a stop at the first newline.
+Prompt texts are copied from the frozen code; the hash is the first 12 hexadecimal characters of the SHA-256 of the system text, as logged with every output.
+
+\noindent\textbf{A1: main prompt} (hash \texttt{c50efcc15cc6}).\par
+\begin{lstlisting}
+[system]
+You are a question answering assistant. Answer the question using the passages provided. If the passages do not contain the answer, give your best short answer anyway. Reply with the answer only, as a short phrase of a few words, with no explanation.
+[user]
+Passages:
+[1] {title 1}
+{text 1}
+
+[2] {title 2}
+{text 2}
+...
+
+Question: {question}
+Answer:
+\end{lstlisting}
+
+\noindent\textbf{A2: closed-book prompt} (hash \texttt{c22f911b0ee0}).\par
+\begin{lstlisting}
+[system]
+You are a question answering assistant. Reply with the answer only, as a short phrase of a few words, with no explanation.
+[user]
+Question: {question}
+Answer:
+\end{lstlisting}
+
+\noindent\textbf{A3: abstention prompt} (hash \texttt{cdc86e94862c}).\par
+The user message is identical to A1.
+\begin{lstlisting}
+[system]
+You are a question answering assistant. Answer the question using only the passages provided. If the passages do not contain the answer, reply exactly: I don't know. Otherwise reply with the answer only, as a short phrase of a few words, with no explanation.
+\end{lstlisting}
+An output counts as ``I don't know'' if, ignoring case and leading spaces, it begins with ``i don't know'', ``i dont know'' or ``i do not know'' (straight or curly apostrophe); such outputs score EM 0.
+
+\section{Judge Prompt}
+\label{app:judge}
+The judge receives one user message and no system message.
+Decoding is greedy with at most 8 new tokens.
+We parse the output with \verb|^\s*(SUPPORTED|\verb/|NOT_SUPPORTED)\b/ and do not retry.
+A pre-registered rule switched to a few-shot variant only if more than 2\% of zero-shot outputs failed to parse; 0 of 3,999 failed, so all verdicts use the zero-shot prompt (hash \texttt{da33361c8520}).
+Outputs that are not answers (for example an empty output at the token limit) are not judged.
+\begin{lstlisting}
+You will be given PASSAGES, a QUESTION, and an ANSWER.
+Decide whether the ANSWER is fully supported by the PASSAGES.
+An answer is SUPPORTED only if the passages state it or directly imply it.
+Do not use outside knowledge. Do not judge whether the answer is true in the real world.
+
+PASSAGES:
+[1] {title 1}
+{text 1}
+...
+
+QUESTION: {question}
+ANSWER: {answer}
+
+Reply with exactly one word: SUPPORTED or NOT_SUPPORTED.
+\end{lstlisting}
+
+\section{Additional Tables}
+\label{app:tables}
+Table~\ref{tab:TC1} lists every pairwise comparison behind the significance statements in Section~\ref{sec:results}.
+Table~\ref{tab:TC2} gives the top-$k$ ablation, Table~\ref{tab:TC3} the abstention prompt and Table~\ref{tab:TC4} the pinned model revisions.
+\input{tables/TC1}
+\input{tables/TC2}
+\input{tables/TC3}
+\input{tables/TC4}
+
+\section{Pre-registration Record}
+\label{app:prereg}
+The design document and its addenda are dated and versioned in our repository.
+Each addendum was written before the stage it governs.
+\begin{itemize}
+\item \textbf{v0.2 (26 Sep 2026).} Research questions, retrieval methods, reader, judge, metrics, statistical tests, the transfer-ratio reporting rule and the pilot plan.
+\item \textbf{v0.2.1 (26 Sep 2026).} Follow-up rules: the abstention check (F1), a few-shot fallback for the judge (F2), a CPU fallback for Qwen3-Emb-0.6B (F3) and stopping rules for the GPU budget (F4.1--F4.4).
+\item \textbf{v0.2.2 (26 Sep 2026).} Deviation D1: the join gate changed from a join rate of at least 0.70 to at least 1,000 joined queries, recorded after the pilot join and before any retrieval or answer outcome; the join diagnostics D1a and D1b.
+\item \textbf{v0.2.3 (27 Sep 2026).} Verification of pilot part A; main-run adjustments M1--M5, including the sub-corpus membership rule (M1); deviation D2, dropping the RAGAS cross-check.
+\item \textbf{v0.2.4 (27--29 Sep 2026).} Verification of pilot part B, the main-run plan, execution records for S1, S3a, S3b and S4, the clarification of F4.2 before S3a, the failed first S3a attempt, the S1 cost-estimate error and the decision to cut the dimension ablation (A3).
+\end{itemize}
+Pilot numbers were used only for planning (power and budget) and are not reported as results.

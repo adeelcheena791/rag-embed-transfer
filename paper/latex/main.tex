@@ -10,6 +10,8 @@
 \usepackage{graphicx}
 \usepackage{booktabs}
 \usepackage{adjustbox}
+\usepackage{listings}
+\lstset{basicstyle=\ttfamily\scriptsize,breaklines=true,columns=fullflexible,frame=single,upquote=true,literate={’}{{'}}1}
 \usepackage{amsmath}
 \graphicspath{{figures/}{../figures/}}
 
@@ -59,16 +61,5 @@ Accuracy--Efficiency Trade-offs of Open-Source Embedding Models in RAG}
 
 \bibliography{references}
 
-\appendix
-\section{Reader Prompts}\label{app:prompts}
-PLACEHOLDER.
-\section{Judge Prompt}\label{app:judge}
-PLACEHOLDER.
-\section{Additional Tables}\label{app:tables}
-\input{tables/TC1}
-\input{tables/TC2}
-\input{tables/TC3}
-\input{tables/TC4}
-\section{Pre-registration Addenda Summary}\label{app:prereg}
-PLACEHOLDER.
+\input{sections/appendix}
 \end{document}

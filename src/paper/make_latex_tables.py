@@ -146,7 +146,7 @@ def main(argv=None) -> int:
                       f"{fa['n_gold']}); \\textbf{{unvalidated}} pending human agreement. Brackets: 95\\% "
                       "percentile bootstrap CI over queries (10,000 resamples, seed 0).",
                       "tab:T5", "lrrrrrr",
-                      "Condition & EM & F1 & H@5 & P(EM$\\mid$hit) & P(EM$\\mid$miss) & SUPPORTED$^\\dagger$", rows,
+                      "Condition & EM & F1 & H@5 & P(EM$\\mid$hit) & P(EM$\\mid$miss) & SUPPORTED", rows,
                       "\\footnotesize")
 
     # T6 transfer ratios + key EM tests
@@ -171,7 +171,7 @@ def main(argv=None) -> int:
 
     # Appendix: full pairwise table (Hit@5, nDCG@10, EM, SUPPORTED)
     blocks = [("H@5", rq12["rq1_joined"]["pairwise"]["hit@5"]), ("nDCG@10", rq12["rq1_joined"]["pairwise"]["ndcg@10"]),
-              ("EM", rq12["rq2_pairwise_em"]), ("SUPP.$^\\dagger$", der["faithfulness_UNVALIDATED"]["pairwise"])]
+              ("EM", rq12["rq2_pairwise_em"]), ("SUPP.", der["faithfulness_UNVALIDATED"]["pairwise"])]
     keys = [(t["a"], t["b"]) for t in blocks[0][1]]
     rows = []
     for k in keys:
@@ -184,7 +184,7 @@ def main(argv=None) -> int:
     files["TC1"] = env(False, "All pairwise differences A$-$B in percentage points (joined queries; SUPPORTED on the "
                        "judge subsample, unvalidated). $^*$: significant after Holm over 21 pairs (exact McNemar for "
                        "binary measures, Wilcoxon for nDCG@10).", "tab:TC1", "lrrrr",
-                       "A -- B & H@5 & nDCG@10 & EM & SUPP.$^\\dagger$", rows, "\\scriptsize")
+                       "A -- B & H@5 & nDCG@10 & EM & SUPP.", rows, "\\scriptsize")
 
     # Appendix: top-k ablation and abstention
     pts = {(q["retriever"], q["k"]): q for q in der["topk_ablation"]["points"]}
