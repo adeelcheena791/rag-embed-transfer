@@ -1,0 +1,48 @@
+\section{Experimental Setup}
+\label{sec:setup}
+
+\subsection{Data}
+\label{sec:data}
+We use the BEIR version of Natural Questions \citep{thakur2021beir}.
+Its test split has 3,452 queries with at least one judged relevant passage.
+EM needs short reference answers, which BEIR does not provide.
+We therefore join each BEIR query to NQ-open by exact match of normalised question text, and keep a query only if all matching NQ-open entries share one answer list.
+The join keeps 2,255 of the 3,452 queries (65.3\%) and finds no ambiguous matches (Table~\ref{tab:T2}).
+All answer-level results use these 2,255 joined queries.
+Retrieval results use them as the primary set and all 3,452 judged queries as a secondary check.
+A fixed seeded order of the joined queries defines every subsample: the first 500 for the judge, the first 200 for the abstention prompt and the first 100 for the determinism check.
+
+\subsection{Hardware and budget}
+\label{sec:hardware}
+All runs use free Kaggle sessions.
+Each session provides two Tesla T4 GPUs (15\,GB each) and a 4-vCPU Intel Xeon CPU at 2.0\,GHz with 31\,GB of RAM.
+Encoding, retrieval and reading use one T4.
+The judge uses both T4s with tensor parallelism.
+We measure all CPU costs on the 4-vCPU CPU of the retrieval session.
+The study used no paid compute, API or data, and its monetary cost was zero.
+
+\subsection{Models and software}
+\label{sec:models}
+Table~\ref{tab:T1} lists each retrieval method with its model identifier, pinned revision, parameter count, embedding dimension and prefixes.
+We pin the reader and the judge to fixed revisions as well.
+Retrieval uses sentence-transformers 5.4.1, FAISS 1.15.1 and bm25s 0.3.11.
+Reading and judging use vLLM 0.30.0.
+As a sanity check, our encoding pipeline reproduces the model-card SciFact nDCG@10 of bge-small, bge-base, bge-large and e5-base within 0.0014.
+We release the code, configuration files, pinned revisions and raw outputs.
+
+\subsection{Pre-registration and deviations}
+\label{sec:deviations}
+We wrote a design document before the pilot and added dated addenda before each main-run stage.
+We report every deviation from it.
+\begin{itemize}
+\item \textbf{D1: join gate.} The original design required a join rate of at least 0.70 and named HotpotQA as the fallback. The pilot join rate was 0.653. We replaced the gate with a floor of 1,000 joined queries before observing any retrieval or answer outcome. A descriptive check found that 0 of the 1,197 unjoined queries have a token-Jaccard similarity of at least 0.9 to any NQ-open validation question, and none appear in NQ-open train. This supports, but does not prove, that the unjoined queries are absent from NQ-open by construction rather than lost to text mismatch.
+\item \textbf{M1: sub-corpus membership.} An earlier addendum placed gold passages and BM25 negatives only for subsets of queries. Before the main run, we changed the rule to include them for all 3,452 judged queries, so that every query receives identical treatment.
+\item \textbf{F4.2: ablation scope.} A pre-registered rule would have reduced the top-$k$ ablation to 1,000 queries if the GPU budget ran short. The measured reading time did not trigger it, and the ablation ran on all 2,255 queries.
+\item \textbf{Cost estimate.} We estimated the CPU benchmark in S1 at one hour. It took 8\,h 24\,min. This consumed free GPU quota but did not change any data.
+\item \textbf{Failed first attempt of S3a.} The first S3a session stopped before generating, because a notebook cell ran before the restore step. We fixed the cell order and reran S3a with unchanged code.
+\item \textbf{D2: RAGAS dropped.} RAGAS was not run because its local deployment requires additional infrastructure untested on our hardware. Our own single-prompt judge is the primary faithfulness measure.
+\item \textbf{A3: dimension ablation cut.} We did not run the planned Matryoshka dimension-truncation ablation for Qwen3-Embedding-0.6B.
+\item \textbf{Judge coverage.} One Gold output reached the token limit and produced no answer, so the judge scored 499 Gold items instead of 500.
+\item \textbf{One annotator.} The design planned two human annotators. One annotator labels the validation sample, so we report human--judge agreement but not inter-annotator agreement.
+\item \textbf{Post-hoc analyses.} The 5\% cost-tie rule in the Pareto analysis and the comparison of R4 at $k = 1$ with R0 at $k = 10$ were not pre-registered. We label both as post-hoc or exploratory where they appear.
+\end{itemize}
