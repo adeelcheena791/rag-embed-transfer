@@ -1,0 +1,64 @@
+\section{Discussion}
+\label{sec:discussion}
+
+\subsection{Why retrieval gains transfer only in part}
+\label{sec:why-transfer}
+Eq.~\ref{eq:decomp} bounds the transfer ratio.
+If P(EM$\mid$hit) and P(EM$\mid$miss) stayed at the values of MiniLM-L6-v2, $T$ would equal their difference, 0.33.
+A hit is therefore worth a third of a correct answer for this reader, not a whole one.
+The observed ratios, 0.19 to 0.25, fall below this value.
+\emph{Observation:} the point estimates of P(EM$\mid$hit) for the stronger dense encoders (56.4 to 57.2) lie below that of MiniLM-L6-v2 (58.4), with overlapping intervals; we did not test this difference.
+\emph{Hypothesis:} the extra hits of a stronger encoder fall on questions that the reader finds harder, so each added hit yields fewer correct answers.
+Our design does not test this hypothesis.
+
+Two further gaps limit transfer.
+First, P(EM$\mid$hit) with five passages stays below Gold EM (65.3), which uses only the relevant passages.
+\emph{Hypothesis:} non-relevant passages in the top five distract the reader, as \citet{leto2024toward} report for added non-gold documents.
+Incomplete relevance labels are an alternative explanation: a ``miss'' may contain the answer in an unjudged passage.
+Second, P(EM$\mid$miss) (24.4 to 26.0 for dense encoders) exceeds closed-book EM (14.9).
+Unjudged answer-bearing passages, partial cues and matches on common short answers could each explain this; our design cannot separate them.
+
+BM25 shows the highest P(EM$\mid$hit) (63.2).
+\emph{Hypothesis:} BM25 retrieves the relevant passage mostly for questions with strong lexical overlap, which the reader also finds easier.
+This is a selection effect, not evidence that BM25 passages are more useful to the reader.
+An alternative is that the reader extracts answers more easily from lexically matched passages.
+We cannot distinguish the two with our data.
+
+\subsection{Why the largest encoders do not win}
+\label{sec:why-large}
+Within our setup, bge-large and Qwen3-Emb-0.6B do not retrieve better than e5-base-v2; they retrieve worse (\S\ref{sec:rq1}).
+Their lack of an EM gain therefore follows from their retrieval, not from a failure of transfer.
+Parameter count orders the BGE family but not the models across families.
+\emph{Interpretation:} training data and objective matter more than size for this task, which agrees with the claim of \citet{baidya2026choosing}.
+Our pipeline reproduces the model-card SciFact scores of the bge and e5 encoders (\S\ref{sec:models}).
+In a post-hoc check, our SciFact nDCG@10 for Qwen3-Emb-0.6B (0.699) lies within 0.002 of its MTEB leaderboard value (0.697, earlier model revision).
+A pipeline error is therefore an unlikely cause.
+Prefixes and instructions are a possible cause that we did not vary (\S\ref{sec:stages}).
+Transfer also compresses differences.
+With $T$ near 0.25, a retrieval gap of 2 to 7\,pp corresponds to an expected EM gap of 0.5 to 1.8\,pp, below the minimum detectable difference of 3.4\,pp.
+Differences in retrieval that are clearly significant can thus leave EM differences that 2,255 queries cannot resolve.
+
+\subsection{Practical implication}
+\label{sec:implication}
+\emph{Interpretation:} for a fixed reader, a retrieval benchmark rank alone overstates the answer gain from a stronger encoder.
+Within our setup, a Hit@5 gain of $x$\,pp came with an EM gain of $0.19x$ to $0.25x$\,pp relative to MiniLM-L6-v2, while encoding cost rose by up to 7.5$\times$ between e5-base-v2 and Qwen3-Emb-0.6B.
+We suggest reporting the transfer ratio and measured cost alongside retrieval scores when an embedding model is chosen for RAG.
+The ratio depends on the reader, the corpus and the question type, so it must be measured for each setup rather than taken from ours.
+
+\subsection{Relation to prior work}
+\label{sec:prior}
+MTEB \citep{muennighoff2022mteb}, \citet{cirillo2026ge2} and \citet{baidya2026choosing} measure retrieval quality, and the latter two measure latency or cost.
+Our retrieval results agree with their observation that size alone does not order models.
+We add the downstream step: the retrieval ranking carries over to EM in order, but at 19 to 25\% of its size.
+\citet{leto2024toward} find that lower search accuracy has minor effects on RAG performance; our ratios quantify a similar attenuation across seven retrieval methods rather than across search accuracy settings.
+RAGAS \citep{es2023ragas} and ARES \citep{saadfalcon2024ares} evaluate answers but do not report how much of a retrieval gain reaches them; our design fixes the reader so that this quantity is identifiable.
+
+\subsection{Threats to validity}
+\label{sec:threats}
+Our conclusions hold within one dataset, one reader, one corpus construction and one hardware setting.
+Encoders use their model-card prefixes, so we do not compare prefix-free models.
+The sub-corpus favours dense methods over BM25 and raises absolute scores.
+EM is strict and undercounts correct paraphrases.
+Training-data contamination of the encoders or the reader on NQ and Wikipedia is possible and not measurable here.
+The judge is unvalidated, one annotator labels the validation sample, search is exact only, and the joined queries cover 65.3\% of the judged set.
+The Limitations section lists each bound.
