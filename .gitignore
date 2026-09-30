@@ -24,3 +24,4 @@ paper/latex/*.fls
 paper/latex/*.fdb_latexmk
 paper/latex/*.out
 paper/latex/main.pdf
+paper/latex/errors-*
