@@ -13,7 +13,6 @@ We use three per-query measures.
 Hit@$k$ is 1 if at least one passage in $G(q)$ appears in the top $k$ of $R(q)$, and 0 otherwise.
 nDCG@10 is the normalised discounted cumulative gain of the top 10 passages under the BEIR judgements.
 Exact match (EM) is 1 if the answer equals a reference answer after SQuAD-style normalisation (lower-casing and removal of punctuation, articles and extra whitespace), and 0 otherwise.
-Each reported score is the mean of a per-query measure over the query set.
 
 \subsection{Transfer decomposition}
 \label{sec:transfer}
@@ -24,13 +23,13 @@ T(R) = \frac{\mathrm{EM}(R) - \mathrm{EM}(R_1)}{\mathrm{Hit@5}(R) - \mathrm{Hit@
 \label{eq:transfer}
 \end{equation}
 $T(R)$ is the change in EM per unit change in Hit@5.
-A value of 1 means that every additional retrieval hit becomes an additional correct answer.
-A value of 0 means that the retrieval gain leaves EM unchanged.
+A value of 1 means that every additional hit becomes a correct answer; a value of 0 means that EM is unchanged.
+The main analysis uses $k{=}\NUM{k.main}$, so $T(R)$ refers to the five passages the reader receives.
 Benchmark ranks report only the denominator.
 $T(R)$ reports how much of it reaches the answer for a fixed reader.
 
 We pre-registered a reporting rule.
-We report $T(R)$ only if $|\Delta\mathrm{Hit@5}| > 2$ percentage points (pp) and the Hit@5 difference is significant after Holm correction (\S\ref{sec:stats}).
+We report $T(R)$ only if $|\Delta\mathrm{Hit@5}| > \NUM{ratio.minhit}$ percentage points (pp) and the Hit@5 difference is significant after Holm correction (\S\ref{sec:stats}).
 Otherwise we mark $T(R)$ as not estimable, because a small or uncertain denominator makes the ratio unstable.
 We compute its 95\% confidence interval with the paired bootstrap of \S\ref{sec:stats}: each resample of queries yields one ratio of mean differences, and we take the percentiles.
 
@@ -46,8 +45,8 @@ The reader may answer incorrectly despite a hit, or it may answer correctly desp
 \subsection{Corpus construction}
 \label{sec:corpus}
 Encoding the full BEIR-NQ corpus with six encoders exceeds our free GPU budget.
-We therefore search a fixed 300,000-passage sub-corpus.
-It contains all 4,201 judged relevant passages of the 3,452 judged test queries, 127,791 passages from the BM25 top 42 of those queries, and 168,008 random passages.
+We therefore search a fixed \NUM{sub.size}-passage sub-corpus.
+It contains all \NUM{sub.gold} judged relevant passages of the \NUM{n.judged} judged test queries, \NUM{sub.bm25} passages from the BM25 top \NUM{sub.depth} of those queries, and \NUM{sub.random} random passages.
 Every retrieval method searches the same sub-corpus.
 This construction has a declared bias.
 It contains BM25's own highest-ranked non-relevant passages, so it is harder for BM25 than for the dense methods.
@@ -56,19 +55,18 @@ We therefore interpret relative comparisons among methods, not absolute scores.
 
 \subsection{Retrieval methods}
 \label{sec:retrievers}
-We compare seven retrieval methods (Table~\ref{tab:T1}).
-R0 is BM25 (bm25s 0.3.11, $k_1 = 1.2$, $b = 0.75$).
-R1 to R6 are open-source dense encoders from 22.7M to 595.8M parameters: all-MiniLM-L6-v2, bge-small-en-v1.5, bge-base-en-v1.5, bge-large-en-v1.5, e5-base-v2 and Qwen3-Embedding-0.6B.
+We compare seven retrieval methods (Table~\ref{tab:T1} in Appendix~\ref{app:tables}).
+R0 is BM25 (bm25s 0.3.11, \citealp{lu2024bm25s}; $k_1 = \NUM{bm25.k1}$, $b = \NUM{bm25.b}$).
+R1 to R6 are open-source dense encoders from \NUM{params.R1} to \NUM{params.R6} parameters: all-MiniLM-L6-v2 \citep{wang2020minilm,reimers2019sbert}, bge-small, -base and -large-en-v1.5 \citep{xiao2023cpack}, e5-base-v2 \citep{wang2022e5} and Qwen3-Embedding-0.6B \citep{zhang2025qwen3emb}.
 We pin each model to a fixed revision.
-Each encoder truncates inputs to 256 tokens and runs in fp16.
-We L2-normalise embeddings and search with exact inner-product search (FAISS flat index), which equals cosine similarity.
-Exact search removes approximation error from the comparison.
+Each encoder truncates inputs to \NUM{maxlen} tokens and runs in fp16.
+We L2-normalise embeddings and search with exact inner-product search (FAISS flat index; \citealp{johnson2019faiss}), which equals cosine similarity.
 
 \subsection{Reader}
 \label{sec:reader}
-The reader is Qwen2.5-7B-Instruct in 4-bit AWQ format, served with vLLM 0.30.0 on one Tesla T4.
-It decodes greedily, with at most 32 new tokens, and stops at the first newline.
-It receives the top $k = 5$ passages, each with its title, in rank order (prompt A1, Appendix~\ref{app:prompts}).
+The reader is Qwen2.5-7B-Instruct \citep{qwen2025qwen25} in 4-bit AWQ format \citep{lin2024awq}, served with vLLM 0.30.0 \citep{kwon2023vllm} on one Tesla T4.
+It decodes greedily, with at most \NUM{reader.maxtok} new tokens, and stops at the first newline.
+It receives the top $k = \NUM{k.main}$ passages, each with its title, in rank order (prompt A1, Appendix~\ref{app:prompts}).
 We run nine conditions on every query.
 Seven use R0 to R6.
 Closed-book (CB) gives no passages (prompt A2).
@@ -77,35 +75,33 @@ CB and Gold serve as reference points without and with the judged relevant passa
 
 \subsection{Judge}
 \label{sec:judge}
-The judge is Mistral-7B-Instruct-v0.3.
+The judge is Mistral-7B-Instruct-v0.3 \citep{jiang2023mistral}.
 It receives exactly the passages the reader saw, the question and the answer, and it outputs SUPPORTED or NOT\_SUPPORTED (zero-shot prompt, Appendix~\ref{app:judge}).
 We parse the verdict with a fixed regular expression and do not retry failures.
-It judges the first 500 queries of our seeded query order for each retrieval method and for Gold.
-The judge is unvalidated.
-We compare it with human labels on a stratified sample of 200 items and report its scores under a pre-registered agreement gate (\S\ref{sec:results}).
+It judges the first \NUM{n.judge} queries of our seeded query order for each retrieval method and for Gold.
+The judge is unvalidated; \S\ref{sec:faith} gives the pre-registered human-agreement gate.
 
 \subsection{Statistics}
 \label{sec:stats}
 All comparisons are paired, because every method answers the same queries.
-We test binary measures (Hit@$k$, EM, SUPPORTED) with the exact McNemar test.
-We test graded measures (nDCG@10, token F1) with the Wilcoxon signed-rank test.
-We correct each metric's 21 pairwise tests across the seven retrieval methods with the Holm procedure.
-We report 95\% confidence intervals from a percentile bootstrap over queries, with 10,000 resamples and seed 0.
-Before the main run, we estimated the pairwise EM discordance rate on a 200-query pilot as 0.165.
-At this rate, with 2,255 queries and 80\% power, the minimum detectable EM difference is 3.4 pp at the worst-case Holm level ($\alpha = 0.05/21$).
+We test binary measures (Hit@$k$, EM, SUPPORTED) with the exact McNemar test \citep{mcnemar1947}.
+We test graded measures (nDCG@10, token F1) with the Wilcoxon signed-rank test \citep{wilcoxon1945}.
+We correct each metric's \NUM{pairs} pairwise tests across the seven retrieval methods with the Holm procedure \citep{holm1979}.
+We report 95\% confidence intervals from a percentile bootstrap over queries, with \NUM{boot.B} resamples and seed \NUM{boot.seed}.
+Before the main run, we estimated the pairwise EM discordance rate on a \NUM{pilot.n}-query pilot as \NUM{pilot.pd}.
+At this rate, with \NUM{n.joined} queries and 80\% power, the minimum detectable EM difference is \NUM{mdd}\,pp at the worst-case Holm level ($\alpha = 0.05/\NUM{pairs}$).
 We therefore report smaller EM differences as ``no difference detected'', not as equality.
+We report uncorrected $p$-values only for comparisons outside the pre-registered families and label them exploratory.
 
 \subsection{Stages}
 \label{sec:stages}
-The experiment runs in four stages (Figure~\ref{fig:F2}).
-S1 builds the sub-corpus, encodes it with each method, retrieves the top 100 passages for all 3,452 judged queries, and measures cost: encoding throughput, corpus encoding time, query latency and peak GPU memory.
-S3a runs the reader on the nine conditions for the 2,255 joined queries.
-S3b runs three ablations: EM at $k \in \{1, 3, 10\}$ for R0, R1 and R4; an abstention prompt (A3) on 200 queries; and a determinism check that repeats 100 generations in a new session.
+The experiment runs in four stages (Figure~\ref{fig:F2} in Appendix~\ref{app:figures}).
+S1 builds the sub-corpus, retrieves the top 100 passages for all \NUM{n.judged} judged queries and measures cost.
+S3a runs the reader on the nine conditions for the \NUM{n.joined} joined queries.
+S3b runs three ablations: EM at $k \in \{1, 3, 10\}$ for R0, R1 and R4; an IDK prompt that allows the answer ``I don't know'' on \NUM{n.idk} queries; and a repeat of \NUM{n.det} generations in a new session.
 S4 runs the judge.
-We fixed the design, metrics and tests in a pre-registration before S1 and record every deviation (\S\ref{sec:setup}).
+We fixed the design, metrics and tests in a pre-registration before S1 (\S\ref{sec:deviations}).
 
 \paragraph{Threats to validity inside the method.}
-Each encoder uses the query and passage prefixes from its model card, for example ``query:'' and ``passage:'' for e5-base-v2.
-The comparison is therefore between models as their authors intend them to be used, not a prefix-free comparison.
-The sub-corpus favours dense methods over BM25 (\S\ref{sec:corpus}).
-The reader, dataset and hardware are single choices, and our conclusions hold within them.
+Each encoder uses the query and passage prefixes from its model card (e.g.\ ``query:'' and ``passage:'' for e5-base-v2), so we compare models as their authors intend them to be used, not prefix-free models.
+The sub-corpus favours dense methods over BM25 (\S\ref{sec:corpus}), and the reader, dataset and hardware are single choices.

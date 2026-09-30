@@ -29,12 +29,11 @@ We ask four research questions.
 
 In this paper, we make four contributions.
 \begin{itemize}
-\item \textbf{(C1) Controlled isolation.} We vary only the retrieval method: BM25 and six open-source dense encoders. The reader (Qwen2.5-7B-Instruct-AWQ), the corpus (a 300,000-passage BEIR-NQ sub-corpus) and the 2,255 joined queries stay fixed (\S\ref{sec:method}).
+\item \textbf{(C1) Controlled isolation.} We vary only the retrieval method: BM25 and six open-source dense encoders. The reader (Qwen2.5-7B-Instruct-AWQ), the corpus (a \NUM{sub.size}-passage BEIR-NQ sub-corpus) and the \NUM{n.joined} joined queries stay fixed (\S\ref{sec:method}).
 \item \textbf{(C2) Transfer decomposition.} We report the ratio $\Delta\mathrm{EM}/\Delta\mathrm{Hit@5}$ against all-MiniLM-L6-v2 as the reference, with paired percentile bootstrap confidence intervals over queries and a pre-registered reporting rule (\S\ref{sec:method}).
 \item \textbf{(C3) Measured cost on free hardware.} We measure corpus encoding time, query latency, index size and peak GPU memory on one free Tesla T4 (\S\ref{sec:results}).
-\item \textbf{(C4) Pareto analysis.} We compute the quality--cost Pareto frontier from the measured costs. Quality comparisons along it use paired exact McNemar or Wilcoxon signed-rank tests with Holm correction over 21 pairs. A post-hoc sensitivity analysis treats cost differences of at most 5\% as ties (\S\ref{sec:results}).
+\item \textbf{(C4) Pareto analysis.} We compute the quality--cost Pareto frontier from the measured costs. Quality comparisons along it use paired exact McNemar or Wilcoxon signed-rank tests with Holm correction over \NUM{pairs} pairs. An exploratory, post-hoc sensitivity analysis treats cost differences of at most \NUM{tie.pct}\% as ties (\S\ref{sec:results}).
 \end{itemize}
 We are not aware of work that measures retrieval-to-answer transfer ratios jointly with measured cost on free hardware.
 
-Within our setup, $\sim$20--25\% of Hit@5 gain appears as EM gain (\S\ref{sec:results}).
-Section~\ref{sec:related} reviews related work, Sections~\ref{sec:method}--\ref{sec:setup} describe the method and setup, Section~\ref{sec:results} reports results, and Sections~\ref{sec:discussion}--\ref{sec:conclusion} discuss them and state limits.
+Within our setup, $\sim$20--25\% of Hit@5 gain appears as EM gain at $k{=}5$ (\S\ref{sec:results}).

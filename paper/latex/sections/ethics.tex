@@ -1,0 +1,23 @@
+\section*{Ethics Statement}
+\label{sec:ethics}
+
+\paragraph{Data and licences.}
+We use public data under their licences: Natural Questions and NQ-open (CC BY-SA 3.0) through the BEIR distribution \citep{thakur2021beir}.
+The questions are anonymised search queries over Wikipedia; we add no personal data and collect none.
+All models are openly licensed: all-MiniLM-L6-v2, Qwen3-Embedding-0.6B, Qwen2.5-7B-Instruct-AWQ and Mistral-7B-Instruct-v0.3 under Apache-2.0, and the bge and e5 encoders under MIT.
+We use each dataset and model for research evaluation, which is consistent with its intended use.
+We release our derived data under CC BY-SA and our code under an open licence.
+
+\paragraph{Risks.}
+The study evaluates existing retrieval methods and creates no new model or capability.
+A reader could over-generalise our comparison of models to other readers, corpora or languages; we scope every claim to our setup and list its limits.
+Faithfulness scores come from an unvalidated automatic judge and should not be used as evidence that a system is safe to deploy.
+
+\paragraph{Human annotation.}
+One author labels the \NUM{n.human}-item validation sample with the same instructions the judge receives (Appendix~\ref{app:judge}).
+No external annotators or participants are involved, so recruitment, payment and ethics review do not apply.
+
+\paragraph{Compute and use of AI assistants.}
+All experiments ran on free Kaggle sessions (Tesla T4); the study had no monetary cost.
+We used an AI assistant (Claude) to help write analysis and plotting code and to draft and edit text.
+The authors designed the study, ran all experiments, checked every reported number against the released result files and take full responsibility for the content.

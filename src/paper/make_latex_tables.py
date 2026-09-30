@@ -90,7 +90,7 @@ def main(argv=None) -> int:
             f"\\quad random & {sub['n_random']:,}",
             f"Reader conditions $\\times$ queries (S3a) & 9 $\\times$ {js['n_joined']:,}",
             f"Top-$k$ ablation (R0, R1, R4; $k{{=}}1,3,10$) & 9 $\\times$ {js['n_joined']:,}",
-            f"Abstention prompt A3 (R0, R1, R4, Gold) & 4 $\\times$ {der['abstention_A3']['R0']['n']}",
+            f"IDK prompt (R0, R1, R4, Gold) & 4 $\\times$ {der['abstention_A3']['R0']['n']}",
             f"Judge (R0--R6 / Gold) & 7 $\\times$ {fa['n']} / {fa['n_gold']}",
             "Human validation sample & 200"]
     files["T2"] = env(False, "Data. Queries are BEIR-NQ test queries whose normalised text matches an NQ-open "
@@ -103,9 +103,7 @@ def main(argv=None) -> int:
             f" & {p(m1[r]['hit@10']['mean'])} & {ci(m1[r]['ndcg@10']['mean'], m1[r]['ndcg@10']['ci_lo'], m1[r]['ndcg@10']['ci_hi'])}"
             f" & {p(m1[r]['mrr@10']['mean'])}" for r in order]
     files["T3"] = env(False, f"Retrieval quality (\\%) on the {rq12['n_joined']:,} joined queries, 300,000-passage "
-                      "sub-corpus. Brackets: 95\\% percentile bootstrap CI over queries (10,000 resamples, seed 0). "
-                      "All 21 nDCG@10 pairs (Wilcoxon) and 20 of 21 Hit@5 pairs (exact McNemar) differ after Holm "
-                      "correction; the exception is bge-small vs Qwen3-Emb-0.6B on Hit@5.",
+                      "sub-corpus. Brackets: 95\\% percentile bootstrap CI over queries (10,000 resamples, seed 0).",
                       "tab:T3", "lrrrrr", "Method & H@1 & H@5 & H@10 & nDCG@10 & MRR", rows, "\\footnotesize")
 
     # T4 efficiency
@@ -118,15 +116,29 @@ def main(argv=None) -> int:
         rows.append(f"{NAME[r]} & {e['params'] / 1e6:.1f}M & {e['dim']} & {e['encode_gpu_s']:,.0f} & {e['gpu_peak_mib']:,.0f}"
                     f" & {e['throughput_cpu_pps']:.2f} & {e['q_enc_gpu_ms']:.1f} / {e['q_enc_cpu_ms']:.1f} & {e['search_ms']:.1f}"
                     f" & {e['query_ms_gpu']:.1f} & {e['query_ms_cpu']:.1f} & {e['index_mb']:,.0f}")
+    rows_c = []
+    for r in R:
+        e = eff[r]
+        if r == "R0":
+            rows_c.append(f"BM25 & 0 & -- & -- & {e['search_ms']:.1f} & n/m")
+            continue
+        rows_c.append(f"{NAME[r]} & {e['encode_gpu_s']:,.0f} & {e['gpu_peak_mib']:,.0f} & {e['q_enc_cpu_ms']:.1f}"
+                      f" & {e['search_ms']:.1f} & {e['index_mb']:,.0f}")
+    files["T4c"] = env(False, "Measured cost (one Tesla T4; 4-vCPU Xeon, 2.0\\,GHz). Enc.: T4 wall time to encode the "
+                       "300,000-passage sub-corpus. Mem: peak GPU memory. Q-enc: batch-1 CPU query encoding (median). "
+                       "Search: batch-1 exact search on CPU (median). Index: flat fp32 FAISS IndexFlatIP. n/m: not measured. "
+                       "Single measurements; full table in Appendix~\\ref{app:tables}.",
+                       "tab:T4", "lrrrrr", "Method & Enc. (s) & Mem (MiB) & Q-enc (ms) & Search (ms) & Index (MiB)",
+                       rows_c, "\\footnotesize")
     files["T4"] = env(True, "Measured cost on one Tesla T4 and a 4-vCPU Xeon (2.0\\,GHz), same session. Encode: wall "
                       "time to encode the 300,000-passage sub-corpus on the T4. Mem: peak GPU memory. CPU p/s: CPU "
                       "encoding throughput. Latencies are batch-1 medians; search is exact FAISS flat inner-product "
-                      "search on CPU; total = query encoding + search. Index: flat fp32 index size. BM25 index size was "
+                      "search on CPU; total = query encoding + search. Index: size of the flat fp32 FAISS IndexFlatIP. BM25 index size was "
                       "not measured (n/m). Cost values are single measurements; GPU throughput varied by $-$0.7\\% to "
                       "+3.1\\% between pilot and main runs.",
-                      "tab:T4", "lrrrrrrrrrr",
+                      "tab:TC5", "lrrrrrrrrrr",
                       "Method & Params & Dim & Encode (s) & Mem (MiB) & CPU p/s & Q-enc GPU/CPU (ms) & Search (ms) & "
-                      "Total GPU (ms) & Total CPU (ms) & Index (MB)", rows, "\\footnotesize")
+                      "Total GPU (ms) & Total CPU (ms) & Index (MiB)", rows, "\\footnotesize")
 
     # T5 RAG evaluation
     rows = [f"Closed-book & {ci(ans['CB']['em']['mean'], ans['CB']['em']['ci_lo'], ans['CB']['em']['ci_hi'])} & "
@@ -139,12 +151,11 @@ def main(argv=None) -> int:
     g = fa["means"]["GOLD"]
     rows.append(f"Gold & {ci(ans['GOLD']['em']['mean'], ans['GOLD']['em']['ci_lo'], ans['GOLD']['em']['ci_hi'])} & "
                 f"{p(ans['GOLD']['f1']['mean'])} & -- & -- & -- & {ci(g['mean'], g['ci_lo'], g['ci_hi'])}")
-    files["T5"] = env(True, f"End-to-end answers (\\%) on the {rq12['n_joined']:,} joined queries with $k{{=}}5$ passages "
-                      "and a fixed reader (Qwen2.5-7B-Instruct-AWQ, greedy). P(EM$\\mid$hit) and P(EM$\\mid$miss): EM on "
-                      "queries whose top-5 does or does not contain a judged relevant passage. SUPPORTED: share of answers "
-                      f"the LLM judge labels as supported by the passages, on the first {fa['n']} queries (Gold: "
-                      f"{fa['n_gold']}); \\textbf{{unvalidated}} pending human agreement. Brackets: 95\\% "
-                      "percentile bootstrap CI over queries (10,000 resamples, seed 0).",
+    files["T5"] = env(True, f"End-to-end answers (\\%), n = {rq12['n_joined']:,}, $k{{=}}5$, fixed reader. P(EM$\\mid$hit/miss): EM "
+                      "when the top-5 does/does not contain a judged relevant passage. SUPPORTED: LLM-judge label, "
+                      f"\\textbf{{unvalidated}}; first {fa['n']} queries (Gold {fa['n_gold']}: \\texttt{{{fa['gold_missing'][0]}}} "
+                      f"produced no answer; {fa['n_judgements']:,} judgements). Brackets: 95\\% percentile bootstrap CI "
+                      "(10,000 resamples, seed 0).",
                       "tab:T5", "lrrrrrr",
                       "Condition & EM & F1 & H@5 & P(EM$\\mid$hit) & P(EM$\\mid$miss) & SUPPORTED", rows,
                       "\\footnotesize")
@@ -203,9 +214,9 @@ def main(argv=None) -> int:
         rows.append(f"{NAME[c]} & {p(v['idk_rate'])} & " +
                     (f"{p(v['idk_given_hit'])} & {p(v['idk_given_miss'])} & {p(v['em_A1'])} & {p(v['em_A3'])} & {pv(v['em_A3_minus_A1_p'])}"
                      if c != "GOLD" else "-- & -- & -- & -- & --"))
-    files["TC3"] = env(False, f"Abstention prompt A3 on the first {der['abstention_A3']['R0']['n']} queries (\\%). "
-                       "IDK: share of ``I don't know'' answers. $p$: exact McNemar, EM under A3 vs A1 (raw, exploratory).",
-                       "tab:TC3", "lrrrrrr", "Cond. & IDK & IDK$\\mid$hit & IDK$\\mid$miss & EM A1 & EM A3 & $p$", rows,
+    files["TC3"] = env(False, f"IDK prompt on the first {der['abstention_A3']['R0']['n']} queries (\\%). "
+                       "IDK: share of ``I don't know'' answers. $p$: exact McNemar, EM under the IDK prompt vs the main prompt (uncorrected).",
+                       "tab:TC3", "lrrrrrr", "Cond. & IDK & IDK$\\mid$hit & IDK$\\mid$miss & EM main & EM IDK & $p$", rows,
                        "\\scriptsize")
     rows = [f"{NAME[r]} & \\texttt{{{HF[r]}}} & \\texttt{{{rev[HF[r]][:12]}}}" for r in DENSE]
     rows += [f"Reader & \\texttt{{Qwen/Qwen2.5-7B-Instruct-AWQ}} & \\texttt{{{rev['Qwen/Qwen2.5-7B-Instruct-AWQ'][:12]}}}",

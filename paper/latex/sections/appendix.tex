@@ -3,7 +3,7 @@
 \section{Reader Prompts}
 \label{app:prompts}
 The reader receives a system message and a user message through its chat template.
-Decoding is greedy, with at most 32 new tokens and a stop at the first newline.
+Decoding is greedy, with at most \NUM{reader.maxtok} new tokens and a stop at the first newline.
 Prompt texts are copied from the frozen code; the hash is the first 12 hexadecimal characters of the SHA-256 of the system text, as logged with every output.
 
 \noindent\textbf{A1: main prompt} (hash \texttt{c50efcc15cc6}).\par
@@ -32,7 +32,7 @@ Question: {question}
 Answer:
 \end{lstlisting}
 
-\noindent\textbf{A3: abstention prompt} (hash \texttt{cdc86e94862c}).\par
+\noindent\textbf{IDK prompt} (hash \texttt{cdc86e94862c}).\par
 The user message is identical to A1.
 \begin{lstlisting}
 [system]
@@ -43,9 +43,9 @@ An output counts as ``I don't know'' if, ignoring case and leading spaces, it be
 \section{Judge Prompt}
 \label{app:judge}
 The judge receives one user message and no system message.
-Decoding is greedy with at most 8 new tokens.
+Decoding is greedy with at most \NUM{judge.maxtok} new tokens.
 We parse the output with \verb|^\s*(SUPPORTED|\verb/|NOT_SUPPORTED)\b/ and do not retry.
-A pre-registered rule switched to a few-shot variant only if more than 2\% of zero-shot outputs failed to parse; 0 of 3,999 failed, so all verdicts use the zero-shot prompt (hash \texttt{da33361c8520}).
+A pre-registered rule switched to a few-shot variant only if more than \NUM{judge.fewshot.pct}\% of zero-shot outputs failed to parse; \NUM{n.parsefail} of \NUM{n.judgements} failed, so all verdicts use the zero-shot prompt (hash \texttt{da33361c8520}).
 Outputs that are not answers (for example an empty output at the token limit) are not judged.
 \begin{lstlisting}
 You will be given PASSAGES, a QUESTION, and an ANSWER.
@@ -67,11 +67,24 @@ Reply with exactly one word: SUPPORTED or NOT_SUPPORTED.
 \section{Additional Tables}
 \label{app:tables}
 Table~\ref{tab:TC1} lists every pairwise comparison behind the significance statements in Section~\ref{sec:results}.
-Table~\ref{tab:TC2} gives the top-$k$ ablation, Table~\ref{tab:TC3} the abstention prompt and Table~\ref{tab:TC4} the pinned model revisions.
+Table~\ref{tab:T2} summarises the data, Table~\ref{tab:T1} lists the retrieval methods, Table~\ref{tab:TC2} gives the top-$k$ ablation, Table~\ref{tab:TC3} the IDK prompt and Table~\ref{tab:TC4} the pinned model revisions.
+\input{tables/T1}
+\input{tables/T2}
 \input{tables/TC1}
 \input{tables/TC2}
 \input{tables/TC3}
 \input{tables/TC4}
+\input{tables/T4}
+
+\section{Additional Figures}
+\label{app:figures}
+\figtwo
+\fig{figure*}{F1_architecture}{System under test. A question goes to one of seven retrieval methods, which search the same \NUM{sub.size}-passage BEIR-NQ sub-corpus with exact search. The reader (Qwen2.5-7B-Instruct-AWQ, greedy) answers from the top-$k$ passages ($k{=}\NUM{k.main}$; 1, 3 and 10 in the ablation). EM and F1 are computed against NQ-open answers. An LLM judge (Mistral-7B-Instruct-v0.3, unvalidated) labels whether the passages support the answer. Cost is measured at the retrieval stage.}{fig:F1}
+\fig{figure*}{F3_retrieval_comparison}{Retrieval quality on \NUM{n.joined} joined queries: (a) Hit@5, (b) nDCG@10. Error bars: 95\% percentile bootstrap CI (\NUM{boot.B} resamples, seed \NUM{boot.seed}). All nDCG@10 pairs (Wilcoxon) and \NUM{nsig.hit@5} of \NUM{pairs} Hit@5 pairs (exact McNemar) differ after Holm correction.}{fig:F3}
+\fig{figure*}{F4_retrieval_vs_latency}{nDCG@10 against per-query latency (batch-1 medians, log scale; n = \NUM{n.joined}): (a) query encoding on the T4 plus exact search on the CPU; (b) query encoding and search on the 4-vCPU CPU.}{fig:F4}
+\fig{figure*}{F5_answer_quality_vs_efficiency}{EM at $k{=}\NUM{k.main}$ against (a) T4 encoding time for the \NUM{sub.size}-passage sub-corpus (dense methods only) and (b) CPU-only per-query latency. Error bars: 95\% bootstrap CI; n = \NUM{n.joined}.}{fig:F5}
+
+\fig{figure}{F9_hit_vs_em}{EM against Hit@5 at $k{=}\NUM{k.main}$ for the seven retrieval methods (n = \NUM{n.joined}; error bars: 95\% bootstrap CI). Dashed and dotted lines: Gold and closed-book EM.}{fig:F9}
 
 \section{Pre-registration Record}
 \label{app:prereg}
@@ -79,9 +92,26 @@ The design document and its addenda are dated and versioned in our repository.
 Each addendum was written before the stage it governs.
 \begin{itemize}
 \item \textbf{v0.2 (26 Sep 2026).} Research questions, retrieval methods, reader, judge, metrics, statistical tests, the transfer-ratio reporting rule and the pilot plan.
-\item \textbf{v0.2.1 (26 Sep 2026).} Follow-up rules: the abstention check (F1), a few-shot fallback for the judge (F2), a CPU fallback for Qwen3-Emb-0.6B (F3) and stopping rules for the GPU budget (F4.1--F4.4).
-\item \textbf{v0.2.2 (26 Sep 2026).} Deviation D1: the join gate changed from a join rate of at least 0.70 to at least 1,000 joined queries, recorded after the pilot join and before any retrieval or answer outcome; the join diagnostics D1a and D1b.
+\item \textbf{v0.2.1 (26 Sep 2026).} Follow-up rules: the IDK-prompt check (F1), a few-shot fallback for the judge (F2), a CPU fallback for Qwen3-Emb-0.6B (F3) and stopping rules for the GPU budget (F4.1--F4.4).
+\item \textbf{v0.2.2 (26 Sep 2026).} Deviation D1: the join gate changed from a join rate of at least \NUM{join.gate.old} to at least \NUM{join.gate.new} joined queries, recorded after the pilot join and before any retrieval or answer outcome; the join diagnostics D1a and D1b.
 \item \textbf{v0.2.3 (27 Sep 2026).} Verification of pilot part A; main-run adjustments M1--M5, including the sub-corpus membership rule (M1); deviation D2, dropping the RAGAS cross-check.
-\item \textbf{v0.2.4 (27--29 Sep 2026).} Verification of pilot part B, the main-run plan, execution records for S1, S3a, S3b and S4, the clarification of F4.2 before S3a, the failed first S3a attempt, the S1 cost-estimate error and the decision to cut the dimension ablation (A3).
+\item \textbf{v0.2.4 (27--29 Sep 2026).} Verification of pilot part B, the main-run plan, execution records for S1, S3a, S3b and S4, the clarification of F4.2 before S3a, the failed first S3a attempt, the S1 cost-estimate error and the decision to cut the Matryoshka dimension ablation (A3).
 \end{itemize}
 Pilot numbers were used only for planning (power and budget) and are not reported as results.
+
+\paragraph{Query selection check.} On all \NUM{n.judged} judged queries, the nDCG@10 order of the seven methods is identical to that on the \NUM{n.joined} joined queries. For every method, the Hit@5 difference between joined and unjoined queries lies between \NUM{d1b.lo} and \NUM{d1b.hi}\,pp, and every 95\% interval includes 0 (n = \NUM{n.joined} vs \NUM{n.unjoined}).
+
+\paragraph{Deviations.} We report every deviation from the pre-registered design.
+\begin{itemize}
+\item \textbf{D1: join gate.} The original design required a join rate of at least \NUM{join.gate.old} and named HotpotQA as the fallback. The pilot join rate was \NUM{join.rate.frac}. We replaced the gate with a floor of \NUM{join.gate.new} joined queries before observing any retrieval or answer outcome. A descriptive check found that \NUM{d1a.hi} of the \NUM{n.unjoined} unjoined queries have a token-Jaccard similarity of at least 0.9 to any NQ-open validation question, and none appear in NQ-open train. This supports, but does not prove, that the unjoined queries are absent from NQ-open by construction rather than lost to text mismatch.
+\item \textbf{M1: sub-corpus membership.} An earlier addendum placed gold passages and BM25 negatives only for subsets of queries. Before the main run, we changed the rule to include them for all \NUM{n.judged} judged queries, so that every query receives identical treatment.
+\item \textbf{F4.2: ablation scope.} A pre-registered rule would have reduced the top-$k$ ablation to \NUM{join.gate.new} queries if the GPU budget ran short. The measured reading time did not trigger it, and the ablation ran on all \NUM{n.joined} queries.
+\item \textbf{Cost estimate.} We estimated the CPU benchmark in S1 at \NUM{cpu.est}\,h. It took \NUM{cpu.meas}. This consumed free GPU quota but did not change any data.
+\item \textbf{Failed first attempt of S3a.} The first S3a session stopped before generating, because a notebook cell ran before the restore step. We fixed the cell order and reran S3a with unchanged code.
+\item \textbf{D2: RAGAS dropped.} RAGAS was not run because its local deployment requires additional infrastructure untested on our hardware. Our own single-prompt judge is the primary faithfulness measure.
+\item \textbf{A3: dimension ablation cut.} We did not run the planned Matryoshka dimension-truncation ablation for Qwen3-Embedding-0.6B.
+\item \textbf{Judge coverage.} One Gold output (query \texttt{\NUM{judge.missing}}) reached the token limit and produced no answer, so the judge scored \NUM{n.judge.gold} Gold items instead of \NUM{n.judge}, for \NUM{n.judgements} judgements in total.
+\item \textbf{One annotator.} The design planned two human annotators. One annotator labels the validation sample, so we report human--judge agreement but not inter-annotator agreement.
+\item \textbf{Post-hoc analyses.} Three analyses were not pre-registered: the \NUM{tie.pct}\% cost-tie rule in the Pareto analysis, the transfer ratio at other values of $k$, and the comparison of R4 at $k = 1$ with R0 at $k = 10$. We label all three as exploratory where they appear.
+\end{itemize}
+

@@ -1,14 +1,14 @@
 \begin{abstract}
 This study asks how much of a retrieval gain reaches the final answer of a retrieval-augmented generation (RAG) system.
 We are not aware of work that measures retrieval-to-answer transfer ratios jointly with measured cost on free hardware.
-We fix the reader (Qwen2.5-7B-Instruct-AWQ) and the corpus (a 300,000-passage BEIR-NQ sub-corpus) and vary only the retriever: BM25 and six open-source encoders from 22.7M to 595.8M parameters.
+We fix the reader (Qwen2.5-7B-Instruct-AWQ) and the corpus (a \NUM{sub.size}-passage BEIR-NQ sub-corpus) and vary only the retriever: BM25 and six open-source encoders from \NUM{params.R1} to \NUM{params.R6} parameters.
 We measure encoding time, query latency, index size and GPU memory on one free T4.
-On 2,255 Natural Questions queries, dense Hit@5 ranges from 66.4\% (all-MiniLM-L6-v2; 95\% CI [64.4, 68.3]) to 81.6\% (e5-base-v2; [80.0, 83.2]).
-Exact match (EM) ranges only from 47.1\% (all-MiniLM-L6-v2; [45.1, 49.2]) to 51.0\% (e5-base-v2; [48.9, 53.0]).
-Relative to all-MiniLM-L6-v2, the transfer ratio $\Delta\mathrm{EM}/\Delta\mathrm{Hit@5}$ ranges from 0.19 (bge-small-en-v1.5; [$-$0.07, 0.44]) to 0.25 (Qwen3-Embedding-0.6B; [0.05, 0.45]).
-$\sim$20--25\% of Hit@5 gain appears as EM gain, within our setup.
-bge-large-en-v1.5 and Qwen3-Embedding-0.6B need 3--7.5$\times$ the T4 encoding time of e5-base-v2.
-Under exact McNemar tests with Holm correction over 21 pairs, both have significantly lower Hit@5 than e5-base-v2.
-Under Wilcoxon signed-rank tests with Holm correction over 21 pairs, both have significantly lower nDCG@10 than e5-base-v2.
+On \NUM{n.joined} Natural Questions queries, dense Hit@5 ranges from \NUM{hit@5.R1}\% (all-MiniLM-L6-v2; 95\% CI \CI{hit@5.R1}) to \NUM{hit@5.R5}\% (e5-base-v2; \CI{hit@5.R5}).
+Exact match (EM) ranges only from \NUM{em.R1}\% (all-MiniLM-L6-v2; \CI{em.R1}) to \NUM{em.R5}\% (e5-base-v2; \CI{em.R5}).
+Relative to all-MiniLM-L6-v2, the transfer ratio $\Delta\mathrm{EM}/\Delta\mathrm{Hit@5}$ ranges from \NUM{T.R2} (bge-small-en-v1.5; \CI{T.R2}) to \NUM{T.R6} (Qwen3-Embedding-0.6B; \CI{T.R6}).
+$\sim$20--25\% of Hit@5 gain appears as EM gain at $k{=}5$, within our setup.
+bge-large-en-v1.5 and Qwen3-Embedding-0.6B need \NUM{enc.ratio.R4}--\NUM{enc.ratio.R6}$\times$ the T4 encoding time of e5-base-v2.
+Under exact McNemar tests with Holm correction over \NUM{pairs} pairs, both have significantly lower Hit@5 than e5-base-v2.
+Under Wilcoxon signed-rank tests with Holm correction over \NUM{pairs} pairs, both have significantly lower nDCG@10 than e5-base-v2.
 Both show no detectable EM gain over e5-base-v2.
 \end{abstract}

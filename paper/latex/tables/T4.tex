@@ -6,7 +6,7 @@
 \begin{adjustbox}{max width=\linewidth}
 \begin{tabular}{lrrrrrrrrrr}
 \toprule
-Method & Params & Dim & Encode (s) & Mem (MiB) & CPU p/s & Q-enc GPU/CPU (ms) & Search (ms) & Total GPU (ms) & Total CPU (ms) & Index (MB) \\
+Method & Params & Dim & Encode (s) & Mem (MiB) & CPU p/s & Q-enc GPU/CPU (ms) & Search (ms) & Total GPU (ms) & Total CPU (ms) & Index (MiB) \\
 \midrule
 BM25 & -- & -- & 0 & -- & -- & -- & 21.9 & 21.9 & 21.9 & n/m \\
 MiniLM-L6-v2 & 22.7M & 384 & 158 & 352 & 38.72 & 5.6 / 14.3 & 39.3 & 45.0 & 53.7 & 439 \\
@@ -18,6 +18,6 @@ Qwen3-Emb-0.6B & 595.8M & 1024 & 4,431 & 7,548 & 0.31 & 46.9 / 719.7 & 142.0 & 1
 \bottomrule
 \end{tabular}
 \end{adjustbox}
-\caption{Measured cost on one Tesla T4 and a 4-vCPU Xeon (2.0\,GHz), same session. Encode: wall time to encode the 300,000-passage sub-corpus on the T4. Mem: peak GPU memory. CPU p/s: CPU encoding throughput. Latencies are batch-1 medians; search is exact FAISS flat inner-product search on CPU; total = query encoding + search. Index: flat fp32 index size. BM25 index size was not measured (n/m). Cost values are single measurements; GPU throughput varied by $-$0.7\% to +3.1\% between pilot and main runs.}
-\label{tab:T4}
+\caption{Measured cost on one Tesla T4 and a 4-vCPU Xeon (2.0\,GHz), same session. Encode: wall time to encode the 300,000-passage sub-corpus on the T4. Mem: peak GPU memory. CPU p/s: CPU encoding throughput. Latencies are batch-1 medians; search is exact FAISS flat inner-product search on CPU; total = query encoding + search. Index: size of the flat fp32 FAISS IndexFlatIP. BM25 index size was not measured (n/m). Cost values are single measurements; GPU throughput varied by $-$0.7\% to +3.1\% between pilot and main runs.}
+\label{tab:TC5}
 \end{table*}

@@ -1,0 +1,12 @@
+{
+  "_note": "Values verified from pilot/S1 raw files at the time and recorded in the dated design addenda. The pilot result files are not part of the main-run results bundle, so these are transcribed here with their source. They are the only non-generated numbers in the paper.",
+  "scifact_max_abs_diff_model_card": {"value": 0.0014, "source": "design/addendum_v0.2.3.md line 15 (P2: R2 0.71276/0.71275, R3 0.74174/0.74039, R4 0.74617/0.74607, R5 0.72048/0.71944)"},
+  "scifact_qwen3_ours": {"value": 0.69949, "source": "design/addendum_v0.2.3.md line 31"},
+  "scifact_qwen3_mteb": {"value": 0.69718, "source": "design/addendum_v0.2.3.md line 31 (MTEB revision b22da495, mteb 1.38.9)"},
+  "pilot_discordant": {"value": 33, "of": 200, "source": "design/addendum_v0.2.4.md line 14 (P7)"},
+  "d1a_unjoined_jaccard_ge_0.9": {"value": 0, "of": 1197, "source": "design/addendum_v0.2.3.md line 14"},
+  "d1a_in_nq_open_train": {"value": 0, "source": "design/addendum_v0.2.3.md line 14"},
+  "cpu_benchmark_estimate_h": {"value": 1, "source": "design/addendum_v0.2.4.md line 39"},
+  "cpu_benchmark_measured": {"value": "8 h 24 min", "source": "design/addendum_v0.2.4.md line 39"},
+  "gpu_throughput_pilot_vs_main_pct": {"lo": -0.7, "hi": 3.1, "source": "design/addendum_v0.2.4.md lines 118-125 (pilot vs main GPU throughput per model)"}
+}

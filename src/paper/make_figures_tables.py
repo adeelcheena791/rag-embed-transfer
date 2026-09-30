@@ -50,10 +50,10 @@ OFF = {"R0": (5, 3, "left"), "R1": (6, -10, "left"), "R2": (-6, 6, "right"), "R3
        "R4": (0, 8, "center"), "R5": (-7, -2, "right"), "R6": (4, 8, "left")}
 MARK = {"R0": "s", "R1": "o", "R2": "o", "R3": "o", "R4": "o", "R5": "D", "R6": "^"}
 
-plt.rcParams.update({"font.size": 9, "axes.titlesize": 9.5, "axes.labelsize": 9, "legend.fontsize": 8,
-                     "xtick.labelsize": 8, "ytick.labelsize": 8, "axes.spines.top": False,
-                     "axes.spines.right": False, "savefig.bbox": "tight", "savefig.dpi": 300,
-                     "font.family": "DejaVu Sans"})
+plt.rcParams.update({"font.size": 7, "axes.titlesize": 7.5, "axes.labelsize": 7, "legend.fontsize": 7,
+                     "xtick.labelsize": 7, "ytick.labelsize": 7, "axes.spines.top": False,
+                     "axes.spines.right": False, "savefig.bbox": "tight", "savefig.pad_inches": 0.02,
+                     "font.family": "DejaVu Sans", "pdf.fonttype": 42, "ps.fonttype": 42})
 
 
 # ----------------------------------------------------------------------------- io helpers
@@ -107,6 +107,9 @@ class Data:
         self.gen_dir = root / "results" / "raw" / "generations"
         self.jdg_dir = root / "results" / "raw" / "judgements"
         self.joined = sorted(r["qid"] for r in jl(root / "data" / "processed" / "nq_joined.jsonl"))
+        # answer-level analyses use the seeded query order, exactly as src/analysis/rq12.py (bootstrap is order-dependent)
+        self.order = [l.strip() for l in open(root / "data" / "processed" / "nq_query_order.txt") if l.strip()]
+        assert set(self.order) == set(self.joined)
 
     def answers(self, tag: str) -> dict[str, dict]:
         return {r["qid"]: r for r in jl(self.ans_dir / f"main__{tag}__main.jsonl")}
@@ -119,13 +122,13 @@ class Data:
             else self.jdg_dir / "main__GOLD_A1__main__zero_shot.jsonl"
         return {r["qid"]: r["verdict"] for r in jl(f)}
 
-    def hit5(self, retriever: str, qids: list[str]) -> np.ndarray | None:
-        """Per-query Hit@5 from the frozen run file; None if runs/qrels are not present locally."""
+    def hit5(self, retriever: str, qids: list[str], k: int = 5) -> np.ndarray | None:
+        """Per-query Hit@k from the frozen run file; None if runs/qrels are not present locally."""
         try:
             from src.analysis.metrics import load_qrels_tsv
             qrels = load_qrels_tsv(self.root / "data" / "raw" / "nq_qrels" / "test.tsv")
             runs = sorted((self.root / "results" / "raw" / "runs").glob(f"{retriever}__main__*.jsonl"))
-            ranked = {r["qid"]: r["pids"][:5] for r in jl(runs[-1])}
+            ranked = {r["qid"]: r["pids"][:k] for r in jl(runs[-1])}
         except (FileNotFoundError, IndexError):
             return None
         return np.array([float(any(p in qrels.get(q, {}) and qrels[q][p] > 0 for p in ranked[q])) for q in qids])
@@ -135,7 +138,7 @@ class Data:
 def ablation_topk(d: Data) -> dict:
     """A1: EM at k = 1, 3, 5, 10 for R0, R1, R4 on the 2,255 joined queries; adjacent steps, Holm over 9."""
     ks = [1, 3, 5, 10]
-    qids = d.joined
+    qids = d.order
     idx = stats.resample_index(len(qids))
     em, tok, res = {}, {}, {"points": [], "steps": []}
     for r in ("R0", "R1", "R4"):
@@ -167,7 +170,7 @@ def idk_analysis(d: Data) -> dict:
     for c in ("R0", "R1", "R4", "GOLD"):
         tag = "GOLD_A3" if c == "GOLD" else f"{c}_k5_A3"
         a = d.answers(tag)
-        qids = sorted(a)
+        qids = [q for q in d.order if q in a]
         idk = np.array([a[q]["category"] == "idk" for q in qids], dtype=float)
         row = {"n": len(qids), "idk_rate": float(idk.mean())}
         if c != "GOLD":
@@ -189,16 +192,57 @@ def faithfulness(d: Data) -> dict:
     """LLM-judge SUPPORTED rate (UNVALIDATED until human kappa). Same query set for every condition."""
     j = {c: d.judge(c) for c in R + ["GOLD"]}
     # Retrievers share one query set (500); GOLD has 499 (one gold output hit the token limit; addendum v0.2.4).
-    qids = sorted(set.intersection(*[set(j[c]) for c in R]))
+    common = set.intersection(*[set(j[c]) for c in R])
+    qids = [q for q in d.order if q in common]
     idx = stats.resample_index(len(qids))
     vec = {c: np.array([j[c][q] == "SUPPORTED" for q in qids], dtype=float) for c in R}
-    gq = sorted(j["GOLD"])
+    gq = [q for q in d.order if q in j["GOLD"]]
     gvec = np.array([j["GOLD"][q] == "SUPPORTED" for q in gq], dtype=float)
     means = {c: stats.mean_ci(vec[c], idx) for c in R}
     means["GOLD"] = stats.mean_ci(gvec, stats.resample_index(len(gq)))
     n_unparsed = sum(1 for c in j for v in j[c].values() if v not in ("SUPPORTED", "NOT_SUPPORTED"))
-    return {"n": len(qids), "n_gold": len(gq), "n_unparsed": n_unparsed, "means": means,
+    return {"n": len(qids), "n_gold": len(gq), "gold_missing": sorted(common - set(j["GOLD"])),
+            "n_judgements": sum(len(v) for v in j.values()), "n_unparsed": n_unparsed, "means": means,
             "pairwise": stats.pairwise(vec, R, idx, binary=True)}
+
+
+def transfer_by_k(d: Data) -> dict:
+    """POST-HOC, EXPLORATORY: T_k = dEM@k / dHit@k vs R1 for R0 and R4 at k = 1, 3, 5, 10 (same passages the
+    reader saw). Paired percentile bootstrap over the seeded query order (10,000, seed 0); no reporting rule applied."""
+    qids = d.order
+    idx = stats.resample_index(len(qids))
+    out = []
+    for k in (1, 3, 5, 10):
+        h = {r: d.hit5(r, qids, k) for r in ("R0", "R1", "R4")}
+        e = {r: np.array([d.answers(f"{r}_k{k}_A1")[q]["em"] for q in qids]) for r in ("R0", "R1", "R4")}
+        for r in ("R0", "R4"):
+            dh, de = float(h[r].mean() - h["R1"].mean()), float(e[r].mean() - e["R1"].mean())
+            br = stats.boot_means(e[r] - e["R1"], idx) / stats.boot_means(h[r] - h["R1"], idx)
+            lo, hi = stats.ci(br[np.isfinite(br)])
+            out.append({"retriever": r, "k": k, "d_hit": dh, "d_em": de, "ratio": de / dh, "ci_lo": lo, "ci_hi": hi,
+                        "hit_mcnemar_p": stats.mcnemar_exact(h[r], h["R1"])["p"]})
+    return {"note": "post-hoc exploratory; Hit@k matched to the k passages the reader received", "rows": out}
+
+
+def pareto_with_ties(d: Data, tie: float = 0.05) -> dict:
+    """POST-HOC, EXPLORATORY: Pareto frontiers when costs within `tie` (relative) count as equal."""
+    ans, m1 = d.rq12["rq2_answers"], d.rq12["rq1_joined"]["means"]
+    qual = {"em": {r: ans[r]["em"]["mean"] for r in R}, "ndcg@10": {r: m1[r]["ndcg@10"]["mean"] for r in R},
+            "hit@5": {r: m1[r]["hit@5"]["mean"] for r in R}}
+    out = {}
+    for axis in ("encode_gpu_s", "query_ms_gpu", "query_ms_cpu", "index_mb"):
+        for qk, qv in qual.items():
+            pts = {r: (d.eff[r][axis], qv[r]) for r in R if d.eff[r][axis] is not None}
+
+            def le(cb, ca):
+                return cb <= ca or abs(cb - ca) <= tie * max(cb, ca)
+
+            def lt(cb, ca):
+                return cb < ca and abs(cb - ca) > tie * max(cb, ca)
+            front = [a for a, (ca, qa) in pts.items()
+                     if not any(le(cb, ca) and qb >= qa and (lt(cb, ca) or qb > qa) for b, (cb, qb) in pts.items() if b != a)]
+            out[f"{axis}|{qk}"] = sorted(front, key=lambda n: pts[n][0])
+    return {"tie": tie, "note": "post-hoc exploratory sensitivity analysis", "frontiers": out}
 
 
 # ----------------------------------------------------------------------------- tables
@@ -354,13 +398,13 @@ def arrow(ax, x0, y0, x1, y1):
 
 
 def fig1_architecture(out):
-    fig, ax = plt.subplots(figsize=(7.2, 2.9))
+    fig, ax = plt.subplots(figsize=(6.3, 2.5))
     ax.set_xlim(0, 12), ax.set_ylim(0, 4), ax.axis("off")
-    box(ax, 0.1, 1.6, 1.7, 0.9, "Question\n(NQ-open)", fc="#ffffff", fs=7.5)
-    box(ax, 2.2, 2.5, 2.6, 1.2, "Retriever (1 of 7)\nBM25 or dense encoder\n+ exact FAISS search", fc="#e8f1fa", fs=7.5)
-    box(ax, 2.2, 0.3, 2.6, 1.2, "Corpus: 300,000\nBEIR-NQ passages\n(gold + BM25 neg. + random)", fc="#ffffff", fs=7.5)
-    box(ax, 5.2, 1.6, 2.2, 0.9, "Top-k passages\n(k = 5; ablation 1-10)", fc="#ffffff", fs=7.5)
-    box(ax, 7.75, 1.6, 2.0, 0.9, "Reader\nQwen2.5-7B-AWQ\n(greedy)", fc="#fdf0e6", fs=7.5)
+    box(ax, 0.1, 1.6, 1.7, 0.9, "Question\n(NQ-open)", fc="#ffffff", fs=7)
+    box(ax, 2.2, 2.5, 2.6, 1.2, "Retriever (1 of 7)\nBM25 or dense encoder\n+ exact FAISS search", fc="#e8f1fa", fs=7)
+    box(ax, 2.2, 0.3, 2.6, 1.2, "Corpus: 300,000\nBEIR-NQ passages\n(gold + BM25 neg. + random)", fc="#ffffff", fs=7)
+    box(ax, 5.2, 1.6, 2.2, 0.9, "Top-k passages\n(k = 5; ablation 1-10)", fc="#ffffff", fs=7)
+    box(ax, 7.75, 1.6, 2.0, 0.9, "Reader\nQwen2.5-7B-AWQ\n(greedy)", fc="#fdf0e6", fs=7)
     box(ax, 10.1, 2.6, 1.85, 0.9, "EM / F1 against\nNQ-open answers", fc="#eef7ee", fs=7)
     box(ax, 10.1, 0.5, 1.85, 0.9, "Judge: Mistral-7B\nSUPPORTED?", fc="#eef7ee", fs=7)
     arrow(ax, 1.8, 2.05, 2.2, 2.9)
@@ -375,12 +419,12 @@ def fig1_architecture(out):
 
 
 def fig2_methodology(out):
-    fig, ax = plt.subplots(figsize=(7.0, 2.4))
+    fig, ax = plt.subplots(figsize=(6.3, 1.9))
     ax.set_xlim(0, 10), ax.set_ylim(0, 3), ax.axis("off")
     stages = [("Pre-\nregistration\n(design +\naddenda)", "#ffffff"),
               ("S1\nRetrieval\n7 retrievers\n3,452 q\n+ cost", "#e8f1fa"),
               ("S3a\nReading\n9 conditions\n2,255 q\nk = 5", "#fdf0e6"),
-              ("S3b\nAblations\ntop-k,\nabstention,\ndeterminism", "#fdf0e6"),
+              ("S3b\nAblations\ntop-k,\nIDK prompt,\ndeterminism", "#fdf0e6"),
               ("S4\nJudge\nfaithfulness\n500 q x 8", "#eef7ee"),
               ("Analysis\npaired\nbootstrap,\nMcNemar,\nHolm", "#f2f2f2")]
     w, gap = 1.45, 0.2
@@ -390,14 +434,14 @@ def fig2_methodology(out):
         if i:
             arrow(ax, x - gap, 1.75, x, 1.75)
     ax.text(5, 0.35, "Human check: 200 judge items labelled blind by one annotator (Cohen's kappa)", ha="center",
-            fontsize=7.5, style="italic")
+            fontsize=7, style="italic")
     save(fig, out, "F2_methodology")
 
 
 def fig3_retrieval(d: Data, out):
     m = d.rq12["rq1_joined"]["means"]
     order = sorted(R, key=lambda r: m[r]["ndcg@10"]["mean"])
-    fig, axes = plt.subplots(1, 2, figsize=(7.0, 2.6), sharey=True)
+    fig, axes = plt.subplots(1, 2, figsize=(6.3, 2.3), sharey=True)
     for ax, key, lab in zip(axes, ("hit@5", "ndcg@10"), ("Hit@5 (%)", "nDCG@10 (%)")):
         y = np.arange(len(order))
         v = [pct(m[r][key]["mean"]) for r in order]
@@ -406,14 +450,12 @@ def fig3_retrieval(d: Data, out):
         ax.barh(y, v, color=[COL[r] for r in order], height=0.65)
         ax.errorbar(v, y, xerr=[lo, hi], fmt="none", ecolor="black", lw=0.8, capsize=2)
         for yi, vi in zip(y, v):
-            ax.text(vi + 2.5, yi, f"{vi:.1f}", va="center", fontsize=7.5)
+            ax.text(vi + 2.5, yi, f"{vi:.1f}", va="center", fontsize=7)
         ax.set_yticks(y, [NAME[r] for r in order])
         ax.set_xlabel(lab)
         ax.set_xlim(0, 100)
     axes[0].set_title("(a) Hit@5", loc="left")
     axes[1].set_title("(b) nDCG@10", loc="left")
-    fig.text(0.5, -0.1, "2,255 joined BEIR-NQ queries, 300,000-passage corpus; bars: 95% bootstrap CI.", ha="center",
-             fontsize=7.5)
     save(fig, out, "F3_retrieval_comparison")
 
 
@@ -437,7 +479,7 @@ def _scatter(ax, d, xkey, ykey_fn, xlabel, ylabel, rs=R, logx=True, label=True, 
 def fig4_retrieval_latency(d: Data, out):
     m = d.rq12["rq1_joined"]["means"]
     f = lambda r: pct(m[r]["ndcg@10"]["mean"])  # noqa: E731
-    fig, axes = plt.subplots(1, 2, figsize=(7.0, 2.7), sharey=True)
+    fig, axes = plt.subplots(1, 2, figsize=(6.3, 2.4), sharey=True)
     _scatter(axes[0], d, "query_ms_gpu", f, "Per-query latency, GPU query encoding (ms, log)", "nDCG@10 (%)",
              off={"R3": (-7, -3, "right"), "R6": (0, -13, "center")})
     _scatter(axes[1], d, "query_ms_cpu", f, "Per-query latency, CPU-only (ms, log)", "")
@@ -450,7 +492,7 @@ def fig4_retrieval_latency(d: Data, out):
 def fig5_answer_vs_efficiency(d: Data, out):
     a = d.rq12["rq2_answers"]
     f = lambda r: pct(a[r]["em"]["mean"])  # noqa: E731
-    fig, axes = plt.subplots(1, 2, figsize=(7.0, 2.7), sharey=True)
+    fig, axes = plt.subplots(1, 2, figsize=(6.3, 2.4), sharey=True)
     for ax, key, lab in ((axes[0], "encode_gpu_s", "Corpus encoding time on T4 (s, log)"),
                          (axes[1], "query_ms_cpu", "Per-query latency, CPU-only (ms, log)")):
         rs = DENSE if key == "encode_gpu_s" else R
@@ -469,7 +511,7 @@ def fig6_pareto(d: Data, out):
     a = d.rq12["rq2_answers"]
     m = d.rq12["rq1_joined"]["means"]
     q = {"em": lambda r: pct(a[r]["em"]["mean"]), "ndcg@10": lambda r: pct(m[r]["ndcg@10"]["mean"])}
-    fig, axes = plt.subplots(1, 2, figsize=(7.4, 3.0))
+    fig, axes = plt.subplots(1, 2, figsize=(6.3, 1.8))
     for ax, qk, ylab in ((axes[0], "em", "Exact match (%)"), (axes[1], "ndcg@10", "nDCG@10 (%)")):
         key = f"query_ms_cpu|{qk}"
         _scatter(ax, d, "query_ms_cpu", q[qk], "Per-query latency, CPU-only (ms, log)", ylab,
@@ -490,81 +532,84 @@ def fig6_pareto(d: Data, out):
                        ls="--", zorder=2)
     axes[0].set_title("(a) Frontier on EM", loc="left")
     axes[1].set_title("(b) Frontier on nDCG@10", loc="left")
-    fig.text(0.5, -0.05, "Line: Pareto frontier. Dashed rings: dominated. Step labels: * significant after Holm; "
-             "n.s. not significant.", ha="center", fontsize=7.5)
     save(fig, out, "F6_pareto_frontier")
 
 
+SHORT = {"R0": "BM25", "R1": "MiniLM", "R2": "bge-s", "R3": "bge-b", "R4": "bge-L", "R5": "e5-b", "R6": "Qwen3"}
+
+
 def fig7_failure(d: Data, idk: dict, out):
+    """Main-text error analysis: (a) EM given hit / miss, (b) IDK-prompt abstention on hits / misses."""
     a = d.rq12["rq2_answers"]
     dec = d.rq12["rq2_decomposition"]
-    fig, axes = plt.subplots(1, 3, figsize=(7.4, 2.8), gridspec_kw={"width_ratios": [1.1, 1.2, 0.9]})
+    fig, axes = plt.subplots(1, 2, figsize=(6.3, 1.8), gridspec_kw={"width_ratios": [2.3, 1]})
     ax = axes[0]
-    for r in R:
-        ax.scatter(pct(dec[r]["hit@5"]), pct(a[r]["em"]["mean"]), color=COL[r], marker=MARK[r], s=34,
-                   edgecolor="black", lw=0.4, zorder=3, label=NAME[r])
-    for c, ls in (("GOLD", "--"), ("CB", ":")):
-        ax.axhline(pct(a[c]["em"]["mean"]), color="black", lw=0.8, ls=ls)
-        ax.text(31, pct(a[c]["em"]["mean"]) + 1, f"{NAME[c]} {pct(a[c]['em']['mean']):.1f}", fontsize=6.5)
-    ax.set_xlabel("Hit@5 (%)"), ax.set_ylabel("Exact match (%)"), ax.set_xlim(30, 90), ax.set_ylim(10, 70)
-    ax.set_title("(a) Retrieval vs answers", loc="left"), ax.grid(alpha=0.25, lw=0.5)
-    ax.legend(frameon=False, fontsize=6, loc="lower right", bbox_to_anchor=(1.02, 0.08), handletextpad=0.2,
-              labelspacing=0.25)
-
-    ax = axes[1]
     x = np.arange(len(R))
     ph = [pct(dec[r]["p_correct_given_hit"]) for r in R]
     pm = [pct(dec[r]["p_correct_given_miss"]) for r in R]
     eh = np.array([[ph[i] - pct(dec[r]["p_hit_ci"][0]), pct(dec[r]["p_hit_ci"][1]) - ph[i]] for i, r in enumerate(R)]).T
     em_ = np.array([[pm[i] - pct(dec[r]["p_miss_ci"][0]), pct(dec[r]["p_miss_ci"][1]) - pm[i]] for i, r in enumerate(R)]).T
-    ax.bar(x - 0.2, ph, 0.4, color="#0072B2", label="gold in top-5", yerr=eh, error_kw={"lw": 0.7, "capsize": 1.5})
-    ax.bar(x + 0.2, pm, 0.4, color="#E69F00", label="gold not in top-5", yerr=em_, error_kw={"lw": 0.7, "capsize": 1.5})
-    ax.axhline(pct(a["CB"]["em"]["mean"]), color="black", lw=0.8, ls=":")
-    ax.set_xticks(x, [NAME[r] for r in R], rotation=45, ha="right")
-    ax.set_ylabel("P(EM | condition) (%)"), ax.set_ylim(0, 90)
-    ax.legend(frameon=False, loc="upper center", ncol=2, fontsize=7, columnspacing=0.8)
-    ax.set_title("(b) EM given hit / miss", loc="left")
-
-    ax = axes[2]
+    ax.bar(x - 0.2, ph, 0.4, color="#0072B2", edgecolor="black", lw=0.3, label="gold passage in top-5",
+           yerr=eh, error_kw={"lw": 0.7, "capsize": 1.5})
+    ax.bar(x + 0.2, pm, 0.4, color="#E69F00", hatch="////", edgecolor="black", lw=0.3,
+           label="gold passage not in top-5", yerr=em_, error_kw={"lw": 0.7, "capsize": 1.5})
+    ax.axhline(pct(a["CB"]["em"]["mean"]), color="black", lw=0.8, ls=":", label="closed-book EM")
+    ax.set_xticks(x, [SHORT[r] for r in R])
+    ax.set_ylabel("EM (%)"), ax.set_ylim(0, 92)
+    ax.legend(frameon=False, loc="upper center", bbox_to_anchor=(0.5, 1.0), ncol=3, columnspacing=0.8, handlelength=1.5)
+    ax.set_title("(a) EM given retrieval hit or miss", loc="left")
+    ax = axes[1]
     cs = ["R0", "R1", "R4"]
     xs = np.arange(len(cs))
-    if all("idk_given_hit" in idk[c] for c in cs):
-        ax.bar(xs - 0.2, [pct(idk[c]["idk_given_hit"]) for c in cs], 0.4, color="#0072B2", label="hit")
-        ax.bar(xs + 0.2, [pct(idk[c]["idk_given_miss"]) for c in cs], 0.4, color="#E69F00", label="miss")
-        ax.legend(frameon=False, loc="upper right", fontsize=7)
-        ax.set_ylim(0, 45)
-    else:
-        ax.bar(xs, [pct(idk[c]["idk_rate"]) for c in cs], 0.5, color="#7f7f7f")
-    ax.set_xticks(xs, [NAME[c] for c in cs], rotation=45, ha="right")
-    ax.set_ylabel("\"I don't know\" rate (%)")
-    ax.set_title(f"(c) Abstention, n = {idk['R0']['n']}", loc="left")
-    fig.tight_layout()
+    ax.bar(xs - 0.2, [pct(idk[c]["idk_given_hit"]) for c in cs], 0.4, color="#0072B2", edgecolor="black", lw=0.3,
+           label="hit")
+    ax.bar(xs + 0.2, [pct(idk[c]["idk_given_miss"]) for c in cs], 0.4, color="#E69F00", hatch="////",
+           edgecolor="black", lw=0.3, label="miss")
+    ax.set_xticks(xs, [SHORT[c] for c in cs])
+    ax.set_ylabel("``I don't know'' (%)".replace("``", '"').replace("''", '"')), ax.set_ylim(0, 45)
+    ax.legend(frameon=False, loc="upper right")
+    ax.set_title(f"(b) IDK prompt, n = {idk['R0']['n']}", loc="left")
+    fig.tight_layout(w_pad=1.5)
     save(fig, out, "F7_error_failure_analysis")
 
 
+def fig9_hit_vs_em(d: Data, out):
+    """Appendix: EM against Hit@5 at k = 5 with closed-book and Gold reference lines."""
+    a = d.rq12["rq2_answers"]
+    dec = d.rq12["rq2_decomposition"]
+    fig, ax = plt.subplots(figsize=(3.03, 2.3))
+    off = {"R0": (5, 2, "left"), "R1": (-6, -2, "right"), "R2": (-1, -13, "right"), "R3": (1, -13, "left"),
+           "R4": (0, 9, "center"), "R5": (6, -2, "left"), "R6": (-4, 9, "right")}
+    for r in R:
+        xx, yy = pct(dec[r]["hit@5"]), pct(a[r]["em"]["mean"])
+        ax.errorbar(xx, yy, yerr=[[yy - pct(a[r]["em"]["ci_lo"])], [pct(a[r]["em"]["ci_hi"]) - yy]], fmt=MARK[r],
+                    color=COL[r], mec="black", mew=0.4, ms=5, capsize=1.5, lw=0.7)
+        ax.annotate(SHORT[r], (xx, yy), textcoords="offset points", xytext=off[r][:2], fontsize=7, ha=off[r][2])
+    for c, ls in (("GOLD", "--"), ("CB", ":")):
+        ax.axhline(pct(a[c]["em"]["mean"]), color="black", lw=0.8, ls=ls)
+        ax.text(31, pct(a[c]["em"]["mean"]) + 1.2, f"{NAME[c]} {pct(a[c]['em']['mean']):.1f}", fontsize=7)
+    ax.set_xlabel("Hit@5 (%)"), ax.set_ylabel("Exact match (%)"), ax.set_xlim(30, 90), ax.set_ylim(10, 70)
+    ax.grid(alpha=0.25, lw=0.5)
+    save(fig, out, "F9_hit_vs_em")
+
+
 def fig8_topk(a1: dict, out):
-    fig, axes = plt.subplots(1, 2, figsize=(7.0, 2.6))
+    fig, ax = plt.subplots(figsize=(3.03, 1.85))
+    styles = {"R0": "--", "R1": "-.", "R4": "-"}
     for r in ("R0", "R1", "R4"):
         pts = [p for p in a1["points"] if p["retriever"] == r]
         ks = [p["k"] for p in pts]
         em = [pct(p["em"]) for p in pts]
         err = [[pct(p["em"] - p["ci_lo"]) for p in pts], [pct(p["ci_hi"] - p["em"]) for p in pts]]
-        axes[0].errorbar(ks, em, yerr=err, color=COL[r], marker=MARK[r], lw=1.2, ms=4, capsize=2, label=NAME[r])
-        axes[1].plot([p["mean_prompt_tokens"] for p in pts], em, color=COL[r], marker=MARK[r], lw=1.2, ms=4,
-                     label=NAME[r])
-        for p in pts:
-            axes[1].annotate(f"k={p['k']}", (p["mean_prompt_tokens"], pct(p["em"])), textcoords="offset points",
-                             xytext=(3, -9), fontsize=6)
-    for s in a1["steps"]:
-        if not s["significant_holm_0.05"]:
-            p1 = [p for p in a1["points"] if p["retriever"] == s["retriever"] and p["k"] == s["to_k"]][0]
-            axes[0].annotate("n.s.", (s["to_k"], pct(p1["em"])), textcoords="offset points", xytext=(-14, 6), fontsize=6.5)
-    axes[0].set_xscale("log"), axes[0].set_xticks([1, 3, 5, 10], ["1", "3", "5", "10"])
-    axes[0].set_xlabel("Passages given to the reader (k)"), axes[0].set_ylabel("Exact match (%)")
-    axes[0].legend(frameon=False), axes[0].grid(alpha=0.25, lw=0.5)
-    axes[0].set_title("(a) EM vs k", loc="left")
-    axes[1].set_xlabel("Mean reader prompt tokens"), axes[1].grid(alpha=0.25, lw=0.5)
-    axes[1].set_title("(b) EM vs reader input length", loc="left")
+        ax.errorbar(ks, em, yerr=err, color=COL[r], marker=MARK[r], ls=styles[r], lw=1.1, ms=3.5, capsize=2,
+                    label=NAME[r])
+    for s_ in a1["steps"]:
+        if not s_["significant_holm_0.05"]:
+            p1 = [p for p in a1["points"] if p["retriever"] == s_["retriever"] and p["k"] == s_["to_k"]][0]
+            ax.annotate("n.s.", (s_["to_k"], pct(p1["em"])), textcoords="offset points", xytext=(-6, 7), fontsize=7)
+    ax.set_xscale("log"), ax.set_xticks([1, 3, 5, 10], ["1", "3", "5", "10"]), ax.minorticks_off()
+    ax.set_xlabel("Passages given to the reader ($k$)"), ax.set_ylabel("Exact match (%)")
+    ax.legend(frameon=False, loc="lower right"), ax.grid(alpha=0.25, lw=0.5)
     save(fig, out, "F8_topk_ablation")
 
 
@@ -583,7 +628,9 @@ def main(argv=None) -> int:
     print("computing top-k ablation, abstention and faithfulness statistics ...")
     a1, idk, fa = ablation_topk(d), idk_analysis(d), faithfulness(d)
     (Path(args.out) / "derived_stats.json").write_text(json.dumps(
-        {"topk_ablation": a1, "abstention_A3": idk, "faithfulness_UNVALIDATED": fa}, indent=2, default=float))
+        {"topk_ablation": a1, "abstention_A3": idk, "faithfulness_UNVALIDATED": fa,
+         "transfer_by_k_EXPLORATORY": transfer_by_k(d), "pareto_tie5_EXPLORATORY": pareto_with_ties(d)},
+        indent=2, default=float))
     tables(d, a1, idk, fa, tab_dir)
     fig1_architecture(fig_dir)
     fig2_methodology(fig_dir)
@@ -593,6 +640,7 @@ def main(argv=None) -> int:
     fig6_pareto(d, fig_dir)
     fig7_failure(d, idk, fig_dir)
     fig8_topk(a1, fig_dir)
+    fig9_hit_vs_em(d, fig_dir)
     print(f"wrote {len(list(fig_dir.glob('*.pdf')))} figures to {fig_dir} and "
           f"{len(list(tab_dir.glob('*.csv')))} CSV tables to {tab_dir}")
     return 0

@@ -2,12 +2,11 @@
 \label{sec:conclusion}
 
 We held the reader, corpus and queries fixed and varied only the retrieval method.
-For RQ1, retrieval quality differs clearly: dense Hit@5 ranges from 66.4\% to 81.6\%, and e5-base-v2 retrieves best despite having fewer parameters than bge-large and Qwen3-Emb-0.6B.
-For RQ2, within our setup, $\sim$20--25\% of Hit@5 gain appears as EM gain, and only 3 of 15 EM differences among dense encoders are significant.
-For RQ3, corpus encoding time on one Tesla T4 spans 158 to 4,431 seconds, a 28-fold range across the dense encoders.
+For RQ1, retrieval quality differs clearly: dense Hit@5 ranges from \NUM{hit@5.R1}\% to \NUM{hit@5.R5}\%, and e5-base-v2 retrieves best despite having fewer parameters than bge-large and Qwen3-Emb-0.6B.
+For RQ2, within our setup, $\sim$20--25\% of Hit@5 gain appears as EM gain at $k{=}5$, and only \NUM{nsig.em.dense} of \NUM{dense.pairs} EM differences among dense encoders are significant.
+For RQ3, corpus encoding time on one Tesla T4 spans \NUM{enc.R1} to \NUM{enc.R6} seconds, a \NUM{enc.range}-fold range across the dense encoders.
 For RQ4, the frontier runs from BM25 through MiniLM-L6-v2, bge-small and bge-base to e5-base-v2; bge-large and Qwen3-Emb-0.6B are dominated, and they show no detectable EM gain.
 Faithfulness results await human validation of the judge.
 
-The transfer ratio makes the gap between retrieval gains and answer gains explicit and measurable.
 We suggest that studies of embedding models for RAG report it with its confidence interval, together with measured cost, next to retrieval scores.
-Future work should measure transfer for more readers and datasets, with a validated judge and with approximate or quantised search.
+Future work should measure transfer for more readers, datasets and values of $k$, with a validated judge and approximate search.
