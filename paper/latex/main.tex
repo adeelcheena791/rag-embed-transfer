@@ -9,6 +9,7 @@
 \IfFileExists{inconsolata.sty}{\usepackage{inconsolata}}{}  % present on Overleaf; missing in this build container
 \usepackage{graphicx}
 \usepackage{booktabs}
+\usepackage{adjustbox}
 \usepackage{amsmath}
 \graphicspath{{figures/}{../figures/}}
 
@@ -27,29 +28,28 @@ Accuracy--Efficiency Trade-offs of Open-Source Embedding Models in RAG}
 \input{sections/abstract}
 \input{sections/introduction}
 
-\figstub{figure*}{F1_architecture}{PLACEHOLDER caption: system architecture.}{fig:F1}
+\figstub{figure*}{F1_architecture}{System under test. A question goes to one of seven retrieval methods, which search the same 300,000-passage BEIR-NQ sub-corpus with exact search. The reader (Qwen2.5-7B-Instruct-AWQ, greedy) answers from the top-$k$ passages ($k{=}5$; 1, 3 and 10 in the ablation). EM and F1 are computed against NQ-open answers. An LLM judge (Mistral-7B-Instruct-v0.3, unvalidated) labels whether the passages support the answer. Cost is measured at the retrieval stage.}{fig:F1}
 
 \input{sections/related}
 
 \input{sections/method}
-\figstub{figure*}{F2_methodology}{PLACEHOLDER caption: stages S1, S3a, S3b, S4.}{fig:F2}
+\figstub{figure*}{F2_methodology}{Pipeline. S1: sub-corpus, encoding, retrieval and cost for 7 methods on 3,452 judged queries. S3a: 9 reader conditions on 2,255 joined queries. S3b: top-$k$, abstention-prompt and determinism ablations. S4: judge on 500 queries per condition. A 200-item human sample validates the judge. Design, metrics and tests were pre-registered before S1.}{fig:F2}
 \input{tables/T1}
 
 \input{sections/setup}
 \input{tables/T2}
 
-\section{Results}\label{sec:results}
-PLACEHOLDER.
+\input{sections/results}
 \input{tables/T3}
-\figstub{figure}{F3_retrieval_comparison}{PLACEHOLDER caption: RQ1 retrieval.}{fig:F3}
 \input{tables/T5}
 \input{tables/T6}
 \input{tables/T4}
-\figstub{figure}{F4_retrieval_vs_latency}{PLACEHOLDER caption: retrieval vs latency.}{fig:F4}
-\figstub{figure}{F5_answer_quality_vs_efficiency}{PLACEHOLDER caption: EM vs efficiency.}{fig:F5}
-\figstub{figure*}{F6_pareto_frontier}{PLACEHOLDER caption: Pareto frontier.}{fig:F6}
-\figstub{figure}{F7_error_failure_analysis}{PLACEHOLDER caption: failure analysis.}{fig:F7}
-\figstub{figure}{F8_topk_ablation}{PLACEHOLDER caption: top-k ablation.}{fig:F8}
+\figstub{figure}{F3_retrieval_comparison}{Retrieval quality on 2,255 joined queries: (a) Hit@5, (b) nDCG@10. Error bars: 95\% percentile bootstrap CI (10,000 resamples, seed 0). All nDCG@10 pairs (Wilcoxon) and 20 of 21 Hit@5 pairs (exact McNemar) differ after Holm correction.}{fig:F3}
+\figstub{figure}{F4_retrieval_vs_latency}{nDCG@10 against per-query latency (batch-1 medians, log scale; n = 2,255): (a) query encoding on the T4 plus exact search on the CPU; (b) query encoding and search on the 4-vCPU CPU.}{fig:F4}
+\figstub{figure}{F5_answer_quality_vs_efficiency}{EM against (a) T4 encoding time for the 300,000-passage sub-corpus (dense methods only) and (b) CPU-only per-query latency. Error bars: 95\% bootstrap CI; n = 2,255.}{fig:F5}
+\figstub{figure*}{F6_pareto_frontier}{Quality--cost Pareto frontier over CPU-only per-query latency for (a) EM and (b) nDCG@10 (n = 2,255). Line: frontier. Dashed rings: dominated methods. Step labels: * significant, n.s.\ not significant (exact McNemar for EM, Wilcoxon for nDCG@10; Holm over 21 pairs). The frontier is the same for T4 encoding time and GPU-side latency.}{fig:F6}
+\figstub{figure}{F7_error_failure_analysis}{Error analysis. (a) EM against Hit@5 (n = 2,255); dashed and dotted lines: Gold and closed-book EM. (b) EM on queries whose top-5 does or does not contain a judged relevant passage, with 95\% bootstrap CIs; dotted line: closed-book EM. (c) ``I don't know'' rate under the abstention prompt A3 on hits and misses (n = 200).}{fig:F7}
+\figstub{figure}{F8_topk_ablation}{Top-$k$ ablation for BM25, MiniLM-L6-v2 and bge-large (n = 2,255): EM against (a) the number of passages $k$ and (b) the mean reader prompt length. Error bars: 95\% bootstrap CI. n.s.: adjacent step not significant (exact McNemar, Holm over 9 steps).}{fig:F8}
 
 \section{Discussion}\label{sec:discussion}
 PLACEHOLDER.
@@ -68,7 +68,10 @@ PLACEHOLDER.
 \section{Judge Prompt}\label{app:judge}
 PLACEHOLDER.
 \section{Additional Tables}\label{app:tables}
-PLACEHOLDER.
+\input{tables/TC1}
+\input{tables/TC2}
+\input{tables/TC3}
+\input{tables/TC4}
 \section{Pre-registration Addenda Summary}\label{app:prereg}
 PLACEHOLDER.
 \end{document}

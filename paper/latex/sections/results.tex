@@ -1,0 +1,100 @@
+\section{Results}
+\label{sec:results}
+
+All results use the 2,255 joined queries unless stated otherwise.
+Brackets give 95\% bootstrap confidence intervals (10,000 resamples, seed 0).
+$p_\mathrm{H}$ denotes a Holm-corrected $p$-value over the 21 pairs of a metric.
+
+\subsection{RQ1: Retrieval quality}
+\label{sec:rq1}
+Table~\ref{tab:T3} and Figure~\ref{fig:F3} show retrieval quality.
+The order by nDCG@10 is e5-base-v2, bge-large, bge-base, Qwen3-Emb-0.6B, bge-small, MiniLM-L6-v2 and BM25.
+All 21 pairwise nDCG@10 differences are significant (Wilcoxon, $p_\mathrm{H} < 0.05$).
+For Hit@5, 20 of 21 differences are significant (exact McNemar).
+The exception is bge-small against Qwen3-Emb-0.6B: $-$1.5\,pp [$-$3.3, 0.3], $p_\mathrm{H} = 0.11$.
+Within the BGE family, quality rises with size: bge-small, bge-base and bge-large reach nDCG@10 of 58.0 [56.5, 59.4], 62.6 [61.1, 64.0] and 64.0 [62.6, 65.4].
+Size does not order models across families.
+e5-base-v2 and bge-base have the same parameter count, yet e5-base-v2 leads by 4.1\,pp nDCG@10 [3.1, 5.2] ($p_\mathrm{H} = 8.2{\times}10^{-13}$).
+Qwen3-Emb-0.6B, the largest encoder, ranks fourth.
+
+Two checks support the query selection.
+On all 3,452 judged queries, the nDCG@10 order of the seven methods is identical.
+For every method, the Hit@5 difference between joined and unjoined queries lies between $-$2.8 and $+$0.5\,pp, and every 95\% interval includes 0 (n = 2,255 vs 1,197).
+We detect no evidence that the join changed retrieval difficulty.
+
+\subsection{RQ2: Transfer to answers}
+\label{sec:rq2}
+Table~\ref{tab:T5} reports answer quality.
+EM rises from 14.9 [13.5, 16.4] without passages to 36.0 [34.0, 38.0] with BM25, and to between 47.1 [45.1, 49.2] and 51.0 [48.9, 53.0] with the dense encoders.
+Gold passages give 65.3 [63.3, 67.3].
+Every dense encoder beats BM25 on EM by 11.2 to 15.0\,pp ($p_\mathrm{H} < 10^{-25}$).
+Among the six dense encoders, 3 of 15 EM differences are significant.
+MiniLM-L6-v2 trails bge-large by 3.2\,pp [1.4, 4.9] ($p_\mathrm{H} = 0.005$) and e5-base-v2 by 3.8\,pp [2.1, 5.5] ($p_\mathrm{H} = 1.4{\times}10^{-4}$).
+bge-small trails e5-base-v2 by 2.6\,pp [1.1, 4.1] ($p_\mathrm{H} = 0.013$).
+We detect no difference for the other 12 dense pairs.
+These include e5-base-v2 against bge-large, $+$0.6\,pp [$-$0.9, 2.1], and against Qwen3-Emb-0.6B, $+$1.8\,pp [0.2, 3.3] ($p_\mathrm{H} = 0.27$).
+All twelve point estimates lie below the 3.4\,pp minimum detectable difference (\S\ref{sec:stats}).
+
+Table~\ref{tab:T6} gives the transfer ratios.
+All six comparisons with MiniLM-L6-v2 meet the pre-registered reporting rule.
+For the five other dense encoders, $T$ ranges from 0.19 [$-$0.07, 0.44] for bge-small to 0.25 [0.05, 0.45] for Qwen3-Emb-0.6B.
+The two most precise estimates are 0.24 [0.11, 0.36] for bge-large and 0.25 [0.15, 0.36] for e5-base-v2.
+Within our setup, $\sim$20--25\% of Hit@5 gain appears as EM gain.
+For BM25, whose Hit@5 is 30.1\,pp lower, $T$ is 0.37 [0.31, 0.43].
+Across the seven methods, the Hit@5 and EM rankings coincide (Spearman $\rho = 1.0$; seven points, descriptive only).
+
+The decomposition in Eq.~\ref{eq:decomp} explains the size of $T$ (Figure~\ref{fig:F7}).
+For the dense encoders, P(EM$\mid$hit) lies between 56.4 [54.0, 58.7] and 58.4 [55.9, 60.8], and P(EM$\mid$miss) between 24.4 [20.4, 28.6] and 26.0 [22.5, 29.5].
+A hit therefore raises the chance of a correct answer by 30.7 to 33.5\,pp across the dense encoders, not by 100\,pp.
+\emph{Observation:} P(EM$\mid$hit) with five passages stays below Gold EM, which uses only the relevant passages.
+BM25 shows the highest P(EM$\mid$hit), 63.2 [60.0, 66.5], and the lowest P(EM$\mid$miss), 20.4 [18.4, 22.5].
+
+\subsection{RQ3: Cost}
+\label{sec:rq3}
+Table~\ref{tab:T4} reports measured cost.
+Encoding the 300,000-passage sub-corpus on the T4 takes 158\,s with MiniLM-L6-v2 and 4,431\,s with Qwen3-Emb-0.6B, a 28-fold range.
+e5-base-v2 takes 592\,s; bge-large takes 1,753\,s (3.0$\times$) and Qwen3-Emb-0.6B 4,431\,s (7.5$\times$).
+On the CPU, throughput falls from 38.7 to 0.31 passages per second across the same range.
+Batch-1 query encoding on the CPU takes 14.3\,ms for MiniLM-L6-v2 and 719.7\,ms for Qwen3-Emb-0.6B.
+Exact search time depends on embedding dimension: 39\,ms at 384, 81\,ms at 768 and 142--143\,ms at 1,024 dimensions.
+Peak GPU memory during encoding ranges from 352\,MiB (MiniLM-L6-v2) to 7,548\,MiB (Qwen3-Emb-0.6B).
+Figures~\ref{fig:F4} and~\ref{fig:F5} place quality against these costs.
+
+\subsection{RQ4: Quality--cost frontier}
+\label{sec:rq4}
+Figure~\ref{fig:F6} shows the Pareto frontier.
+For corpus encoding time and for per-query latency with GPU or CPU query encoding, the frontier is the same for EM, Hit@5 and nDCG@10: BM25, MiniLM-L6-v2, bge-small, bge-base and e5-base-v2.
+bge-large and Qwen3-Emb-0.6B are dominated by e5-base-v2 on every measured cost axis and on every quality metric.
+Their retrieval deficits against e5-base-v2 are significant; their EM deficits of 0.6 and 1.8\,pp are not.
+On retrieval metrics, every step along the frontier is significant.
+On EM, only the first step, from BM25 to MiniLM-L6-v2, is significant ($+$11.2\,pp).
+The three dense EM steps ($+$1.2, $+$0.9 and $+$1.6\,pp) are not.
+bge-base stays on the frontier only because its encoding time is 1.4\% below that of e5-base-v2, which lies within the measured run-to-run variability of GPU throughput.
+In a post-hoc sensitivity analysis that treats cost differences of at most 5\% as ties, e5-base-v2 dominates bge-base.
+On index size, BM25 is excluded because we did not measure it; among dense encoders of equal dimension, the better one dominates.
+
+\subsection{Ablations}
+\label{sec:ablations}
+\paragraph{Top-$k$ (A1).}
+Figure~\ref{fig:F8} shows EM as the reader receives 1, 3, 5 or 10 passages (Table~\ref{tab:TC2}).
+EM rises with $k$ for all three methods.
+Of the nine adjacent steps (exact McNemar, Holm over 9), eight are significant.
+The exception is bge-large from $k=3$ to $k=5$: $+$1.1\,pp [$-$0.3, 2.5], $p_\mathrm{H} = 0.15$.
+bge-large gains 1.6\,pp [0.3, 3.0] from $k=5$ to $k=10$ ($p_\mathrm{H} = 0.044$), while the mean reader prompt grows from 738 to 1,414 tokens.
+In an exploratory comparison, bge-large with one passage exceeds BM25 with ten passages by 2.2\,pp [0.0, 4.3] (exact McNemar, raw $p = 0.044$).
+
+\paragraph{Abstention prompt (F1).}
+A prompt that allows ``I don't know'' (A3) yields abstention rates of 21.5\% for BM25, 11.5\% for MiniLM-L6-v2, 4.5\% for bge-large and 6.0\% for Gold on the first 200 queries (Table~\ref{tab:TC3}).
+Abstention concentrates on retrieval misses: 34.7\%, 27.6\% and 13.9\% of misses, against 1.3\% to 2.4\% of hits.
+EM under A3 is 1.0 to 3.0\,pp lower than under A1, with no significant change (raw $p \geq 0.07$).
+
+\paragraph{Determinism (A2).}
+Rerunning 100 bge-base generations in a new session on a different day reproduces all 100 outputs and prompt token counts exactly.
+
+\subsection{Faithfulness}
+\label{sec:faith}
+Table~\ref{tab:T5} lists the share of answers that the LLM judge labels SUPPORTED.
+The judge is unvalidated.
+We pre-registered an agreement gate against 200 human labels: Cohen's $\kappa \geq 0.4$, we use the judge; $0.2 \leq \kappa < 0.4$, we report it with a sensitivity analysis; $\kappa < 0.2$, we exclude it.
+Human--judge agreement is pending, so we do not interpret these scores.
+For completeness, 0 of 3,999 verdicts failed to parse.
