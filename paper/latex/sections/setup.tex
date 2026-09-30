@@ -24,7 +24,7 @@ The study used no paid compute, API or data, and its monetary cost was zero.
 We pin all models, including the reader and the judge, to fixed revisions (Table~\ref{tab:TC4}).
 Retrieval uses sentence-transformers 5.4.1, FAISS 1.15.1 and bm25s 0.3.11; reading and judging use vLLM 0.30.0.
 As a sanity check, our encoding pipeline reproduces the model-card SciFact nDCG@10 of bge-small, bge-base, bge-large and e5-base within \NUM{scifact.maxdiff}. In a post-hoc check, our SciFact nDCG@10 for Qwen3-Emb-0.6B (\NUM{scifact.qwen.ours}) lies within \NUM{scifact.qwen.diff} of its MTEB leaderboard value (\NUM{scifact.qwen.mteb}, earlier model revision).
-Code, configuration files, pinned revisions and raw outputs are available at \url{https://anonymous.4open.science/r/rag-embed-transfer-2026}.
+Code, configuration files, pinned revisions and raw outputs are provided as anonymised supplementary material and will be released publicly upon publication.
 
 \subsection{Pre-registration and deviations}
 \label{sec:deviations}

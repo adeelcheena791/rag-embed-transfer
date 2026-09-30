@@ -23,17 +23,17 @@ You enter these answers in the OpenReview submission form. Since February 2024 A
   - §3.4–§3.6 and Appendices A–B give all settings: BM25 k1 and b, maximum length 256, fp16, k = 5, greedy decoding, max tokens 32 (reader) and 8 (judge).
   - No hyperparameter search was run. All settings were fixed in the pre-registration.
 - **C3 Descriptive statistics: Yes.** Every result has a 95% bootstrap CI (10,000 resamples, seed 0) and a paired test with Holm correction (§3.7). n is stated throughout. Cost values are single runs, and the Limitations section says so.
-- **C4 Packages: Yes.** §4.3 gives sentence-transformers 5.4.1, FAISS 1.15.1, bm25s 0.3.11 and vLLM 0.30.0. Pinned revisions are in Table 10 (Appendix C). The released repository contains lock files.
+- **C4 Packages: Yes.** §4.3 gives sentence-transformers 5.4.1, FAISS 1.15.1, bm25s 0.3.11 and vLLM 0.30.0. Pinned revisions are in Table 10 (Appendix C). Lock files are in the anonymised supplementary material.
 
 **D. Human annotators: Yes** (one author labels the 200-item judge-validation sample)
-- **D1 Instructions: Yes.** Appendix B: the annotator gets the same instructions as the judge prompt.
+- **D1 Instructions: Yes.** Appendix B: the annotator gets the same instructions as the judge prompt. The annotation was not complete at submission, and the paper says so.
 - **D2 Recruitment and pay: N/A.** The annotator is an author, and no one else took part.
 - **D3 Consent: N/A.** Same reason.
 - **D4 Ethics review: No.** Not required: an author annotated public data, with no human subjects.
 - **D5 Demographics: N/A.** One author annotator.
 
 **E. AI assistants: Yes**
-- **E1: Yes.** Ethics Statement → Compute and use of AI assistants: an AI assistant (Claude) helped write analysis and plotting code and draft and edit text. The authors designed the study, ran the experiments, verified every number and take responsibility.
+- **E1: Yes.** Ethics Statement → Compute and use of AI assistants: an AI assistant (Claude) helped write analysis and plotting code and draft and edit text. We designed the study, ran the experiments, verified every number and take responsibility.
 
 ## Two notes before submitting
 1. **Check the C1 total.** Use your Kaggle session history. The paper states no total, so any number you enter must be the one you verify.
