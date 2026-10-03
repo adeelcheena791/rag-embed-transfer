@@ -37,7 +37,7 @@ ALLOW = {
     "$\\sim$20--25\\%": "headline wording mandated in review; it summarises the macro range T.lo--T.hi",
     "is 1 if": "definition", "and 0 otherwise": "definition", "top 10 passages": "definition of nDCG@10",
     "R_1": "notation", "(1 - h)": "notation", "first 12 hexadecimal": "definition of hash", "EM 0": "definition",
-    "1, 3 and 10 in the ablation": "design: ablation k", "at least 0.9": "pre-registered D1a threshold",
+    "1, 3 and 10 in the ablation": "design: ablation k", "\\{1, 3, 5, 10\\}": "design: ablation k", "at least 0.9": "pre-registered D1a threshold",
 }
 ALLOW = dict(sorted(ALLOW.items(), key=lambda kv: -len(kv[0])))
 
@@ -47,6 +47,7 @@ def strip(s: str) -> str:
     s = re.sub(r"\\(NUM|CI|ref|label|cite(?:alp|[pt])?|input|includegraphics|fig|url|texttt\{test)\{[^}]*\}", " ", s)
     s = re.sub(r"\\begin\{lstlisting\}.*?\\end\{lstlisting\}", " ", s, flags=re.S)
     s = re.sub(r"\\newcommand.*", " ", s)
+    s = re.sub(r"\\(setcounter|renewcommand)[^\n]*", " ", s)  # float-placement parameters
     s = re.sub(r"\\(section|subsection|paragraph)\*?", " ", s)
     s = re.sub(r"\\(documentclass|usepackage|lstset|graphicspath|adjustbox)[^\n]*", " ", s)
     for pat in IDENT:

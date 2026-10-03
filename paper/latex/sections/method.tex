@@ -6,7 +6,7 @@
 Let $Q$ be a set of questions and $C$ a fixed passage corpus.
 A retrieval method $R$ maps a question $q \in Q$ to a ranked list of passages from $C$.
 A reader $M$ receives the question and the top $k$ passages and returns a short answer $a$.
-A judge $J$ receives the same passages, the question and $a$, and returns SUPPORTED or NOT\_SUPPORTED.
+A judge $J$ labels whether the passages support $a$ (\S\ref{sec:judge}).
 Each question $q$ has a set of relevant passages $G(q) \subset C$ from the BEIR relevance judgements \citep{thakur2021beir} and a set of reference answers from NQ-open.
 
 We use three per-query measures.
@@ -22,11 +22,11 @@ For a method $R$ and the reference $R_1$ (all-MiniLM-L6-v2), we define
 T(R) = \frac{\mathrm{EM}(R) - \mathrm{EM}(R_1)}{\mathrm{Hit@5}(R) - \mathrm{Hit@5}(R_1)} .
 \label{eq:transfer}
 \end{equation}
-$T(R)$ is the change in EM per unit change in Hit@5.
+$T(R)$ measures the change in EM per unit change in Hit@5 relative to all-MiniLM-L6-v2.
+It is an aggregate, setup-specific transfer statistic, not a causal probability.
 A value of 1 means that every additional hit becomes a correct answer; a value of 0 means that EM is unchanged.
 The main analysis uses $k{=}\NUM{k.main}$, so $T(R)$ refers to the five passages the reader receives.
-Benchmark ranks report only the denominator.
-$T(R)$ reports how much of it reaches the answer for a fixed reader.
+Benchmark ranks report only the denominator; $T(R)$ reports how much of it reaches the answer.
 
 We pre-registered a reporting rule.
 We report $T(R)$ only if $|\Delta\mathrm{Hit@5}| > \NUM{ratio.minhit}$ percentage points (pp) and the Hit@5 difference is significant after Holm correction (\S\ref{sec:stats}).
@@ -89,8 +89,8 @@ We test graded measures (nDCG@10, token F1) with the Wilcoxon signed-rank test \
 We correct each metric's \NUM{pairs} pairwise tests across the seven retrieval methods with the Holm procedure \citep{holm1979}.
 We report 95\% confidence intervals from a percentile bootstrap over queries, with \NUM{boot.B} resamples and seed \NUM{boot.seed}.
 Before the main run, we estimated the pairwise EM discordance rate on a \NUM{pilot.n}-query pilot as \NUM{pilot.pd}.
-At this rate, with \NUM{n.joined} queries and 80\% power, the minimum detectable EM difference is \NUM{mdd}\,pp at the worst-case Holm level ($\alpha = 0.05/\NUM{pairs}$).
-We therefore report smaller EM differences as ``no difference detected'', not as equality.
+Under this pilot discordance, \NUM{n.joined} queries, 80\% power and the worst-case Holm level ($\alpha = 0.05/\NUM{pairs}$), the estimated minimum detectable EM difference is \NUM{mdd}\,pp.
+This planning estimate is not a significance threshold; non-significant EM differences are reported as ``no difference detected'', not as equality.
 We report uncorrected $p$-values only for comparisons outside the pre-registered families and label them exploratory.
 
 \subsection{Stages}
@@ -98,7 +98,7 @@ We report uncorrected $p$-values only for comparisons outside the pre-registered
 The experiment runs in four stages (Figure~\ref{fig:F2} in Appendix~\ref{app:figures}).
 S1 builds the sub-corpus, retrieves the top 100 passages for all \NUM{n.judged} judged queries and measures cost.
 S3a runs the reader on the nine conditions for the \NUM{n.joined} joined queries.
-S3b runs three ablations: EM at $k \in \{1, 3, 10\}$ for R0, R1 and R4; an IDK prompt that allows the answer ``I don't know'' on \NUM{n.idk} queries; and a repeat of \NUM{n.det} generations in a new session.
+S3b runs three ablations: a top-$k$ ablation over $k \in \{1, 3, 5, 10\}$ for R0, R1 and R4 (the $k{=}5$ runs are those of S3a); an IDK prompt that allows the answer ``I don't know'' on \NUM{n.idk} queries; and a repeat of \NUM{n.det} generations in a new session.
 S4 runs the judge.
 We fixed the design, metrics and tests in a pre-registration before S1 (\S\ref{sec:deviations}).
 

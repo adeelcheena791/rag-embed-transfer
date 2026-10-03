@@ -14,7 +14,7 @@ For Hit@5, \NUM{nsig.hit@5} of \NUM{pairs} differences are significant (exact Mc
 The exception is bge-small minus Qwen3-Emb-0.6B: \NUM{d.hit@5.R2.R6}\,pp \CI{d.hit@5.R2.R6}, $p_\mathrm{H} = \NUM{ph.hit@5.R2.R6}$.
 Within the BGE family, quality rises with size: bge-small, bge-base and bge-large reach nDCG@10 of \NUM{ndcg@10.R2} \CI{ndcg@10.R2}, \NUM{ndcg@10.R3} \CI{ndcg@10.R3} and \NUM{ndcg@10.R4} \CI{ndcg@10.R4}.
 Size does not order models across families: e5-base-v2 and bge-base have the same parameter count, yet e5-base-v2 minus bge-base is \NUM{d.ndcg@10.R5.R3}\,pp nDCG@10 \CI{d.ndcg@10.R5.R3} ($p_\mathrm{H} = \NUM{ph.ndcg@10.R5.R3}$).
-Qwen3-Emb-0.6B, the largest encoder, ranks fourth.
+Qwen3-Emb-0.6B, the largest encoder in our set, ranks fourth.
 
 A check on all \NUM{n.judged} judged queries gives the same nDCG@10 order, and no difference in retrieval difficulty is detected between joined and unjoined queries (Appendix~\ref{app:prereg}).
 
@@ -30,7 +30,7 @@ bge-large and e5-base-v2 exceed MiniLM-L6-v2 by \NUM{d.em.R4.R1}\,pp \CI{d.em.R4
 e5-base-v2 exceeds bge-small by \NUM{d.em.R5.R2}\,pp \CI{d.em.R5.R2} ($p_\mathrm{H} = \NUM{ph.em.R5.R2}$).
 For the other \NUM{nns.em.dense} dense pairs, no difference is detected.
 These include bge-large minus e5-base-v2, \NUM{d.em.R4.R5}\,pp \CI{d.em.R4.R5}, and e5-base-v2 minus Qwen3-Emb-0.6B, \NUM{d.em.R5.R6}\,pp \CI{d.em.R5.R6} ($p_\mathrm{H} = \NUM{ph.em.R5.R6}$).
-All \NUM{nns.em.dense} point estimates lie at or below \NUM{max.ns.em.dense}\,pp, under the \NUM{mdd}\,pp minimum detectable difference (\S\ref{sec:stats}).
+All \NUM{nns.em.dense} point estimates lie at or below \NUM{max.ns.em.dense}\,pp, under the estimated minimum detectable difference of \NUM{mdd}\,pp (\S\ref{sec:stats}).
 Token F1 gives the same ordering, but its Wilcoxon tests find only \NUM{nsig.f1} of \NUM{pairs} pairs significant after Holm correction.
 
 Table~\ref{tab:T6} gives the transfer ratios at $k{=}\NUM{k.main}$; all six meet the pre-registered reporting rule.
@@ -81,7 +81,7 @@ bge-large gains \NUM{step.R4.5.10}\,pp \CI{step.R4.5.10} from $k{=}5$ to $k{=}10
 \emph{Exploratory:} bge-large with one passage exceeds BM25 with ten passages by \NUM{ex.d}\,pp \CI{ex.d} (exact McNemar, uncorrected $p = \NUM{ex.p}$).
 \emph{Exploratory:} the transfer ratio depends on $k$.
 Matching Hit@$k$ to the $k$ passages the reader sees, $T$ for bge-large relative to MiniLM-L6-v2 is \NUM{Tk.R4.1} \CI{Tk.R4.1} at $k{=}1$, \NUM{Tk.R4.3} \CI{Tk.R4.3} at $k{=}3$, \NUM{Tk.R4.5} \CI{Tk.R4.5} at $k{=}5$ and \NUM{Tk.R4.10} \CI{Tk.R4.10} at $k{=}10$.
-The $\sim$20--25\% figure therefore describes $k{=}5$ only.
+The $\sim$20--25\% figure therefore describes $k{=}5$ only; we did not test this $k$-dependence for other readers or corpora.
 
 \paragraph{IDK prompt.}
 A prompt that allows the answer ``I don't know'' (the IDK prompt) yields abstention rates of \NUM{idk.R0}\% for BM25, \NUM{idk.R1}\% for MiniLM-L6-v2, \NUM{idk.R4}\% for bge-large and \NUM{idk.GOLD}\% for Gold on the first \NUM{n.idk} queries (Table~\ref{tab:TC3}).

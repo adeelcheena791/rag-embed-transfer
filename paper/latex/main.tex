@@ -15,6 +15,7 @@
 \usepackage{graphicx}
 \usepackage{booktabs}
 \usepackage{adjustbox}
+\usepackage{placeins}  % \FloatBarrier keeps appendix floats in their own section
 \usepackage{listings}
 \lstset{basicstyle=\ttfamily\scriptsize,breaklines=true,columns=fullflexible,frame=single,upquote=true,literate={’}{{'}}1}
 \usepackage{amsmath}
@@ -24,10 +25,12 @@
 \title{How Much Retrieval Quality Reaches the Answer?\\
 Accuracy--Efficiency Trade-offs of Open-Source\\
 Embedding Models in RAG}
+\ifdefined\authorversion
 \author{Muhammad Adeel \\
   Zhengzhou University \\
   \texttt{muhammadadeel167@stu.zzu.edu.cn} \\
   \texttt{adeelcheena791@gmail.com}}
+\fi
 
 % Figures are drawn at their final size (3.03 in or 6.30 in wide) and scaled only if wider than the column.
 \newcommand{\fig}[4]{% #1 env, #2 file, #3 caption, #4 label
@@ -39,7 +42,7 @@ Embedding Models in RAG}
 \newcommand{\figsix}{\fig{figure*}{F6_pareto_frontier}{Quality--cost Pareto frontier over CPU-only per-query latency for (a) EM and (b) nDCG@10 (n = \NUM{n.joined}). Line: frontier. Dashed rings: dominated methods. Step labels: * significant, n.s.\ not significant (exact McNemar for EM, Wilcoxon for nDCG@10; Holm over \NUM{pairs} pairs). Shown without the exploratory \NUM{tie.pct}\% cost-tie rule (\S\ref{sec:rq4}).}{fig:F6}}
 \newcommand{\figseven}{\fig{figure*}{F7_error_failure_analysis}{Error analysis at $k{=}\NUM{k.main}$. (a) EM when the top-5 does (solid) or does not (hatched) contain a judged relevant passage, n = \NUM{n.joined}, with 95\% bootstrap CIs; dotted line: closed-book EM. (b) ``I don't know'' rate under the IDK prompt on hits and misses (n = \NUM{n.idk}).}{fig:F7}}
 \newcommand{\figeight}{\fig{figure}{F8_topk_ablation}{Top-$k$ ablation (n = \NUM{n.joined}): EM against the number of passages $k$ given to the reader. Error bars: 95\% bootstrap CI. n.s.: adjacent step not significant (exact McNemar, Holm over \NUM{n.steps} steps).}{fig:F8}}
-\newcommand{\figtwo}{\fig{figure*}{F2_methodology}{Pipeline. S1: sub-corpus, encoding, retrieval and cost for 7 methods on \NUM{n.judged} judged queries. S3a: 9 reader conditions on \NUM{n.joined} joined queries. S3b: top-$k$, IDK-prompt and determinism ablations. S4: judge on \NUM{n.judge} queries per condition. A \NUM{n.human}-item human sample validates the judge. Design, metrics and tests were pre-registered before S1.}{fig:F2}}
+\newcommand{\figtwo}{\fig{figure*}{F2_methodology}{Pipeline. S1: sub-corpus, encoding, retrieval and cost for 7 methods on \NUM{n.judged} judged queries. S3a: 9 reader conditions on \NUM{n.joined} joined queries. S3b: top-$k$, IDK-prompt and determinism ablations. S4: judge on \NUM{n.judge} queries per condition. A planned \NUM{n.human}-item human check of the judge was not complete at submission. Design, metrics and tests were pre-registered before S1.}{fig:F2}}
 
 \begin{document}
 \maketitle

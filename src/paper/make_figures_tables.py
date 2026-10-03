@@ -399,21 +399,21 @@ def arrow(ax, x0, y0, x1, y1):
 
 def fig1_architecture(out):
     fig, ax = plt.subplots(figsize=(6.3, 2.5))
-    ax.set_xlim(0, 12), ax.set_ylim(0, 4), ax.axis("off")
-    box(ax, 0.1, 1.6, 1.7, 0.9, "Question\n(NQ-open)", fc="#ffffff", fs=7)
-    box(ax, 2.2, 2.5, 2.6, 1.2, "Retriever (1 of 7)\nBM25 or dense encoder\n+ exact FAISS search", fc="#e8f1fa", fs=7)
-    box(ax, 2.2, 0.3, 2.6, 1.2, "Corpus: 300,000\nBEIR-NQ passages\n(gold + BM25 neg. + random)", fc="#ffffff", fs=7)
-    box(ax, 5.2, 1.6, 2.2, 0.9, "Top-k passages\n(k = 5; ablation 1-10)", fc="#ffffff", fs=7)
-    box(ax, 7.75, 1.6, 2.0, 0.9, "Reader\nQwen2.5-7B-AWQ\n(greedy)", fc="#fdf0e6", fs=7)
-    box(ax, 10.1, 2.6, 1.85, 0.9, "EM / F1 against\nNQ-open answers", fc="#eef7ee", fs=7)
-    box(ax, 10.1, 0.5, 1.85, 0.9, "Judge: Mistral-7B\nSUPPORTED?", fc="#eef7ee", fs=7)
-    arrow(ax, 1.8, 2.05, 2.2, 2.9)
-    arrow(ax, 3.5, 1.5, 3.5, 2.5)
-    arrow(ax, 4.8, 2.9, 5.3, 2.2)
-    arrow(ax, 7.4, 2.05, 7.75, 2.05)
-    arrow(ax, 9.75, 2.2, 10.1, 2.9)
-    arrow(ax, 9.75, 1.9, 10.1, 1.1)
-    ax.text(3.5, 3.85, "cost measured here: encoding time, query latency, index size, GPU memory", ha="center",
+    ax.set_xlim(-0.1, 12.3), ax.set_ylim(0, 4), ax.axis("off")
+    box(ax, 0.0, 1.55, 1.5, 1.0, "Question\n(NQ-open)", fc="#ffffff", fs=7)
+    box(ax, 1.85, 2.5, 3.0, 1.2, "Retriever (1 of 7)\nBM25 or dense encoder\n+ exact FAISS search", fc="#e8f1fa", fs=7)
+    box(ax, 1.85, 0.2, 3.0, 1.3, "Corpus: 300,000\nBEIR-NQ passages\n(gold + BM25 neg.\n+ random)", fc="#ffffff", fs=7)
+    box(ax, 5.2, 1.4, 2.3, 1.3, "Top-$k$ passages\n($k$ = 5; ablation\n$k \\in \\{1, 3, 5, 10\\}$)", fc="#ffffff", fs=7)
+    box(ax, 7.85, 1.4, 2.0, 1.3, "Reader\nQwen2.5-7B-\nInstruct-AWQ\n(greedy)", fc="#fdf0e6", fs=7)
+    box(ax, 10.2, 2.55, 2.0, 1.1, "EM / F1 vs\nNQ-open\nanswers", fc="#eef7ee", fs=7)
+    box(ax, 10.2, 0.35, 2.0, 1.1, "Judge:\nMistral-7B\nSUPPORTED?", fc="#eef7ee", fs=7)
+    arrow(ax, 1.5, 2.05, 1.85, 2.9)
+    arrow(ax, 3.35, 1.5, 3.35, 2.5)
+    arrow(ax, 4.85, 2.9, 5.35, 2.7)
+    arrow(ax, 7.5, 2.05, 7.85, 2.05)
+    arrow(ax, 9.85, 2.3, 10.2, 2.9)
+    arrow(ax, 9.85, 1.8, 10.2, 1.2)
+    ax.text(3.35, 3.85, "cost measured here: encoding time, query latency, index size, GPU memory", ha="center",
             fontsize=7, style="italic")
     save(fig, out, "F1_architecture")
 
@@ -433,7 +433,7 @@ def fig2_methodology(out):
         box(ax, x, 0.8, w, 1.9, t, fc=c, fs=7)
         if i:
             arrow(ax, x - gap, 1.75, x, 1.75)
-    ax.text(5, 0.35, "Human check: 200 judge items labelled blind by one annotator (Cohen's kappa)", ha="center",
+    ax.text(5, 0.35, "Planned human check (not complete at submission): 200 judge items labelled blind by one annotator", ha="center",
             fontsize=7, style="italic")
     save(fig, out, "F2_methodology")
 
@@ -496,11 +496,12 @@ def fig5_answer_vs_efficiency(d: Data, out):
     for ax, key, lab in ((axes[0], "encode_gpu_s", "Corpus encoding time on T4 (s, log)"),
                          (axes[1], "query_ms_cpu", "Per-query latency, CPU-only (ms, log)")):
         rs = DENSE if key == "encode_gpu_s" else R
-        _scatter(ax, d, key, f, lab, "Exact match (%)" if ax is axes[0] else "", rs=rs)
+        _scatter(ax, d, key, f, lab, "Exact match (%)" if ax is axes[0] else "", rs=rs,
+                 off={"R4": (5, 7, "left"), "R6": (0, -22, "center")})
         for r in rs:
             ax.errorbar(d.eff[r][key], f(r), yerr=[[f(r) - pct(a[r]["em"]["ci_lo"])], [pct(a[r]["em"]["ci_hi"]) - f(r)]],
                         fmt="none", ecolor=COL[r], lw=0.8, capsize=2, zorder=2)
-    axes[0].set_xlim(80, 12000), axes[1].set_xlim(12, 2500)
+    axes[0].set_xlim(50, 20000), axes[1].set_xlim(12, 4000)
     axes[0].set_title("(a) EM vs encoding cost (dense only)", loc="left")
     axes[1].set_title("(b) EM vs query latency", loc="left")
     save(fig, out, "F5_answer_quality_vs_efficiency")
@@ -515,7 +516,7 @@ def fig6_pareto(d: Data, out):
     for ax, qk, ylab in ((axes[0], "em", "Exact match (%)"), (axes[1], "ndcg@10", "nDCG@10 (%)")):
         key = f"query_ms_cpu|{qk}"
         _scatter(ax, d, "query_ms_cpu", q[qk], "Per-query latency, CPU-only (ms, log)", ylab,
-                 off={"R6": (0, -15, "center")})
+                 off={"R6": (0, -15, "center"), "R1": (6, -17, "left")})
         front = fr[key]["frontier"]
         ax.plot([d.eff[r]["query_ms_cpu"] for r in front], [q[qk](r) for r in front], color="black", lw=1, ls="-",
                 zorder=1)
@@ -549,14 +550,14 @@ def fig7_failure(d: Data, idk: dict, out):
     pm = [pct(dec[r]["p_correct_given_miss"]) for r in R]
     eh = np.array([[ph[i] - pct(dec[r]["p_hit_ci"][0]), pct(dec[r]["p_hit_ci"][1]) - ph[i]] for i, r in enumerate(R)]).T
     em_ = np.array([[pm[i] - pct(dec[r]["p_miss_ci"][0]), pct(dec[r]["p_miss_ci"][1]) - pm[i]] for i, r in enumerate(R)]).T
-    ax.bar(x - 0.2, ph, 0.4, color="#0072B2", edgecolor="black", lw=0.3, label="gold passage in top-5",
+    ax.bar(x - 0.2, ph, 0.4, color="#0072B2", edgecolor="black", lw=0.3, label="hit (gold in top-5)",
            yerr=eh, error_kw={"lw": 0.7, "capsize": 1.5})
     ax.bar(x + 0.2, pm, 0.4, color="#E69F00", hatch="////", edgecolor="black", lw=0.3,
-           label="gold passage not in top-5", yerr=em_, error_kw={"lw": 0.7, "capsize": 1.5})
+           label="miss", yerr=em_, error_kw={"lw": 0.7, "capsize": 1.5})
     ax.axhline(pct(a["CB"]["em"]["mean"]), color="black", lw=0.8, ls=":", label="closed-book EM")
     ax.set_xticks(x, [SHORT[r] for r in R])
-    ax.set_ylabel("EM (%)"), ax.set_ylim(0, 92)
-    ax.legend(frameon=False, loc="upper center", bbox_to_anchor=(0.5, 1.0), ncol=3, columnspacing=0.8, handlelength=1.5)
+    ax.set_ylabel("EM (%)"), ax.set_ylim(0, 92), ax.set_yticks([0, 20, 40, 60])
+    ax.legend(frameon=False, loc="upper center", bbox_to_anchor=(0.55, 1.0), ncol=3, columnspacing=1.0, handlelength=1.5)
     ax.set_title("(a) EM given retrieval hit or miss", loc="left")
     ax = axes[1]
     cs = ["R0", "R1", "R4"]

@@ -20,19 +20,19 @@ BM25 shows the highest P(EM$\mid$hit) (\NUM{pem.hit.R0}).
 \emph{Hypothesis:} BM25 finds the relevant passage mostly for questions with strong lexical overlap, which the reader also finds easier; this would be a selection effect rather than more useful passages.
 The alternative, that the reader extracts answers more easily from lexically matched passages, cannot be ruled out with our data.
 
-\subsection{Why the largest encoders do not win}
+\subsection{Why the largest encoders in our set do not win}
 \label{sec:why-large}
 Within our setup, bge-large and Qwen3-Emb-0.6B do not retrieve better than e5-base-v2; they retrieve worse (\S\ref{sec:rq1}).
-Their lack of an EM gain therefore follows from their retrieval, not from a failure of transfer.
-\emph{Interpretation:} training data and objective matter more than size for this task, which agrees with the claim of \citet{baidya2026choosing}.
-Our pipeline reproduces published SciFact scores for all six encoders (\S\ref{sec:models}), so a pipeline error is an unlikely cause.
+Their lack of a detectable EM gain is therefore consistent with their retrieval, not evidence of weaker transfer.
+Model size alone does not determine retrieval quality in this evaluated set, consistent with \citet{baidya2026choosing}; we did not isolate training data or objective.
+Our pipeline reproduces published SciFact scores for the five encoders we checked, including both of these (\S\ref{sec:models}), so a pipeline error is an unlikely cause.
 Prefixes and instructions are a possible cause that we did not vary (\S\ref{sec:stages}).
 Transfer also compresses differences.
-With $T$ near \NUM{T.R5}, the Hit@5 gaps of e5-base-v2 over bge-large (\NUM{d.hit@5.R5.R4}\,pp) and over Qwen3-Emb-0.6B (\NUM{d.hit@5.R5.R6}\,pp) correspond to expected EM gaps below the minimum detectable difference of \NUM{mdd}\,pp.
+With $T$ near \NUM{T.R5}, the Hit@5 gaps of e5-base-v2 over bge-large (\NUM{d.hit@5.R5.R4}\,pp) and over Qwen3-Emb-0.6B (\NUM{d.hit@5.R5.R6}\,pp) correspond to expected EM gaps below the estimated minimum detectable difference of \NUM{mdd}\,pp.
 Differences in retrieval that are clearly significant can thus leave EM differences that \NUM{n.joined} queries cannot resolve.
 
 \subsection{Practical implication}
 \label{sec:implication}
-\emph{Interpretation:} for a fixed reader, a retrieval benchmark rank alone overstates the answer gain from a stronger encoder.
+\emph{Interpretation:} in our setup, a retrieval benchmark rank alone overstates the answer gain from a stronger encoder.
 Within our setup and at $k{=}\NUM{k.main}$, a Hit@5 gain of $x$\,pp came with an EM gain of \NUM{T.lo}$x$ to \NUM{T.hi}$x$\,pp relative to MiniLM-L6-v2, while encoding cost rose by up to \NUM{enc.ratio.R6}$\times$ between e5-base-v2 and Qwen3-Emb-0.6B.
-The ratio depends on the reader, the corpus, the question type and $k$ (\S\ref{sec:ablations}), so it must be measured for each setup rather than taken from ours.
+The ratio changes with $k$ in our ablation (\S\ref{sec:ablations}) and may depend on the reader, corpus and question type, which we did not vary; it should be measured per setup.
