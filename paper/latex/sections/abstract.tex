@@ -1,10 +1,9 @@
 \begin{abstract}
-This study asks how much of a retrieval gain reaches the final answer of a retrieval-augmented generation (RAG) system, and at what cost.
+How much retrieval gain reaches the answer of a retrieval-augmented generation (RAG) system, and at what cost?
 We are not aware of work that measures retrieval-to-answer transfer ratios jointly with measured cost on free hardware.
-We fix the reader (Qwen2.5-7B-Instruct-AWQ), the corpus (a \NUM{sub.size}-passage BEIR-NQ sub-corpus) and \NUM{n.joined} Natural Questions queries, vary only the retriever (BM25 and six open-source encoders of \NUM{params.R1} to \NUM{params.R6} parameters), and measure cost on one free T4.
-Dense Hit@5 ranges from \NUM{hit@5.R1}\% (all-MiniLM-L6-v2; 95\% CI \CI{hit@5.R1}) to \NUM{hit@5.R5}\% (e5-base-v2; \CI{hit@5.R5}), but exact match (EM) only from \NUM{em.R1}\% \CI{em.R1} to \NUM{em.R5}\% \CI{em.R5}.
-Relative to all-MiniLM-L6-v2, the transfer ratio $\Delta\mathrm{EM}/\Delta\mathrm{Hit@5}$ ranges from \NUM{T.R2} \CI{T.R2} to \NUM{T.R6} \CI{T.R6}: $\sim$20--25\% of Hit@5 gain appears as EM gain at $k{=}5$, within our setup.
-The two largest encoders in our set, bge-large-en-v1.5 and Qwen3-Embedding-0.6B, need \NUM{enc.ratio.R4}--\NUM{enc.ratio.R6}$\times$ the T4 encoding time of e5-base-v2.
-Both have significantly lower Hit@5 (exact McNemar) and nDCG@10 (Wilcoxon) than e5-base-v2 after Holm correction over \NUM{pairs} pairs, and show no detectable EM gain.
+We fix the reader (Qwen2.5-7B-Instruct-AWQ), the corpus (\NUM{sub.size}-passage BEIR-NQ sub-corpus) and \NUM{n.joined} Natural Questions queries, vary only the retriever (BM25 and six open-source encoders, \NUM{params.R1}--\NUM{params.R6} parameters), and measure cost on one free T4.
+Dense Hit@5 ranges from \NUM{hit@5.R1}\% (all-MiniLM-L6-v2, the reference; 95\% CI \CI{hit@5.R1}) to \NUM{hit@5.R5}\% (e5-base-v2; \CI{hit@5.R5}), but exact match (EM) only from \NUM{em.R1}\% \CI{em.R1} to \NUM{em.R5}\% \CI{em.R5}.
+The transfer ratio $\Delta\mathrm{EM}/\Delta\mathrm{Hit@5}$ ranges from \NUM{T.R2} \CI{T.R2} to \NUM{T.R6} \CI{T.R6}: $\sim$20--25\% of Hit@5 gain appears as EM gain at $k{=}5$, within our setup.
+The two largest encoders in our set, bge-large-en-v1.5 and Qwen3-Embedding-0.6B, need \NUM{enc.ratio.R4}--\NUM{enc.ratio.R6}$\times$ the T4 encoding time of e5-base-v2, yet have significantly lower Hit@5 and nDCG@10 (Holm, \NUM{pairs} pairs) and show no detectable EM gain.
 In this setup, retrieval rank alone overstates the answer gain from a larger encoder.
 \end{abstract}
