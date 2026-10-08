@@ -19,6 +19,6 @@
 \item \textbf{No dimension ablation.} We did not evaluate Matryoshka dimension truncation \citep{kusupati2022matryoshka} for R6, so our dimension-cost conclusions come only from comparing different models. Those comparisons confound dimension with architecture and training.
 \item \textbf{RAGAS not run.} RAGAS was not run because its local deployment requires additional infrastructure untested on our hardware; our own single-prompt judge (Appendix~\ref{app:judge}) is the primary faithfulness measure. Its validation against human labels is pending.
 \item \textbf{Pre-registration deviations.} We changed the join gate (D1) and the sub-corpus membership rule (M1) before observing outcomes, and clarified the ablation-scope rule (F4.2) before it applied (\S\ref{sec:deviations}).
-\item \textbf{Execution errors.} We underestimated the S1 CPU benchmark (\NUM{cpu.est}\,h estimated, \NUM{cpu.meas} measured), and the first S3a attempt failed because of a notebook step order. Neither changed any data.
+\item \textbf{Execution errors.} We underestimated the S1 CPU benchmark (\NUM{cpu.est}\,h estimated, \NUM{cpu.meas} measured), and the first S3a attempt failed because a notebook cell ran in the wrong order. Neither changed any data.
 \item \textbf{Power.} With \NUM{n.joined} queries, the estimated minimum detectable EM difference is \NUM{mdd}\,pp at the worst-case Holm level (a planning estimate from the pilot discordance). Smaller EM differences between dense encoders may exist but remain undetected.
 \end{itemize}

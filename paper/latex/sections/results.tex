@@ -86,7 +86,7 @@ The $\sim$20--25\% figure therefore describes $k{=}5$ only; we did not test this
 \paragraph{IDK prompt.}
 A prompt that allows the answer ``I don't know'' (the IDK prompt) yields abstention rates of \NUM{idk.R0}\% for BM25, \NUM{idk.R1}\% for MiniLM-L6-v2, \NUM{idk.R4}\% for bge-large and \NUM{idk.GOLD}\% for Gold on the first \NUM{n.idk} queries (Table~\ref{tab:TC3}).
 Abstention concentrates on retrieval misses: \NUM{idk.miss.R0}\%, \NUM{idk.miss.R1}\% and \NUM{idk.miss.R4}\% of misses, against \NUM{idk.hit.lo}\% to \NUM{idk.hit.hi}\% of hits.
-EM under the IDK prompt is \NUM{idk.drop.lo} to \NUM{idk.drop.hi}\,pp lower than under the main prompt, and no change is detected (exact McNemar, uncorrected $p \geq \NUM{idk.pmin}$).
+EM under the IDK prompt is \NUM{idk.drop.lo} to \NUM{idk.drop.hi}\,pp lower than under the main prompt, and no difference is detected (exact McNemar, uncorrected $p \geq \NUM{idk.pmin}$).
 
 \paragraph{Determinism.}
 Rerunning \NUM{n.det} bge-base generations in a new session reproduces all \NUM{n.det} outputs exactly.
@@ -94,6 +94,6 @@ Rerunning \NUM{n.det} bge-base generations in a new session reproduces all \NUM{
 \subsection{Faithfulness}
 \label{sec:faith}
 Table~\ref{tab:T5} lists the share of answers that the unvalidated LLM judge labels SUPPORTED.
-We pre-registered an agreement gate against \NUM{n.human} human labels: Cohen's $\kappa$ \citep{cohen1960} $\geq 0.4$, we use the judge; $0.2 \leq \kappa < 0.4$, we report it with a sensitivity analysis; $\kappa < 0.2$, we exclude it.
+We pre-registered an agreement gate against \NUM{n.human} human labels: if Cohen's $\kappa$ \citep{cohen1960} is $\geq 0.4$, we use the judge; if $0.2 \leq \kappa < 0.4$, we report it with a sensitivity analysis; if $\kappa < 0.2$, we exclude it.
 Human annotation was not complete at submission, so these scores are descriptive only.
 The judge produced \NUM{n.judgements} verdicts (\NUM{n.judge} per retrieval method and \NUM{n.judge.gold} for Gold), and \NUM{n.parsefail} failed to parse.

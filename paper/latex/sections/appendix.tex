@@ -57,7 +57,7 @@ An output counts as ``I don't know'' if, ignoring case and leading spaces, it be
 The judge receives one user message and no system message.
 Decoding is greedy with at most \NUM{judge.maxtok} new tokens.
 We parse the output with \verb|^\s*(SUPPORTED|\verb/|NOT_SUPPORTED)\b/ and do not retry.
-A pre-registered rule switched to a few-shot variant only if more than \NUM{judge.fewshot.pct}\% of zero-shot outputs failed to parse; \NUM{n.parsefail} of \NUM{n.judgements} failed, so all verdicts use the zero-shot prompt (hash \texttt{da33361c8520}).
+A pre-registered rule would have switched to a few-shot variant only if more than \NUM{judge.fewshot.pct}\% of zero-shot outputs failed to parse; \NUM{n.parsefail} of \NUM{n.judgements} failed, so all verdicts use the zero-shot prompt (hash \texttt{da33361c8520}).
 Outputs that are not answers (for example an empty output at the token limit) are not judged.
 \par\noindent\begin{minipage}{\linewidth}
 \begin{lstlisting}
@@ -122,7 +122,7 @@ Pilot numbers were used only for planning (power and budget) and are not reporte
 
 \paragraph{Deviations.} We report every deviation from the pre-registered design.
 \begin{itemize}
-\item \textbf{D1: join gate.} The original design required a join rate of at least \NUM{join.gate.old} and named HotpotQA as the fallback. The pilot join rate was \NUM{join.rate.frac}. We replaced the gate with a floor of \NUM{join.gate.new} joined queries before observing any retrieval or answer outcome. A descriptive check found that \NUM{d1a.hi} of the \NUM{n.unjoined} unjoined queries have a token-Jaccard similarity of at least 0.9 to any NQ-open validation question, and none appear in NQ-open train. This supports, but does not prove, that the unjoined queries are absent from NQ-open by construction rather than lost to text mismatch.
+\item \textbf{D1: join gate.} The original design required a join rate of at least \NUM{join.gate.old} and named HotpotQA as the fallback. The pilot join rate was \NUM{join.rate.frac}. We replaced the gate with a floor of \NUM{join.gate.new} joined queries before observing any retrieval or answer outcome. A descriptive check found that \NUM{d1a.hi} of the \NUM{n.unjoined} unjoined queries have a token-Jaccard similarity of at least 0.9 to any NQ-open validation question, and none appear in NQ-open train. This supports, but does not prove, the view that the unjoined queries are absent from NQ-open by construction rather than lost to text mismatch.
 \item \textbf{M1: sub-corpus membership.} An earlier addendum placed gold passages and BM25 negatives only for subsets of queries. Before the main run, we changed the rule to include them for all \NUM{n.judged} judged queries, so that every query receives identical treatment.
 \item \textbf{F4.2: ablation scope.} A pre-registered rule would have reduced the top-$k$ ablation to \NUM{join.gate.new} queries if the GPU budget ran short. The measured reading time did not trigger it, and the ablation ran on all \NUM{n.joined} queries.
 \item \textbf{Cost estimate.} We estimated the CPU benchmark in S1 at \NUM{cpu.est}\,h. It took \NUM{cpu.meas}. This consumed free GPU quota but did not change any data.
