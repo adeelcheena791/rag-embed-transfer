@@ -22,7 +22,7 @@ import math
 
 import numpy as np
 
-from src.common.config import cpath, load_config
+from src.common.config import cpath, load_config, corpus_dir, proc_file, subcorpus_file
 from src.common.io import AppendOnlyJSONL, make_run_id, read_jsonl, read_lines, write_lines_atomic
 from src.common.log import get_logger
 from src.common.runs import find_latest_run
@@ -78,7 +78,7 @@ def main(argv=None) -> int:
     log = get_logger("subcorpus", cfg, run_id)
     proc = cpath(cfg, "data_processed")
 
-    table = load_corpus_table(cpath(cfg, "data_raw") / "nq_corpus")
+    table = load_corpus_table(corpus_dir(cfg))
     all_ids = corpus_ids(table)
     if args.population == "judged":
         from src.data.query_sets import judged
@@ -88,9 +88,9 @@ def main(argv=None) -> int:
     else:
         if not args.n_queries:
             raise ValueError("--n-queries is required for --population order")
-        joined = [json.loads(l) for l in open(proc / "nq_joined.jsonl", encoding="utf-8")]
+        joined = [json.loads(l) for l in open(proc_file(cfg, "joined.jsonl"), encoding="utf-8")]
         gold = {p for r in joined for p in r["gold_pids"]}
-        order, want = read_lines(proc / "nq_query_order.txt")[: args.n_queries], f"order:{args.n_queries}"
+        order, want = read_lines(proc_file(cfg, "query_order.txt"))[: args.n_queries], f"order:{args.n_queries}"
     bm25_run = find_latest_run(cfg, "R0", "full", want=want) if args.bm25_run == "latest" else args.bm25_run
     log.info("population %s: %d queries, %d gold passages; BM25 run %s", args.population, len(order), len(gold), bm25_run)
     ranked = {r["qid"]: r["pids"] for r in read_jsonl(bm25_run)}
@@ -99,7 +99,7 @@ def main(argv=None) -> int:
         raise RuntimeError(f"BM25 run lacks {len(missing)} of the required queries")
 
     ids, stats = build(all_ids, gold, ranked, order, args.size, cfg["subcorpus"]["bm25_max_depth"], cfg["seed"])
-    out = proc / f"subcorpus_{args.name}_ids.txt"
+    out = subcorpus_file(cfg, args.name)
     write_lines_atomic(out, ids)
     stats.update(name=args.name, population=args.population, run_id=run_id, bm25_run=str(bm25_run), path=str(out))
     AppendOnlyJSONL(cpath(cfg, "results_raw") / "subcorpus.jsonl").append(stats)

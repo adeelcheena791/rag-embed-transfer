@@ -33,3 +33,29 @@ def cpath(cfg: dict, key: str) -> Path:
     """Resolve a path from cfg['paths'][key] relative to the project root."""
     p = Path(cfg["paths"][key])
     return p if p.is_absolute() else root(cfg) / p
+
+
+def dataset(cfg: dict) -> dict:
+    """Which dataset a config refers to (addendum v0.3). Defaults reproduce the v0.2 NQ setup exactly."""
+    d = cfg.get("dataset") or {}
+    return {"corpus": d.get("corpus", "nq_corpus"), "qrels": d.get("qrels", "nq_qrels"),
+            "prefix": d.get("prefix", "nq"), "task": d.get("query_task", "nq")}
+
+
+def corpus_dir(cfg: dict) -> Path:
+    return cpath(cfg, "data_raw") / dataset(cfg)["corpus"]
+
+
+def qrels_tsv(cfg: dict) -> Path:
+    return cpath(cfg, "data_raw") / dataset(cfg)["qrels"] / "test.tsv"
+
+
+def proc_file(cfg: dict, stem: str) -> Path:
+    """data/processed/<prefix>_<stem>, e.g. nq_joined.jsonl or hp_joined.jsonl."""
+    return cpath(cfg, "data_processed") / f"{dataset(cfg)['prefix']}_{stem}"
+
+
+def subcorpus_file(cfg: dict, tag: str) -> Path:
+    """v0.2 NQ keeps its original name (subcorpus_<tag>_ids.txt); other datasets get their prefix."""
+    p = dataset(cfg)["prefix"]
+    return cpath(cfg, "data_processed") / (f"subcorpus_{tag}_ids.txt" if p == "nq" else f"{p}_subcorpus_{tag}_ids.txt")

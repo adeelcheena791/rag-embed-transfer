@@ -23,7 +23,7 @@ import time
 import numpy as np
 
 from src.common import vram
-from src.common.config import cpath, load_config
+from src.common.config import cpath, load_config, corpus_dir, proc_file, dataset
 from src.common.io import AppendOnlyJSONL, make_run_id, write_new_json
 from src.common.log import get_logger
 from src.data.loaders import load_corpus_table, passage_texts
@@ -96,11 +96,11 @@ def main(argv=None, encoder_factory=None, table=None) -> int:
     sinks = {"vram": AppendOnlyJSONL(cpath(cfg, "logs") / f"vram_throughput_{run_id}.jsonl"),
              "failures": AppendOnlyJSONL(raw / "failures.jsonl"), "tp": AppendOnlyJSONL(raw / "throughput.jsonl")}
 
-    table = table if table is not None else load_corpus_table(cpath(cfg, "data_raw") / "nq_corpus")
+    table = table if table is not None else load_corpus_table(corpus_dir(cfg))
     full_rows = table.num_rows
     texts = passage_texts(table, slice_rows(full_rows, n, cfg["seed"]))
     proc = cpath(cfg, "data_processed")
-    joined_path = proc / "nq_joined.jsonl"
+    joined_path = proc_file(cfg, "joined.jsonl")
     queries = ([json.loads(l)["question"] for l in open(joined_path, encoding="utf-8")]
                if joined_path.exists() else texts[:100])
     factory = encoder_factory or load_encoder
@@ -116,7 +116,7 @@ def main(argv=None, encoder_factory=None, table=None) -> int:
         enc = None
         try:
             enc = factory(key, resolve_revision(cfg, key), args.device, ec["max_seq_length"], ec["fp16"],
-                          cfg["query_task"]["nq"])
+                          cfg["query_task"][dataset(cfg)["task"]])
             vram.reset_peak()
             vram.snapshot("CP-b after load", sinks["vram"], model=key)
             times, used = time_passes(enc.encode_passages, texts, batch, tc["repeats"], tc["warmup_passages"], on_retry)

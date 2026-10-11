@@ -19,7 +19,7 @@ import time
 import numpy as np
 
 from src.common import vram
-from src.common.config import cpath, load_config
+from src.common.config import cpath, load_config, corpus_dir, dataset
 from src.common.io import (AppendOnlyJSONL, make_run_id, read_json, save_npy_atomic,
                            write_json_atomic, write_lines_atomic)
 from src.common.log import get_logger
@@ -99,7 +99,7 @@ def main(argv=None, encoder_factory=None) -> int:
     sinks = {"vram": AppendOnlyJSONL(cpath(cfg, "logs") / f"vram_encode_{run_id}.jsonl"),
              "failures": AppendOnlyJSONL(raw / "failures.jsonl"), "encode": AppendOnlyJSONL(raw / "encode.jsonl")}
 
-    table = load_corpus_table(cpath(cfg, "data_raw") / "nq_corpus")
+    table = load_corpus_table(corpus_dir(cfg))
     all_ids = corpus_ids(table)
     rows, sel_hash = select_rows(cfg, all_ids, args.corpus)
     corpus_tag = args.corpus
@@ -123,7 +123,7 @@ def main(argv=None, encoder_factory=None) -> int:
             return 2
         try:
             enc = factory(key, resolve_revision(cfg, key), args.device, ec["max_seq_length"], ec["fp16"],
-                          cfg["query_task"]["nq"])
+                          cfg["query_task"][dataset(cfg)["task"]])
             vram.reset_peak()
             vram.snapshot("CP-b after load", sinks["vram"], model=key)
             m = encode_model(cfg, key, enc, table, all_ids, rows, sel_hash, corpus_tag, queries, log, sinks)

@@ -20,7 +20,7 @@ import argparse
 import json
 import time
 
-from src.common.config import cpath, load_config
+from src.common.config import cpath, load_config, proc_file
 from src.common.io import AppendOnlyJSONL, make_run_id, read_jsonl, read_lines, utc_stamp
 from src.common.log import get_logger
 from src.common.models import resolve_model_revision
@@ -136,8 +136,8 @@ def main(argv=None, backend_factory=None) -> int:
     kind = args.backend or gc["backend"]
 
     proc = cpath(cfg, "data_processed")
-    joined = {json.loads(l)["qid"]: json.loads(l) for l in open(proc / "nq_joined.jsonl", encoding="utf-8")}
-    queries = [joined[q] for q in read_lines(proc / "nq_query_order.txt")[: args.n]]
+    joined = {json.loads(l)["qid"]: json.loads(l) for l in open(proc_file(cfg, "joined.jsonl"), encoding="utf-8")}
+    queries = [joined[q] for q in read_lines(proc_file(cfg, "query_order.txt"))[: args.n]]
     conds = [c for c in args.conditions.split(",") if c]
     plans = {c: plan_items(cfg, c, queries, args.corpus, args.n, args.k, args.prompt) for c in conds}
     passages = load_passages(cfg, {p for items, _ in plans.values() for it in items for p in it["pids"]})

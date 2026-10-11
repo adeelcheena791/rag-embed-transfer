@@ -45,6 +45,11 @@ def file_manifest(root: Path) -> list[dict]:
 
 def download_one(name: str, spec: dict, raw_dir: Path, api, snapshot_fn) -> dict:
     repo, pin = spec["repo"], spec["revision"]
+    resolved_now = False
+    if pin == "resolve":
+        # addendum v0.3: datasets added in v0.3 are pinned at first download; the resolved sha is recorded
+        # in the manifest and download.jsonl and then used for every later session (config `revision_file`).
+        pin, resolved_now = api.dataset_info(repo).sha, True
     if not pin or len(pin) != 40:
         raise ValueError(f"{name}: revision must be a full 40-char commit sha, got {pin!r}")
     info = api.dataset_info(repo, revision=pin)
@@ -57,7 +62,7 @@ def download_one(name: str, spec: dict, raw_dir: Path, api, snapshot_fn) -> dict
     if not files:
         raise RuntimeError(f"{name}: no files downloaded (check allow_patterns)")
     return {"name": name, "repo": repo, "pinned_revision": pin, "resolved_revision": info.sha,
-            "sha_match": info.sha == pin, "n_files": len(files), "files": files}
+            "sha_match": info.sha == pin, "resolved_at_first_use": resolved_now, "n_files": len(files), "files": files}
 
 
 def main(argv=None, api=None, snapshot_fn=None) -> int:

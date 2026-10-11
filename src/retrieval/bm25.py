@@ -15,7 +15,7 @@ import time
 
 import numpy as np
 
-from src.common.config import cpath, load_config
+from src.common.config import cpath, load_config, corpus_dir
 from src.common.io import AppendOnlyJSONL, make_run_id, read_lines
 from src.common.log import get_logger
 from src.data.loaders import corpus_ids, load_corpus_table, passage_texts
@@ -82,7 +82,7 @@ def main(argv=None) -> int:
     b = bc["b"] if args.b is None else args.b
     tag = "R0" if (k1, b) == (bc["k1"], bc["b"]) else f"R0_k1{k1}_b{b}"
 
-    table = load_corpus_table(cpath(cfg, "data_raw") / "nq_corpus")
+    table = load_corpus_table(corpus_dir(cfg))
     all_ids = corpus_ids(table)
     rows, sel_hash = select_rows(cfg, all_ids, args.corpus)
     doc_ids = [all_ids[i] for i in rows]

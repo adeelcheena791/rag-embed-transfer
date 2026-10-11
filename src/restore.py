@@ -22,7 +22,7 @@ from pathlib import Path
 
 from src.common.io import AppendOnlyJSONL, utc_stamp
 
-KEEP = ("results/raw/", "results/processed/", "data/processed/", "configs/resolved_revisions.json")
+KEEP = ("results/", "data/processed/", "configs/resolved_revisions.json")   # v0.3: results/v03_* included
 
 
 class RestoreError(RuntimeError):

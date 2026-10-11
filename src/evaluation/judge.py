@@ -20,7 +20,7 @@ import json
 import re
 import time
 
-from src.common.config import cpath, load_config
+from src.common.config import cpath, load_config, proc_file
 from src.common.io import AppendOnlyJSONL, make_run_id, read_jsonl, read_lines, utc_stamp, write_new_json
 from src.common.log import get_logger
 from src.common.models import resolve_model_revision
@@ -57,8 +57,8 @@ def main(argv=None, backend_factory=None) -> int:
         cfg["judge"]["enforce_eager"] = True
     log = get_logger("judge", cfg, run_id)
     jc = cfg["judge"]
-    qids = read_lines(cpath(cfg, "data_processed") / "nq_query_order.txt")[: args.n]
-    joined = {json.loads(l)["qid"]: json.loads(l) for l in open(cpath(cfg, "data_processed") / "nq_joined.jsonl",
+    qids = read_lines(proc_file(cfg, "query_order.txt"))[: args.n]
+    joined = {json.loads(l)["qid"]: json.loads(l) for l in open(proc_file(cfg, "joined.jsonl"),
                                                                    encoding="utf-8")}
     conds = [c for c in args.conditions.split(",") if c]
     if "CB" in conds:

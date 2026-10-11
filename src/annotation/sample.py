@@ -21,7 +21,7 @@ import json
 import random
 from pathlib import Path
 
-from src.common.config import cpath, load_config, root
+from src.common.config import cpath, load_config, root, proc_file
 from src.common.io import read_jsonl
 
 RETRIEVERS = ["R0", "R1", "R2", "R3", "R4", "R5", "R6"]
@@ -59,7 +59,7 @@ def main(argv=None) -> int:
     args = ap.parse_args(argv)
     cfg = load_config(args.config)
     raw = cpath(cfg, "results_raw")
-    joined = {json.loads(l)["qid"]: json.loads(l) for l in open(cpath(cfg, "data_processed") / "nq_joined.jsonl", encoding="utf-8")}
+    joined = {json.loads(l)["qid"]: json.loads(l) for l in open(proc_file(cfg, "joined.jsonl"), encoding="utf-8")}
     judg, gens = {}, {}
     for r in RETRIEVERS:
         judg[r] = [x for x in read_jsonl(raw / "judgements" / f"main__{r}_k5_A1__main__zero_shot.jsonl") if x["verdict"]]

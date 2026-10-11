@@ -21,7 +21,7 @@ import re
 import string
 from pathlib import Path
 
-from src.common.config import cpath, load_config
+from src.common.config import cpath, load_config, proc_file
 from src.common.io import read_jsonl, write_json_atomic
 
 IDK_PATTERN = re.compile(r"^\s*i\s+do(?:n['’]?t|\s+not)\s+know\b", re.IGNORECASE)
@@ -104,7 +104,7 @@ def main(argv=None) -> int:
     cfg = load_config(args.config)
     import json
     answers = {}
-    for line in open(cpath(cfg, "data_processed") / "nq_joined.jsonl", encoding="utf-8"):
+    for line in open(proc_file(cfg, "joined.jsonl"), encoding="utf-8"):
         r = json.loads(line)
         answers[r["qid"]] = r["answers"]
     out_dir = cpath(cfg, "results_processed") / "answers"

@@ -10,21 +10,21 @@ from __future__ import annotations
 
 import json
 
-from src.common.config import cpath
+from src.common.config import cpath, corpus_dir, proc_file, qrels_tsv
 from src.common.io import read_lines
 
 
 def _joined(cfg: dict) -> dict[str, dict]:
     proc = cpath(cfg, "data_processed")
-    return {r["qid"]: r for r in (json.loads(l) for l in open(proc / "nq_joined.jsonl", encoding="utf-8"))}
+    return {r["qid"]: r for r in (json.loads(l) for l in open(proc_file(cfg, "joined.jsonl"), encoding="utf-8"))}
 
 
 def judged(cfg: dict) -> list[dict]:
     """Needs the raw BEIR-NQ files (queries + qrels)."""
     from src.data.loaders import load_qrels, load_queries
     raw = cpath(cfg, "data_raw")
-    queries = load_queries(raw / "nq_corpus")
-    qrels = load_qrels(raw / "nq_qrels" / "test.tsv")
+    queries = load_queries(corpus_dir(cfg))
+    qrels = load_qrels(qrels_tsv(cfg))
     joined = _joined(cfg)
     return [{"qid": q, "question": queries[q], "gold_pids": sorted(qrels[q]), "joined": q in joined}
             for q in sorted(qrels) if q in queries and qrels[q]]
@@ -38,7 +38,7 @@ def resolve(cfg: dict, spec: str) -> list[dict]:
         return [joined[q] for q in sorted(joined)]
     if spec.startswith("order:"):
         n = int(spec.split(":", 1)[1])
-        return [joined[q] for q in read_lines(cpath(cfg, "data_processed") / "nq_query_order.txt")[:n]]
+        return [joined[q] for q in read_lines(proc_file(cfg, "query_order.txt"))[:n]]
     raise ValueError(f"unknown query set {spec!r}")
 
 

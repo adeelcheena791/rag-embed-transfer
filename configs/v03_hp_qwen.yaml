@@ -1,0 +1,132 @@
+# v0.3 configuration (HotpotQA, Qwen reader). Pre-registered in design/addendum_v0.3.md. Do not edit after runs start.
+experiment: v03_hp_qwen
+seed: 20260926
+root: .
+
+paths:
+  data_raw: data/raw
+  data_processed: data/processed
+  embeddings: data/embeddings_hp
+  results_raw: results/v03_hp/raw
+  results_processed: results/v03_hp/processed
+  logs: logs
+dataset:                      # v0.3 E1: BEIR-HotpotQA
+  corpus: hp_corpus
+  qrels: hp_qrels
+  answers: hp_answers
+  prefix: hp
+  query_task: hotpot
+datasets:                     # v0.3: pinned at first download ("resolve"); resolved shas recorded in download.jsonl
+  hp_corpus:
+    repo: BeIR/hotpotqa
+    revision: resolve
+  hp_qrels:
+    repo: BeIR/hotpotqa-qrels
+    revision: resolve
+    allow_patterns: ["test.tsv", "README.md"]
+  hp_answers:
+    repo: hotpotqa/hotpot_qa
+    revision: resolve
+    allow_patterns: ["fullwiki/validation-*", "README.md"]
+join:
+  min_joined: 1000            # v0.2.2 D1: floor on joined queries (replaces v0.2 "join rate >= 0.70")
+
+samples:
+  pilot_n: 200                # pilot generation queries = first 200 of the seeded order
+
+subcorpus:
+  pilot_size: 50000           # pilot corpus (gold + BM25 negatives + random), addendum v0.2.1
+  main_size: 300000           # used only if the §2.1 rule says "subcorpus"
+  bm25_max_depth: 100         # depth = min(100, floor(0.5*(size-|gold|)/n_queries))
+
+retrievers: {}                # optional per-model revision overrides; otherwise configs/resolved_revisions.json
+
+query_task:                   # R6 (Qwen3-Embedding) instruction text
+  nq: "Given a question, retrieve Wikipedia passages that answer the question"
+  hotpot: "Given a multi-hop question, retrieve Wikipedia passages that help answer the question"
+  scifact: "Given a scientific claim, retrieve documents that support or refute the claim"
+
+encode:
+  max_seq_length: 256
+  batch_size: 128
+  fp16: true
+  shard_size: 100000
+
+throughput:
+  n_passages: 20000
+  warmup_passages: 1000
+  repeats: 3
+  cap_t4_hours: 6.0           # C2: full corpus only if all 6 models together need <= 6 T4-hours
+
+r6_cpu_fallback:
+  max_cpu_hours: 4.0          # F3 (was 8.0 in v0.2)
+
+bm25:                         # Appendix C
+  k1: 1.2
+  b: 0.75
+  method: lucene
+  topk: 100
+
+search:
+  topk: 100
+  faiss_threads: null         # null = FAISS default (all cores); the actual value is logged
+  latency_index_max_gb: 8
+
+latency:
+  warmup: 50
+  n: 500
+
+sanity:
+  max_seq_length: 512         # model-card setting for the reference numbers
+  batch_size: 64
+  tolerance: 0.02
+  reference_ndcg10:           # MTEB model-index values in each model card README (read 2026-09-26)
+    R2: 0.71275
+    R3: 0.74039
+    R4: 0.74607
+    R5: 0.71944
+    # R1 and R6: no SciFact value on the card -> reported as "no_reference"
+
+# ---------------- Batch 2: reader, judge, pilot power (addendum v0.2.3) ----------------
+generation:                   # design v0.2 §4, Appendix A
+  model: Qwen/Qwen2.5-7B-Instruct-AWQ
+  backend: vllm
+  fallbacks:                  # pre-registered order (§3.1); used only via --model/--backend after a logged failure
+    - {model: Qwen/Qwen2.5-7B-Instruct-AWQ, backend: transformers}
+    - {model: Qwen/Qwen2.5-3B-Instruct, backend: transformers}
+  model_dir: /tmp/models      # weights are downloaded here, pinned revision, and deleted after use
+  dtype: half                 # T4 (sm_75) has no bf16
+  max_model_len: 4096
+  gpu_memory_utilization: 0.85
+  enforce_eager: false
+  tokenizer_mode: hf          # explicit (exists in vLLM 0.30.0); prompts are token ids anyway
+  env: {}                     # e.g. {VLLM_ATTENTION_BACKEND: ...} only if the pilot needs it (logged)
+  max_tokens: 32
+  stop: ["\n"]
+  chunk: 500                  # checkpoint + F4 timing record every 500 items
+
+judge:                        # design v0.2 §5.4, Appendix B, addendum F2
+  model: mistralai/Mistral-7B-Instruct-v0.3
+  backend: vllm
+  tensor_parallel_size: 2     # fp16 weights split over the 2 T4s
+  extra_llm_kwargs: {disable_custom_all_reduce: true}   # 2 T4s share PCIe, no NVLink; use NCCL all-reduce
+  dtype: half
+  max_model_len: 4096
+  gpu_memory_utilization: 0.85
+  enforce_eager: false
+  tokenizer_mode: hf          # explicit; Mistral repos also ship mistral-common files
+  env: {}
+  max_tokens: 8               # v0.2 said 5; "NOT_SUPPORTED" may need >5 tokens (addendum v0.2.3)
+  few_shot_threshold: 0.02    # F2
+
+pilot_power:                  # design v0.2 §7.1, addenda v0.2.2 D1, F4
+  corpus: pilot               # P7 reads the PILOT answers; unused in the main run
+  n_gen_rule: {p_d_threshold: 0.10, small: 1000}   # else all joined queries
+  n_judge: 500
+  f4: {s3_max_hours: 8.0, s4_max_hours: 6.0, s3_s4_max_hours: 14.0}
+
+main:                         # MAIN — fixed by the pilot (addendum v0.2.4)
+  n_gen: 2000
+  judge_variant: zero_shot    # P6: 0/300 parse failures <= 2%
+  n_judge: 500                # first 500 of the seeded order; 7 retrievers + GOLD
+  corpus: main                # 300,000-passage sub-corpus, population = judged (M1)

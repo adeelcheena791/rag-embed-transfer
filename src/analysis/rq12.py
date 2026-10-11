@@ -14,7 +14,7 @@ import numpy as np
 
 from src.analysis import stats
 from src.analysis.metrics import METRICS, load_qrels_tsv, per_query
-from src.common.config import cpath, load_config, root
+from src.common.config import cpath, load_config, root, proc_file
 from src.common.io import read_jsonl, read_lines, write_json_atomic
 from src.common.runs import find_latest_run
 
@@ -62,9 +62,9 @@ def main(argv=None) -> int:
     cfg = load_config(args.config)
     qrels = load_qrels_tsv(args.qrels)
     proc = cpath(cfg, "data_processed")
-    joined = sorted(json.loads(l)["qid"] for l in open(proc / "nq_joined.jsonl", encoding="utf-8"))
+    joined = sorted(json.loads(l)["qid"] for l in open(proc_file(cfg, "joined.jsonl"), encoding="utf-8"))
     judged = sorted(q for q in qrels if qrels[q])
-    order = read_lines(proc / "nq_query_order.txt")
+    order = read_lines(proc_file(cfg, "query_order.txt"))
     assert set(order) == set(joined) and set(joined) <= set(judged)
     out = {"n_joined": len(joined), "n_judged": len(judged), "bootstrap": {"B": stats.B, "seed": stats.SEED}}
 

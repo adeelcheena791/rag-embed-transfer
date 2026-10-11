@@ -9,7 +9,7 @@ import hashlib
 
 import numpy as np
 
-from src.common.config import cpath
+from src.common.config import cpath, subcorpus_file
 from src.common.io import AppendOnlyJSONL, read_lines, write_new_json
 
 
@@ -18,7 +18,7 @@ def select_rows(cfg: dict, all_ids: list[str], corpus_tag: str) -> tuple[np.ndar
     if corpus_tag == "full":
         rows = np.arange(len(all_ids), dtype=np.int64)
     else:
-        wanted = set(read_lines(cpath(cfg, "data_processed") / f"subcorpus_{corpus_tag}_ids.txt"))
+        wanted = set(read_lines(subcorpus_file(cfg, corpus_tag)))
         rows = np.array([i for i, p in enumerate(all_ids) if p in wanted], dtype=np.int64)
         if len(rows) != len(wanted):
             raise RuntimeError(f"{len(wanted) - len(rows)} sub-corpus ids not found in corpus")
