@@ -1,0 +1,1 @@
+{"size": 300000, "n_gold": 13783, "bm25_depth": 19, "n_bm25_added": 118726, "n_random": 167491, "n_queries": 7405, "name": "main", "population": "judged", "run_id": "20261012T044604573112Z_52e0a982fc", "bm25_run": "/kaggle/working/rag/results/v03_hp/raw/runs/R0__full__20261012T043151031660Z_52e0a982fc.jsonl", "path": "/kaggle/working/rag/data/processed/hp_subcorpus_main_ids.txt"}

@@ -1,0 +1,67 @@
+{
+ "lock": "requirements-retrieval.lock",
+ "python": "3.13.15",
+ "rows": [
+  {
+   "package": "torch",
+   "lock": "2.10.0+cu128",
+   "installed": "2.11.0+cu128",
+   "match": false
+  },
+  {
+   "package": "transformers",
+   "lock": "5.0.0",
+   "installed": "5.0.0",
+   "match": true
+  },
+  {
+   "package": "sentence-transformers",
+   "lock": "5.4.1",
+   "installed": "5.4.1",
+   "match": true
+  },
+  {
+   "package": "tokenizers",
+   "lock": "0.22.2",
+   "installed": "0.22.2",
+   "match": true
+  },
+  {
+   "package": "huggingface_hub",
+   "lock": "1.11.0",
+   "installed": "1.11.0",
+   "match": true
+  },
+  {
+   "package": "faiss-cpu",
+   "lock": "1.15.1",
+   "installed": "1.15.1",
+   "match": true
+  },
+  {
+   "package": "bm25s",
+   "lock": "0.3.11",
+   "installed": "0.3.11",
+   "match": true
+  },
+  {
+   "package": "numpy",
+   "lock": "2.0.2",
+   "installed": "2.1.3",
+   "match": false
+  },
+  {
+   "package": "pyarrow",
+   "lock": "24.0.0",
+   "installed": "24.0.0",
+   "match": true
+  },
+  {
+   "package": "triton",
+   "lock": "3.6.0",
+   "installed": "3.6.0",
+   "match": true
+  }
+ ],
+ "n_diff": 2
+}

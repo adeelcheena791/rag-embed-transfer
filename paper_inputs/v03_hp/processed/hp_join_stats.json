@@ -1,0 +1,18 @@
+{
+  "n_beir_judged": 7405,
+  "n_joined": 7405,
+  "n_missing_answer": 0,
+  "n_empty_answer": 0,
+  "join_rate": 1.0,
+  "min_rate": 0.95,
+  "n_gold_per_query": {
+    "2": 7405
+  },
+  "n_by_type": {
+    "bridge": 5918,
+    "comparison": 1487
+  },
+  "run_id": "20261012T043150029365Z_52e0a982fc",
+  "seed": 20260926,
+  "passed": true
+}
