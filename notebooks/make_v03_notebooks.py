@@ -91,8 +91,11 @@ MD = ("**How to run:** Settings → Accelerator **GPU T4 x2**, Internet **On**. 
       "When it finishes, open the version's **Output** tab, download `{zip}.zip` and send it to me.{inp}")
 
 
-def main(code_sha: str):
+def main(code_sha: str, only: str = "s1"):
+    """only = 's1' (S1-HP, ran frozen at 1dccbf3) or 'summary'; each notebook keeps the commit it was generated with."""
     here = Path(__file__).parent
+    if only == "summary":
+        return summary_notebook(code_sha, here)
     half = len(DENSE) // 2
     gpu0 = ",".join(["R1", "R2", "R3", "R5"])     # ~26 min of encoding
     gpu1 = ",".join(["R4", "R6"])                  # ~1.7 h of encoding
@@ -123,5 +126,50 @@ sh("rm -rf /kaggle/working/rag/data/raw /kaggle/working/rag/data/embeddings_hp /
        s1, here / "v03_s1_hotpot.ipynb")
 
 
+FIND_ZIP = '''import glob
+def find_output(name):
+    """A previous session's saved output: Kaggle mounts it as name.zip or already extracted; return it."""
+    hits = glob.glob(f"/kaggle/input/**/{name}.zip", recursive=True)
+    if not hits:
+        hits = [p for p in glob.glob("/kaggle/input/**/results/v03_hp", recursive=True)]
+        hits = [str(Path(p).parents[1]) for p in hits]
+    assert len(hits) == 1, f"attach the output of the earlier notebook (Add Input -> Your Work -> Notebooks); found {hits}"
+    return hits[0]'''
+
+
+def summary_notebook(code_sha, here):
+    cells = [
+        code_cell(code_sha),
+        setup(code_sha, "v03_S1hp_sum", ["requirements-v03-retrieval.txt"], "requirements-retrieval.lock"),
+        f'''# Cell 2 — bring in the S1-HP output (attached as input), without overwriting anything
+from pathlib import Path
+{FIND_ZIP}
+src = find_output("v03_s1hp_results"); print("found", src)
+if src.endswith(".zip"):
+    sh(f"unzip -q -n {{src}} -d .")
+else:
+    sh(f"cp -rn {{src}}/results {{src}}/data {{src}}/configs . 2>/dev/null || true")
+sh("ls results/v03_hp/raw/runs | head -30 && cat data/processed/hp_join_stats.json")''',
+        f'''# Cell 3 — retrieval summary (Hit@5, Both@5, nDCG@10 per retriever; all joined queries and the 2,000-query generation sample)
+sh("python -m src.analysis.retrieval_summary --config {HP} --out summary/v03_s1hp_retrieval_summary.json")''',
+        '''# Last cell — a SMALL zip to send to Claude (no run files, every file under 5 MB)
+import zipfile
+keep = ["summary", "results/v03_hp/raw", "data/processed", "configs/resolved_revisions.json", "logs"]
+n = 0
+with zipfile.ZipFile("/kaggle/working/v03_s1hp_summary.zip", "w", zipfile.ZIP_DEFLATED) as z:
+    for k in keep:
+        for p in ([Path(k)] if Path(k).is_file() else Path(k).rglob("*")):
+            if p.is_file() and "/runs/" not in p.as_posix() and p.stat().st_size < 5e6 and (k != "data/processed" or p.name.startswith("hp_")):
+                z.write(p); n += 1
+print(n, "files"); sh("ls -la /kaggle/working/v03_s1hp_summary.zip")
+sh("rm -rf /kaggle/working/rag")''',
+    ]
+    md = ("# v0.3 S1-HP summary — small result file (CPU only, about 10 min)\n"
+          "**How to run:** Add Input → **Your Work → Notebooks** → the notebook that ran S1-HP (its output `v03_s1hp_results`). "
+          "Settings → Accelerator **None** (CPU), Internet **On**. **Save Version → Save & Run All (Commit)**. "
+          "Then Output tab → download `v03_s1hp_summary.zip` (small) and send it to me.")
+    nb(md, cells, here / "v03_s1hp_summary.ipynb")
+
+
 if __name__ == "__main__":
-    main(sys.argv[1] if len(sys.argv) > 1 else "0" * 40)
+    main(sys.argv[1] if len(sys.argv) > 1 else "0" * 40, sys.argv[2] if len(sys.argv) > 2 else "s1")

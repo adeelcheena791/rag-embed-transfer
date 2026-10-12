@@ -104,3 +104,31 @@ def test_v03_command_parses(nb, cmd, monkeypatch):
         mod.main(argv)
     if "--config" in argv:
         assert (ROOT / argv[argv.index("--config") + 1]).exists()
+
+
+def test_retrieval_summary(tmp_path):
+    import yaml
+    from src.analysis import retrieval_summary
+    cfg = yaml.safe_load((ROOT / "configs/v03_hp_qwen.yaml").read_text())
+    cfg["root"] = str(tmp_path)
+    cfg["main"]["n_gen"] = 2
+    (tmp_path / "c.yaml").write_text(yaml.safe_dump(cfg))
+    c = load_config(tmp_path / "c.yaml")
+    qrels = qrels_tsv(c)
+    qrels.parent.mkdir(parents=True)
+    qrels.write_text("query-id\tcorpus-id\tscore\na\t1\t1\na\t2\t1\nb\t3\t1\nc\t4\t1\n")
+    pd = proc_file(c, "x").parent
+    pd.mkdir(parents=True)
+    proc_file(c, "joined.jsonl").write_text("".join(json.dumps(r) + "\n" for r in [
+        {"qid": "a", "type": "comparison"}, {"qid": "b", "type": "bridge"}, {"qid": "c", "type": "bridge"}]))
+    proc_file(c, "query_order.txt").write_text("b\na\nc\n")
+    runs = Path(tmp_path / cfg["paths"]["results_raw"]) / "runs"
+    runs.mkdir(parents=True)
+    ranked = {"a": ["1", "9", "9", "9", "9", "2"], "b": ["3"], "c": ["9"]}
+    (runs / "R0__main__x.jsonl").write_text("".join(json.dumps({"qid": q, "pids": p}) + "\n" for q, p in ranked.items()))
+    (runs / "R0__main__x.meta.json").write_text(json.dumps({"query_set": "judged"}))
+    out = tmp_path / "s.json"
+    assert retrieval_summary.main(["--config", str(tmp_path / "c.yaml"), "--out", str(out)]) == 0
+    r = json.loads(out.read_text())["retrievers"]
+    assert r["R0"]["joined"]["hit@5"] == pytest.approx(2 / 3) and r["R0"]["joined"]["both@5"] == pytest.approx(1 / 3)
+    assert r["R0"]["gen_first_2"]["n"] == 2 and r["R0"]["gen_bridge"]["n"] == 1 and "error" in r["R1"]
