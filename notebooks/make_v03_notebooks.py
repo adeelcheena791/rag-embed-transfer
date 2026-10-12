@@ -31,9 +31,34 @@ def sh_par(*cmds):
         raise RuntimeError("; ".join(errs))'''
 
 
+EXCLUDE = ("paper_inputs", "paper_outputs")     # v0.2 result copies for the paper; not needed to run code
+
+
+def embedded_code(code_sha):
+    """The repo is private, so the code travels inside the notebook: a tar.gz of the frozen commit (without the
+    large paper_* folders), plus the git tree hash that the extracted files must reproduce exactly."""
+    import base64
+    import subprocess
+    root = Path(__file__).resolve().parents[1]
+    git = lambda *a, **k: subprocess.run(["git", "-C", str(root), *a], check=True, capture_output=True, **k).stdout
+    keep = [n for n in git("ls-tree", "--name-only", code_sha, text=True).split("\n") if n and n not in EXCLUDE]
+    tar = git("archive", "--format=tar.gz", code_sha, "--", *keep)
+    entries = "".join(l + "\n" for l in git("ls-tree", code_sha, text=True).splitlines()
+                      if l.split("\t")[1] not in EXCLUDE)
+    tree = subprocess.run(["git", "-C", str(root), "mktree"], input=entries, check=True, capture_output=True,
+                          text=True).stdout.strip()
+    return base64.b64encode(tar).decode(), tree
+
+
+def code_cell(code_sha):
+    b64, _ = embedded_code(code_sha)
+    return f'# Cell 0c — the code of commit {code_sha[:7]} as base64 tar.gz (do not edit; Cell 1 checks it)\nCODE = "{b64}"'
+
+
 def setup(code_sha, session, reqs, lock):
     installs = "\n".join(f'sh("pip install -q -r {r}")' for r in reqs)
-    return f'''# Cell 1 — hardware, code frozen at {code_sha[:7]} (branch {BRANCH}), pinned environment, check, tests
+    _, tree = embedded_code(code_sha)
+    return f'''# Cell 1 — hardware, code frozen at {code_sha[:7]} (embedded below), pinned environment, check, tests
 sh("nvidia-smi --query-gpu=index,name,driver_version,memory.total --format=csv || true")
 sh("df -h / /tmp /kaggle/working && free -g && nproc")
 os.chdir("/kaggle/working")
@@ -42,15 +67,20 @@ try:                                   # Hugging Face token from Kaggle Secrets 
     os.environ["HF_TOKEN"] = UserSecretsClient().get_secret("HF_TOKEN"); print("HF_TOKEN loaded")
 except Exception as e:
     print("HF_TOKEN not available (public downloads still work):", type(e).__name__)
-# the GitHub repo is private: the code comes from a git bundle uploaded as a private Kaggle dataset
-import glob
-bundles = glob.glob("/kaggle/input/**/rag_v03*.bundle", recursive=True)
-assert len(bundles) == 1, f"attach the code dataset with exactly one rag_v03*.bundle, found {{bundles}}"
-sh(f"git clone -q {{bundles[0]}} rag")
+# the GitHub repo is private: the code of commit {code_sha} is embedded in Cell 0c (no dataset, no clone);
+# STOP unless the extracted files reproduce that commit's git tree exactly ({", ".join(EXCLUDE)} left out)
+import base64, io, shutil, tarfile
+shutil.rmtree("rag", ignore_errors=True)
+tarfile.open(fileobj=io.BytesIO(base64.b64decode(CODE))).extractall("rag")
 os.chdir("/kaggle/working/rag")
-sh("git checkout -q {code_sha} && git log --oneline -1")
-sh("test \\"$(git rev-parse HEAD)\\" = {code_sha} || (echo WRONG CODE COMMIT; exit 1)")
-{installs}
+sh("git init -q && git add -A -f")
+sh("test \\"$(git write-tree)\\" = {tree} || (echo WRONG CODE; exit 1)")
+sh("git -c user.name=kaggle -c user.email=kaggle@local commit -qm 'code {code_sha}' && echo CODE OK {code_sha[:7]}")
+{installs}\n''' + _setup_tail(session, lock)
+
+
+def _setup_tail(session, lock):
+    return f'''
 sh("python -m src.check_env --lock {lock}")
 sh("python -m src.env_report --session {session} --out results/v03_hp/raw/env_{session}.json")
 sh("python -m pytest -q -p no:cacheprovider 2>&1 | tail -3")'''
@@ -68,6 +98,7 @@ def main(code_sha: str):
     gpu1 = ",".join(["R4", "R6"])                  # ~1.7 h of encoding
     s1 = [
         PAR,
+        code_cell(code_sha),
         setup(code_sha, "v03_S1hp", ["requirements-retrieval-pinned.txt"], "requirements-retrieval.lock"),
         f'''# Cell 2 — E1 data: HotpotQA (BEIR corpus 5.2M passages, test qrels, answers), pinned at first download; join by id (gate >= 95%)
 sh("python -m src.data.download --config {HP}")
