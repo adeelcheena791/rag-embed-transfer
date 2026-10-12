@@ -16,17 +16,17 @@ dataset:                      # v0.3 E1: BEIR-HotpotQA
   answers: hp_answers
   prefix: hp
   query_task: hotpot
-datasets:                     # v0.3: pinned at first download ("resolve"); resolved shas recorded in download.jsonl
+datasets:                     # v0.3: resolved at first download in S1-HP (2026-10-12, download.jsonl) and pinned here
   hp_corpus:
     repo: BeIR/hotpotqa
-    revision: resolve
+    revision: a7e8bab212f5a89f9be1bc9b654aa6dfa317f32b
   hp_qrels:
     repo: BeIR/hotpotqa-qrels
-    revision: resolve
+    revision: b15429e9244c8ec966985d7778427c3b1543b314
     allow_patterns: ["test.tsv", "README.md"]
   hp_answers:
     repo: hotpotqa/hotpot_qa
-    revision: resolve
+    revision: 1908d6afbbead072334abe2965f91bd2709910ab
     allow_patterns: ["fullwiki/validation-*", "README.md"]
 join:
   min_joined: 1000            # v0.2.2 D1: floor on joined queries (replaces v0.2 "join rate >= 0.70")

@@ -132,3 +132,26 @@ def test_retrieval_summary(tmp_path):
     r = json.loads(out.read_text())["retrievers"]
     assert r["R0"]["joined"]["hit@5"] == pytest.approx(2 / 3) and r["R0"]["joined"]["both@5"] == pytest.approx(1 / 3)
     assert r["R0"]["gen_first_2"]["n"] == 2 and r["R0"]["gen_bridge"]["n"] == 1 and "error" in r["R1"]
+
+
+def test_v03_restore_runs_before_anything_writes_results():
+    """Same rule as the v0.2 notebooks (S3a failure of 2026-09-28): in a notebook that restores, no src command
+    may run before src.restore, and the environment is recorded after it."""
+    for f in NB:
+        cmds = [m.group(1) for cell in json.loads(f.read_text())["cells"]
+                for m in re.finditer(r'"([^"]*python -m [^"]*)"', "".join(cell["source"]))]
+        idx = [i for i, c in enumerate(cmds) if "python -m src.restore" in c]
+        if not idx:
+            continue
+        assert not [c for c in cmds[: idx[0]] if "python -m src." in c], f.name
+        assert any("src.env_report" in c for c in cmds[idx[0]:]) and any("src.check_env" in c for c in cmds[idx[0]:])
+
+
+def test_hp_configs_pinned_to_s1_revisions():
+    recorded = {"hp_corpus": "a7e8bab212f5a89f9be1bc9b654aa6dfa317f32b", "hp_qrels": "b15429e9244c8ec966985d7778427c3b1543b314",
+                "hp_answers": "1908d6afbbead072334abe2965f91bd2709910ab"}
+    for name in ("v03_hp_qwen", "v03_hp_llama"):
+        ds = load_config(ROOT / f"configs/{name}.yaml")["datasets"]
+        assert {k: ds[k]["revision"] for k in recorded} == recorded
+    log = [json.loads(l) for l in (ROOT / "paper_inputs/v03_hp/raw/download.jsonl").read_text().splitlines()]
+    assert {r["name"]: r["pinned_revision"] for r in log} == recorded

@@ -2,7 +2,7 @@
 
     python notebooks/make_v03_notebooks.py
 
-Each notebook clones branch v03 and refuses to run unless HEAD equals the commit written into it, so the
+Each notebook carries the code of one commit (embedded tar.gz) and refuses to run unless it reproduces that commit's tree, so the
 code of every session is frozen and recorded. Two independent jobs can run at once, one per T4 (sh_par).
 """
 import json
@@ -35,19 +35,33 @@ EXCLUDE = ("paper_inputs", "paper_outputs")     # v0.2 result copies for the pap
 
 
 def embedded_code(code_sha):
-    """The repo is private, so the code travels inside the notebook: a tar.gz of the frozen commit (without the
-    large paper_* folders), plus the git tree hash that the extracted files must reproduce exactly."""
+    """The repo is private, so the code travels inside the notebook: a tar.gz of the frozen commit without the large
+    paper_* folders and without the generated v0.3 notebooks (they embed code themselves), plus the git tree hash that
+    the extracted files must reproduce exactly."""
     import base64
     import subprocess
     root = Path(__file__).resolve().parents[1]
-    git = lambda *a, **k: subprocess.run(["git", "-C", str(root), *a], check=True, capture_output=True, **k).stdout
-    keep = [n for n in git("ls-tree", "--name-only", code_sha, text=True).split("\n") if n and n not in EXCLUDE]
-    tar = git("archive", "--format=tar.gz", code_sha, "--", *keep)
-    entries = "".join(l + "\n" for l in git("ls-tree", code_sha, text=True).splitlines()
-                      if l.split("\t")[1] not in EXCLUDE)
-    tree = subprocess.run(["git", "-C", str(root), "mktree"], input=entries, check=True, capture_output=True,
-                          text=True).stdout.strip()
-    return base64.b64encode(tar).decode(), tree
+
+    def git(*a, inp=None):
+        return subprocess.run(["git", "-C", str(root), *a], check=True, capture_output=True, input=inp,
+                              text=not a or a[0] != "archive").stdout
+
+    def mktree(lines):
+        return git("mktree", inp="".join(l + "\n" for l in lines)).strip()
+
+    nb_lines = [l for l in git("ls-tree", f"{code_sha}:notebooks").splitlines()
+                if not (l.split("\t")[1].startswith("v03_") and l.endswith(".ipynb"))]
+    top = []
+    for l in git("ls-tree", code_sha).splitlines():
+        meta, name = l.split("\t")
+        if name in EXCLUDE:
+            continue
+        if name == "notebooks":
+            meta = meta.rsplit(" ", 1)[0] + " " + mktree(nb_lines)
+        top.append(f"{meta}\t{name}")
+    keep = [l.split("\t")[1] for l in top]
+    tar = git("archive", "--format=tar.gz", code_sha, "--", *keep, ":(exclude)notebooks/v03_*.ipynb")
+    return base64.b64encode(tar).decode(), mktree(top)
 
 
 def code_cell(code_sha):
@@ -55,10 +69,10 @@ def code_cell(code_sha):
     return f'# Cell 0c — the code of commit {code_sha[:7]} as base64 tar.gz (do not edit; Cell 1 checks it)\nCODE = "{b64}"'
 
 
-def setup(code_sha, session, reqs, lock):
+def setup(code_sha, session, reqs, lock, restores=False):
     installs = "\n".join(f'sh("pip install -q -r {r}")' for r in reqs)
     _, tree = embedded_code(code_sha)
-    return f'''# Cell 1 — hardware, code frozen at {code_sha[:7]} (embedded below), pinned environment, check, tests
+    return f'''# Cell 1 — hardware, code frozen at {code_sha[:7]} (embedded in Cell 0c), pinned environment, check, tests
 sh("nvidia-smi --query-gpu=index,name,driver_version,memory.total --format=csv || true")
 sh("df -h / /tmp /kaggle/working && free -g && nproc")
 os.chdir("/kaggle/working")
@@ -76,7 +90,7 @@ os.chdir("/kaggle/working/rag")
 sh("git init -q && git add -A -f")
 sh("test \\"$(git write-tree)\\" = {tree} || (echo WRONG CODE; exit 1)")
 sh("git -c user.name=kaggle -c user.email=kaggle@local commit -qm 'code {code_sha}' && echo CODE OK {code_sha[:7]}")
-{installs}\n''' + _setup_tail(session, lock)
+{installs}\n''' + ("\nsh(\"python -m pytest -q -p no:cacheprovider 2>&1 | tail -3\")" if restores else _setup_tail(session, lock))
 
 
 def _setup_tail(session, lock):
@@ -92,10 +106,10 @@ MD = ("**How to run:** Settings → Accelerator **GPU T4 x2**, Internet **On**. 
 
 
 def main(code_sha: str, only: str = "s1"):
-    """only = 's1' (S1-HP, ran frozen at 1dccbf3) or 'summary'; each notebook keeps the commit it was generated with."""
+    """only = 's1' (S1-HP, ran frozen at 1dccbf3) or 's2'; each notebook keeps the commit it was generated with."""
     here = Path(__file__).parent
-    if only == "summary":
-        return summary_notebook(code_sha, here)
+    if only == "s2":
+        return s2_notebook(code_sha, here)
     half = len(DENSE) // 2
     gpu0 = ",".join(["R1", "R2", "R3", "R5"])     # ~26 min of encoding
     gpu1 = ",".join(["R4", "R6"])                  # ~1.7 h of encoding
@@ -126,49 +140,57 @@ sh("rm -rf /kaggle/working/rag/data/raw /kaggle/working/rag/data/embeddings_hp /
        s1, here / "v03_s1_hotpot.ipynb")
 
 
-FIND_ZIP = '''import glob
-def find_output(name):
-    """A previous session's saved output: Kaggle mounts it as name.zip or already extracted; return it."""
-    hits = glob.glob(f"/kaggle/input/**/{name}.zip", recursive=True)
-    if not hits:
-        hits = [p for p in glob.glob("/kaggle/input/**/results/v03_hp", recursive=True)]
-        hits = [str(Path(p).parents[1]) for p in hits]
-    assert len(hits) == 1, f"attach the output of the earlier notebook (Add Input -> Your Work -> Notebooks); found {hits}"
-    return hits[0]'''
+HPQ, HPL = "configs/v03_hp_qwen.yaml", "configs/v03_hp_llama.yaml"
+CONDS = "R0,R1,R2,R3,R4,R5,R6,CB,GOLD"
 
 
-def summary_notebook(code_sha, here):
-    cells = [
-        code_cell(code_sha),
-        setup(code_sha, "v03_S1hp_sum", ["requirements-v03-retrieval.txt"], "requirements-retrieval.lock"),
-        f'''# Cell 2 — bring in the S1-HP output (attached as input), without overwriting anything
-from pathlib import Path
-{FIND_ZIP}
-src = find_output("v03_s1hp_results"); print("found", src)
-if src.endswith(".zip"):
-    sh(f"unzip -q -n {{src}} -d .")
-else:
-    sh(f"cp -rn {{src}}/results {{src}}/data {{src}}/configs . 2>/dev/null || true")
-sh("ls results/v03_hp/raw/runs | head -30 && cat data/processed/hp_join_stats.json")''',
-        f'''# Cell 3 — retrieval summary (Hit@5, Both@5, nDCG@10 per retriever; all joined queries and the 2,000-query generation sample)
-sh("python -m src.analysis.retrieval_summary --config {HP} --out summary/v03_s1hp_retrieval_summary.json")''',
-        '''# Last cell — a SMALL zip to send to Claude (no run files, every file under 5 MB)
+def small_zip(name, keep_note):
+    return f'''# Last cell — package: everything of v0.3-HP EXCEPT the large run files (they stay in the S1 output) -> {name}.zip
+# {keep_note}
 import zipfile
-keep = ["summary", "results/v03_hp/raw", "data/processed", "configs/resolved_revisions.json", "logs"]
+from pathlib import Path
 n = 0
-with zipfile.ZipFile("/kaggle/working/v03_s1hp_summary.zip", "w", zipfile.ZIP_DEFLATED) as z:
-    for k in keep:
-        for p in ([Path(k)] if Path(k).is_file() else Path(k).rglob("*")):
-            if p.is_file() and "/runs/" not in p.as_posix() and p.stat().st_size < 5e6 and (k != "data/processed" or p.name.startswith("hp_")):
+with zipfile.ZipFile("/kaggle/working/{name}.zip", "w", zipfile.ZIP_DEFLATED) as z:
+    for k in ["results/v03_hp", "results/raw/restore.jsonl", "summary", "data/processed", "configs/resolved_revisions.json", "logs"]:
+        for p in ([Path(k)] if Path(k).is_file() else sorted(Path(k).rglob("*"))):
+            if p.is_file() and "/runs/" not in p.as_posix() and (not k.startswith("data/") or p.name.startswith("hp_join") or p.name.startswith("hp_query")):
                 z.write(p); n += 1
-print(n, "files"); sh("ls -la /kaggle/working/v03_s1hp_summary.zip")
-sh("rm -rf /kaggle/working/rag")''',
+print(n, "files"); sh("ls -la /kaggle/working/{name}.zip")
+if GEN_ERR:
+    raise RuntimeError("FAILED (packaged anyway): " + GEN_ERR)'''
+
+
+def s2_notebook(code_sha, here):
+    cells = [
+        PAR,
+        code_cell(code_sha),
+        setup(code_sha, "v03_S2hp", ["requirements-v03-retrieval.txt", "requirements-v03-generation.txt"],
+              "requirements-generation.lock", restores=True),
+        f'''# Cell 2 — restore the S1-HP output FIRST (nothing writes results/ before this), then environment record,
+# then the corpus text + qrels at the SAME pinned revisions as S1 (needed for passage text and the retrieval summary)
+sh("python -m src.restore --name v03_s1hp_results")
+sh("python -m src.check_env --lock requirements-generation.lock --report-only results/v03_hp/raw/check_env_v03_S2hp.json")
+sh("python -m src.env_report --session v03_S2hp --out results/v03_hp/raw/env_v03_S2hp.json")
+sh("python -m src.data.download --config {HPQ} --only hp_corpus,hp_qrels")''',
+        f'''# Cell 3 — E1 retrieval summary (descriptive): Hit@5, Both@5, nDCG@10 per retriever, all 7,405 queries + the 2,000 generation queries
+sh("python -m src.analysis.retrieval_summary --config {HPQ} --out summary/v03_hp_retrieval_summary.json")''',
+        f'''# Cell 4 — E1 + E2 readers in parallel: GPU 0 = Qwen2.5-7B-AWQ, GPU 1 = Llama-3.1-8B-AWQ; 9 conditions x 2,000 queries each (~3-4 h)
+GEN_ERR = ""
+try:
+    sh_par("CUDA_VISIBLE_DEVICES=0 python -m src.generation.run --config {HPQ} --conditions {CONDS} --corpus main --n 2000 --k 5 --auto-eager-retry",
+           "CUDA_VISIBLE_DEVICES=1 python -m src.generation.run --config {HPL} --conditions {CONDS} --corpus main --n 2000 --k 5 --auto-eager-retry")
+except Exception as e:
+    GEN_ERR = str(e); print("READER FAILURE (recorded; finished conditions are still packaged):", GEN_ERR)''',
+        f'''# Cell 5 — score answers (EM, F1, answer containment) for both readers
+sh("python -m src.evaluation.answer --config {HPQ} --prefix v03_hp_qwen")
+sh("python -m src.evaluation.answer --config {HPL} --prefix v03_hp_llama")''',
+        small_zip("v03_s2hp_results", "small (about 10-30 MB): send this file to Claude; the next sessions attach S1 + S2 outputs"),
     ]
-    md = ("# v0.3 S1-HP summary — small result file (CPU only, about 10 min)\n"
-          "**How to run:** Add Input → **Your Work → Notebooks** → the notebook that ran S1-HP (its output `v03_s1hp_results`). "
-          "Settings → Accelerator **None** (CPU), Internet **On**. **Save Version → Save & Run All (Commit)**. "
-          "Then Output tab → download `v03_s1hp_summary.zip` (small) and send it to me.")
-    nb(md, cells, here / "v03_s1hp_summary.ipynb")
+    md = ("# v0.3 S2-HP — readers on HotpotQA (E1 + E2): Qwen and Llama in parallel\n"
+          + MD.format(hours="4–5 h", zip="v03_s2hp_results",
+                      inp="\n\n**Input:** Add Input → **Your Work → Notebooks** → the S1-HP notebook (its output `v03_s1hp_results.zip`). "
+                          "Secrets: **HF_TOKEN** on."))
+    nb(md, cells, here / "v03_s2_hotpot_readers.ipynb")
 
 
 if __name__ == "__main__":
