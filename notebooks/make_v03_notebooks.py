@@ -81,7 +81,7 @@ sh("git -c user.name=kaggle -c user.email=kaggle@local commit -qm 'code {code_sh
 
 def _setup_tail(session, lock):
     return f'''
-sh("python -m src.check_env --lock {lock}")
+sh("python -m src.check_env --lock {lock} --report-only results/v03_hp/raw/check_env_{session}.json")
 sh("python -m src.env_report --session {session} --out results/v03_hp/raw/env_{session}.json")
 sh("python -m pytest -q -p no:cacheprovider 2>&1 | tail -3")'''
 
@@ -99,7 +99,7 @@ def main(code_sha: str):
     s1 = [
         PAR,
         code_cell(code_sha),
-        setup(code_sha, "v03_S1hp", ["requirements-retrieval-pinned.txt"], "requirements-retrieval.lock"),
+        setup(code_sha, "v03_S1hp", ["requirements-v03-retrieval.txt"], "requirements-retrieval.lock"),
         f'''# Cell 2 — E1 data: HotpotQA (BEIR corpus 5.2M passages, test qrels, answers), pinned at first download; join by id (gate >= 95%)
 sh("python -m src.data.download --config {HP}")
 sh("python -m src.data.join_hotpot --config {HP}")''',

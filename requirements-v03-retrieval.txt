@@ -1,0 +1,12 @@
+# v0.3 retrieval sessions (addendum v0.3.1). The Kaggle image moved to Python 3.13, where numpy 2.0.2 (v0.2 pin)
+# has no wheel. Same pins as requirements-retrieval-pinned.txt except numpy, which stays at the image's version.
+# Every installed version is recorded by src.env_report and compared with the v0.2 lock by src.check_env --report-only.
+sentence-transformers==5.4.1
+transformers==5.0.0
+tokenizers==0.22.2
+huggingface_hub==1.11.0
+bm25s==0.3.11
+faiss-cpu==1.15.1
+pyarrow==24.0.0
+pyyaml>=6
+pytest>=8

@@ -186,3 +186,12 @@ def test_rehearsal_s1_to_s4_across_sessions(joined_project, tmp_path):
     assert judge.main(c2 + ["--conditions", "R0,R1,R2,R3,R4,R5,R6,GOLD", "--corpus", "main", "--n", "2"],
                       backend_factory=lambda m: StubJudge()) == 0
     assert len(list((new / "results/raw/judgements").glob("*.jsonl"))) == 8
+
+
+def test_check_env_report_only(tmp_path):
+    lock = tmp_path / "x.lock"
+    lock.write_text("numpy==0.0.1\n")
+    out = tmp_path / "r" / "check.json"
+    assert check_env.main(["--lock", str(lock), "--report-only", str(out)]) == 0
+    rec = json.loads(out.read_text())
+    assert rec["n_diff"] == 1 and rec["rows"][0]["package"] == "numpy" and rec["rows"][0]["match"] is False
