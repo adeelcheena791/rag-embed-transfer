@@ -37,7 +37,16 @@ def setup(code_sha, session, reqs, lock):
 sh("nvidia-smi --query-gpu=index,name,driver_version,memory.total --format=csv || true")
 sh("df -h / /tmp /kaggle/working && free -g && nproc")
 os.chdir("/kaggle/working")
-sh("git clone --branch {BRANCH} {REPO} rag")
+try:                                   # Hugging Face token from Kaggle Secrets (Add-ons -> Secrets -> HF_TOKEN)
+    from kaggle_secrets import UserSecretsClient
+    os.environ["HF_TOKEN"] = UserSecretsClient().get_secret("HF_TOKEN"); print("HF_TOKEN loaded")
+except Exception as e:
+    print("HF_TOKEN not available (public downloads still work):", type(e).__name__)
+# the GitHub repo is private: the code comes from a git bundle uploaded as a private Kaggle dataset
+import glob
+bundles = glob.glob("/kaggle/input/**/rag_v03*.bundle", recursive=True)
+assert len(bundles) == 1, f"attach the code dataset with exactly one rag_v03*.bundle, found {{bundles}}"
+sh(f"git clone -q {{bundles[0]}} rag")
 os.chdir("/kaggle/working/rag")
 sh("git checkout -q {code_sha} && git log --oneline -1")
 sh("test \\"$(git rev-parse HEAD)\\" = {code_sha} || (echo WRONG CODE COMMIT; exit 1)")
