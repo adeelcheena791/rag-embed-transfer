@@ -1,0 +1,74 @@
+{
+  "v03_hp_qwen__CB_A2__main": {
+    "n": 2000,
+    "em": 0.158,
+    "f1": 0.24505278675572795,
+    "contain": 0.1885,
+    "rate_unparsed": 0.0,
+    "rate_idk": 0.0
+  },
+  "v03_hp_qwen__GOLD_A1__main": {
+    "n": 2000,
+    "em": 0.6285,
+    "f1": 0.7731003495429579,
+    "contain": 0.6775,
+    "rate_unparsed": 0.0005,
+    "rate_idk": 0.0
+  },
+  "v03_hp_qwen__R0_k5_A1__main": {
+    "n": 2000,
+    "em": 0.3385,
+    "f1": 0.43677079389109097,
+    "contain": 0.3715,
+    "rate_unparsed": 0.0,
+    "rate_idk": 0.0
+  },
+  "v03_hp_qwen__R1_k5_A1__main": {
+    "n": 2000,
+    "em": 0.304,
+    "f1": 0.40338073454323453,
+    "contain": 0.338,
+    "rate_unparsed": 0.0005,
+    "rate_idk": 0.0
+  },
+  "v03_hp_qwen__R2_k5_A1__main": {
+    "n": 2000,
+    "em": 0.394,
+    "f1": 0.5072673778835544,
+    "contain": 0.4305,
+    "rate_unparsed": 0.001,
+    "rate_idk": 0.0
+  },
+  "v03_hp_qwen__R3_k5_A1__main": {
+    "n": 2000,
+    "em": 0.404,
+    "f1": 0.5153737173043674,
+    "contain": 0.439,
+    "rate_unparsed": 0.0005,
+    "rate_idk": 0.0
+  },
+  "v03_hp_qwen__R4_k5_A1__main": {
+    "n": 2000,
+    "em": 0.424,
+    "f1": 0.5428628056290713,
+    "contain": 0.464,
+    "rate_unparsed": 0.001,
+    "rate_idk": 0.0
+  },
+  "v03_hp_qwen__R5_k5_A1__main": {
+    "n": 2000,
+    "em": 0.396,
+    "f1": 0.5057623989314779,
+    "contain": 0.433,
+    "rate_unparsed": 0.0005,
+    "rate_idk": 0.0
+  },
+  "v03_hp_qwen__R6_k5_A1__main": {
+    "n": 2000,
+    "em": 0.3665,
+    "f1": 0.46920621729921264,
+    "contain": 0.4005,
+    "rate_unparsed": 0.0005,
+    "rate_idk": 0.0
+  }
+}

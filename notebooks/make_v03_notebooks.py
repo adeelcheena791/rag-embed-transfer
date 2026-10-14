@@ -110,6 +110,8 @@ def main(code_sha: str, only: str = "s1"):
     here = Path(__file__).parent
     if only == "s2":
         return s2_notebook(code_sha, here)
+    if only == "s3":
+        return s3_notebook(code_sha, here)
     half = len(DENSE) // 2
     gpu0 = ",".join(["R1", "R2", "R3", "R5"])     # ~26 min of encoding
     gpu1 = ",".join(["R4", "R6"])                  # ~1.7 h of encoding
@@ -153,16 +155,17 @@ HPQ, HPL = "configs/v03_hp_qwen.yaml", "configs/v03_hp_llama.yaml"
 CONDS = "R0,R1,R2,R3,R4,R5,R6,CB,GOLD"
 
 
-def small_zip(name, keep_note):
-    return f'''# Last cell — package: everything of v0.3-HP EXCEPT the large run files (they stay in the S1 output) -> {name}.zip
+def small_zip(name, keep_note, keep=("results/v03_hp", "results/raw/restore.jsonl", "summary", "data/processed",
+                                      "configs/resolved_revisions.json", "logs"), data_prefix=("hp_join", "hp_query")):
+    return f'''# Last cell — package: everything EXCEPT the large run files (they stay in the earlier output) -> {name}.zip
 # {keep_note}
 import zipfile
 from pathlib import Path
 n = 0
 with zipfile.ZipFile("/kaggle/working/{name}.zip", "w", zipfile.ZIP_DEFLATED) as z:
-    for k in ["results/v03_hp", "results/raw/restore.jsonl", "summary", "data/processed", "configs/resolved_revisions.json", "logs"]:
+    for k in {list(keep)!r}:
         for p in ([Path(k)] if Path(k).is_file() else sorted(Path(k).rglob("*"))):
-            if p.is_file() and "/runs/" not in p.as_posix() and (not k.startswith("data/") or p.name.startswith("hp_join") or p.name.startswith("hp_query")):
+            if p.is_file() and "/runs/" not in p.as_posix() and (not k.startswith("data/") or p.name.startswith({tuple(data_prefix)!r})):
                 z.write(p); n += 1
 print(n, "files"); sh("ls -la /kaggle/working/{name}.zip")
 if GEN_ERR:
@@ -200,6 +203,44 @@ sh("python -m src.evaluation.answer --config {HPL} --prefix v03_hp_llama")''',
                       inp="\n\n**Input:** Add Input → **Your Work → Notebooks** → the S1-HP notebook (its output `v03_s1hp_results.zip`). "
                           "Secrets: **HF_TOKEN** on."))
     nb(md, cells, here / "v03_s2_hotpot_readers.ipynb")
+
+
+NQQ, NQL = "configs/v03_nq_qwen.yaml", "configs/v03_nq_llama.yaml"
+
+
+def s3_notebook(code_sha, here):
+    e4 = " && ".join(f"CUDA_VISIBLE_DEVICES=0 python -m src.generation.run --config {NQQ} --conditions R2,R3,R5,R6 --corpus main --n 2255 --k {k} --auto-eager-retry"
+                     for k in (1, 3, 10))
+    cells = [
+        PAR,
+        code_cell(code_sha),
+        setup(code_sha, "v03_S3nq", ["requirements-v03-retrieval.txt", "requirements-v03-generation.txt"],
+              "requirements-generation.lock", restores=True, post=GEN_FIX),
+        f'''# Cell 2 — restore the v0.2 S1 output FIRST (NQ sub-corpus, joined queries, the 7 retriever runs), then environment
+# record, then the NQ corpus text at the v0.2 pinned revision (passage text for the reader)
+sh("python -m src.restore --name main_s1_results")
+sh("python -m src.check_env --lock requirements-generation.lock --report-only results/raw/check_env_v03_S3nq.json")
+sh("python -m src.env_report --session v03_S3nq --out results/raw/env_v03_S3nq.json")
+sh("python -m src.data.download --config {NQQ} --only nq_corpus")''',
+        f'''# Cell 3 — in parallel: GPU 0 = E4 top-k with Qwen (R2, R3, R5, R6 x k = 1, 3, 10 x 2,255 queries);
+#                       GPU 1 = E2 Llama-3.1-8B on NQ (9 conditions x 2,255 queries, k = 5)   (~3-3.5 h)
+GEN_ERR = ""
+try:
+    sh_par("{e4}",
+           "CUDA_VISIBLE_DEVICES=1 python -m src.generation.run --config {NQL} --conditions {CONDS} --corpus main --n 2255 --k 5 --auto-eager-retry")
+except Exception as e:
+    GEN_ERR = str(e); print("READER FAILURE (recorded; finished conditions are still packaged):", GEN_ERR)''',
+        f'''# Cell 4 — score answers (EM, F1, answer containment)
+sh("python -m src.evaluation.answer --config {NQQ} --prefix v03_nq_qwen")
+sh("python -m src.evaluation.answer --config {NQL} --prefix v03_nq_llama")''',
+        small_zip("v03_s3nq_results", "small (about 20-40 MB): send this file to Claude",
+                  keep=("results/raw", "results/processed", "configs/resolved_revisions.json", "logs"), data_prefix=()),
+    ]
+    md = ("# v0.3 S3-NQ — Llama reader on NQ (E2) and the full top-k ablation with Qwen (E4)\n"
+          + MD.format(hours="3.5–4.5 h", zip="v03_s3nq_results",
+                      inp="\n\n**Input:** Add Input → **Your Work → Notebooks** → the v0.2 **Main S1** notebook from 27 Sep "
+                          "(its output has `main_s1_results.zip`). If it does not appear, upload `main_s1_results.zip` as a private dataset and attach that."))
+    nb(md, cells, here / "v03_s3_nq_readers.ipynb")
 
 
 if __name__ == "__main__":

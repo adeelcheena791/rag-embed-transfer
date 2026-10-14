@@ -76,7 +76,9 @@ def _commands():
     for f in NB:
         for cell in json.loads(f.read_text())["cells"]:
             for m in re.finditer(r'"([^"]*python -m src\.[^"]*)"', "".join(cell["source"])):
-                yield f.name, m.group(1).split("|")[0].split("2>&1")[0]
+                for part in m.group(1).split(" && "):          # chained commands in one sh_par job
+                    if "python -m src." in part:
+                        yield f.name, part.split("|")[0].split("2>&1")[0]
 
 
 CMDS = list(_commands())
@@ -155,3 +157,20 @@ def test_hp_configs_pinned_to_s1_revisions():
         assert {k: ds[k]["revision"] for k in recorded} == recorded
     log = [json.loads(l) for l in (ROOT / "paper_inputs/v03_hp/raw/download.jsonl").read_text().splitlines()]
     assert {r["name"]: r["pinned_revision"] for r in log} == recorded
+
+
+def test_restore_accepts_older_revision_file_but_not_a_conflict(tmp_path):
+    from src import restore
+    repo, src = tmp_path / "repo", tmp_path / "in" / "x_results"
+    (repo / "configs").mkdir(parents=True)
+    (src / "configs").mkdir(parents=True)
+    (src / "results" / "raw").mkdir(parents=True)
+    (src / "results" / "raw" / "a.jsonl").write_text("{}\n")
+    (repo / "configs" / "resolved_revisions.json").write_text(json.dumps({"m1": "a" * 40, "m2": "b" * 40}))
+    (src / "configs" / "resolved_revisions.json").write_text(json.dumps({"m1": "a" * 40}))
+    rec = restore.restore(src, repo)
+    assert rec["copied"] == 1 and rec["identical_skipped"] == 1
+    assert json.loads((repo / "configs" / "resolved_revisions.json").read_text())["m2"] == "b" * 40
+    (src / "configs" / "resolved_revisions.json").write_text(json.dumps({"m1": "c" * 40}))
+    with pytest.raises(restore.RestoreError):
+        restore.restore(src, repo)

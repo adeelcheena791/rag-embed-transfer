@@ -38,6 +38,16 @@ def find_source(search: Path, name: str) -> Path:
     return found[0]
 
 
+def _revisions_subset(src: Path, dst: Path) -> bool:
+    """v0.3: configs/resolved_revisions.json only ever gains entries (a model is pinned once, at first use).
+    An older copy whose every entry is in the repo's copy with the SAME sha is not a conflict; any differing sha is."""
+    if not dst.as_posix().endswith("configs/resolved_revisions.json"):
+        return False
+    import json
+    old, new = json.loads(src.read_text()), json.loads(dst.read_text())
+    return all(new.get(k) == v for k, v in old.items())
+
+
 def restore(src: Path, repo: Path) -> dict:
     with tempfile.TemporaryDirectory() as tmp:
         base = Path(tmp)
@@ -53,7 +63,7 @@ def restore(src: Path, repo: Path) -> dict:
                 continue
             dst = repo / rel
             if dst.exists():
-                if filecmp.cmp(f, dst, shallow=False):
+                if filecmp.cmp(f, dst, shallow=False) or _revisions_subset(f, dst):
                     same += 1
                     continue
                 raise RestoreError(f"{dst} exists with different content; refusing to overwrite")
