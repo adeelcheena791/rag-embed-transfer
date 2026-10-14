@@ -69,8 +69,8 @@ def code_cell(code_sha):
     return f'# Cell 0c — the code of commit {code_sha[:7]} as base64 tar.gz (do not edit; Cell 1 checks it)\nCODE = "{b64}"'
 
 
-def setup(code_sha, session, reqs, lock, restores=False):
-    installs = "\n".join(f'sh("pip install -q -r {r}")' for r in reqs)
+def setup(code_sha, session, reqs, lock, restores=False, post=()):
+    installs = "\n".join([f'sh("pip install -q -r {r}")' for r in reqs] + list(post))
     _, tree = embedded_code(code_sha)
     return f'''# Cell 1 — hardware, code frozen at {code_sha[:7]} (embedded in Cell 0c), pinned environment, check, tests
 sh("nvidia-smi --query-gpu=index,name,driver_version,memory.total --format=csv || true")
@@ -140,6 +140,15 @@ sh("rm -rf /kaggle/working/rag/data/raw /kaggle/working/rag/data/embeddings_hp /
        s1, here / "v03_s1_hotpot.ipynb")
 
 
+# addendum v0.3.1 (S2-HP attempt 1, 2026-10-14): the Kaggle image ships torchaudio 2.11.0+cu128; vLLM 0.30.0 pins
+# torchaudio==2.11.0, which pip treats as already satisfied, so it stayed next to vLLM's torch 2.13.0 (CUDA 13.0)
+# and both readers stopped ("PyTorch and TorchAudio were compiled with different CUDA versions"). The PyPI wheel
+# torchaudio 2.11.0 is the +cu130 build (checked 2026-10-14), so it is force-installed; then the stack is checked
+# BEFORE anything else runs.
+GEN_FIX = ('sh("pip install -q --force-reinstall --no-deps torchaudio==2.11.0")',
+           'sh("python -c \\"import torch, torchaudio, torchvision, vllm, transformers; '
+           'print(torch.__version__, torch.version.cuda, torchaudio.__version__, torchvision.__version__, vllm.__version__, transformers.__version__); '
+           'assert torch.cuda.is_available() and torchaudio.__version__.endswith(torch.version.cuda.replace(\\x27.\\x27, \\x27\\x27)), \\x27torch/torchaudio CUDA mismatch\\x27\\"")')
 HPQ, HPL = "configs/v03_hp_qwen.yaml", "configs/v03_hp_llama.yaml"
 CONDS = "R0,R1,R2,R3,R4,R5,R6,CB,GOLD"
 
@@ -165,7 +174,7 @@ def s2_notebook(code_sha, here):
         PAR,
         code_cell(code_sha),
         setup(code_sha, "v03_S2hp", ["requirements-v03-retrieval.txt", "requirements-v03-generation.txt"],
-              "requirements-generation.lock", restores=True),
+              "requirements-generation.lock", restores=True, post=GEN_FIX),
         f'''# Cell 2 — restore the S1-HP output FIRST (nothing writes results/ before this), then environment record,
 # then the corpus text + qrels at the SAME pinned revisions as S1 (needed for passage text and the retrieval summary)
 sh("python -m src.restore --name v03_s1hp_results")

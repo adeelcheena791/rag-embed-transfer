@@ -21,3 +21,12 @@ Status: written after the first v0.3 session (S1-HP) stopped at the environment 
 - Comparisons **between** a v0.3 cell and the v0.2 Qwen–NQ cell (for example pooled GEE, E10) mix two environments.
   The paper states this and lists the version differences from the recorded files.
 - No v0.2 result is re-run or changed.
+
+## Second image issue: torchaudio (S2-HP attempt 1, 2026-10-14)
+- S2-HP attempt 1 (code b561147) restored S1, recorded the environment and the retrieval summary, then both readers stopped at start-up:
+  "PyTorch and TorchAudio were compiled with different CUDA versions" (torch 2.13.0 from vLLM uses CUDA 13.0; the image's torchaudio 2.11.0+cu128).
+- Cause: vLLM 0.30.0 pins `torchaudio==2.11.0`; pip treats the image's `2.11.0+cu128` as satisfying it and does not replace it.
+  The PyPI wheel `torchaudio==2.11.0` is the `+cu130` build (checked 2026-10-14), i.e. the build vLLM expects.
+- Fix: generation sessions force-reinstall `torchaudio==2.11.0` from PyPI (no dependencies) and check torch/torchaudio/torchvision/vLLM
+  import together with matching CUDA versions before any other step. No generation was produced in attempt 1, so nothing is discarded;
+  the attempt is listed as a failed run.
