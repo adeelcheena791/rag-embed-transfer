@@ -112,6 +112,8 @@ def main(code_sha: str, only: str = "s1"):
         return s2_notebook(code_sha, here)
     if only == "s3":
         return s3_notebook(code_sha, here)
+    if only == "s4":
+        return s4_notebook(code_sha, here)
     half = len(DENSE) // 2
     gpu0 = ",".join(["R1", "R2", "R3", "R5"])     # ~26 min of encoding
     gpu1 = ",".join(["R4", "R6"])                  # ~1.7 h of encoding
@@ -156,7 +158,8 @@ CONDS = "R0,R1,R2,R3,R4,R5,R6,CB,GOLD"
 
 
 def small_zip(name, keep_note, keep=("results/v03_hp", "results/raw/restore.jsonl", "summary", "data/processed",
-                                      "configs/resolved_revisions.json", "logs"), data_prefix=("hp_join", "hp_query")):
+                                      "configs/resolved_revisions.json", "logs"), data_prefix=("hp_join", "hp_query"),
+              run_prefix=()):
     return f'''# Last cell — package: everything EXCEPT the large run files (they stay in the earlier output) -> {name}.zip
 # {keep_note}
 import zipfile
@@ -165,11 +168,22 @@ n = 0
 with zipfile.ZipFile("/kaggle/working/{name}.zip", "w", zipfile.ZIP_DEFLATED) as z:
     for k in {list(keep)!r}:
         for p in ([Path(k)] if Path(k).is_file() else sorted(Path(k).rglob("*"))):
-            if p.is_file() and "/runs/" not in p.as_posix() and (not k.startswith("data/") or p.name.startswith({tuple(data_prefix)!r})):
+            if p.is_file() and ("/runs/" not in p.as_posix() or p.name.startswith({tuple(run_prefix)!r})) and (not k.startswith("data/") or p.name.startswith({tuple(data_prefix)!r})):
                 z.write(p); n += 1
 print(n, "files"); sh("ls -la /kaggle/working/{name}.zip")
 if GEN_ERR:
     raise RuntimeError("FAILED (packaged anyway): " + GEN_ERR)'''
+
+
+SOFT = '''# Cell 0d — a failing step is recorded and the notebook continues, so finished results are always packaged
+GEN_ERR = ""
+def soft(*cmds, par=False):
+    global GEN_ERR
+    try:
+        sh_par(*cmds) if par else [sh(c) for c in cmds]
+    except Exception as e:
+        GEN_ERR += ("; " if GEN_ERR else "") + str(e); print("STEP FAILED (recorded, continuing):", e)'''
+
 
 
 def s2_notebook(code_sha, here):
@@ -241,6 +255,50 @@ sh("python -m src.evaluation.answer --config {NQL} --prefix v03_nq_llama")''',
                       inp="\n\n**Input:** Add Input → **Your Work → Notebooks** → the v0.2 **Main S1** notebook from 27 Sep "
                           "(its output has `main_s1_results.zip`). If it does not appear, upload `main_s1_results.zip` as a private dataset and attach that."))
     nb(md, cells, here / "v03_s3_nq_readers.ipynb")
+
+
+def s4_notebook(code_sha, here):
+    gpu1 = " && ".join([
+        f"CUDA_VISIBLE_DEVICES=1 python -m src.retrieval.rerank --config {NQQ} --first R0,R5 --depth 50",
+        f"python -m src.generation.mechanism --config {NQQ} --n 500",
+        f"CUDA_VISIBLE_DEVICES=1 python -m src.generation.run --config {NQQ} --conditions X0,X5 --corpus main --n 2255 --k 5 --auto-eager-retry",
+        f"CUDA_VISIBLE_DEVICES=1 python -m src.generation.run --config {NQQ} --conditions M1,M3,M5,MR,MG --corpus main --n 500 --k 5 --auto-eager-retry"])
+    e7 = "\n".join(
+        f'soft("CUDA_VISIBLE_DEVICES=0 python -m src.retrieval.throughput --config {NQQ} --models {",".join(DENSE)} --n 20000 --batch 128", '
+        f'"python -m src.retrieval.bm25 --config {NQQ} --corpus main --queries judged --latency")   # repetition {i}' for i in range(1, 6))
+    cells = [
+        PAR,
+        SOFT,
+        code_cell(code_sha),
+        setup(code_sha, "v03_S4nq", ["requirements-v03-retrieval.txt", "requirements-v03-generation.txt"],
+              "requirements-generation.lock", restores=True, post=GEN_FIX),
+        f'''# Cell 2 — restore the v0.2 S1 output FIRST, then environment record, then NQ corpus text + qrels (v0.2 pinned revisions)
+sh("python -m src.restore --name main_s1_results")
+sh("python -m src.check_env --lock requirements-generation.lock --report-only results/raw/check_env_v03_S4nq.json")
+sh("python -m src.env_report --session v03_S4nq --out results/raw/env_v03_S4nq.json")
+sh("python -m src.data.download --config {NQQ} --only nq_corpus,nq_qrels")''',
+        f'''# Cell 3 — in parallel (~2 h): GPU 0 = E9 full-corpus encoding (R1, R2, R5; 2.68M passages);
+# GPU 1 = E5 rerank R0/R5 top 50 -> X0/X5, E12 contexts, reader (Qwen) on X0, X5 (2,255) and M1, M3, M5, MR, MG (500)
+soft("CUDA_VISIBLE_DEVICES=0 python -m src.retrieval.encode --config {NQQ} --models R1,R2,R5 --corpus full",
+     "{gpu1}", par=True)''',
+        f'''# Cell 4 — CPU: E9 exact search on the full corpus (all judged queries), retrieval summaries, E6 HNSW
+soft(*[f"python -m src.retrieval.search --config {NQQ} --model {{m}} --corpus full --queries judged" for m in ("R1", "R2", "R5")])
+soft("python -m src.analysis.retrieval_summary --config {NQQ} --corpus full --retrievers R0,R1,R2,R5 --out summary/v03_nq_full_summary.json",
+     "python -m src.analysis.retrieval_summary --config {NQQ} --corpus main --retrievers R0,R1,R2,R3,R4,R5,R6,X0,X5 --out summary/v03_nq_main_summary.json")
+soft("python -m src.retrieval.hnsw --config {NQQ} --models R1,R2,R5")
+sh("rm -rf data/embeddings /tmp/models; df -h /kaggle/working")''',
+        f'''# Cell 5 — score answers (EM, F1, answer containment) for X0, X5, M1..MG
+soft("python -m src.evaluation.answer --config {NQQ} --prefix v03_nq_qwen")''',
+        "# Cell 6 — E7: five repetitions of the cost measurements, alone at the end of the session (~2.5 h)\n" + e7,
+        small_zip("v03_s4nq_results", "small (about 20-40 MB): send this file to Claude",
+                  keep=("results/raw", "results/processed", "summary", "configs/resolved_revisions.json", "logs"), data_prefix=(),
+                  run_prefix=("X", "M")),
+    ]
+    md = ("# v0.3 S4-NQ — reranker (E5), full corpus (E9), HNSW (E6), mechanism tests (E12), repeated cost (E7)\n"
+          + MD.format(hours="5–6 h", zip="v03_s4nq_results",
+                      inp="\n\n**Input:** Add Input → **Your Work → Notebooks** → the v0.2 **Main S1** notebook from 27 Sep "
+                          "(its output has `main_s1_results.zip`), the same input as notebook 3."))
+    nb(md, cells, here / "v03_s4_nq_extras.ipynb")
 
 
 if __name__ == "__main__":
