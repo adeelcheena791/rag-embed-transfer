@@ -28,17 +28,17 @@ def jl(p):
 def norm(s, uni=True):
     s = s.lower()
     # the documented rule (src/evaluation/answer.py docstring and design v0.2): ASCII punctuation plus typographic
-    # quotes, en/em dash and ellipsis; re-implemented here, not imported
-    drop = set(string.punctuation) | {"\u2018", "\u2019", "\u201c", "\u201d", "\u2013", "\u2014", "\u2026"}
+    # quotes, en/em dash and ellipsis; re-implemented here, not imported. uni=False gives the plain SQuAD rule.
+    drop = set(string.punctuation) | ({"\u2018", "\u2019", "\u201c", "\u201d", "\u2013", "\u2014", "\u2026"} if uni else set())
     s = "".join(ch for ch in s if ch not in drop)
     s = re.sub(r"\b(a|an|the)\b", " ", s)
     return " ".join(s.split())
 
 
-def em(pred, golds):
+def em(pred, golds, uni=True):
     if pred is None:
         return 0.0
-    return float(any(norm(pred) == norm(g) for g in golds))
+    return float(any(norm(pred, uni) == norm(g, uni) for g in golds))
 
 
 def mcnemar_p(a, b):
@@ -78,13 +78,15 @@ raw_sets = [("HotpotQA Qwen", "paper_inputs/v03_hp/raw/generations", "paper_inpu
             ("NQ Qwen top-k (v0.3)", "paper_inputs/v03_nq/raw/generations", "paper_inputs/v03_nq/processed/answers", "v03_nq_qwen", nq_joined),
             ("NQ Qwen S4", "paper_inputs/v03_nq_s4/raw/generations", "paper_inputs/v03_nq_s4/processed/answers", "v03_nq_qwen", nq_joined),
             ("NQ Qwen v0.2 (all conditions, k ablation, A3, A2rep)", "paper_inputs/results/raw/generations", "paper_inputs/results/processed/answers", "main", nq_joined)]
-total, disagree, examples = 0, 0, []
+total, disagree, examples, plain_diff = 0, 0, [], 0
 for name, gdir, adir, prefix, joined in raw_sets:
     n_s, d_s = 0, 0
     for gf in sorted((ROOT / gdir).glob(f"{prefix}__*.jsonl")):
         scored = {r["qid"]: r["em"] for r in jl(ROOT / adir / gf.name)}
         for r in jl(gf):
-            mine = em(r["output"].strip() if r["output"] else None, joined[r["qid"]]["answers"])
+            out = r["output"].strip() if r["output"] else None
+            mine = em(out, joined[r["qid"]]["answers"])
+            plain_diff += mine != em(out, joined[r["qid"]]["answers"], uni=False)
             n_s += 1
             if mine != scored[r["qid"]]:
                 d_s += 1
@@ -93,6 +95,9 @@ for name, gdir, adir, prefix, joined in raw_sets:
     total += n_s; disagree += d_s
     log(f"- {name}: {n_s} answers re-scored, {d_s} disagreements")
 log(f"- TOTAL: {total} answers, {disagree} disagreements ({100 * disagree / total:.3f}%)")
+log(f"- sensitivity: a plain SQuAD normaliser (ASCII punctuation only) changes EM for {plain_diff} of {total} answers "
+    f"({100 * plain_diff / total:.2f}%)")
+SUMMARY = {"n_answers": total, "n_disagree": disagree, "n_plain_squad_diff": plain_diff}
 for e in examples:
     log(f"  - example: {e[0]} {e[1]} output={e[2]!r} golds={e[3]} scored={e[4]} mine={e[5]}")
 
@@ -219,5 +224,7 @@ for cell in cells:
 log(f"- 84 pairs: largest |p difference| {worst_p:.2e}; largest |Holm p difference| {worst_h:.2e}; "
     f"pairs whose Holm significance at 0.05 differs: {n_sig_diff}")
 
+SUMMARY.update(n_em_means=len(checks), n_pairs=84, holm_sig_diff=n_sig_diff)
+json.dump(SUMMARY, open(ROOT / "manuscript_ipm/records/independent_check.json", "w"), indent=1)
 (ROOT / "manuscript_ipm/records/independent_check.md").write_text(
     "# Independent recomputation (Gate 2)\n\nScript: manuscript_ipm/tools/independent_check.py (standard library only, no project imports).\n\n" + "\n".join(OUT) + "\n")

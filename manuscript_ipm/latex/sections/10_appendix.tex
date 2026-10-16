@@ -1,0 +1,47 @@
+\section{Reader prompts}\label{app:prompts}
+Each prompt was rendered with the reader's own chat template. Passages appear in rank order as ``[$i$] title'' followed by the passage text on the next line, separated by blank lines.
+
+\paragraph{A1 (with passages)} System: \emph{``You are a question answering assistant. Answer the question using the passages provided. If the passages do not contain the answer, give your best short answer anyway. Reply with the answer only, as a short phrase of a few words, with no explanation.''} User: \emph{``Passages: \ldots\ Question: \{question\} Answer:''}
+
+\paragraph{A2 (closed book)} System: \emph{``You are a question answering assistant. Reply with the answer only, as a short phrase of a few words, with no explanation.''} User: \emph{``Question: \{question\} Answer:''}
+
+The gold-passage condition uses A1 with the gold passages only.
+
+\section{Models, data and software}\label{app:repro}
+\begin{table}[h]
+\centering
+\small
+\caption{Pinned revisions (leading eight characters of the Hugging Face commit).}
+\label{tab:revisions}
+\begin{tabular}{ll}
+\toprule
+Resource & Revision \\
+\midrule
+sentence-transformers/all-MiniLM-L6-v2 & 1110a243 \\
+BAAI/bge-small-en-v1.5 & 5c38ec7c \\
+BAAI/bge-base-en-v1.5 & a5beb1e3 \\
+BAAI/bge-large-en-v1.5 & d4aa6901 \\
+intfloat/e5-base-v2 & f52bf8ec \\
+Qwen/Qwen3-Embedding-0.6B & 97b0c614 \\
+Qwen/Qwen2.5-7B-Instruct-AWQ & b2503754 \\
+hugging-quants/Meta-Llama-3.1-8B-Instruct-AWQ-INT4 & db1f81ad \\
+BAAI/bge-reranker-base & 2cfc18c9 \\
+mistralai/Mistral-7B-Instruct-v0.3 (judge) & c170c708 \\
+BeIR/nq & b7253e6c \\
+BeIR/nq-qrels & 519acd4e \\
+google-research-datasets/nq\_open & 5dd9790a \\
+BeIR/hotpotqa & a7e8bab2 \\
+BeIR/hotpotqa-qrels & b15429e9 \\
+hotpotqa/hotpot\_qa & 1908d6af \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Retrieval used bm25s 0.3.11 and faiss-cpu 1.15.1; readers used vLLM 0.30.0 with PyTorch 2.13.0 (CUDA 13.0) and Transformers 5.17.0, in half precision with a maximum model length of 4,096 tokens.
+
+\section{Additional tables}\label{app:tables}
+Table~\ref{tab:ci} gives the bootstrap intervals for Table~\ref{tab:main}. Table~\ref{tab:transferalt} repeats the transfer ratios with token F1 and answer containment. Table~\ref{tab:decomp} gives EM given a hit and given a miss, which enter Eq.~\ref{eq:decomp}.
+
+\input{tables/tab_ci}
+\input{tables/tab_transfer_alt}
+\input{tables/tab_decomp}

@@ -20,7 +20,7 @@ Central claims of the manuscript. IDs refer to evidence-ledger.csv (number claim
 ## Conflict log
 | ID | Claim/metric | Source A | Source B | Reconciliation | Decision | Status |
 |---|---|---|---|---|---|---|
-| X1 | EM normalisation | plain SQuAD normaliser | project normaliser (+ typographic punctuation) | re-scored: 83 of 117,425 answers differ (0.07%) | use project normaliser (documented in v0.2 design); report in Methods | RESOLVED |
+| X1 | EM normalisation | plain SQuAD normaliser | project normaliser (+ typographic punctuation) | re-scored: 91 of 131,855 answers differ (0.07%; independent_check.json; an earlier partial count was 83 of 117,425) | use project normaliser (documented in v0.2 design); report in Methods | RESOLVED |
 | X2 | Hit@5 of BM25 on NQ | 0.363 (2,255 generation queries) | 0.373 (3,452 judged queries) | different populations | always state population | RESOLVED |
 | X3 | Encoder throughput | v0.2 single measurement (e.g. MiniLM 1,943/s) | v0.3 five repetitions (median 1,807/s) | different sessions; v0.3 is the pre-registered repeated measurement | report v0.3 median and range | RESOLVED |
 | X4 | P1/P2 for Qwen–NQ | listed as predictions in analysis output | addendum v0.3 restricts P1/P2 to "each new cell" | the Qwen–NQ cell was observed (v0.2) before registration | report Qwen–NQ verdicts as non-confirmatory | RESOLVED |

@@ -1,0 +1,20 @@
+\begin{table}[t]
+\centering
+\small
+\caption{Exact match by number of passages $k$ (Qwen reader, NQ, 2,255 queries).}
+\label{tab:topk}
+\begin{tabular}{lrrrrrr}
+\toprule
+Retriever & $k{=}1$ & $k{=}3$ & $k{=}5$ & $k{=}10$ & $\Delta_{1-5}$ & $p_\text{Holm}$ \\
+\midrule
+BM25 & 0.233 & 0.318 & 0.360 & 0.400 & $-$0.126 & $<$0.001 \\
+MiniLM-L6 & 0.352 & 0.442 & 0.471 & 0.502 & $-$0.120 & $<$0.001 \\
+bge-small & 0.400 & 0.470 & 0.484 & 0.507 & $-$0.083 & $<$0.001 \\
+bge-base & 0.415 & 0.480 & 0.493 & 0.506 & $-$0.078 & $<$0.001 \\
+bge-large & 0.421 & 0.493 & 0.503 & 0.520 & $-$0.082 & $<$0.001 \\
+e5-base-v2 & 0.432 & 0.500 & 0.510 & 0.508 & $-$0.078 & $<$0.001 \\
+Qwen3-Emb-0.6B & 0.386 & 0.475 & 0.492 & 0.506 & $-$0.106 & $<$0.001 \\
+\bottomrule
+\end{tabular}
+\par\smallskip\parbox{\linewidth}{\footnotesize Exact McNemar test of $k{=}1$ vs $k{=}5$, Holm over seven retrievers.}
+\end{table}

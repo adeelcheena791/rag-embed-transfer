@@ -109,6 +109,38 @@ def t_transfer():
           "significant after Holm). BM25 on NQ retrieves worse than MiniLM-L6, so its ratio describes a loss.", wide=True)
 
 
+def t_transfer_alt():
+    rows = []
+    for met, lab in (("f1", "Token F1"), ("contain", "Answer containment")):
+        rows.append(f"\\multicolumn{{5}}{{l}}{{\\emph{{{lab}}}}} \\\\")
+        for r in ["R0", "R2", "R3", "R4", "R5", "R6"]:
+            cols = []
+            for c, _, _ in CELLS:
+                t = next(x for x in S["cells"][c]["transfer_vs_R1"][met] if x["retriever"] == r)
+                cols.append(f"{t['ratio']:.2f} [{t['ci_lo']:.2f}, {t['ci_hi']:.2f}]" if t["estimable"] else "n.e.")
+            rows.append(f"{NAME[r]} & " + " & ".join(cols))
+    table("tab_transfer_alt", "lcccc", "Retriever & NQ Qwen & NQ Llama & HotpotQA Qwen & HotpotQA Llama", rows,
+          "Transfer ratios with token F1 and answer containment in place of EM (same queries, baseline and reporting rule as "
+          "Table~\\ref{tab:transfer}).", "tab:transferalt", wide=True)
+
+
+def t_decomp():
+    rows = []
+    for r in R:
+        cols = []
+        for c, _, _ in CELLS:
+            d = S["cells"][c]["decomposition"][r]
+            cols.append(f"{d['p_em_given_hit']:.3f} / {d['p_em_given_miss']:.3f}")
+        rows.append(f"{NAME[r]} & " + " & ".join(cols))
+    table("tab_decomp", "lcccc", "Retriever & NQ Qwen & NQ Llama & HotpotQA Qwen & HotpotQA Llama", rows,
+          "Exact match given a hit and given a miss at Hit@5, $P(\\mathrm{EM}\\mid\\mathrm{hit})$ / $P(\\mathrm{EM}\\mid\\mathrm{miss})$, "
+          "on the generation queries.", "tab:decomp",
+          "Closed-book EM for comparison: NQ " + f"{S['cells']['qwen_nq']['answers']['CB']['em']['mean']:.3f} (Qwen), "
+          f"{S['cells']['llama_nq']['answers']['CB']['em']['mean']:.3f} (Llama); HotpotQA "
+          f"{S['cells']['qwen_hp']['answers']['CB']['em']['mean']:.3f} (Qwen), {S['cells']['llama_hp']['answers']['CB']['em']['mean']:.3f} (Llama).",
+          wide=True)
+
+
 def t_predictions():
     cellname = {"qwen_nq": "NQ, Qwen$^\\dagger$", "llama_nq": "NQ, Llama", "qwen_hp": "HotpotQA, Qwen", "llama_hp": "HotpotQA, Llama"}
     ok = lambda b: "holds" if b else "\\textbf{fails}"                     # noqa: E731
@@ -135,7 +167,7 @@ def t_predictions():
           "P1: every reportable EM transfer ratio has an upper 95\\% bound below 1. P2: no Holm-significant EM gain of bge-large or "
           "Qwen3-Emb-0.6B over e5-base-v2. P3: the full corpus keeps the nDCG@10 ordering. P4: EM at $k{=}1$ below $k{=}5$. "
           "P5: hard negatives lower EM. P6: gold position changes EM. "
-          "$^\\dagger$Not confirmatory: this cell was observed in the first study phase, before the predictions were registered. "
+          "$^\\dagger$Not confirmatory: this cell was observed in Phase 1 of the study, before the predictions were registered. "
           "$^\\ddagger$Confirmatory for bge-small, bge-base, e5-base-v2 and Qwen3-Emb-0.6B only; the other three were observed before registration.",
           wide=True)
 
@@ -158,8 +190,8 @@ def t_mechanism():
     rows = [f"{lab[c]} & {f(m['answers'][c]['em']['mean'])} [{f(m['answers'][c]['em']['ci_lo'])}, {f(m['answers'][c]['em']['ci_hi'])}]"
             f" & {f(m['answers'][c]['f1']['mean'])} & {f(m['answers'][c]['contain']['mean'])}" for c in ("MG", "MR", "M1", "M3", "M5")]
     table("tab_mechanism", "lccc", "Context (5 passages) & EM [95\\% CI] & F1 & AC", rows,
-          "Distraction and position tests (Qwen reader, first 500 NQ queries).", "tab:mechanism",
-          f"Hard vs random negatives: $\\Delta$EM = {m['P5']['test']['diff']:+.3f}, exact McNemar $p$ = {m['P5']['test']['p']:.1e}. "
+          "Distraction and position tests (Qwen reader, 500 NQ generation queries).", "tab:mechanism",
+          f"Hard vs random negatives: $\\Delta$EM = {m['P5']['test']['diff']:+.3f}, exact McNemar $p$ = " + "${:.1f}\\times10^{{-{{}}{}}}$".format(*[float(x) if i == 0 else abs(int(x)) for i, x in enumerate(f"{m['P5']['test']['p']:.1e}".split("e"))]) + ". "
           "Position: no pair differs after Holm.")
 
 
@@ -214,7 +246,7 @@ def t_gee():
     table("tab_gee", "lcc", "Contrast & Odds ratio [95\\% CI] & $p$", rows,
           "Pooled GEE logistic model of EM over the four reader--dataset cells.", "tab:gee",
           f"EM $\\sim$ retriever + dataset + reader; exchangeable working correlation ({g['working_correlation']:.2f}) within query; "
-          f"{g['n_rows']:,} answers in {g['n_clusters']:,} query clusters; robust standard errors.")
+          f"{g['n_rows']:,} answers in {g['n_clusters']:,} query clusters; empirical (sandwich) standard errors.")
 
 
 def t_judge():
@@ -231,4 +263,4 @@ def t_judge():
 
 
 if __name__ == "__main__":
-    t_main(); t_ci(); t_transfer(); t_predictions(); t_topk(); t_mechanism(); t_reranker(); t_cost(); t_corpus_hnsw(); t_gee(); t_judge()
+    t_main(); t_ci(); t_transfer(); t_transfer_alt(); t_decomp(); t_predictions(); t_topk(); t_mechanism(); t_reranker(); t_cost(); t_corpus_hnsw(); t_gee(); t_judge()

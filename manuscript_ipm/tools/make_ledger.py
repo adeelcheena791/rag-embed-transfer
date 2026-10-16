@@ -22,15 +22,16 @@ RNAME = {"R0": "BM25", "R1": "MiniLM-L6", "R2": "bge-small", "R3": "bge-base", "
          "CB": "closed book", "GOLD": "gold passages", "X0": "BM25+reranker", "X5": "e5-base+reranker"}
 V, P = "VERIFIED", "PARTIALLY VERIFIED"
 ROWS = []
+SHARES = {}
 
 
 def f(x, d=3):
     s = f"{x:.{d}f}"
-    return s.replace("-", "\\textminus ") if s.startswith("-") else s
+    return s.replace("-", "\\ensuremath{-}", 1) if s.startswith("-") else s
 
 
 def sgn(x, d=3):
-    return ("+" if x >= 0 else "\\textminus ") + f"{abs(x):.{d}f}"
+    return ("+" if x >= 0 else "\\ensuremath{-}") + f"{abs(x):.{d}f}"
 
 
 def pv(p):
@@ -84,6 +85,8 @@ for c, cell in CELLS.items():
             add(f"T.{c}.{r}.ci", f"[{f(t['ci_lo'], 2)}, {f(t['ci_hi'], 2)}]", f"95% CI of the transfer ratio of {RNAME[r]}", "calculation",
                 "T", "MiniLM-L6", pop, "paired percentile bootstrap over queries B=10,000 seed 0", f"{SRC} cells.{cell}.transfer_vs_R1", P,
                 "second-machine rerun")
+            add(f"T.{c}.{r}.hi3", f(t["ci_hi"], 3), f"upper 95% bound (3 decimals) of the transfer ratio of {RNAME[r]}", "calculation", "T",
+                "MiniLM-L6", pop, "bootstrap", f"{SRC} cells.{cell}.transfer_vs_R1", P, "second-machine rerun")
             add(f"T.{c}.{r}.hi", f(t["ci_hi"], 2), f"upper 95% bound of the transfer ratio of {RNAME[r]}", "calculation", "T", "MiniLM-L6",
                 pop, "bootstrap", f"{SRC} cells.{cell}.transfer_vs_R1", P, "second-machine rerun")
         else:
@@ -103,6 +106,26 @@ for c, cell in CELLS.items():
             pop + f", n_hit = {d['n_hit']}", "", f"{SRC} cells.{cell}.decomposition", P, "not independently recomputed")
         add(f"PM.{c}.{r}", f(d["p_em_given_miss"]), f"P(EM | miss@5) for {RNAME[r]}", "calculation", "conditional EM", "—",
             pop + f", n_miss = {d['n_miss']}", "", f"{SRC} cells.{cell}.decomposition", P, "not independently recomputed")
+    # post hoc algebraic decomposition (exact identity): EM_R = h_R a_R + (1-h_R) b_R with a = P(EM|hit), b = P(EM|miss), so
+    # T(R) = (a_1 - b_1) + [h_R (a_R - a_1) + (1 - h_R)(b_R - b_1)] / (h_R - h_1)
+    D = C["decomposition"]
+    n = C["n_queries"]
+    a1, b1 = D["R1"]["p_em_given_hit"], D["R1"]["p_em_given_miss"]
+    h1 = D["R1"]["n_hit"] / n
+    add(f"DB.{c}", f(a1 - b1, 2), "baseline hit-miss gap of MiniLM-L6, P(EM|hit) - P(EM|miss)", "calculation", "difference of conditional EM",
+        "—", pop, "post hoc", f"{SRC} cells.{cell}.decomposition", P, "computed in make_ledger.py")
+    for t in C["transfer_vs_R1"]["em"]:
+        r = t["retriever"]
+        if not t["estimable"]:
+            continue
+        hR, aR, bR = D[r]["n_hit"] / n, D[r]["p_em_given_hit"], D[r]["p_em_given_miss"]
+        resid = (hR * (aR - a1) + (1 - hR) * (bR - b1)) / (hR - h1)
+        assert abs((a1 - b1) + resid - t["ratio"]) < 1e-9, (cell, r)
+        SHARES.setdefault(ds, []).append(resid / t["ratio"])
+        add(f"DS.{c}.{r}", f"{100 * resid / t['ratio']:.0f}\\%", f"share of T from changed conditional EM rates, {RNAME[r]}", "calculation",
+            "(T - (a_1 - b_1)) / T", "MiniLM-L6", pop, "post hoc", f"{SRC} cells.{cell}.decomposition", P, "computed in make_ledger.py")
+        add(f"DR.{c}.{r}", sgn(resid, 2), f"part of T from changed conditional EM rates, {RNAME[r]}", "calculation", "T - (a_1 - b_1)",
+            "MiniLM-L6", pop, "post hoc; exact identity checked", f"{SRC} cells.{cell}.decomposition", P, "computed in make_ledger.py")
     add(f"RHO.{c}", f(C["spearman_hit5_em"]["rho"], 2), "Spearman rho between Hit@5 and EM over 7 retrievers", "calculation", "Spearman",
         "—", pop, "descriptive, 7 points", f"{SRC} cells.{cell}.spearman_hit5_em", P, "")
     if "both@5" in C["retrieval"]["R0"]:  # post hoc (not pre-registered): Spearman between Both@5 and EM over R0-R6
@@ -129,6 +152,25 @@ for c, cell in CELLS.items():
     if "by_type" in C:
         for typ, d in C["by_type"].items():
             add(f"N.{c}.{typ}", str(d["n"]), f"number of {typ} questions", "observation", "count", "—", pop, "", f"{SRC} by_type", P, "")
+            for k in ("R0", "R1", "R2", "R3", "R4", "R5", "R6", "CB", "GOLD"):
+                add(f"BT.{c}.{typ}.{k}", f(d[k]["em"]), f"EM of {RNAME[k]} on {typ} questions", "observation", "exact match", "—",
+                    pop + f", {typ} n = {d['n']}", "", f"{SRC} cells.{cell}.by_type", P, "")
+            for k in ("R0", "R1", "R2", "R3", "R4", "R5", "R6"):
+                add(f"BTB.{c}.{typ}.{k}", f(d["both5_" + k]), f"Both@5 of {RNAME[k]} on {typ} questions", "observation", "Both@5", "—",
+                    pop + f", {typ}", "", f"{SRC} cells.{cell}.by_type", P, "")
+
+for ds_, v in SHARES.items():
+    if ds_ == "hp":
+        add("DS.hp.min", f"{100 * min(v):.0f}\\%", "smallest share of T from changed conditional EM rates, HotpotQA", "calculation", "share", "",
+            "HotpotQA, 2 readers x 5 encoders", "post hoc", f"{SRC}", P, "")
+        add("DS.hp.max", f"{100 * max(v):.0f}\\%", "largest share of T from changed conditional EM rates, HotpotQA", "calculation", "share", "",
+            "HotpotQA, 2 readers x 5 encoders", "post hoc", f"{SRC}", P, "")
+
+# ---------------- unweighted mean EM over the four cells (as plotted in fig5)
+for r in ("R0", "R1", "R2", "R3", "R4", "R5", "R6"):
+    m = sum(S["cells"][cell]["answers"][r]["em"]["mean"] for cell in CELLS.values()) / 4
+    add(f"EMBAR.{r}", f(m), f"unweighted mean EM over the four cells, {RNAME[r]}", "calculation", "mean of 4 cell EMs", "—",
+        "4 reader-dataset cells", "descriptive", f"{SRC} cells.*.answers", V, "mean of verified cell EMs")
 
 # ---------------- top-k (E4) and P4
 T = S["topk"]
@@ -151,6 +193,8 @@ for k, v in M["answers"].items():
 p5 = M["P5"]["test"]
 add("P5.diff", sgn(p5["diff"]), "EM of M1 minus EM of MR", "inference", "ΔEM", "MR (random negatives)", "Qwen2.5-7B / NQ, n = 500",
     f"CI [{p5['ci_lo']}, {p5['ci_hi']}]", f"{SRC} mechanism.P5", V, "derived from verified means")
+add("P5.abs", f(abs(p5["diff"])), "size of the EM drop, M1 vs MR", "inference", "|ΔEM|", "MR", "Qwen2.5-7B / NQ, n = 500", "", f"{SRC} mechanism.P5", V,
+    "derived from verified means")
 add("P5.ci", f"[{f(p5['ci_lo'])}, {f(p5['ci_hi'])}]", "95% CI of M1 − MR", "calculation", "ΔEM", "MR", "n = 500", "paired bootstrap", f"{SRC}", P, "")
 add("P5.p", pv(p5["p"]), "exact McNemar p, M1 vs MR", "inference", "exact McNemar (single pre-registered test)", "MR", "n = 500", "", f"{SRC}", V,
     "independent_check §4")
@@ -198,6 +242,9 @@ for r in E9["retrievers"]:
                 f"NQ, all {E9['n_judged']} judged queries", "", f"{SRC} corpus_hnsw_cost.E9", P, "")
     add(f"E9.drop.{r}", sgn(E9["drop_full_minus_sub"][r]["ndcg@10"]), f"nDCG@10 full minus sub-corpus, {RNAME[r]}", "calculation", "nDCG@10",
         "sub-corpus", "NQ judged", "", f"{SRC} E9", P, "")
+for r in E9["retrievers"]:
+    add(f"E9.dropabs.{r}", f(abs(E9["drop_full_minus_sub"][r]["ndcg@10"])), f"size of the nDCG@10 drop on the full corpus, {RNAME[r]}",
+        "calculation", "nDCG@10", "sub-corpus", "NQ judged", "", f"{SRC} E9", P, "")
 add("E9.tau", f"{E9['P3']['kendall_tau_primary']:.2f}", "Kendall tau between sub- and full-corpus orderings", "calculation", "Kendall tau",
     "—", "4 retrievers", "", f"{SRC} E9.P3", P, "")
 E6 = S["corpus_hnsw_cost"]["E6"]
@@ -212,6 +259,8 @@ for r, d in E6.items():
         "ms/query", "", "500 queries, CPU", "", f"{SRC} E6", P, "")
     add(f"E6.dhit.{r}", sgn(d["ef128"]["hit@5"] - d["exact"]["hit@5"], 4), f"Hit@5 HNSW(128) minus exact, {RNAME[r]}", "calculation", "Hit@5",
         "exact", "NQ judged", "", f"{SRC} E6", P, "")
+add("E6.dhitabs.max", f"{max(abs(d['ef128']['hit@5'] - d['exact']['hit@5']) for d in E6.values()):.4f}",
+    "largest absolute Hit@5 change, HNSW efSearch 128 vs exact", "calculation", "Hit@5", "exact", "NQ judged, 3 encoders", "", f"{SRC} E6", P, "")
 E7 = S["corpus_hnsw_cost"]["E7"]
 for r in ("R1", "R2", "R3", "R4", "R5", "R6"):
     d = E7[r]
@@ -252,6 +301,10 @@ add("JA.ci", f"[{f(J['kappa_ci95'][0])}, {f(J['kappa_ci95'][1])}]", "95% CI of k
 add("JA.raw", f(J["raw_agreement"]), "raw agreement", "calculation", "proportion", "", "200 items", "", f"{SRC}", P, "")
 add("JA.kipw", f(J["population_weighted"]["kappa_ipw"]), "inverse-probability-weighted kappa", "calculation", "kappa", "", "200 items", "",
     f"{SRC}", P, "")
+add("JA.jrate", f(J["population_weighted"]["judge_supported_rate"]), "population-weighted share judged SUPPORTED by the LLM judge", "calculation",
+    "proportion", "", "200 items, inverse-probability weights", "", f"{SRC}", P, "")
+add("JA.hrate", f(J["population_weighted"]["human_supported_rate"]), "population-weighted share labelled SUPPORTED by the author", "calculation",
+    "proportion", "", "200 items, inverse-probability weights", "", f"{SRC}", P, "")
 add("JA.prec", f(J["population_weighted"]["judge_precision_for_SUPPORTED"]), "weighted judge precision for SUPPORTED", "calculation", "", "",
     "", "", f"{SRC}", P, "")
 add("JA.rec", f(J["population_weighted"]["judge_recall_for_SUPPORTED"]), "weighted judge recall for SUPPORTED", "calculation", "", "", "",
@@ -281,6 +334,21 @@ for k, v, what, src in (("N.nq.judged", nq["n_beir_judged"], "BEIR-NQ judged tes
                         ("N.sc.hp.rand", sc_hp["n_random"], "random passages in the HotpotQA sub-corpus", "v03_hp/raw/subcorpus.jsonl"),
                         ("N.gee", G["n_rows"], "GEE rows", SRC)):
     add(k, f"{v:,}", what, "observation", "count", "", "study design (data preparation)", "", src, V, "read from data-preparation record")
+IC = json.load(open(ROOT / "manuscript_ipm/records/independent_check.json"))
+add("IC.n", f"{IC['n_answers']:,}", "answers re-scored independently", "calculation", "count", "", "all scored answers", "",
+    "manuscript_ipm/records/independent_check.json", V, "independent_check §1")
+add("IC.plain", f"{IC['n_plain_squad_diff']:,}", "answers whose EM changes under a plain SQuAD normaliser", "calculation", "count", "",
+    "all scored answers", "", "manuscript_ipm/records/independent_check.json", V, "independent_check §1")
+add("IC.plainpct", f"{100 * IC['n_plain_squad_diff'] / IC['n_answers']:.2f}\\%", "share of answers whose EM changes under a plain SQuAD normaliser",
+    "calculation", "proportion", "", "all scored answers", "", "manuscript_ipm/records/independent_check.json", V, "independent_check §1")
+CS = json.load(open(ROOT / "manuscript_ipm/records/cross_session_check.json"))
+add("CS.n", str(CS["cross_session"]["n_identical_inputs"]), "reader inputs identical across the two study phases", "observation", "count", "",
+    "Qwen2.5-7B / NQ", "", "manuscript_ipm/records/cross_session_check.json", V, "tools/cross_session_check.py")
+add("CS.same", str(CS["cross_session"]["n_identical_outputs"]), "of these, outputs identical across phases", "observation", "count", "",
+    "Qwen2.5-7B / NQ", "", "manuscript_ipm/records/cross_session_check.json", V, "tools/cross_session_check.py")
+add("CS.within", f"{CS['within_session_rerun_A2']['n_identical_outputs']}/{CS['within_session_rerun_A2']['n']}",
+    "identical outputs in a within-session rerun", "observation", "count", "", "Qwen2.5-7B / NQ, bge-base k=5 prompt A1, 100 queries rerun in the same session", "",
+    "manuscript_ipm/records/cross_session_check.json", V, "tools/cross_session_check.py")
 add("N.nq.joinrate", f"{nq['join_rate']:.3f}", "NQ join rate", "calculation", "proportion", "", "BEIR-NQ judged test queries", "",
     "nq_join_stats.json", V, "")
 

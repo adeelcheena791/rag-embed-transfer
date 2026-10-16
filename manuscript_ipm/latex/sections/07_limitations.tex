@@ -1,0 +1,19 @@
+\section{Limitations}\label{sec:limits}
+
+\paragraph{Scope}
+The study covers two English Wikipedia question-answering datasets, six open encoders up to 0.6B parameters, two 4-bit 7--8B readers, one prompt and $k=5$ for the transfer ratios. Results may differ for other domains, longer answers, larger or proprietary readers, other prompts or agentic pipelines. All timings come from one GPU type (Tesla T4) and one CPU configuration.
+
+\paragraph{Corpus and labels}
+Retrieval ran on 300,000-passage sub-corpora that contain every gold passage. The full-corpus check covers retrieval for four retrievers on NQ only; we did not rerun the readers on the full corpus or check HotpotQA. NQ relevance labels are sparse, so some ``misses'' contain the answer. The joined NQ set covers \ev{N.nq.joined} of \ev{N.nq.judged} judged queries and may differ in difficulty from the excluded queries.
+
+\paragraph{Metrics and statistics}
+EM is strict. We report F1 and answer containment, but did not judge correctness by hand. The transfer ratio is a ratio of means and becomes unstable when the retrieval gain is small; our reporting rule removes the worst cases, but the bge-small intervals on NQ still include zero. The decomposition and the Both@5 ranking are post hoc. Multiplicity is controlled within each family, not across all tests in the paper. Bootstrap intervals, F1, answer containment and the pooled model were checked by a rerun on a second computer, not by an independent implementation.
+
+\paragraph{Context experiment}
+The hard negatives are top-ranked BM25 passages without a gold label. Some may contain the answer; that would raise EM in the hard-negative condition and shrink the measured drop. We could not check this because the passage text is not stored with the outputs. The experiment used one reader and 500 questions.
+
+\paragraph{Judge and annotation}
+The LLM judge was validated against one annotator, the author. With $\kappa$ = \ev{JA.kappa} the judge was excluded under the registered rule, so this limitation does not affect the conclusions, but no faithfulness result is reported.
+
+\paragraph{Two study phases}
+The predictions were registered in dated, version-controlled design documents in our own repository, not in a public registry. The Qwen--NQ cell and part of the $k$ ablation were run before the predictions were registered, and the software image changed between phases. Within-cell comparisons share one environment. For comparisons across phases, \ev{CS.same} of \ev{CS.n} identical prompts gave identical outputs.

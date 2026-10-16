@@ -10,6 +10,7 @@ Script: manuscript_ipm/tools/independent_check.py (standard library only, no pro
 - NQ Qwen S4: 7010 answers re-scored, 0 disagreements
 - NQ Qwen v0.2 (all conditions, k ablation, A3, A2rep): 41490 answers re-scored, 0 disagreements
 - TOTAL: 131855 answers, 0 disagreements (0.000%)
+- sensitivity: a plain SQuAD normaliser (ASCII punctuation only) changes EM for 91 of 131855 answers (0.07%)
 
 ## 2-3. Hit@5, EM means and transfer-ratio point estimates per cell (own computation vs analysis file)
 - qwen_nq: T(own/analysis) R0 0.372/0.372, R2 0.190/0.190, R3 0.204/0.204, R4 0.242/0.242, R5 0.250/0.250, R6 0.254/0.254

@@ -29,7 +29,7 @@ Checks marked RUN were executed on the committed artifacts; outputs are in this 
 | S12 | MINOR | GEE pools four cells from two sessions; exchangeable working correlation 0.60; robust SE; secondary analysis | E10 | model refit deterministic | RUN | label secondary |
 | S13 | MINOR | NQ generation set is the joined subset (2,255 of 3,452 judged); retrieval reported on both | NQ retrieval | v0.2 D1b analysis exists | RUN (v0.2) | state population per table |
 | S14 | MINOR | Reranker result (e5 Hit@5 and EM lower after reranking) is a single-configuration observation (one reranker, depth 50, max length 512) | E5 | score sanity (no NaN/inf, ranges 3.7e-05–1.0) | RUN | report as observation within setup |
-| S15 | EDITORIAL | Exact-match normalisation includes typographic punctuation; a plain SQuAD normaliser would change 83 of 117,425 answers (0.07%) | EM everywhere | RUN | negligible | mention in Methods |
+| S15 | EDITORIAL | Exact-match normalisation includes typographic punctuation; a plain SQuAD normaliser would change 91 of 131,855 answers (0.07%; independent_check.json) | EM everywhere | RUN | negligible | mention in Methods |
 
 ## Not verified
 - F1 and AC were not independently re-implemented (only the shared pipeline + second-machine reproduction).

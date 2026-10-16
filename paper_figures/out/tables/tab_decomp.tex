@@ -1,0 +1,20 @@
+\begin{table*}[t]
+\centering
+\small
+\caption{Exact match given a hit and given a miss at Hit@5, $P(\mathrm{EM}\mid\mathrm{hit})$ / $P(\mathrm{EM}\mid\mathrm{miss})$, on the generation queries.}
+\label{tab:decomp}
+\begin{tabular}{lcccc}
+\toprule
+Retriever & NQ Qwen & NQ Llama & HotpotQA Qwen & HotpotQA Llama \\
+\midrule
+BM25 & 0.632 / 0.204 & 0.591 / 0.197 & 0.381 / 0.129 & 0.382 / 0.105 \\
+MiniLM-L6 & 0.584 / 0.249 & 0.554 / 0.237 & 0.350 / 0.098 & 0.348 / 0.071 \\
+bge-small & 0.568 / 0.259 & 0.542 / 0.239 & 0.411 / 0.043 & 0.409 / 0.043 \\
+bge-base & 0.564 / 0.257 & 0.538 / 0.270 & 0.419 / 0.060 & 0.432 / 0.048 \\
+bge-large & 0.568 / 0.252 & 0.533 / 0.220 & 0.438 / 0.076 & 0.446 / 0.063 \\
+e5-base-v2 & 0.569 / 0.244 & 0.525 / 0.237 & 0.415 / 0.030 & 0.428 / 0.040 \\
+Qwen3-Emb-0.6B & 0.572 / 0.260 & 0.538 / 0.256 & 0.383 / 0.090 & 0.383 / 0.072 \\
+\bottomrule
+\end{tabular}
+\par\smallskip\parbox{\linewidth}{\footnotesize Closed-book EM for comparison: NQ 0.149 (Qwen), 0.197 (Llama); HotpotQA 0.158 (Qwen), 0.148 (Llama).}
+\end{table*}

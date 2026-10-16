@@ -1,0 +1,50 @@
+%% Anonymised manuscript for double-anonymised review (Information Processing & Management).
+%% Author details, acknowledgements and declarations that identify the author are in title_page.tex.
+%% Every number in the text is written as \ev{ID}; IDs are the claim IDs of records/evidence-ledger.csv.
+\documentclass[a4paper,fleqn]{cas-sc}
+
+\usepackage[authoryear,longnamesfirst]{natbib}
+\usepackage{booktabs}
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage[T1]{fontenc}
+\usepackage{textcomp}
+\input{numbers}
+% anonymised version: no author block, so suppress the empty ORCID footnote of the CAS class
+\RenewDocumentCommand\printorcid{}{}
+
+\newcommand{\EM}{\mathrm{EM}}
+\newcommand{\Hit}{\mathrm{Hit@5}}
+
+\begin{document}
+\let\WriteBookmarks\relax
+\def\floatpagepagefraction{1}
+\def\textpagefraction{.001}
+
+\shorttitle{Retrieval-to-answer transfer of open embedding models}
+\shortauthors{Anonymous}
+
+\title[mode=title]{How much retrieval gain reaches the answer? Transfer ratios and cost of open embedding models in retrieval-augmented question answering}
+
+\input{sections/00_abstract}
+
+\maketitle
+
+\input{sections/01_introduction}
+\input{sections/02_related}
+\input{sections/03_method}
+\input{sections/04_setup}
+\input{sections/05_results}
+\input{sections/06_discussion}
+\input{sections/07_limitations}
+\input{sections/08_conclusion}
+\input{sections/09_declarations}
+
+\bibliographystyle{cas-model2-names}
+\bibliography{references}
+
+\appendix
+\input{sections/10_appendix}
+
+\end{document}

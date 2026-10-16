@@ -1,0 +1,28 @@
+# Adversarial review log (Gate 7) — 2026-10-16
+
+These are **AI review passes** run by Claude on the draft, one role at a time. They are a coverage aid, not human peer review,
+and must not be described as peer review anywhere.
+
+| ID | Pass | Severity | Issue | Resolution | Status |
+|---|---|---|---|---|---|
+| A1 | Methods | MAJOR | Predictions P1/P2 were "for each new cell", but the analysis also reports them for Qwen–NQ, which existed before registration; same for P4 on BM25/MiniLM/bge-large | Marked non-confirmatory in Table predictions (dagger/double dagger) and in §3.7 | FIXED |
+| A2 | Methods | MAJOR | Registration lives in the author's own git repository (commit dates), not a public registry | Stated in Limitations ("not in a public registry") | FIXED (disclosed) |
+| A3 | Methods | MINOR | Promised failures.jsonl never existed | Listed as deviation 6 | FIXED (disclosed) |
+| A4 | Methods | MINOR | NQ join gate changed from 0.70 to n ≥ 1,000 | Listed as deviation 1 with the observed rate | FIXED (disclosed) |
+| B1 | Statistics | MAJOR | Llama–HotpotQA upper bounds for bge-base and e5-base-v2 equal exactly 1.000 (2-decimal display "1.00" looked like < 1) | 3-decimal bounds in text; "three of five bounds reached or exceeded 1" | FIXED |
+| B2 | Statistics | MAJOR | HotpotQA ratios use Hit@5, which saturates; EM order follows Both@5 | Exact decomposition (post hoc, labelled) + Both@5 rank check; Discussion states the denominator artefact | FIXED (post hoc, labelled) |
+| B3 | Statistics | MINOR | "Order of encoders by cost the same in all five repetitions" misread the analysis flag | Reworded to the actual check: throughput ranges do not overlap except bge-base vs e5-base-v2 | FIXED |
+| B4 | Statistics | MINOR | Abstract said decomposition explains "most" of HotpotQA transfer; for Qwen3-Emb it is 48–49% | Abstract and highlight now give the range 48–70% | FIXED |
+| B5 | Statistics | MINOR | F1 ratios for Llama–HotpotQA exceed 1 (bge-large 1.10 [0.95, 1.28]) | Reported in Results with "full transfer cannot be ruled out" | FIXED |
+| C1 | Literature | MAJOR | NeocorRAG RCR (WWW '26) is the closest metric; earlier novelty sentence ("not aware of work …") unsupported | Cited and differentiated (level ratio vs paired difference ratio); bounded gap statement in Introduction; no "first"/"novel" | FIXED |
+| C2 | Literature | MINOR | Samuel et al. 2026 (strong correlations) is counter-evidence | Discussed: order vs magnitude; our Hit@5–EM rank correlations 0.89–1.00 | FIXED |
+| C3 | Literature | MINOR | Liu et al. 2024 and Shi et al. 2023 cited for their main findings from metadata/abstract level only | Claims kept generic ("position effects were reported for long contexts"; "irrelevant context distracts") | ACCEPTED |
+| D1 | Skeptical reviewer | MAJOR | T depends on the baseline (MiniLM-L6); a BM25 baseline would give different ratios | Stated in Alternative explanations; no new analysis added | OPEN (scope) |
+| D2 | Skeptical reviewer | MAJOR | Small readers (4-bit 7–8B) and one prompt limit generality | Limitations "Scope" | ACCEPTED |
+| D3 | Skeptical reviewer | MINOR | "Three observations explain…" and "Hit@5 overstates…" read as causal | Softened to "are consistent with" / "may overstate"; hypothesis labelled | FIXED |
+| D4 | Skeptical reviewer | MINOR | Hard negatives may contain answers (S9) | Limitations "Context experiment" | ACCEPTED (O8) |
+| E1 | Editor | CRITICAL for submission | Data availability statement has a placeholder; IP&M Option C needs a link or a reason | Author decision (open-issues O1) | OPEN — blocks submission |
+| E2 | Editor | MINOR | Abstract ≤ 250 words, keywords ≤ 7, double-anonymised files, generative-AI declaration before references | 244 words; 7 keywords; title page separate; declaration present | FIXED |
+| E3 | Editor | MINOR | Banned words and the word "first" (author's style rules) | check_manuscript.py: none in prose; "robust" removed from table note | FIXED |
+| E4 | Editor | EDITORIAL | Empty ORCID footnote in anonymised PDF | Suppressed in manuscript.tex | FIXED |
+| E5 | Editor | MINOR | Title page items (ORCID, funding, competing interests, acknowledgements) unconfirmed | Marked TBD in red (open-issues O5) | OPEN |
