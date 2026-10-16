@@ -1,0 +1,22 @@
+\begin{table*}[t]
+\centering
+\small
+\caption{Retrieval (Hit@5) and answer quality (exact match) for each reader and dataset. Hit@5 is computed on the generation queries; 95\% bootstrap intervals are in the supplementary tables.}
+\label{tab:main}
+\begin{tabular}{lrrrrrrrr}
+\toprule
+ & \multicolumn{4}{c}{NQ (2,255 queries)} & \multicolumn{4}{c}{HotpotQA (2,000 queries)} \\ \cmidrule(lr){2-5}\cmidrule(lr){6-9} & \multicolumn{2}{c}{Qwen} & \multicolumn{2}{c}{Llama} & \multicolumn{2}{c}{Qwen} & \multicolumn{2}{c}{Llama} \\ \cmidrule(lr){2-3}\cmidrule(lr){4-5}\cmidrule(lr){6-7}\cmidrule(lr){8-9}
+Retriever & Hit@5 & EM & Hit@5 & EM & Hit@5 & EM & Hit@5 & EM \\
+\midrule
+BM25 & 0.363 & 0.360 & 0.363 & 0.340 & 0.833 & 0.339 & 0.833 & 0.336 \\
+MiniLM-L6 & 0.664 & 0.471 & 0.664 & 0.448 & 0.817 & 0.304 & 0.817 & 0.297 \\
+bge-small & 0.729 & 0.484 & 0.729 & 0.460 & 0.954 & 0.394 & 0.954 & 0.392 \\
+bge-base & 0.770 & 0.493 & 0.770 & 0.477 & 0.958 & 0.404 & 0.958 & 0.415 \\
+bge-large & 0.796 & 0.503 & 0.796 & 0.469 & 0.961 & 0.424 & 0.961 & 0.430 \\
+e5-base-v2 & 0.816 & 0.510 & 0.816 & 0.472 & 0.951 & 0.396 & 0.951 & 0.408 \\
+Qwen3-Emb-0.6B & 0.744 & 0.492 & 0.744 & 0.466 & 0.945 & 0.366 & 0.945 & 0.366 \\
+Closed book & -- & 0.149 & -- & 0.197 & -- & 0.158 & -- & 0.148 \\
+Gold passages & -- & 0.653 & -- & 0.613 & -- & 0.628 & -- & 0.624 \\
+\bottomrule
+\end{tabular}
+\end{table*}

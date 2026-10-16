@@ -1,6 +1,6 @@
 """E3 (addendum v0.3; design v0.2 §5.4): agreement between the author's labels and the LLM judge.
 
-Inputs: the hidden key (results/annotation/sample_v1_key.json, rebuilt and checked against the seeded sampler),
+Inputs: the key (annotation/sample_v1_key.json, committed only after labelling;, rebuilt and checked against the seeded sampler),
 the blind sample shown to the annotator, and the annotator's export (judge_validation_labels.json).
 Reported, as pre-registered:
   * Cohen's kappa (human vs judge) on the 200 items, 95% percentile-bootstrap CI over items (10,000 resamples, seed 0);
@@ -98,7 +98,7 @@ def analyse(key: list[dict], labels: dict[str, str]) -> dict:
 def main(argv=None) -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--labels", required=True)
-    ap.add_argument("--key", default="results/annotation/sample_v1_key.json")
+    ap.add_argument("--key", default="annotation/sample_v1_key.json")    # unblinded after the labels were final (2026-10-16)
     ap.add_argument("--blind", default="annotation/sample_v1_blind.json")
     ap.add_argument("--out", required=True)
     args = ap.parse_args(argv)

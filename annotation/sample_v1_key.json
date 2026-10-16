@@ -1,0 +1,1602 @@
+[
+ {
+  "qid": "test1367",
+  "retriever": "R6",
+  "judge_verdict": "NOT_SUPPORTED",
+  "inclusion_prob": 0.2692307692307692,
+  "stratum_size": 52,
+  "item_id": "H001"
+ },
+ {
+  "qid": "test1958",
+  "retriever": "R5",
+  "judge_verdict": "SUPPORTED",
+  "inclusion_prob": 0.03056768558951965,
+  "stratum_size": 458,
+  "item_id": "H002"
+ },
+ {
+  "qid": "test965",
+  "retriever": "R3",
+  "judge_verdict": "NOT_SUPPORTED",
+  "inclusion_prob": 0.2857142857142857,
+  "stratum_size": 49,
+  "item_id": "H003"
+ },
+ {
+  "qid": "test2350",
+  "retriever": "R4",
+  "judge_verdict": "SUPPORTED",
+  "inclusion_prob": 0.03070175438596491,
+  "stratum_size": 456,
+  "item_id": "H004"
+ },
+ {
+  "qid": "test1371",
+  "retriever": "R0",
+  "judge_verdict": "SUPPORTED",
+  "inclusion_prob": 0.0379746835443038,
+  "stratum_size": 395,
+  "item_id": "H005"
+ },
+ {
+  "qid": "test309",
+  "retriever": "R1",
+  "judge_verdict": "SUPPORTED",
+  "inclusion_prob": 0.033860045146726865,
+  "stratum_size": 443,
+  "item_id": "H006"
+ },
+ {
+  "qid": "test1042",
+  "retriever": "R5",
+  "judge_verdict": "SUPPORTED",
+  "inclusion_prob": 0.03056768558951965,
+  "stratum_size": 458,
+  "item_id": "H007"
+ },
+ {
+  "qid": "test1414",
+  "retriever": "R0",
+  "judge_verdict": "NOT_SUPPORTED",
+  "inclusion_prob": 0.13333333333333333,
+  "stratum_size": 105,
+  "item_id": "H008"
+ },
+ {
+  "qid": "test419",
+  "retriever": "R6",
+  "judge_verdict": "NOT_SUPPORTED",
+  "inclusion_prob": 0.2692307692307692,
+  "stratum_size": 52,
+  "item_id": "H009"
+ },
+ {
+  "qid": "test5",
+  "retriever": "R2",
+  "judge_verdict": "SUPPORTED",
+  "inclusion_prob": 0.0334075723830735,
+  "stratum_size": 449,
+  "item_id": "H010"
+ },
+ {
+  "qid": "test1479",
+  "retriever": "R5",
+  "judge_verdict": "SUPPORTED",
+  "inclusion_prob": 0.03056768558951965,
+  "stratum_size": 458,
+  "item_id": "H011"
+ },
+ {
+  "qid": "test1874",
+  "retriever": "R4",
+  "judge_verdict": "SUPPORTED",
+  "inclusion_prob": 0.03070175438596491,
+  "stratum_size": 456,
+  "item_id": "H012"
+ },
+ {
+  "qid": "test1388",
+  "retriever": "R6",
+  "judge_verdict": "SUPPORTED",
+  "inclusion_prob": 0.03125,
+  "stratum_size": 448,
+  "item_id": "H013"
+ },
+ {
+  "qid": "test1204",
+  "retriever": "R1",
+  "judge_verdict": "NOT_SUPPORTED",
+  "inclusion_prob": 0.24561403508771928,
+  "stratum_size": 57,
+  "item_id": "H014"
+ },
+ {
+  "qid": "test1699",
+  "retriever": "R1",
+  "judge_verdict": "NOT_SUPPORTED",
+  "inclusion_prob": 0.24561403508771928,
+  "stratum_size": 57,
+  "item_id": "H015"
+ },
+ {
+  "qid": "test956",
+  "retriever": "R4",
+  "judge_verdict": "SUPPORTED",
+  "inclusion_prob": 0.03070175438596491,
+  "stratum_size": 456,
+  "item_id": "H016"
+ },
+ {
+  "qid": "test259",
+  "retriever": "R2",
+  "judge_verdict": "NOT_SUPPORTED",
+  "inclusion_prob": 0.27450980392156865,
+  "stratum_size": 51,
+  "item_id": "H017"
+ },
+ {
+  "qid": "test2490",
+  "retriever": "R4",
+  "judge_verdict": "NOT_SUPPORTED",
+  "inclusion_prob": 0.3181818181818182,
+  "stratum_size": 44,
+  "item_id": "H018"
+ },
+ {
+  "qid": "test2103",
+  "retriever": "R3",
+  "judge_verdict": "SUPPORTED",
+  "inclusion_prob": 0.03325942350332594,
+  "stratum_size": 451,
+  "item_id": "H019"
+ },
+ {
+  "qid": "test2765",
+  "retriever": "R3",
+  "judge_verdict": "NOT_SUPPORTED",
+  "inclusion_prob": 0.2857142857142857,
+  "stratum_size": 49,
+  "item_id": "H020"
+ },
+ {
+  "qid": "test3356",
+  "retriever": "R5",
+  "judge_verdict": "NOT_SUPPORTED",
+  "inclusion_prob": 0.3333333333333333,
+  "stratum_size": 42,
+  "item_id": "H021"
+ },
+ {
+  "qid": "test1206",
+  "retriever": "R1",
+  "judge_verdict": "SUPPORTED",
+  "inclusion_prob": 0.033860045146726865,
+  "stratum_size": 443,
+  "item_id": "H022"
+ },
+ {
+  "qid": "test615",
+  "retriever": "R2",
+  "judge_verdict": "SUPPORTED",
+  "inclusion_prob": 0.0334075723830735,
+  "stratum_size": 449,
+  "item_id": "H023"
+ },
+ {
+  "qid": "test1345",
+  "retriever": "R4",
+  "judge_verdict": "NOT_SUPPORTED",
+  "inclusion_prob": 0.3181818181818182,
+  "stratum_size": 44,
+  "item_id": "H024"
+ },
+ {
+  "qid": "test2950",
+  "retriever": "R5",
+  "judge_verdict": "SUPPORTED",
+  "inclusion_prob": 0.03056768558951965,
+  "stratum_size": 458,
+  "item_id": "H025"
+ },
+ {
+  "qid": "test1609",
+  "retriever": "R2",
+  "judge_verdict": "NOT_SUPPORTED",
+  "inclusion_prob": 0.27450980392156865,
+  "stratum_size": 51,
+  "item_id": "H026"
+ },
+ {
+  "qid": "test1237",
+  "retriever": "R3",
+  "judge_verdict": "SUPPORTED",
+  "inclusion_prob": 0.03325942350332594,
+  "stratum_size": 451,
+  "item_id": "H027"
+ },
+ {
+  "qid": "test1706",
+  "retriever": "R5",
+  "judge_verdict": "NOT_SUPPORTED",
+  "inclusion_prob": 0.3333333333333333,
+  "stratum_size": 42,
+  "item_id": "H028"
+ },
+ {
+  "qid": "test363",
+  "retriever": "R3",
+  "judge_verdict": "SUPPORTED",
+  "inclusion_prob": 0.03325942350332594,
+  "stratum_size": 451,
+  "item_id": "H029"
+ },
+ {
+  "qid": "test2924",
+  "retriever": "R4",
+  "judge_verdict": "SUPPORTED",
+  "inclusion_prob": 0.03070175438596491,
+  "stratum_size": 456,
+  "item_id": "H030"
+ },
+ {
+  "qid": "test3379",
+  "retriever": "R0",
+  "judge_verdict": "NOT_SUPPORTED",
+  "inclusion_prob": 0.13333333333333333,
+  "stratum_size": 105,
+  "item_id": "H031"
+ },
+ {
+  "qid": "test87",
+  "retriever": "R1",
+  "judge_verdict": "NOT_SUPPORTED",
+  "inclusion_prob": 0.24561403508771928,
+  "stratum_size": 57,
+  "item_id": "H032"
+ },
+ {
+  "qid": "test2106",
+  "retriever": "R1",
+  "judge_verdict": "NOT_SUPPORTED",
+  "inclusion_prob": 0.24561403508771928,
+  "stratum_size": 57,
+  "item_id": "H033"
+ },
+ {
+  "qid": "test399",
+  "retriever": "R3",
+  "judge_verdict": "SUPPORTED",
+  "inclusion_prob": 0.03325942350332594,
+  "stratum_size": 451,
+  "item_id": "H034"
+ },
+ {
+  "qid": "test3047",
+  "retriever": "R5",
+  "judge_verdict": "SUPPORTED",
+  "inclusion_prob": 0.03056768558951965,
+  "stratum_size": 458,
+  "item_id": "H035"
+ },
+ {
+  "qid": "test1557",
+  "retriever": "R6",
+  "judge_verdict": "SUPPORTED",
+  "inclusion_prob": 0.03125,
+  "stratum_size": 448,
+  "item_id": "H036"
+ },
+ {
+  "qid": "test2845",
+  "retriever": "R2",
+  "judge_verdict": "SUPPORTED",
+  "inclusion_prob": 0.0334075723830735,
+  "stratum_size": 449,
+  "item_id": "H037"
+ },
+ {
+  "qid": "test3425",
+  "retriever": "R4",
+  "judge_verdict": "NOT_SUPPORTED",
+  "inclusion_prob": 0.3181818181818182,
+  "stratum_size": 44,
+  "item_id": "H038"
+ },
+ {
+  "qid": "test2765",
+  "retriever": "R5",
+  "judge_verdict": "NOT_SUPPORTED",
+  "inclusion_prob": 0.3333333333333333,
+  "stratum_size": 42,
+  "item_id": "H039"
+ },
+ {
+  "qid": "test1481",
+  "retriever": "R0",
+  "judge_verdict": "NOT_SUPPORTED",
+  "inclusion_prob": 0.13333333333333333,
+  "stratum_size": 105,
+  "item_id": "H040"
+ },
+ {
+  "qid": "test2399",
+  "retriever": "R6",
+  "judge_verdict": "SUPPORTED",
+  "inclusion_prob": 0.03125,
+  "stratum_size": 448,
+  "item_id": "H041"
+ },
+ {
+  "qid": "test1944",
+  "retriever": "R4",
+  "judge_verdict": "NOT_SUPPORTED",
+  "inclusion_prob": 0.3181818181818182,
+  "stratum_size": 44,
+  "item_id": "H042"
+ },
+ {
+  "qid": "test3425",
+  "retriever": "R3",
+  "judge_verdict": "NOT_SUPPORTED",
+  "inclusion_prob": 0.2857142857142857,
+  "stratum_size": 49,
+  "item_id": "H043"
+ },
+ {
+  "qid": "test1890",
+  "retriever": "R5",
+  "judge_verdict": "SUPPORTED",
+  "inclusion_prob": 0.03056768558951965,
+  "stratum_size": 458,
+  "item_id": "H044"
+ },
+ {
+  "qid": "test2088",
+  "retriever": "R1",
+  "judge_verdict": "NOT_SUPPORTED",
+  "inclusion_prob": 0.24561403508771928,
+  "stratum_size": 57,
+  "item_id": "H045"
+ },
+ {
+  "qid": "test1728",
+  "retriever": "R1",
+  "judge_verdict": "SUPPORTED",
+  "inclusion_prob": 0.033860045146726865,
+  "stratum_size": 443,
+  "item_id": "H046"
+ },
+ {
+  "qid": "test1605",
+  "retriever": "R5",
+  "judge_verdict": "NOT_SUPPORTED",
+  "inclusion_prob": 0.3333333333333333,
+  "stratum_size": 42,
+  "item_id": "H047"
+ },
+ {
+  "qid": "test3272",
+  "retriever": "R5",
+  "judge_verdict": "NOT_SUPPORTED",
+  "inclusion_prob": 0.3333333333333333,
+  "stratum_size": 42,
+  "item_id": "H048"
+ },
+ {
+  "qid": "test883",
+  "retriever": "R3",
+  "judge_verdict": "NOT_SUPPORTED",
+  "inclusion_prob": 0.2857142857142857,
+  "stratum_size": 49,
+  "item_id": "H049"
+ },
+ {
+  "qid": "test1659",
+  "retriever": "R1",
+  "judge_verdict": "SUPPORTED",
+  "inclusion_prob": 0.033860045146726865,
+  "stratum_size": 443,
+  "item_id": "H050"
+ },
+ {
+  "qid": "test3449",
+  "retriever": "R2",
+  "judge_verdict": "NOT_SUPPORTED",
+  "inclusion_prob": 0.27450980392156865,
+  "stratum_size": 51,
+  "item_id": "H051"
+ },
+ {
+  "qid": "test133",
+  "retriever": "R0",
+  "judge_verdict": "NOT_SUPPORTED",
+  "inclusion_prob": 0.13333333333333333,
+  "stratum_size": 105,
+  "item_id": "H052"
+ },
+ {
+  "qid": "test3265",
+  "retriever": "R4",
+  "judge_verdict": "NOT_SUPPORTED",
+  "inclusion_prob": 0.3181818181818182,
+  "stratum_size": 44,
+  "item_id": "H053"
+ },
+ {
+  "qid": "test2656",
+  "retriever": "R1",
+  "judge_verdict": "NOT_SUPPORTED",
+  "inclusion_prob": 0.24561403508771928,
+  "stratum_size": 57,
+  "item_id": "H054"
+ },
+ {
+  "qid": "test2986",
+  "retriever": "R2",
+  "judge_verdict": "NOT_SUPPORTED",
+  "inclusion_prob": 0.27450980392156865,
+  "stratum_size": 51,
+  "item_id": "H055"
+ },
+ {
+  "qid": "test226",
+  "retriever": "R5",
+  "judge_verdict": "SUPPORTED",
+  "inclusion_prob": 0.03056768558951965,
+  "stratum_size": 458,
+  "item_id": "H056"
+ },
+ {
+  "qid": "test82",
+  "retriever": "R5",
+  "judge_verdict": "SUPPORTED",
+  "inclusion_prob": 0.03056768558951965,
+  "stratum_size": 458,
+  "item_id": "H057"
+ },
+ {
+  "qid": "test2323",
+  "retriever": "R1",
+  "judge_verdict": "SUPPORTED",
+  "inclusion_prob": 0.033860045146726865,
+  "stratum_size": 443,
+  "item_id": "H058"
+ },
+ {
+  "qid": "test1345",
+  "retriever": "R3",
+  "judge_verdict": "SUPPORTED",
+  "inclusion_prob": 0.03325942350332594,
+  "stratum_size": 451,
+  "item_id": "H059"
+ },
+ {
+  "qid": "test1671",
+  "retriever": "R1",
+  "judge_verdict": "NOT_SUPPORTED",
+  "inclusion_prob": 0.24561403508771928,
+  "stratum_size": 57,
+  "item_id": "H060"
+ },
+ {
+  "qid": "test3168",
+  "retriever": "R2",
+  "judge_verdict": "SUPPORTED",
+  "inclusion_prob": 0.0334075723830735,
+  "stratum_size": 449,
+  "item_id": "H061"
+ },
+ {
+  "qid": "test563",
+  "retriever": "R2",
+  "judge_verdict": "NOT_SUPPORTED",
+  "inclusion_prob": 0.27450980392156865,
+  "stratum_size": 51,
+  "item_id": "H062"
+ },
+ {
+  "qid": "test2103",
+  "retriever": "R2",
+  "judge_verdict": "SUPPORTED",
+  "inclusion_prob": 0.0334075723830735,
+  "stratum_size": 449,
+  "item_id": "H063"
+ },
+ {
+  "qid": "test1951",
+  "retriever": "R3",
+  "judge_verdict": "SUPPORTED",
+  "inclusion_prob": 0.03325942350332594,
+  "stratum_size": 451,
+  "item_id": "H064"
+ },
+ {
+  "qid": "test2579",
+  "retriever": "R0",
+  "judge_verdict": "SUPPORTED",
+  "inclusion_prob": 0.0379746835443038,
+  "stratum_size": 395,
+  "item_id": "H065"
+ },
+ {
+  "qid": "test1214",
+  "retriever": "R0",
+  "judge_verdict": "SUPPORTED",
+  "inclusion_prob": 0.0379746835443038,
+  "stratum_size": 395,
+  "item_id": "H066"
+ },
+ {
+  "qid": "test374",
+  "retriever": "R3",
+  "judge_verdict": "NOT_SUPPORTED",
+  "inclusion_prob": 0.2857142857142857,
+  "stratum_size": 49,
+  "item_id": "H067"
+ },
+ {
+  "qid": "test1204",
+  "retriever": "R0",
+  "judge_verdict": "SUPPORTED",
+  "inclusion_prob": 0.0379746835443038,
+  "stratum_size": 395,
+  "item_id": "H068"
+ },
+ {
+  "qid": "test2822",
+  "retriever": "R5",
+  "judge_verdict": "SUPPORTED",
+  "inclusion_prob": 0.03056768558951965,
+  "stratum_size": 458,
+  "item_id": "H069"
+ },
+ {
+  "qid": "test3128",
+  "retriever": "R6",
+  "judge_verdict": "NOT_SUPPORTED",
+  "inclusion_prob": 0.2692307692307692,
+  "stratum_size": 52,
+  "item_id": "H070"
+ },
+ {
+  "qid": "test3272",
+  "retriever": "R0",
+  "judge_verdict": "NOT_SUPPORTED",
+  "inclusion_prob": 0.13333333333333333,
+  "stratum_size": 105,
+  "item_id": "H071"
+ },
+ {
+  "qid": "test1513",
+  "retriever": "R0",
+  "judge_verdict": "NOT_SUPPORTED",
+  "inclusion_prob": 0.13333333333333333,
+  "stratum_size": 105,
+  "item_id": "H072"
+ },
+ {
+  "qid": "test1562",
+  "retriever": "R2",
+  "judge_verdict": "SUPPORTED",
+  "inclusion_prob": 0.0334075723830735,
+  "stratum_size": 449,
+  "item_id": "H073"
+ },
+ {
+  "qid": "test2781",
+  "retriever": "R2",
+  "judge_verdict": "SUPPORTED",
+  "inclusion_prob": 0.0334075723830735,
+  "stratum_size": 449,
+  "item_id": "H074"
+ },
+ {
+  "qid": "test1438",
+  "retriever": "R2",
+  "judge_verdict": "NOT_SUPPORTED",
+  "inclusion_prob": 0.27450980392156865,
+  "stratum_size": 51,
+  "item_id": "H075"
+ },
+ {
+  "qid": "test1204",
+  "retriever": "R3",
+  "judge_verdict": "SUPPORTED",
+  "inclusion_prob": 0.03325942350332594,
+  "stratum_size": 451,
+  "item_id": "H076"
+ },
+ {
+  "qid": "test1214",
+  "retriever": "R3",
+  "judge_verdict": "SUPPORTED",
+  "inclusion_prob": 0.03325942350332594,
+  "stratum_size": 451,
+  "item_id": "H077"
+ },
+ {
+  "qid": "test417",
+  "retriever": "R6",
+  "judge_verdict": "NOT_SUPPORTED",
+  "inclusion_prob": 0.2692307692307692,
+  "stratum_size": 52,
+  "item_id": "H078"
+ },
+ {
+  "qid": "test3055",
+  "retriever": "R5",
+  "judge_verdict": "NOT_SUPPORTED",
+  "inclusion_prob": 0.3333333333333333,
+  "stratum_size": 42,
+  "item_id": "H079"
+ },
+ {
+  "qid": "test3295",
+  "retriever": "R3",
+  "judge_verdict": "SUPPORTED",
+  "inclusion_prob": 0.03325942350332594,
+  "stratum_size": 451,
+  "item_id": "H080"
+ },
+ {
+  "qid": "test1204",
+  "retriever": "R6",
+  "judge_verdict": "SUPPORTED",
+  "inclusion_prob": 0.03125,
+  "stratum_size": 448,
+  "item_id": "H081"
+ },
+ {
+  "qid": "test2882",
+  "retriever": "R3",
+  "judge_verdict": "NOT_SUPPORTED",
+  "inclusion_prob": 0.2857142857142857,
+  "stratum_size": 49,
+  "item_id": "H082"
+ },
+ {
+  "qid": "test995",
+  "retriever": "R2",
+  "judge_verdict": "SUPPORTED",
+  "inclusion_prob": 0.0334075723830735,
+  "stratum_size": 449,
+  "item_id": "H083"
+ },
+ {
+  "qid": "test1449",
+  "retriever": "R0",
+  "judge_verdict": "SUPPORTED",
+  "inclusion_prob": 0.0379746835443038,
+  "stratum_size": 395,
+  "item_id": "H084"
+ },
+ {
+  "qid": "test2439",
+  "retriever": "R0",
+  "judge_verdict": "NOT_SUPPORTED",
+  "inclusion_prob": 0.13333333333333333,
+  "stratum_size": 105,
+  "item_id": "H085"
+ },
+ {
+  "qid": "test2657",
+  "retriever": "R0",
+  "judge_verdict": "SUPPORTED",
+  "inclusion_prob": 0.0379746835443038,
+  "stratum_size": 395,
+  "item_id": "H086"
+ },
+ {
+  "qid": "test259",
+  "retriever": "R6",
+  "judge_verdict": "NOT_SUPPORTED",
+  "inclusion_prob": 0.2692307692307692,
+  "stratum_size": 52,
+  "item_id": "H087"
+ },
+ {
+  "qid": "test1879",
+  "retriever": "R0",
+  "judge_verdict": "SUPPORTED",
+  "inclusion_prob": 0.0379746835443038,
+  "stratum_size": 395,
+  "item_id": "H088"
+ },
+ {
+  "qid": "test2637",
+  "retriever": "R3",
+  "judge_verdict": "SUPPORTED",
+  "inclusion_prob": 0.03325942350332594,
+  "stratum_size": 451,
+  "item_id": "H089"
+ },
+ {
+  "qid": "test2640",
+  "retriever": "R5",
+  "judge_verdict": "SUPPORTED",
+  "inclusion_prob": 0.03056768558951965,
+  "stratum_size": 458,
+  "item_id": "H090"
+ },
+ {
+  "qid": "test3356",
+  "retriever": "R2",
+  "judge_verdict": "NOT_SUPPORTED",
+  "inclusion_prob": 0.27450980392156865,
+  "stratum_size": 51,
+  "item_id": "H091"
+ },
+ {
+  "qid": "test2983",
+  "retriever": "R1",
+  "judge_verdict": "SUPPORTED",
+  "inclusion_prob": 0.033860045146726865,
+  "stratum_size": 443,
+  "item_id": "H092"
+ },
+ {
+  "qid": "test2817",
+  "retriever": "R0",
+  "judge_verdict": "NOT_SUPPORTED",
+  "inclusion_prob": 0.13333333333333333,
+  "stratum_size": 105,
+  "item_id": "H093"
+ },
+ {
+  "qid": "test189",
+  "retriever": "R5",
+  "judge_verdict": "NOT_SUPPORTED",
+  "inclusion_prob": 0.3333333333333333,
+  "stratum_size": 42,
+  "item_id": "H094"
+ },
+ {
+  "qid": "test1251",
+  "retriever": "R2",
+  "judge_verdict": "SUPPORTED",
+  "inclusion_prob": 0.0334075723830735,
+  "stratum_size": 449,
+  "item_id": "H095"
+ },
+ {
+  "qid": "test3257",
+  "retriever": "R1",
+  "judge_verdict": "SUPPORTED",
+  "inclusion_prob": 0.033860045146726865,
+  "stratum_size": 443,
+  "item_id": "H096"
+ },
+ {
+  "qid": "test423",
+  "retriever": "R0",
+  "judge_verdict": "SUPPORTED",
+  "inclusion_prob": 0.0379746835443038,
+  "stratum_size": 395,
+  "item_id": "H097"
+ },
+ {
+  "qid": "test479",
+  "retriever": "R3",
+  "judge_verdict": "SUPPORTED",
+  "inclusion_prob": 0.03325942350332594,
+  "stratum_size": 451,
+  "item_id": "H098"
+ },
+ {
+  "qid": "test2986",
+  "retriever": "R4",
+  "judge_verdict": "NOT_SUPPORTED",
+  "inclusion_prob": 0.3181818181818182,
+  "stratum_size": 44,
+  "item_id": "H099"
+ },
+ {
+  "qid": "test2668",
+  "retriever": "R6",
+  "judge_verdict": "SUPPORTED",
+  "inclusion_prob": 0.03125,
+  "stratum_size": 448,
+  "item_id": "H100"
+ },
+ {
+  "qid": "test3065",
+  "retriever": "R5",
+  "judge_verdict": "NOT_SUPPORTED",
+  "inclusion_prob": 0.3333333333333333,
+  "stratum_size": 42,
+  "item_id": "H101"
+ },
+ {
+  "qid": "test31",
+  "retriever": "R3",
+  "judge_verdict": "NOT_SUPPORTED",
+  "inclusion_prob": 0.2857142857142857,
+  "stratum_size": 49,
+  "item_id": "H102"
+ },
+ {
+  "qid": "test5",
+  "retriever": "R4",
+  "judge_verdict": "SUPPORTED",
+  "inclusion_prob": 0.03070175438596491,
+  "stratum_size": 456,
+  "item_id": "H103"
+ },
+ {
+  "qid": "test3178",
+  "retriever": "R0",
+  "judge_verdict": "SUPPORTED",
+  "inclusion_prob": 0.0379746835443038,
+  "stratum_size": 395,
+  "item_id": "H104"
+ },
+ {
+  "qid": "test2215",
+  "retriever": "R6",
+  "judge_verdict": "SUPPORTED",
+  "inclusion_prob": 0.03125,
+  "stratum_size": 448,
+  "item_id": "H105"
+ },
+ {
+  "qid": "test648",
+  "retriever": "R6",
+  "judge_verdict": "NOT_SUPPORTED",
+  "inclusion_prob": 0.2692307692307692,
+  "stratum_size": 52,
+  "item_id": "H106"
+ },
+ {
+  "qid": "test1420",
+  "retriever": "R2",
+  "judge_verdict": "SUPPORTED",
+  "inclusion_prob": 0.0334075723830735,
+  "stratum_size": 449,
+  "item_id": "H107"
+ },
+ {
+  "qid": "test196",
+  "retriever": "R4",
+  "judge_verdict": "SUPPORTED",
+  "inclusion_prob": 0.03070175438596491,
+  "stratum_size": 456,
+  "item_id": "H108"
+ },
+ {
+  "qid": "test3130",
+  "retriever": "R1",
+  "judge_verdict": "SUPPORTED",
+  "inclusion_prob": 0.033860045146726865,
+  "stratum_size": 443,
+  "item_id": "H109"
+ },
+ {
+  "qid": "test2815",
+  "retriever": "R2",
+  "judge_verdict": "SUPPORTED",
+  "inclusion_prob": 0.0334075723830735,
+  "stratum_size": 449,
+  "item_id": "H110"
+ },
+ {
+  "qid": "test341",
+  "retriever": "R3",
+  "judge_verdict": "SUPPORTED",
+  "inclusion_prob": 0.03325942350332594,
+  "stratum_size": 451,
+  "item_id": "H111"
+ },
+ {
+  "qid": "test3130",
+  "retriever": "R6",
+  "judge_verdict": "SUPPORTED",
+  "inclusion_prob": 0.03125,
+  "stratum_size": 448,
+  "item_id": "H112"
+ },
+ {
+  "qid": "test3365",
+  "retriever": "R3",
+  "judge_verdict": "SUPPORTED",
+  "inclusion_prob": 0.03325942350332594,
+  "stratum_size": 451,
+  "item_id": "H113"
+ },
+ {
+  "qid": "test2579",
+  "retriever": "R2",
+  "judge_verdict": "SUPPORTED",
+  "inclusion_prob": 0.0334075723830735,
+  "stratum_size": 449,
+  "item_id": "H114"
+ },
+ {
+  "qid": "test1515",
+  "retriever": "R6",
+  "judge_verdict": "NOT_SUPPORTED",
+  "inclusion_prob": 0.2692307692307692,
+  "stratum_size": 52,
+  "item_id": "H115"
+ },
+ {
+  "qid": "test98",
+  "retriever": "R4",
+  "judge_verdict": "SUPPORTED",
+  "inclusion_prob": 0.03070175438596491,
+  "stratum_size": 456,
+  "item_id": "H116"
+ },
+ {
+  "qid": "test3130",
+  "retriever": "R5",
+  "judge_verdict": "SUPPORTED",
+  "inclusion_prob": 0.03056768558951965,
+  "stratum_size": 458,
+  "item_id": "H117"
+ },
+ {
+  "qid": "test1384",
+  "retriever": "R1",
+  "judge_verdict": "SUPPORTED",
+  "inclusion_prob": 0.033860045146726865,
+  "stratum_size": 443,
+  "item_id": "H118"
+ },
+ {
+  "qid": "test2554",
+  "retriever": "R6",
+  "judge_verdict": "SUPPORTED",
+  "inclusion_prob": 0.03125,
+  "stratum_size": 448,
+  "item_id": "H119"
+ },
+ {
+  "qid": "test2882",
+  "retriever": "R2",
+  "judge_verdict": "NOT_SUPPORTED",
+  "inclusion_prob": 0.27450980392156865,
+  "stratum_size": 51,
+  "item_id": "H120"
+ },
+ {
+  "qid": "test563",
+  "retriever": "R6",
+  "judge_verdict": "NOT_SUPPORTED",
+  "inclusion_prob": 0.2692307692307692,
+  "stratum_size": 52,
+  "item_id": "H121"
+ },
+ {
+  "qid": "test196",
+  "retriever": "R0",
+  "judge_verdict": "NOT_SUPPORTED",
+  "inclusion_prob": 0.13333333333333333,
+  "stratum_size": 105,
+  "item_id": "H122"
+ },
+ {
+  "qid": "test116",
+  "retriever": "R0",
+  "judge_verdict": "SUPPORTED",
+  "inclusion_prob": 0.0379746835443038,
+  "stratum_size": 395,
+  "item_id": "H123"
+ },
+ {
+  "qid": "test3007",
+  "retriever": "R0",
+  "judge_verdict": "NOT_SUPPORTED",
+  "inclusion_prob": 0.13333333333333333,
+  "stratum_size": 105,
+  "item_id": "H124"
+ },
+ {
+  "qid": "test334",
+  "retriever": "R1",
+  "judge_verdict": "SUPPORTED",
+  "inclusion_prob": 0.033860045146726865,
+  "stratum_size": 443,
+  "item_id": "H125"
+ },
+ {
+  "qid": "test443",
+  "retriever": "R6",
+  "judge_verdict": "NOT_SUPPORTED",
+  "inclusion_prob": 0.2692307692307692,
+  "stratum_size": 52,
+  "item_id": "H126"
+ },
+ {
+  "qid": "test2422",
+  "retriever": "R5",
+  "judge_verdict": "SUPPORTED",
+  "inclusion_prob": 0.03056768558951965,
+  "stratum_size": 458,
+  "item_id": "H127"
+ },
+ {
+  "qid": "test3257",
+  "retriever": "R3",
+  "judge_verdict": "NOT_SUPPORTED",
+  "inclusion_prob": 0.2857142857142857,
+  "stratum_size": 49,
+  "item_id": "H128"
+ },
+ {
+  "qid": "test3055",
+  "retriever": "R3",
+  "judge_verdict": "SUPPORTED",
+  "inclusion_prob": 0.03325942350332594,
+  "stratum_size": 451,
+  "item_id": "H129"
+ },
+ {
+  "qid": "test686",
+  "retriever": "R6",
+  "judge_verdict": "NOT_SUPPORTED",
+  "inclusion_prob": 0.2692307692307692,
+  "stratum_size": 52,
+  "item_id": "H130"
+ },
+ {
+  "qid": "test1479",
+  "retriever": "R4",
+  "judge_verdict": "SUPPORTED",
+  "inclusion_prob": 0.03070175438596491,
+  "stratum_size": 456,
+  "item_id": "H131"
+ },
+ {
+  "qid": "test2882",
+  "retriever": "R6",
+  "judge_verdict": "NOT_SUPPORTED",
+  "inclusion_prob": 0.2692307692307692,
+  "stratum_size": 52,
+  "item_id": "H132"
+ },
+ {
+  "qid": "test1198",
+  "retriever": "R4",
+  "judge_verdict": "NOT_SUPPORTED",
+  "inclusion_prob": 0.3181818181818182,
+  "stratum_size": 44,
+  "item_id": "H133"
+ },
+ {
+  "qid": "test3435",
+  "retriever": "R2",
+  "judge_verdict": "NOT_SUPPORTED",
+  "inclusion_prob": 0.27450980392156865,
+  "stratum_size": 51,
+  "item_id": "H134"
+ },
+ {
+  "qid": "test324",
+  "retriever": "R6",
+  "judge_verdict": "SUPPORTED",
+  "inclusion_prob": 0.03125,
+  "stratum_size": 448,
+  "item_id": "H135"
+ },
+ {
+  "qid": "test189",
+  "retriever": "R0",
+  "judge_verdict": "NOT_SUPPORTED",
+  "inclusion_prob": 0.13333333333333333,
+  "stratum_size": 105,
+  "item_id": "H136"
+ },
+ {
+  "qid": "test2588",
+  "retriever": "R5",
+  "judge_verdict": "NOT_SUPPORTED",
+  "inclusion_prob": 0.3333333333333333,
+  "stratum_size": 42,
+  "item_id": "H137"
+ },
+ {
+  "qid": "test1295",
+  "retriever": "R4",
+  "judge_verdict": "NOT_SUPPORTED",
+  "inclusion_prob": 0.3181818181818182,
+  "stratum_size": 44,
+  "item_id": "H138"
+ },
+ {
+  "qid": "test220",
+  "retriever": "R5",
+  "judge_verdict": "NOT_SUPPORTED",
+  "inclusion_prob": 0.3333333333333333,
+  "stratum_size": 42,
+  "item_id": "H139"
+ },
+ {
+  "qid": "test470",
+  "retriever": "R1",
+  "judge_verdict": "SUPPORTED",
+  "inclusion_prob": 0.033860045146726865,
+  "stratum_size": 443,
+  "item_id": "H140"
+ },
+ {
+  "qid": "test605",
+  "retriever": "R2",
+  "judge_verdict": "NOT_SUPPORTED",
+  "inclusion_prob": 0.27450980392156865,
+  "stratum_size": 51,
+  "item_id": "H141"
+ },
+ {
+  "qid": "test894",
+  "retriever": "R3",
+  "judge_verdict": "SUPPORTED",
+  "inclusion_prob": 0.03325942350332594,
+  "stratum_size": 451,
+  "item_id": "H142"
+ },
+ {
+  "qid": "test2250",
+  "retriever": "R2",
+  "judge_verdict": "NOT_SUPPORTED",
+  "inclusion_prob": 0.27450980392156865,
+  "stratum_size": 51,
+  "item_id": "H143"
+ },
+ {
+  "qid": "test1364",
+  "retriever": "R1",
+  "judge_verdict": "SUPPORTED",
+  "inclusion_prob": 0.033860045146726865,
+  "stratum_size": 443,
+  "item_id": "H144"
+ },
+ {
+  "qid": "test3128",
+  "retriever": "R5",
+  "judge_verdict": "NOT_SUPPORTED",
+  "inclusion_prob": 0.3333333333333333,
+  "stratum_size": 42,
+  "item_id": "H145"
+ },
+ {
+  "qid": "test2468",
+  "retriever": "R2",
+  "judge_verdict": "SUPPORTED",
+  "inclusion_prob": 0.0334075723830735,
+  "stratum_size": 449,
+  "item_id": "H146"
+ },
+ {
+  "qid": "test87",
+  "retriever": "R4",
+  "judge_verdict": "NOT_SUPPORTED",
+  "inclusion_prob": 0.3181818181818182,
+  "stratum_size": 44,
+  "item_id": "H147"
+ },
+ {
+  "qid": "test2569",
+  "retriever": "R4",
+  "judge_verdict": "SUPPORTED",
+  "inclusion_prob": 0.03070175438596491,
+  "stratum_size": 456,
+  "item_id": "H148"
+ },
+ {
+  "qid": "test1337",
+  "retriever": "R4",
+  "judge_verdict": "SUPPORTED",
+  "inclusion_prob": 0.03070175438596491,
+  "stratum_size": 456,
+  "item_id": "H149"
+ },
+ {
+  "qid": "test2794",
+  "retriever": "R1",
+  "judge_verdict": "SUPPORTED",
+  "inclusion_prob": 0.033860045146726865,
+  "stratum_size": 443,
+  "item_id": "H150"
+ },
+ {
+  "qid": "test1438",
+  "retriever": "R3",
+  "judge_verdict": "NOT_SUPPORTED",
+  "inclusion_prob": 0.2857142857142857,
+  "stratum_size": 49,
+  "item_id": "H151"
+ },
+ {
+  "qid": "test172",
+  "retriever": "R1",
+  "judge_verdict": "NOT_SUPPORTED",
+  "inclusion_prob": 0.24561403508771928,
+  "stratum_size": 57,
+  "item_id": "H152"
+ },
+ {
+  "qid": "test3438",
+  "retriever": "R6",
+  "judge_verdict": "NOT_SUPPORTED",
+  "inclusion_prob": 0.2692307692307692,
+  "stratum_size": 52,
+  "item_id": "H153"
+ },
+ {
+  "qid": "test1016",
+  "retriever": "R5",
+  "judge_verdict": "SUPPORTED",
+  "inclusion_prob": 0.03056768558951965,
+  "stratum_size": 458,
+  "item_id": "H154"
+ },
+ {
+  "qid": "test220",
+  "retriever": "R2",
+  "judge_verdict": "NOT_SUPPORTED",
+  "inclusion_prob": 0.27450980392156865,
+  "stratum_size": 51,
+  "item_id": "H155"
+ },
+ {
+  "qid": "test3353",
+  "retriever": "R0",
+  "judge_verdict": "SUPPORTED",
+  "inclusion_prob": 0.0379746835443038,
+  "stratum_size": 395,
+  "item_id": "H156"
+ },
+ {
+  "qid": "test2228",
+  "retriever": "R2",
+  "judge_verdict": "SUPPORTED",
+  "inclusion_prob": 0.0334075723830735,
+  "stratum_size": 449,
+  "item_id": "H157"
+ },
+ {
+  "qid": "test832",
+  "retriever": "R6",
+  "judge_verdict": "NOT_SUPPORTED",
+  "inclusion_prob": 0.2692307692307692,
+  "stratum_size": 52,
+  "item_id": "H158"
+ },
+ {
+  "qid": "test1663",
+  "retriever": "R6",
+  "judge_verdict": "SUPPORTED",
+  "inclusion_prob": 0.03125,
+  "stratum_size": 448,
+  "item_id": "H159"
+ },
+ {
+  "qid": "test2393",
+  "retriever": "R4",
+  "judge_verdict": "SUPPORTED",
+  "inclusion_prob": 0.03070175438596491,
+  "stratum_size": 456,
+  "item_id": "H160"
+ },
+ {
+  "qid": "test1605",
+  "retriever": "R1",
+  "judge_verdict": "NOT_SUPPORTED",
+  "inclusion_prob": 0.24561403508771928,
+  "stratum_size": 57,
+  "item_id": "H161"
+ },
+ {
+  "qid": "test657",
+  "retriever": "R3",
+  "judge_verdict": "NOT_SUPPORTED",
+  "inclusion_prob": 0.2857142857142857,
+  "stratum_size": 49,
+  "item_id": "H162"
+ },
+ {
+  "qid": "test2714",
+  "retriever": "R4",
+  "judge_verdict": "SUPPORTED",
+  "inclusion_prob": 0.03070175438596491,
+  "stratum_size": 456,
+  "item_id": "H163"
+ },
+ {
+  "qid": "test122",
+  "retriever": "R1",
+  "judge_verdict": "SUPPORTED",
+  "inclusion_prob": 0.033860045146726865,
+  "stratum_size": 443,
+  "item_id": "H164"
+ },
+ {
+  "qid": "test1350",
+  "retriever": "R0",
+  "judge_verdict": "NOT_SUPPORTED",
+  "inclusion_prob": 0.13333333333333333,
+  "stratum_size": 105,
+  "item_id": "H165"
+ },
+ {
+  "qid": "test2369",
+  "retriever": "R4",
+  "judge_verdict": "SUPPORTED",
+  "inclusion_prob": 0.03070175438596491,
+  "stratum_size": 456,
+  "item_id": "H166"
+ },
+ {
+  "qid": "test3379",
+  "retriever": "R1",
+  "judge_verdict": "NOT_SUPPORTED",
+  "inclusion_prob": 0.24561403508771928,
+  "stratum_size": 57,
+  "item_id": "H167"
+ },
+ {
+  "qid": "test3272",
+  "retriever": "R6",
+  "judge_verdict": "NOT_SUPPORTED",
+  "inclusion_prob": 0.2692307692307692,
+  "stratum_size": 52,
+  "item_id": "H168"
+ },
+ {
+  "qid": "test1834",
+  "retriever": "R2",
+  "judge_verdict": "NOT_SUPPORTED",
+  "inclusion_prob": 0.27450980392156865,
+  "stratum_size": 51,
+  "item_id": "H169"
+ },
+ {
+  "qid": "test2698",
+  "retriever": "R3",
+  "judge_verdict": "NOT_SUPPORTED",
+  "inclusion_prob": 0.2857142857142857,
+  "stratum_size": 49,
+  "item_id": "H170"
+ },
+ {
+  "qid": "test116",
+  "retriever": "R6",
+  "judge_verdict": "SUPPORTED",
+  "inclusion_prob": 0.03125,
+  "stratum_size": 448,
+  "item_id": "H171"
+ },
+ {
+  "qid": "test2986",
+  "retriever": "R1",
+  "judge_verdict": "NOT_SUPPORTED",
+  "inclusion_prob": 0.24561403508771928,
+  "stratum_size": 57,
+  "item_id": "H172"
+ },
+ {
+  "qid": "test440",
+  "retriever": "R0",
+  "judge_verdict": "SUPPORTED",
+  "inclusion_prob": 0.0379746835443038,
+  "stratum_size": 395,
+  "item_id": "H173"
+ },
+ {
+  "qid": "test2053",
+  "retriever": "R2",
+  "judge_verdict": "SUPPORTED",
+  "inclusion_prob": 0.0334075723830735,
+  "stratum_size": 449,
+  "item_id": "H174"
+ },
+ {
+  "qid": "test1706",
+  "retriever": "R4",
+  "judge_verdict": "NOT_SUPPORTED",
+  "inclusion_prob": 0.3181818181818182,
+  "stratum_size": 44,
+  "item_id": "H175"
+ },
+ {
+  "qid": "test841",
+  "retriever": "R4",
+  "judge_verdict": "NOT_SUPPORTED",
+  "inclusion_prob": 0.3181818181818182,
+  "stratum_size": 44,
+  "item_id": "H176"
+ },
+ {
+  "qid": "test2785",
+  "retriever": "R4",
+  "judge_verdict": "NOT_SUPPORTED",
+  "inclusion_prob": 0.3181818181818182,
+  "stratum_size": 44,
+  "item_id": "H177"
+ },
+ {
+  "qid": "test1513",
+  "retriever": "R4",
+  "judge_verdict": "NOT_SUPPORTED",
+  "inclusion_prob": 0.3181818181818182,
+  "stratum_size": 44,
+  "item_id": "H178"
+ },
+ {
+  "qid": "test189",
+  "retriever": "R1",
+  "judge_verdict": "NOT_SUPPORTED",
+  "inclusion_prob": 0.24561403508771928,
+  "stratum_size": 57,
+  "item_id": "H179"
+ },
+ {
+  "qid": "test3007",
+  "retriever": "R1",
+  "judge_verdict": "NOT_SUPPORTED",
+  "inclusion_prob": 0.24561403508771928,
+  "stratum_size": 57,
+  "item_id": "H180"
+ },
+ {
+  "qid": "test3295",
+  "retriever": "R4",
+  "judge_verdict": "NOT_SUPPORTED",
+  "inclusion_prob": 0.3181818181818182,
+  "stratum_size": 44,
+  "item_id": "H181"
+ },
+ {
+  "qid": "test1750",
+  "retriever": "R6",
+  "judge_verdict": "SUPPORTED",
+  "inclusion_prob": 0.03125,
+  "stratum_size": 448,
+  "item_id": "H182"
+ },
+ {
+  "qid": "test686",
+  "retriever": "R5",
+  "judge_verdict": "NOT_SUPPORTED",
+  "inclusion_prob": 0.3333333333333333,
+  "stratum_size": 42,
+  "item_id": "H183"
+ },
+ {
+  "qid": "test1663",
+  "retriever": "R3",
+  "judge_verdict": "NOT_SUPPORTED",
+  "inclusion_prob": 0.2857142857142857,
+  "stratum_size": 49,
+  "item_id": "H184"
+ },
+ {
+  "qid": "test686",
+  "retriever": "R2",
+  "judge_verdict": "NOT_SUPPORTED",
+  "inclusion_prob": 0.27450980392156865,
+  "stratum_size": 51,
+  "item_id": "H185"
+ },
+ {
+  "qid": "test1617",
+  "retriever": "R5",
+  "judge_verdict": "SUPPORTED",
+  "inclusion_prob": 0.03056768558951965,
+  "stratum_size": 458,
+  "item_id": "H186"
+ },
+ {
+  "qid": "test1401",
+  "retriever": "R6",
+  "judge_verdict": "SUPPORTED",
+  "inclusion_prob": 0.03125,
+  "stratum_size": 448,
+  "item_id": "H187"
+ },
+ {
+  "qid": "test2656",
+  "retriever": "R3",
+  "judge_verdict": "NOT_SUPPORTED",
+  "inclusion_prob": 0.2857142857142857,
+  "stratum_size": 49,
+  "item_id": "H188"
+ },
+ {
+  "qid": "test122",
+  "retriever": "R6",
+  "judge_verdict": "SUPPORTED",
+  "inclusion_prob": 0.03125,
+  "stratum_size": 448,
+  "item_id": "H189"
+ },
+ {
+  "qid": "test3068",
+  "retriever": "R1",
+  "judge_verdict": "SUPPORTED",
+  "inclusion_prob": 0.033860045146726865,
+  "stratum_size": 443,
+  "item_id": "H190"
+ },
+ {
+  "qid": "test3256",
+  "retriever": "R0",
+  "judge_verdict": "SUPPORTED",
+  "inclusion_prob": 0.0379746835443038,
+  "stratum_size": 395,
+  "item_id": "H191"
+ },
+ {
+  "qid": "test318",
+  "retriever": "R0",
+  "judge_verdict": "NOT_SUPPORTED",
+  "inclusion_prob": 0.13333333333333333,
+  "stratum_size": 105,
+  "item_id": "H192"
+ },
+ {
+  "qid": "test374",
+  "retriever": "R5",
+  "judge_verdict": "NOT_SUPPORTED",
+  "inclusion_prob": 0.3333333333333333,
+  "stratum_size": 42,
+  "item_id": "H193"
+ },
+ {
+  "qid": "test1481",
+  "retriever": "R3",
+  "judge_verdict": "NOT_SUPPORTED",
+  "inclusion_prob": 0.2857142857142857,
+  "stratum_size": 49,
+  "item_id": "H194"
+ },
+ {
+  "qid": "test3336",
+  "retriever": "R0",
+  "judge_verdict": "SUPPORTED",
+  "inclusion_prob": 0.0379746835443038,
+  "stratum_size": 395,
+  "item_id": "H195"
+ },
+ {
+  "qid": "test1562",
+  "retriever": "R4",
+  "judge_verdict": "SUPPORTED",
+  "inclusion_prob": 0.03070175438596491,
+  "stratum_size": 456,
+  "item_id": "H196"
+ },
+ {
+  "qid": "test3047",
+  "retriever": "R1",
+  "judge_verdict": "NOT_SUPPORTED",
+  "inclusion_prob": 0.24561403508771928,
+  "stratum_size": 57,
+  "item_id": "H197"
+ },
+ {
+  "qid": "test689",
+  "retriever": "R5",
+  "judge_verdict": "NOT_SUPPORTED",
+  "inclusion_prob": 0.3333333333333333,
+  "stratum_size": 42,
+  "item_id": "H198"
+ },
+ {
+  "qid": "test1420",
+  "retriever": "R0",
+  "judge_verdict": "NOT_SUPPORTED",
+  "inclusion_prob": 0.13333333333333333,
+  "stratum_size": 105,
+  "item_id": "H199"
+ },
+ {
+  "qid": "test3362",
+  "retriever": "R0",
+  "judge_verdict": "SUPPORTED",
+  "inclusion_prob": 0.0379746835443038,
+  "stratum_size": 395,
+  "item_id": "H200"
+ }
+]

@@ -1,0 +1,7 @@
+# figures + tables (paper_figures/*.py): only these two
+numpy>=1.26
+matplotlib>=3.8
+# re-running the statistics (python -m src.analysis.v03_analysis) additionally needs:
+scipy>=1.11
+pandas>=2.0
+statsmodels>=0.14

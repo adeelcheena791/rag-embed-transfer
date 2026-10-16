@@ -1,0 +1,19 @@
+\begin{table}[t]
+\centering
+\small
+\caption{Encoding cost on one Tesla T4, median (range) over five repetitions.}
+\label{tab:cost}
+\begin{tabular}{lrrcc}
+\toprule
+Encoder & Params (M) & Dim & Passages/s & Query ms \\
+\midrule
+MiniLM-L6 & 23 & 384 & 1807 (1768--1863) & 6.0 (6.0--6.1) \\
+bge-small & 33 & 384 & 1155 (1136--1207) & 10.3 (10.1--10.3) \\
+bge-base & 109 & 768 & 502 (501--503) & 10.0 (9.9--10.1) \\
+e5-base-v2 & 109 & 768 & 493 (491--496) & 10.0 (9.9--10.1) \\
+bge-large & 335 & 1024 & 168 (168--169) & 18.3 (18.3--18.6) \\
+Qwen3-Emb-0.6B & 596 & 1024 & 66 (66--66) & 52.2 (51.8--54.9) \\
+\bottomrule
+\end{tabular}
+\par\smallskip\parbox{\linewidth}{\footnotesize BM25 batch-1 query latency on CPU: 25.7 ms (23.7--27.7).}
+\end{table}
