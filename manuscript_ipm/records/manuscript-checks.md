@@ -6,7 +6,7 @@
 
 ## Notes
 
-- abstract words (macros expanded): 244 (limit 250)
+- abstract words (macros expanded): 245 (limit 250)
 - keywords: 7 (limit 1-7)
 - highlight 64 chars: On NQ, at most 0.27 EM points per Hit@5 point reached the answer
 - highlight 70 chars: On multi-hop HotpotQA, transfer was larger and its intervals reached 1

@@ -23,7 +23,7 @@ Let $a_R=P(e_R=1\mid h_R=1)$ and $b_R=P(e_R=1\mid h_R=0)$ be the EM rates among 
 T(R) = \underbrace{(a_{R_1}-b_{R_1})}_{\text{baseline hit--miss gap}} + \underbrace{\frac{\bar h_R\,(a_R-a_{R_1}) + (1-\bar h_R)\,(b_R-b_{R_1})}{\bar h_R-\bar h_{R_1}}}_{\text{change in conditional EM}}.
 \label{eq:decomp}
 \end{equation}
-If a better encoder only turned misses into hits and left $a$ and $b$ unchanged, $T(R)$ would equal the baseline gap. The second term shows how far the encoder also changes how useful its hits and misses are. This decomposition was not part of the registered analysis; we report it as a post hoc description.
+If a better encoder only turned misses into hits and left $a$ and $b$ unchanged, $T(R)$ would equal the baseline gap. The second term measures how far the encoder also changes the usefulness of its hits and misses. This decomposition was not part of the registered analysis; we report it as a post hoc description.
 
 \subsection{Data}\label{sec:data}
 \paragraph{Natural Questions}
