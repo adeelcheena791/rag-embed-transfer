@@ -1,0 +1,11 @@
+{
+  "retriever": "M5",
+  "corpus": "main",
+  "run_id": "20261015T014518164971Z_ecdaa33761",
+  "n_queries": 500,
+  "e12_condition": "M5",
+  "bm25_run": "R0__main__20260927T025425366072Z_8f080b5dd5.jsonl",
+  "seed": 20260926,
+  "query_set": "order:500",
+  "definition": "For the first N (500) queries of the seeded NQ order, with g = the query's first gold passage (sorted id order),\nh1..h4 = the four highest-ranked NON-gold passages of the BM25 run on the main sub-corpus (\"hard negatives\"),\nr1..r4 = four random non-gold passages of the main sub-corpus (seeded, numpy default_rng(seed)):"
+}

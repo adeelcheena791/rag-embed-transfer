@@ -7,5 +7,6 @@
   "Qwen/Qwen3-Embedding-0.6B": "97b0c614be4d77ee51c0cef4e5f07c00f9eb65b3",
   "Qwen/Qwen2.5-7B-Instruct-AWQ": "b25037543e9394b818fdfca67ab2a00ecc7dd641",
   "mistralai/Mistral-7B-Instruct-v0.3": "c170c708c41dac9275d15a8fff4eca08d52bab71",
-  "hugging-quants/Meta-Llama-3.1-8B-Instruct-AWQ-INT4": "db1f81ad4b8c7e39777509fac66c652eb0a52f91"
+  "hugging-quants/Meta-Llama-3.1-8B-Instruct-AWQ-INT4": "db1f81ad4b8c7e39777509fac66c652eb0a52f91",
+  "BAAI/bge-reranker-base": "2cfc18c9415c912f9d8155881c133215df768a70"
 }

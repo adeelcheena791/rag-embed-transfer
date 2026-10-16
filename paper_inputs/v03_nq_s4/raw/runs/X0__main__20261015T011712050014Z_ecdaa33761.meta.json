@@ -1,0 +1,20 @@
+{
+  "retriever": "X0",
+  "corpus": "main",
+  "run_id": "20261015T011712050014Z_ecdaa33761",
+  "n_queries": 3452,
+  "first_stage": "R0",
+  "first_stage_run": "R0__main__20260927T025425366072Z_8f080b5dd5.jsonl",
+  "reranker": "BAAI/bge-reranker-base",
+  "reranker_revision": "2cfc18c9415c912f9d8155881c133215df768a70",
+  "depth": 50,
+  "max_length": 512,
+  "fp16": true,
+  "query_set": "judged",
+  "latency": {
+    "median_ms": 207.63948850003544,
+    "p95_ms": 314.51696765004726,
+    "n": 500,
+    "pairs_per_query": 50
+  }
+}

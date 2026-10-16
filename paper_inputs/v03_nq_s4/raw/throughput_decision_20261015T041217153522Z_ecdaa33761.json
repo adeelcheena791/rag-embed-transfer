@@ -1,0 +1,18 @@
+{
+  "run_id": "20261015T041217153522Z_ecdaa33761",
+  "device": "cuda",
+  "full_corpus_rows": 2681468,
+  "projected_t4_hours_per_model": {
+    "R1": 0.3997282688468676,
+    "R2": 0.6169948949004088,
+    "R3": 1.4867231332029809,
+    "R5": 1.5112716882094321,
+    "R4": 4.417184865504855,
+    "R6": 11.325170101263867
+  },
+  "projected_t4_hours_total": 19.75707295192841,
+  "cap_t4_hours": 6.0,
+  "decision": "subcorpus",
+  "dropped_models": [],
+  "rerun_at_common_batch": null
+}
