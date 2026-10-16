@@ -1,0 +1,19 @@
+{
+ "cross_session": {
+  "n_identical_inputs": 397,
+  "n_identical_outputs": 396,
+  "share": 0.9974811083123426,
+  "differing": [
+   {
+    "qid": "test66",
+    "v02": "16 February 2018, Year of the Dog",
+    "v03": "16 February 2018"
+   }
+  ],
+  "sessions": "v0.2 S3a (Python 3.12.13) vs v0.3 S4-NQ (Python 3.13.15); torch 2.13.0+cu130, vLLM 0.30.0, transformers 5.17.0 in both"
+ },
+ "within_session_rerun_A2": {
+  "n": 100,
+  "n_identical_outputs": 100
+ }
+}

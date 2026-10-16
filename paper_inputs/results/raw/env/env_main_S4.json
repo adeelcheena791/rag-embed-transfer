@@ -1,0 +1,56 @@
+{
+  "time_utc": "20260929T003226Z",
+  "session": "main_S4",
+  "hostname": "b65a2ca1768d",
+  "os": "Linux-6.12.90+-x86_64-with-glibc2.35",
+  "python": "3.12.13",
+  "cpu_model": "Intel(R) Xeon(R) CPU @ 2.00GHz",
+  "cpu_count": 4,
+  "ram_gib": 31.3,
+  "disk_free_gib": 19.4,
+  "nvidia_smi": "0, Tesla T4, 580.159.04, 15360 MiB\n1, Tesla T4, 580.159.04, 15360 MiB",
+  "packages": {
+    "torch": "2.13.0+cu130",
+    "transformers": "5.17.0",
+    "sentence_transformers": "5.4.1",
+    "tokenizers": "0.23.2",
+    "accelerate": "1.13.0",
+    "datasets": "5.0.0",
+    "huggingface_hub": "1.33.0",
+    "faiss": "1.15.1",
+    "bm25s": "0.3.11",
+    "numpy": "2.0.2",
+    "scipy": "1.16.3",
+    "pandas": "2.3.3",
+    "pyarrow": "24.0.0",
+    "yaml": "6.0.3",
+    "vllm": "0.30.0",
+    "ragas": null,
+    "ranx": null,
+    "matplotlib": "3.10.0"
+  },
+  "cuda_visible_devices": null,
+  "torch_cuda": {
+    "available": true,
+    "cuda": "13.0",
+    "cudnn": 92000,
+    "devices": [
+      {
+        "name": "Tesla T4",
+        "capability": [
+          7,
+          5
+        ],
+        "total_mib": 14911
+      },
+      {
+        "name": "Tesla T4",
+        "capability": [
+          7,
+          5
+        ],
+        "total_mib": 14911
+      }
+    ]
+  }
+}
