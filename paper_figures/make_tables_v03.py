@@ -34,7 +34,7 @@ def table(name, spec, header, rows, caption, label, notes=None, wide=False, comp
     body = [f"\\begin{{{env}}}[t]", "\\centering", *size, f"\\caption{{{caption}}}", f"\\label{{{label}}}",
             f"\\begin{{tabular}}{{{spec}}}", "\\toprule", header + r" \\", "\\midrule"]
     for r in rows:
-        body.append(r if r.startswith("\\") else r + r" \\")
+        body.append(r if (r.startswith(("\\midrule", "\\cmidrule")) or r.rstrip().endswith("\\\\")) else r + r" \\")
     body += ["\\bottomrule", "\\end{tabular}"]
     if notes:
         body.append(f"\\par\\smallskip\\parbox{{\\linewidth}}{{\\footnotesize {notes}}}")
@@ -177,6 +177,41 @@ def t_pairwise():
     table("tab_pairwise", "l" + "r" * 6, "Row $-$ column & " + " & ".join(NAME[r] for r in order[:-1]), rows,
           "Pairwise EM differences (row minus column) in every reader--dataset cell.", "tab:pairwise",
           "$^{*}$: exact McNemar test significant after Holm correction over the 21 pairs of the cell ($p<0.05$).", wide=True)
+
+
+def t_judge_rates():
+    j = X["judge_rates"]
+    rows = []
+    for r in R + ["GOLD"]:
+        v = j["rates"][r]
+        rows.append(f"{NAME[r]} & {v['n']} & {v['mean']:.3f} [{v['ci_lo']:.3f}, {v['ci_hi']:.3f}]")
+    table("tab_judge_rates", "lrc", "Context & $n$ & Share judged SUPPORTED [95\\% CI]", rows,
+          "Phase~1 LLM-judge labels (Mistral-7B-Instruct-v0.3, zero-shot prompt of Appendix~\\ref{app:judge}), Qwen reader, NQ. "
+          "\\textbf{Excluded from all conclusions} because agreement with human labels was slight ($\\kappa$ = "
+          + f"{S['judge_agreement']['cohen_kappa']:.3f}" + ").", "tab:judgerates",
+          f"{j['n_judgements']:,} judgements; one gold-passage output reached the token limit, so the gold row has {j['n_gold']} items.")
+
+
+def t_data():
+    nq = json.load(open(ROOT / "paper_inputs/data/processed/nq_join_stats.json"))
+    hp = json.load(open(ROOT / "paper_inputs/v03_hp/processed/hp_join_stats.json"))
+    sn = json.loads(open(ROOT / "paper_inputs/results/raw/subcorpus.jsonl").readline())
+    sh = json.loads(open(ROOT / "paper_inputs/v03_hp/raw/subcorpus.jsonl").readline())
+    rows = [f"Full corpus (passages) & 2,681,468 & 5,233,329",
+            f"Judged test queries & {nq['n_beir_judged']:,} & {hp['n_beir_judged']:,}",
+            f"Queries joined to reference answers & {nq['n_joined']:,} & {hp['n_joined']:,}",
+            f"Generation queries & {S['cells']['qwen_nq']['n_queries']:,} & {S['cells']['qwen_hp']['n_queries']:,} "
+            f"({hp['n_by_type']['bridge'] and S['cells']['qwen_hp']['by_type']['bridge']['n']:,} bridge, "
+            f"{S['cells']['qwen_hp']['by_type']['comparison']['n']:,} comparison)",
+            f"Unique gold passages per judged query & {sn['n_gold'] / nq['n_beir_judged']:.2f} & {sh['n_gold'] / hp['n_beir_judged']:.2f}",
+            f"Sub-corpus size & {sn['size']:,} & {sh['size']:,}",
+            f"\\quad gold passages & {sn['n_gold']:,} & {sh['n_gold']:,}",
+            f"\\quad BM25 non-gold passages (depth $d$) & {sn['n_bm25_added']:,} ($d$ = {sn['bm25_depth']}) & {sh['n_bm25_added']:,} ($d$ = {sh['bm25_depth']})",
+            f"\\quad random passages & {sn['n_random']:,} & {sh['n_random']:,}",
+            f"Reference answers & NQ-open (validation) & HotpotQA fullwiki (validation)"]
+    table("tab_data", "lll", "Item & NQ & HotpotQA", rows, "Data and sub-corpora.", "tab:data",
+          "Corpus sizes as distributed by BEIR. Joins: NQ by normalised question text, HotpotQA by question id.")
+
 
 
 def t_ci():
@@ -371,4 +406,4 @@ def t_judge():
 
 
 if __name__ == "__main__":
-    t_main(); t_ci(); t_transfer(); t_transfer_alt(); t_decomp(); t_retrieval(); t_deploy(); t_idk(); t_transfer_k(); t_models(); t_pairwise(); t_predictions(); t_topk(); t_mechanism(); t_reranker(); t_cost(); t_corpus_hnsw(); t_gee(); t_judge()
+    t_main(); t_ci(); t_transfer(); t_transfer_alt(); t_decomp(); t_retrieval(); t_deploy(); t_idk(); t_transfer_k(); t_models(); t_pairwise(); t_judge_rates(); t_data(); t_predictions(); t_topk(); t_mechanism(); t_reranker(); t_cost(); t_corpus_hnsw(); t_gee(); t_judge()

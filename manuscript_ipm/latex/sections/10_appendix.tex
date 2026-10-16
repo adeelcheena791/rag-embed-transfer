@@ -7,6 +7,18 @@ Each prompt was rendered with the reader's own chat template. Passages appear in
 
 The gold-passage condition uses A1 with the gold passages only.
 
+\section{Judge prompt and annotation instructions}\label{app:judge}
+The LLM judge (Mistral-7B-Instruct-v0.3, greedy decoding, at most 8 new tokens) received one user message:
+
+\begin{quote}\small
+\emph{You will be given PASSAGES, a QUESTION, and an ANSWER. Decide whether the ANSWER is fully supported by the PASSAGES. An answer is SUPPORTED only if the passages state it or directly imply it. Do not use outside knowledge. Do not judge whether the answer is true in the real world.}\\
+\emph{PASSAGES:} [the same five passages the reader saw, formatted as in Appendix~\ref{app:prompts}]\\
+\emph{QUESTION:} \{question\} \quad \emph{ANSWER:} \{answer\}\\
+\emph{Reply with exactly one word: SUPPORTED or NOT\_SUPPORTED.}
+\end{quote}
+
+The verdict was the label SUPPORTED or NOT\_SUPPORTED found at the start of the output; there were no parse failures. The human annotator saw the same text, without the judge's verdict, plus the instruction: \emph{``Label each item SUPPORTED or NOT\_SUPPORTED. If unsure, choose NOT\_SUPPORTED and add a note.''} The 200 items were drawn by a seeded, stratified sampler that over-represents NOT\_SUPPORTED verdicts; population-weighted statistics use the inverse inclusion probabilities.
+
 \section{Models, data and software}\label{app:repro}
 \begin{table}[h]
 \centering
@@ -40,6 +52,7 @@ hotpotqa/hotpot\_qa & 1908d6af \\
 Retrieval used bm25s 0.3.11 and faiss-cpu 1.15.1; readers used vLLM 0.30.0 with PyTorch 2.13.0 (CUDA 13.0) and Transformers 5.17.0, in half precision with a maximum model length of 4,096 tokens.
 
 \input{tables/tab_models}
+\input{tables/tab_data}
 
 \section{Design documents}\label{app:prereg}
 The design document and its addenda are dated and versioned in the study repository. Each was written before the stage it governs.
@@ -47,7 +60,7 @@ The design document and its addenda are dated and versioned in the study reposit
 \item \textbf{v0.2 (26 September 2026).} Research questions, retrievers, reader, judge, metrics, statistical tests, the transfer-ratio reporting rule and the pilot plan.
 \item \textbf{v0.2.1--v0.2.2 (26 September 2026).} Follow-up rules (abstention-prompt check, judge fallback, GPU stopping rules) and the change of the NQ join gate (deviation~1).
 \item \textbf{v0.2.3 (27 September 2026).} Pilot verification; the sub-corpus membership rule for all judged queries; dropping the RAGAS cross-check.
-\item \textbf{v0.2.4 (27--29 September 2026).} Execution records of Phase~1, the failed first reading session, the cost-estimate error and the cut dimension ablation.
+\item \textbf{v0.2.4 (27--29 September 2026).} Execution records of Phase~1, the failed initial reading session, the cost-estimate error and the cut dimension ablation.
 \item \textbf{v0.3 (12 October 2026).} Phase~2 experiments E1--E12 and predictions P1--P6, written before any Phase~2 run.
 \item \textbf{v0.3.1 (12 and 14 October 2026).} The Python~3.13 image change and the torchaudio fix.
 \item \textbf{v0.3.2 (15 October 2026).} Implementation of E5, E6, E7, E9 and E12 before the session that ran them, including the reduced scope of E6.
@@ -55,7 +68,7 @@ The design document and its addenda are dated and versioned in the study reposit
 Pilot numbers were used only for planning and are not reported as results.
 
 \section{Additional tables}\label{app:tables}
-Table~\ref{tab:ci} gives the bootstrap intervals for Table~\ref{tab:main}. Table~\ref{tab:transferalt} repeats the transfer ratios with token F1 and answer containment. Table~\ref{tab:decomp} gives EM given a hit and given a miss, which enter Eq.~\ref{eq:decomp}. Table~\ref{tab:idk} gives the abstention-prompt check, Table~\ref{tab:transferk} the exploratory transfer ratios at each $k$, and Table~\ref{tab:pairwise} all pairwise EM tests.
+Table~\ref{tab:ci} gives the bootstrap intervals for Table~\ref{tab:main}. Table~\ref{tab:transferalt} repeats the transfer ratios with token F1 and answer containment. Table~\ref{tab:decomp} gives EM given a hit and given a miss, which enter Eq.~\ref{eq:decomp}. Table~\ref{tab:idk} gives the abstention-prompt check, Table~\ref{tab:transferk} the exploratory transfer ratios at each $k$, Table~\ref{tab:pairwise} all pairwise EM tests, and Table~\ref{tab:judgerates} the excluded judge labels.
 
 \input{tables/tab_ci}
 \input{tables/tab_transfer_alt}
@@ -63,6 +76,7 @@ Table~\ref{tab:ci} gives the bootstrap intervals for Table~\ref{tab:main}. Table
 \input{tables/tab_idk}
 \input{tables/tab_transfer_k}
 \input{tables/tab_pairwise}
+\input{tables/tab_judge_rates}
 
 \begin{figure}[t]
 \centering

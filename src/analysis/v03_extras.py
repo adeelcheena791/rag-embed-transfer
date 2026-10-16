@@ -7,6 +7,10 @@ Reads committed inputs only and writes paper_outputs/v03/statistics/v03_extras.j
                     batch-1 query encoding on GPU and CPU, exact-search latency on CPU, flat index size
   idk               prompt A3 ("I don't know" allowed) on the first 200 queries of the seeded order: abstention overall,
                     on hits and on misses; EM under A3 vs A1 (exact McNemar). Recomputed here from the scored answers.
+  judge_rates       Phase 1 LLM-judge SUPPORTED rates per condition (500 NQ queries; judge EXCLUDED from conclusions, kappa < 0.2)
+  prompt_tokens     mean reader prompt length per retriever and k (Phase 1 generation records)
+  r4k1_vs_r0k10     EXPLORATORY: EM of bge-large with one passage minus BM25 with ten passages (exact McNemar, uncorrected)
+  pareto_ties       EXPLORATORY: cost-quality frontiers per cell when costs within 5% count as equal
   transfer_by_k     EXPLORATORY, post hoc: T_k = dEM@k / dHit@k vs MiniLM-L6 for every retriever at k = 1, 3, 5, 10, with Hit@k
                     matched to the k passages the reader received; paired percentile bootstrap (10,000, seed 0); no reporting rule.
 
@@ -76,6 +80,54 @@ def main() -> int:
                        em_A1=float(e1.mean()), em_A3=float(e3.mean()), p_A3_vs_A1=stats.mcnemar_exact(e3, e1)["p"])
         idk[c] = row
     out["idk"] = idk
+
+    # ---- Phase 1 LLM-judge SUPPORTED rates (excluded from conclusions)
+    jdir = PI / "results/raw/judgements"
+    jud = {}
+    for c in R + ["GOLD"]:
+        f = jdir / (f"main__{c}_k5_A1__main__zero_shot.jsonl" if c != "GOLD" else "main__GOLD_A1__main__zero_shot.jsonl")
+        jud[c] = {x["qid"]: x["verdict"] for x in jl(f)}
+    common = set.intersection(*[set(jud[c]) for c in R])
+    qs = [q for q in order if q in common]
+    jidx = stats.resample_index(len(qs))
+    rates = {c: stats.mean_ci(np.array([jud[c][q] == "SUPPORTED" for q in qs], dtype=float), jidx) for c in R}
+    gq = [q for q in order if q in jud["GOLD"]]
+    rates["GOLD"] = stats.mean_ci(np.array([jud["GOLD"][q] == "SUPPORTED" for q in gq], dtype=float), stats.resample_index(len(gq)))
+    out["judge_rates"] = {"n": len(qs), "n_gold": len(gq), "n_judgements": sum(len(v) for v in jud.values()),
+                          "note": "UNVALIDATED judge, excluded from conclusions (kappa 0.127)", "rates": rates}
+    # ---- prompt length by k
+    tok = {}
+    for r in R:
+        for k in (1, 3, 5, 10):
+            path = (PI / f"v03_nq/raw/generations/v03_nq_qwen__{r}_k{k}_A1__main.jsonl") if (r in {"R2", "R3", "R5", "R6"} and k != 5) \
+                else (PI / f"results/raw/generations/main__{r}_k{k}_A1__main.jsonl")
+            g = jl(path)
+            tok[f"{r}_k{k}"] = float(np.mean([x["n_prompt_tokens"] for x in g]))
+    out["prompt_tokens"] = tok
+    # ---- exploratory: bge-large k = 1 vs BM25 k = 10
+    a4 = {x["qid"]: x["em"] for x in jl(PI / "results/processed/answers/main__R4_k1_A1__main.jsonl")}
+    a0 = {x["qid"]: x["em"] for x in jl(PI / "results/processed/answers/main__R0_k10_A1__main.jsonl")}
+    e4, e0 = np.array([a4[q] for q in order]), np.array([a0[q] for q in order])
+    out["r4k1_vs_r0k10"] = dict(stats.paired_diff(e4, e0, stats.resample_index(len(order)), binary=True),
+                                note="exploratory, uncorrected", em_r4k1=float(e4.mean()), em_r0k10=float(e0.mean()))
+    # ---- exploratory: frontiers with a 5% cost-tie rule, EM per cell
+    S = json.load(open(ROOT / "paper_outputs/v03/statistics/v03_analysis.json"))
+    eff = rq34["efficiency"]
+    tie = 0.05
+
+    def frontier(pts, tie_):
+        le = lambda cb, ca: cb <= ca or abs(cb - ca) <= tie_ * max(cb, ca)      # noqa: E731
+        lt = lambda cb, ca: cb < ca and abs(cb - ca) > tie_ * max(cb, ca)       # noqa: E731
+        return sorted([a for a, (ca, qa) in pts.items()
+                       if not any(le(cb, ca) and qb >= qa and (lt(cb, ca) or qb > qa) for b, (cb, qb) in pts.items() if b != a)],
+                      key=lambda n: pts[n][0])
+    fr = {}
+    for cell, v in S["cells"].items():
+        for axis in ("encode_gpu_s", "query_ms_cpu"):
+            pts = {r: (eff[r][axis], v["answers"][r]["em"]["mean"]) for r in R if eff[r][axis] is not None}
+            fr[f"{cell}|{axis}"] = {"strict": frontier(pts, 0.0), "tie5": frontier(pts, tie)}
+    out["pareto_ties"] = {"tie": tie, "note": "exploratory; BM25 has no encoding cost and is excluded on the encoding axis only "
+                          "if its cost is missing", "frontiers": fr}
     # ---- exploratory: transfer ratio with Hit@k matched to k
     v3 = {"R2", "R3", "R5", "R6"}
     idx = stats.resample_index(len(order))

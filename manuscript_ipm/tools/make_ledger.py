@@ -151,7 +151,7 @@ for c, cell in CELLS.items():
             "e5-base", pop, "", f"{SRC} cells.{cell}.P2", V, "independent_check §7")
     if "by_type" in C:
         for typ, d in C["by_type"].items():
-            add(f"N.{c}.{typ}", str(d["n"]), f"number of {typ} questions", "observation", "count", "—", pop, "", f"{SRC} by_type", P, "")
+            add(f"N.{c}.{typ}", f"{d['n']:,}", f"number of {typ} questions", "observation", "count", "—", pop, "", f"{SRC} by_type", P, "")
             for k in ("R0", "R1", "R2", "R3", "R4", "R5", "R6", "CB", "GOLD"):
                 add(f"BT.{c}.{typ}.{k}", f(d[k]["em"]), f"EM of {RNAME[k]} on {typ} questions", "observation", "exact match", "—",
                     pop + f", {typ} n = {d['n']}", "", f"{SRC} cells.{cell}.by_type", P, "")
@@ -401,6 +401,20 @@ add("D1B.min", sgn(min(dd)), "smallest Hit@5 difference joined minus unjoined NQ
     "NQ judged, 7 retrievers", "every 95% CI includes 0", "paper_inputs/results/statistics/rq12_main.json d1b", P, "Phase 1 pipeline output")
 add("D1B.max", sgn(max(dd)), "largest Hit@5 difference joined minus unjoined NQ queries", "calculation", "ΔHit@5", "unjoined (1,197)",
     "NQ judged, 7 retrievers", "every 95% CI includes 0", "paper_inputs/results/statistics/rq12_main.json d1b", P, "Phase 1 pipeline output")
+
+for c, v in X["judge_rates"]["rates"].items():
+    add(f"JR.{c}", f(v["mean"]), f"share judged SUPPORTED by the excluded LLM judge, {RNAME[c]}", "observation", "share", "",
+        f"Qwen / NQ, n = {v['n']}", f"CI [{f(v['ci_lo'])}, {f(v['ci_hi'])}]", f"{XS} judge_rates", P, "judge excluded from conclusions")
+for key, v in X["prompt_tokens"].items():
+    add(f"TOK.{key}", f"{v:,.0f}", f"mean reader prompt length (tokens), {key}", "observation", "tokens", "", "Qwen / NQ, 2,255 queries", "",
+        f"{XS} prompt_tokens", P, "")
+x = X["r4k1_vs_r0k10"]
+add("X41.diff", sgn(x["diff"]), "EM of bge-large at k = 1 minus BM25 at k = 10 (exploratory)", "inference", "ΔEM", "BM25, k = 10",
+    "Qwen / NQ, n = 2255", f"CI [{x['ci_lo']:.3f}, {x['ci_hi']:.3f}]; p = {x['p']:.3f}", f"{XS} r4k1_vs_r0k10", P, "exploratory, uncorrected")
+add("X41.ci", f"[{f(x['ci_lo'])}, {f(x['ci_hi'])}]", "95% CI, bge-large k = 1 minus BM25 k = 10", "calculation", "bootstrap", "", "n = 2255", "",
+    f"{XS} r4k1_vs_r0k10", P, "")
+add("X41.p", f"{x['p']:.3f}", "exact McNemar p, uncorrected, bge-large k = 1 vs BM25 k = 10", "inference", "exact McNemar", "", "n = 2255", "",
+    f"{XS} r4k1_vs_r0k10", P, "")
 
 
 def main():

@@ -27,7 +27,7 @@ If a better encoder only turned misses into hits and left $a$ and $b$ unchanged,
 
 \subsection{Data}\label{sec:data}
 \paragraph{Natural Questions}
-We used the BEIR version of Natural Questions \citep{kwiatkowski2019nq,thakur2021beir}: \ev{N.nq.judged} judged test queries and a corpus of 2,681,468 Wikipedia passages. BEIR does not ship short answers, so we joined its queries to NQ-open \citep{lee2019orqa} by normalised question text. The join matched \ev{N.nq.joined} queries; \ev{N.nq.unmatched} had no match and none had more than one. All \ev{N.nq.joined} joined queries form the NQ generation set.
+We used the BEIR version of Natural Questions \citep{kwiatkowski2019nq,thakur2021beir}: \ev{N.nq.judged} judged test queries and a corpus of 2,681,468 Wikipedia passages. BEIR does not ship short answers, so we joined its queries to NQ-open \citep{lee2019orqa} by normalised question text. The join matched \ev{N.nq.joined} queries; \ev{N.nq.unmatched} had no match and none had more than one. All \ev{N.nq.joined} joined queries form the NQ generation set. Table~\ref{tab:data} in the appendix summarises both datasets and sub-corpora.
 
 \paragraph{HotpotQA}
 We used the BEIR version of HotpotQA \citep{yang2018hotpotqa,thakur2021beir}: \ev{N.hp.judged} judged test queries, two gold passages per query, and a corpus of 5,233,329 passages. Answers come from the fullwiki validation release, joined by question id; all queries matched. The generation set is the leading \ev{N.hp.gen} queries of a seeded order (\ev{N.qhp.bridge} bridge and \ev{N.qhp.comparison} comparison questions).

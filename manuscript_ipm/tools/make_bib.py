@@ -83,14 +83,16 @@ def ascii_tex(s):
 def fmt_authors(names):
     names = [n.strip() for n in names if any(ch.isalnum() for ch in n)]
     names = ["{" + n + "}" if " " not in n and "," not in n else n for n in names]  # single-token names such as the "Qwen" team
+    # "First Last" -> "Last, First" so that hyphenated or lower-case given names (e.g. "Wen-tau") are not read as "von" parts
+    names = [n if ("," in n or n.startswith("{")) else f"{n.rsplit(' ', 1)[1]}, {n.rsplit(' ', 1)[0]}" for n in names]
     if len(names) > 12:
         names = names[:12] + ["others"]
     return " and ".join(ascii_tex(n) for n in names)
 
 
 def protect(title):
-    # keep acronyms / capitalised tokens in braces
-    return re.sub(r"\b([A-Za-z]*[A-Z][A-Za-z0-9\-]*[A-Z0-9][A-Za-z0-9\-]*)\b", r"{\1}", ascii_tex(title))
+    # keep the capitalisation of the source exactly (the bibliography style would otherwise lower-case names such as Llama)
+    return "{" + ascii_tex(title) + "}"
 
 
 def entry(kind, key, fields):

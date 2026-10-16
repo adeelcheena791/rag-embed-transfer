@@ -92,8 +92,9 @@ def fig_transfer(S):
     axes[1].spines["left"].set_visible(False)
     for ax in axes:
         ax.text(1.0, 1.0, " T = 1", transform=ax.get_xaxis_transform(), color=INK2, fontsize=6.5, ha="left", va="top")
-    axes[0].legend(loc="lower right", handletextpad=0.3)
-    fig.tight_layout(w_pad=1.5)
+    h, l = axes[0].get_legend_handles_labels()
+    fig.legend(h, l, loc="lower center", ncol=2, bbox_to_anchor=(0.5, -0.02), handletextpad=0.3, columnspacing=1.5)
+    fig.tight_layout(rect=(0, 0.07, 1, 1), w_pad=1.5)
     save(fig, "fig1_transfer_ratios")
 
 

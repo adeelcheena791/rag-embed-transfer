@@ -1,0 +1,21 @@
+\begin{table}[t]
+\centering
+\small
+\caption{Phase~1 LLM-judge labels (Mistral-7B-Instruct-v0.3, zero-shot prompt of Appendix~\ref{app:judge}), Qwen reader, NQ. \textbf{Excluded from all conclusions} because agreement with human labels was slight ($\kappa$ = 0.127).}
+\label{tab:judgerates}
+\begin{tabular}{lrc}
+\toprule
+Context & $n$ & Share judged SUPPORTED [95\% CI] \\
+\midrule
+BM25 & 500 & 0.790 [0.754, 0.826] \\
+MiniLM-L6 & 500 & 0.886 [0.858, 0.914] \\
+bge-small & 500 & 0.898 [0.870, 0.924] \\
+bge-base & 500 & 0.902 [0.876, 0.928] \\
+bge-large & 500 & 0.912 [0.886, 0.936] \\
+e5-base-v2 & 500 & 0.916 [0.890, 0.940] \\
+Qwen3-Emb-0.6B & 500 & 0.896 [0.870, 0.922] \\
+Gold passages & 499 & 0.966 [0.950, 0.980] \\
+\bottomrule
+\end{tabular}
+\par\smallskip\parbox{\linewidth}{\footnotesize 3,999 judgements; one gold-passage output reached the token limit, so the gold row has 499 items.}
+\end{table}

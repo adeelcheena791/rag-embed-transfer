@@ -15,7 +15,7 @@
 - highlight 68 chars: Three of six registered predictions failed in at least one condition
 - cited references: 60 of 76 in references.bib
 - overfull hboxes > 5pt: 1 (max 117pt)
-- numbers typed in prose (design constants etc., review manually): 181
+- numbers typed in prose (design constants etc., review manually): 182
 
 ## Typed numbers (lexical screen)
 
@@ -109,7 +109,6 @@
 - 04_setup.tex: 24
 - 05_results.tex: 5
 - 05_results.tex: 5
-- 05_results.tex: 5
 - 05_results.tex: 1,
 - 05_results.tex: 10,
 - 05_results.tex: 10
@@ -162,6 +161,8 @@
 - 05_results.tex: 768
 - 05_results.tex: 1,024
 - 05_results.tex: 10.
+- 05_results.tex: 5
+- 05_results.tex: 5
 - 05_results.tex: 1
 - 05_results.tex: 21
 - 05_results.tex: 128
