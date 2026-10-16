@@ -1,0 +1,12 @@
+quantity,value
+n_items,200
+cohen_kappa,0.127
+kappa_ci_lo,-0.006
+kappa_ci_hi,0.261
+raw_agreement,0.565
+weighted_agreement,0.620
+decision,slight: exclude from conclusions
+human_SUPPORTED__judge_SUPPORTED,65
+human_SUPPORTED__judge_NOT_SUPPORTED,50
+human_NOT_SUPPORTED__judge_SUPPORTED,37
+human_NOT_SUPPORTED__judge_NOT_SUPPORTED,48

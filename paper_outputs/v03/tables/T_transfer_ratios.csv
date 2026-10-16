@@ -1,0 +1,73 @@
+cell,metric,retriever,d_hit5,d_metric,T,lo,hi,status
+qwen_nq,em,R0,-0.3007,-0.1118,0.372,0.308,0.433,estimable
+qwen_nq,em,R2,0.0652,0.0124,0.190,-0.071,0.442,estimable
+qwen_nq,em,R3,0.1064,0.0217,0.204,0.045,0.358,estimable
+qwen_nq,em,R4,0.1322,0.0319,0.242,0.112,0.365,estimable
+qwen_nq,em,R5,0.1525,0.0381,0.250,0.147,0.356,estimable
+qwen_nq,em,R6,0.0803,0.0204,0.254,0.048,0.455,estimable
+qwen_nq,f1,R0,-0.3007,-0.1280,0.426,0.367,0.484,estimable
+qwen_nq,f1,R2,0.0652,0.0167,0.256,0.017,0.486,estimable
+qwen_nq,f1,R3,0.1064,0.0274,0.257,0.111,0.399,estimable
+qwen_nq,f1,R4,0.1322,0.0357,0.270,0.152,0.385,estimable
+qwen_nq,f1,R5,0.1525,0.0451,0.296,0.200,0.391,estimable
+qwen_nq,f1,R6,0.0803,0.0209,0.261,0.070,0.446,estimable
+qwen_nq,contain,R0,-0.3007,-0.1366,0.454,0.393,0.516,estimable
+qwen_nq,contain,R2,0.0652,0.0177,0.272,0.008,0.525,estimable
+qwen_nq,contain,R3,0.1064,0.0359,0.338,0.181,0.493,estimable
+qwen_nq,contain,R4,0.1322,0.0443,0.336,0.211,0.461,estimable
+qwen_nq,contain,R5,0.1525,0.0550,0.360,0.255,0.465,estimable
+qwen_nq,contain,R6,0.0803,0.0226,0.282,0.082,0.479,estimable
+llama_nq,em,R0,-0.3007,-0.1078,0.358,0.297,0.422,estimable
+llama_nq,em,R2,0.0652,0.0120,0.184,-0.083,0.427,estimable
+llama_nq,em,R3,0.1064,0.0288,0.271,0.120,0.420,estimable
+llama_nq,em,R4,0.1322,0.0208,0.158,0.032,0.280,estimable
+llama_nq,em,R5,0.1525,0.0244,0.160,0.053,0.265,estimable
+llama_nq,em,R6,0.0803,0.0177,0.221,0.018,0.419,estimable
+llama_nq,f1,R0,-0.3007,-0.1282,0.426,0.369,0.485,estimable
+llama_nq,f1,R2,0.0652,0.0153,0.235,0.000,0.453,estimable
+llama_nq,f1,R3,0.1064,0.0350,0.329,0.195,0.466,estimable
+llama_nq,f1,R4,0.1322,0.0325,0.246,0.134,0.357,estimable
+llama_nq,f1,R5,0.1525,0.0402,0.263,0.170,0.358,estimable
+llama_nq,f1,R6,0.0803,0.0231,0.287,0.106,0.470,estimable
+llama_nq,contain,R0,-0.3007,-0.1375,0.457,0.394,0.522,estimable
+llama_nq,contain,R2,0.0652,0.0208,0.320,0.072,0.567,estimable
+llama_nq,contain,R3,0.1064,0.0399,0.375,0.226,0.530,estimable
+llama_nq,contain,R4,0.1322,0.0439,0.332,0.211,0.457,estimable
+llama_nq,contain,R5,0.1525,0.0501,0.328,0.225,0.433,estimable
+llama_nq,contain,R6,0.0803,0.0315,0.392,0.196,0.599,estimable
+qwen_hp,em,R0,0.0160,0.0345,,,,not estimable: |dHit@5| = 1.60 pp <= 2 pp; Hit@5 difference not significant after Holm (p = 0.837)
+qwen_hp,em,R2,0.1365,0.0900,0.659,0.521,0.816,estimable
+qwen_hp,em,R3,0.1410,0.1000,0.709,0.565,0.871,estimable
+qwen_hp,em,R4,0.1435,0.1200,0.836,0.691,0.996,estimable
+qwen_hp,em,R5,0.1335,0.0920,0.689,0.541,0.846,estimable
+qwen_hp,em,R6,0.1275,0.0625,0.490,0.352,0.636,estimable
+qwen_hp,f1,R0,0.0160,0.0334,,,,not estimable: |dHit@5| = 1.60 pp <= 2 pp; Hit@5 difference not significant after Holm (p = 0.837)
+qwen_hp,f1,R2,0.1365,0.1039,0.761,0.622,0.922,estimable
+qwen_hp,f1,R3,0.1410,0.1120,0.794,0.651,0.953,estimable
+qwen_hp,f1,R4,0.1435,0.1395,0.972,0.825,1.139,estimable
+qwen_hp,f1,R5,0.1335,0.1024,0.767,0.621,0.924,estimable
+qwen_hp,f1,R6,0.1275,0.0658,0.516,0.378,0.663,estimable
+qwen_hp,contain,R0,0.0160,0.0335,,,,not estimable: |dHit@5| = 1.60 pp <= 2 pp; Hit@5 difference not significant after Holm (p = 0.837)
+qwen_hp,contain,R2,0.1365,0.0925,0.678,0.535,0.836,estimable
+qwen_hp,contain,R3,0.1410,0.1010,0.716,0.570,0.876,estimable
+qwen_hp,contain,R4,0.1435,0.1260,0.878,0.731,1.043,estimable
+qwen_hp,contain,R5,0.1335,0.0950,0.712,0.566,0.873,estimable
+qwen_hp,contain,R6,0.1275,0.0625,0.490,0.351,0.640,estimable
+llama_hp,em,R0,0.0160,0.0380,,,,not estimable: |dHit@5| = 1.60 pp <= 2 pp; Hit@5 difference not significant after Holm (p = 0.837)
+llama_hp,em,R2,0.1365,0.0945,0.692,0.550,0.853,estimable
+llama_hp,em,R3,0.1410,0.1180,0.837,0.689,1.000,estimable
+llama_hp,em,R4,0.1435,0.1330,0.927,0.775,1.096,estimable
+llama_hp,em,R5,0.1335,0.1110,0.831,0.680,1.000,estimable
+llama_hp,em,R6,0.1275,0.0685,0.537,0.402,0.690,estimable
+llama_hp,f1,R0,0.0160,0.0436,,,,not estimable: |dHit@5| = 1.60 pp <= 2 pp; Hit@5 difference not significant after Holm (p = 0.837)
+llama_hp,f1,R2,0.1365,0.1154,0.845,0.704,1.007,estimable
+llama_hp,f1,R3,0.1410,0.1338,0.949,0.804,1.111,estimable
+llama_hp,f1,R4,0.1435,0.1584,1.104,0.950,1.281,estimable
+llama_hp,f1,R5,0.1335,0.1292,0.967,0.818,1.134,estimable
+llama_hp,f1,R6,0.1275,0.0838,0.657,0.521,0.810,estimable
+llama_hp,contain,R0,0.0160,0.0370,,,,not estimable: |dHit@5| = 1.60 pp <= 2 pp; Hit@5 difference not significant after Holm (p = 0.837)
+llama_hp,contain,R2,0.1365,0.1030,0.755,0.609,0.917,estimable
+llama_hp,contain,R3,0.1410,0.1270,0.901,0.751,1.067,estimable
+llama_hp,contain,R4,0.1435,0.1450,1.010,0.858,1.181,estimable
+llama_hp,contain,R5,0.1335,0.1210,0.906,0.755,1.075,estimable
+llama_hp,contain,R6,0.1275,0.0745,0.584,0.447,0.736,estimable

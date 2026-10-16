@@ -1,0 +1,1207 @@
+{
+ "annotator": "author",
+ "instructions_hash": "da33361c8520",
+ "n_items": 200,
+ "labels": [
+  {
+   "item_id": "H001",
+   "label": "SUPPORTED",
+   "note": "",
+   "time": "2026-10-12T04:04:57.671Z"
+  },
+  {
+   "item_id": "H002",
+   "label": "NOT_SUPPORTED",
+   "note": "",
+   "time": "2026-10-12T04:05:33.543Z"
+  },
+  {
+   "item_id": "H003",
+   "label": "SUPPORTED",
+   "note": "",
+   "time": "2026-10-12T04:08:20.486Z"
+  },
+  {
+   "item_id": "H004",
+   "label": "NOT_SUPPORTED",
+   "note": "",
+   "time": "2026-10-12T04:09:49.382Z"
+  },
+  {
+   "item_id": "H005",
+   "label": "NOT_SUPPORTED",
+   "note": "",
+   "time": "2026-10-12T04:12:05.030Z"
+  },
+  {
+   "item_id": "H006",
+   "label": "NOT_SUPPORTED",
+   "note": "",
+   "time": "2026-10-12T04:13:05.261Z"
+  },
+  {
+   "item_id": "H007",
+   "label": "SUPPORTED",
+   "note": "",
+   "time": "2026-10-12T04:14:39.950Z"
+  },
+  {
+   "item_id": "H008",
+   "label": "NOT_SUPPORTED",
+   "note": "",
+   "time": "2026-10-12T04:15:55.709Z"
+  },
+  {
+   "item_id": "H009",
+   "label": "NOT_SUPPORTED",
+   "note": "",
+   "time": "2026-10-12T04:17:05.006Z"
+  },
+  {
+   "item_id": "H010",
+   "label": "NOT_SUPPORTED",
+   "note": "",
+   "time": "2026-10-12T04:18:15.390Z"
+  },
+  {
+   "item_id": "H011",
+   "label": "NOT_SUPPORTED",
+   "note": "",
+   "time": "2026-10-12T04:23:19.789Z"
+  },
+  {
+   "item_id": "H012",
+   "label": "SUPPORTED",
+   "note": "",
+   "time": "2026-10-12T04:23:45.349Z"
+  },
+  {
+   "item_id": "H013",
+   "label": "SUPPORTED",
+   "note": "",
+   "time": "2026-10-12T04:24:38.277Z"
+  },
+  {
+   "item_id": "H014",
+   "label": "SUPPORTED",
+   "note": "",
+   "time": "2026-10-12T04:25:46.301Z"
+  },
+  {
+   "item_id": "H015",
+   "label": "NOT_SUPPORTED",
+   "note": "",
+   "time": "2026-10-12T04:31:20.381Z"
+  },
+  {
+   "item_id": "H016",
+   "label": "NOT_SUPPORTED",
+   "note": "",
+   "time": "2026-10-12T04:34:31.460Z"
+  },
+  {
+   "item_id": "H017",
+   "label": "NOT_SUPPORTED",
+   "note": "",
+   "time": "2026-10-12T04:35:01.548Z"
+  },
+  {
+   "item_id": "H018",
+   "label": "NOT_SUPPORTED",
+   "note": "",
+   "time": "2026-10-12T04:35:42.300Z"
+  },
+  {
+   "item_id": "H019",
+   "label": "SUPPORTED",
+   "note": "",
+   "time": "2026-10-12T04:36:02.908Z"
+  },
+  {
+   "item_id": "H020",
+   "label": "SUPPORTED",
+   "note": "",
+   "time": "2026-10-12T04:36:38.612Z"
+  },
+  {
+   "item_id": "H021",
+   "label": "NOT_SUPPORTED",
+   "note": "",
+   "time": "2026-10-12T04:39:02.740Z"
+  },
+  {
+   "item_id": "H022",
+   "label": "SUPPORTED",
+   "note": "",
+   "time": "2026-10-12T04:39:37.860Z"
+  },
+  {
+   "item_id": "H023",
+   "label": "NOT_SUPPORTED",
+   "note": "",
+   "time": "2026-10-12T04:41:27.628Z"
+  },
+  {
+   "item_id": "H024",
+   "label": "NOT_SUPPORTED",
+   "note": "",
+   "time": "2026-10-12T04:43:36.667Z"
+  },
+  {
+   "item_id": "H025",
+   "label": "NOT_SUPPORTED",
+   "note": "",
+   "time": "2026-10-12T04:43:55.875Z"
+  },
+  {
+   "item_id": "H026",
+   "label": "SUPPORTED",
+   "note": "",
+   "time": "2026-10-12T04:44:23.691Z"
+  },
+  {
+   "item_id": "H027",
+   "label": "NOT_SUPPORTED",
+   "note": "",
+   "time": "2026-10-12T04:45:25.459Z"
+  },
+  {
+   "item_id": "H028",
+   "label": "NOT_SUPPORTED",
+   "note": "",
+   "time": "2026-10-12T04:46:40.603Z"
+  },
+  {
+   "item_id": "H029",
+   "label": "NOT_SUPPORTED",
+   "note": "",
+   "time": "2026-10-12T04:47:43.635Z"
+  },
+  {
+   "item_id": "H030",
+   "label": "SUPPORTED",
+   "note": "",
+   "time": "2026-10-12T04:48:31.899Z"
+  },
+  {
+   "item_id": "H031",
+   "label": "SUPPORTED",
+   "note": "",
+   "time": "2026-10-12T08:20:26.878Z"
+  },
+  {
+   "item_id": "H032",
+   "label": "NOT_SUPPORTED",
+   "note": "",
+   "time": "2026-10-12T08:21:37.716Z"
+  },
+  {
+   "item_id": "H033",
+   "label": "SUPPORTED",
+   "note": "",
+   "time": "2026-10-12T08:22:11.612Z"
+  },
+  {
+   "item_id": "H034",
+   "label": "NOT_SUPPORTED",
+   "note": "",
+   "time": "2026-10-12T08:23:11.428Z"
+  },
+  {
+   "item_id": "H035",
+   "label": "NOT_SUPPORTED",
+   "note": "",
+   "time": "2026-10-12T08:23:58.780Z"
+  },
+  {
+   "item_id": "H036",
+   "label": "SUPPORTED",
+   "note": "",
+   "time": "2026-10-12T08:24:08.636Z"
+  },
+  {
+   "item_id": "H037",
+   "label": "NOT_SUPPORTED",
+   "note": "",
+   "time": "2026-10-12T08:25:17.020Z"
+  },
+  {
+   "item_id": "H038",
+   "label": "SUPPORTED",
+   "note": "",
+   "time": "2026-10-12T08:26:20.020Z"
+  },
+  {
+   "item_id": "H039",
+   "label": "NOT_SUPPORTED",
+   "note": "",
+   "time": "2026-10-12T08:26:44.260Z"
+  },
+  {
+   "item_id": "H040",
+   "label": "SUPPORTED",
+   "note": "",
+   "time": "2026-10-12T08:27:39.501Z"
+  },
+  {
+   "item_id": "H041",
+   "label": "SUPPORTED",
+   "note": "",
+   "time": "2026-10-12T08:29:37.620Z"
+  },
+  {
+   "item_id": "H042",
+   "label": "SUPPORTED",
+   "note": "",
+   "time": "2026-10-12T08:30:41.323Z"
+  },
+  {
+   "item_id": "H043",
+   "label": "SUPPORTED",
+   "note": "",
+   "time": "2026-10-12T08:30:48.867Z"
+  },
+  {
+   "item_id": "H044",
+   "label": "SUPPORTED",
+   "note": "",
+   "time": "2026-10-12T08:33:01.308Z"
+  },
+  {
+   "item_id": "H045",
+   "label": "SUPPORTED",
+   "note": "",
+   "time": "2026-10-12T08:34:42.364Z"
+  },
+  {
+   "item_id": "H046",
+   "label": "SUPPORTED",
+   "note": "",
+   "time": "2026-10-12T08:35:38.676Z"
+  },
+  {
+   "item_id": "H047",
+   "label": "SUPPORTED",
+   "note": "",
+   "time": "2026-10-12T08:37:08.091Z"
+  },
+  {
+   "item_id": "H048",
+   "label": "SUPPORTED",
+   "note": "",
+   "time": "2026-10-12T08:37:39.144Z"
+  },
+  {
+   "item_id": "H049",
+   "label": "SUPPORTED",
+   "note": "",
+   "time": "2026-10-12T08:39:03.731Z"
+  },
+  {
+   "item_id": "H050",
+   "label": "SUPPORTED",
+   "note": "",
+   "time": "2026-10-12T08:42:04.842Z"
+  },
+  {
+   "item_id": "H051",
+   "label": "NOT_SUPPORTED",
+   "note": "",
+   "time": "2026-10-12T08:44:12.370Z"
+  },
+  {
+   "item_id": "H052",
+   "label": "NOT_SUPPORTED",
+   "note": "",
+   "time": "2026-10-12T08:45:45.722Z"
+  },
+  {
+   "item_id": "H053",
+   "label": "NOT_SUPPORTED",
+   "note": "",
+   "time": "2026-10-12T09:00:03.475Z"
+  },
+  {
+   "item_id": "H054",
+   "label": "NOT_SUPPORTED",
+   "note": "",
+   "time": "2026-10-12T09:01:06.073Z"
+  },
+  {
+   "item_id": "H055",
+   "label": "SUPPORTED",
+   "note": "",
+   "time": "2026-10-12T09:02:13.862Z"
+  },
+  {
+   "item_id": "H056",
+   "label": "SUPPORTED",
+   "note": "",
+   "time": "2026-10-12T09:02:35.390Z"
+  },
+  {
+   "item_id": "H057",
+   "label": "SUPPORTED",
+   "note": "",
+   "time": "2026-10-12T09:03:13.452Z"
+  },
+  {
+   "item_id": "H058",
+   "label": "SUPPORTED",
+   "note": "",
+   "time": "2026-10-12T09:03:36.108Z"
+  },
+  {
+   "item_id": "H059",
+   "label": "SUPPORTED",
+   "note": "",
+   "time": "2026-10-12T09:04:22.481Z"
+  },
+  {
+   "item_id": "H060",
+   "label": "SUPPORTED",
+   "note": "",
+   "time": "2026-10-12T09:05:36.888Z"
+  },
+  {
+   "item_id": "H061",
+   "label": "SUPPORTED",
+   "note": "",
+   "time": "2026-10-12T09:06:20.558Z"
+  },
+  {
+   "item_id": "H062",
+   "label": "NOT_SUPPORTED",
+   "note": "",
+   "time": "2026-10-12T09:14:57.630Z"
+  },
+  {
+   "item_id": "H063",
+   "label": "SUPPORTED",
+   "note": "",
+   "time": "2026-10-12T09:16:16.346Z"
+  },
+  {
+   "item_id": "H064",
+   "label": "SUPPORTED",
+   "note": "",
+   "time": "2026-10-12T09:16:50.797Z"
+  },
+  {
+   "item_id": "H065",
+   "label": "SUPPORTED",
+   "note": "",
+   "time": "2026-10-12T09:18:16.682Z"
+  },
+  {
+   "item_id": "H066",
+   "label": "SUPPORTED",
+   "note": "",
+   "time": "2026-10-12T09:19:08.380Z"
+  },
+  {
+   "item_id": "H067",
+   "label": "NOT_SUPPORTED",
+   "note": "",
+   "time": "2026-10-12T09:20:08.400Z"
+  },
+  {
+   "item_id": "H068",
+   "label": "NOT_SUPPORTED",
+   "note": "",
+   "time": "2026-10-12T09:20:41.214Z"
+  },
+  {
+   "item_id": "H069",
+   "label": "SUPPORTED",
+   "note": "",
+   "time": "2026-10-12T09:21:16.593Z"
+  },
+  {
+   "item_id": "H070",
+   "label": "SUPPORTED",
+   "note": "",
+   "time": "2026-10-12T09:21:57.177Z"
+  },
+  {
+   "item_id": "H071",
+   "label": "SUPPORTED",
+   "note": "",
+   "time": "2026-10-12T11:15:32.286Z"
+  },
+  {
+   "item_id": "H072",
+   "label": "NOT_SUPPORTED",
+   "note": "",
+   "time": "2026-10-12T11:15:57.518Z"
+  },
+  {
+   "item_id": "H073",
+   "label": "SUPPORTED",
+   "note": "",
+   "time": "2026-10-12T11:16:41.798Z"
+  },
+  {
+   "item_id": "H074",
+   "label": "SUPPORTED",
+   "note": "",
+   "time": "2026-10-12T11:17:06.158Z"
+  },
+  {
+   "item_id": "H075",
+   "label": "NOT_SUPPORTED",
+   "note": "",
+   "time": "2026-10-12T11:17:19.086Z"
+  },
+  {
+   "item_id": "H076",
+   "label": "NOT_SUPPORTED",
+   "note": "",
+   "time": "2026-10-12T11:17:49.206Z"
+  },
+  {
+   "item_id": "H077",
+   "label": "SUPPORTED",
+   "note": "",
+   "time": "2026-10-12T11:18:18.686Z"
+  },
+  {
+   "item_id": "H078",
+   "label": "SUPPORTED",
+   "note": "",
+   "time": "2026-10-12T11:25:11.469Z"
+  },
+  {
+   "item_id": "H079",
+   "label": "SUPPORTED",
+   "note": "",
+   "time": "2026-10-12T11:25:36.677Z"
+  },
+  {
+   "item_id": "H080",
+   "label": "NOT_SUPPORTED",
+   "note": "",
+   "time": "2026-10-12T11:26:47.957Z"
+  },
+  {
+   "item_id": "H081",
+   "label": "NOT_SUPPORTED",
+   "note": "",
+   "time": "2026-10-12T11:26:53.789Z"
+  },
+  {
+   "item_id": "H082",
+   "label": "SUPPORTED",
+   "note": "",
+   "time": "2026-10-13T06:02:39.728Z"
+  },
+  {
+   "item_id": "H083",
+   "label": "SUPPORTED",
+   "note": "",
+   "time": "2026-10-13T06:03:16.601Z"
+  },
+  {
+   "item_id": "H084",
+   "label": "NOT_SUPPORTED",
+   "note": "",
+   "time": "2026-10-13T06:03:37.229Z"
+  },
+  {
+   "item_id": "H085",
+   "label": "SUPPORTED",
+   "note": "",
+   "time": "2026-10-13T06:04:15.421Z"
+  },
+  {
+   "item_id": "H086",
+   "label": "SUPPORTED",
+   "note": "",
+   "time": "2026-10-13T06:05:45.989Z"
+  },
+  {
+   "item_id": "H087",
+   "label": "SUPPORTED",
+   "note": "",
+   "time": "2026-10-13T06:06:09.253Z"
+  },
+  {
+   "item_id": "H088",
+   "label": "NOT_SUPPORTED",
+   "note": "",
+   "time": "2026-10-13T06:07:26.196Z"
+  },
+  {
+   "item_id": "H089",
+   "label": "NOT_SUPPORTED",
+   "note": "",
+   "time": "2026-10-13T06:08:35.093Z"
+  },
+  {
+   "item_id": "H090",
+   "label": "NOT_SUPPORTED",
+   "note": "",
+   "time": "2026-10-13T06:11:02.461Z"
+  },
+  {
+   "item_id": "H091",
+   "label": "SUPPORTED",
+   "note": "",
+   "time": "2026-10-13T06:11:28.037Z"
+  },
+  {
+   "item_id": "H092",
+   "label": "SUPPORTED",
+   "note": "",
+   "time": "2026-10-13T06:17:41.861Z"
+  },
+  {
+   "item_id": "H093",
+   "label": "NOT_SUPPORTED",
+   "note": "",
+   "time": "2026-10-13T06:19:11.069Z"
+  },
+  {
+   "item_id": "H094",
+   "label": "SUPPORTED",
+   "note": "",
+   "time": "2026-10-13T06:20:40.068Z"
+  },
+  {
+   "item_id": "H095",
+   "label": "SUPPORTED",
+   "note": "",
+   "time": "2026-10-13T06:21:10.179Z"
+  },
+  {
+   "item_id": "H096",
+   "label": "NOT_SUPPORTED",
+   "note": "",
+   "time": "2026-10-13T06:21:48.235Z"
+  },
+  {
+   "item_id": "H097",
+   "label": "NOT_SUPPORTED",
+   "note": "",
+   "time": "2026-10-13T06:24:06.227Z"
+  },
+  {
+   "item_id": "H098",
+   "label": "SUPPORTED",
+   "note": "",
+   "time": "2026-10-13T06:25:25.203Z"
+  },
+  {
+   "item_id": "H099",
+   "label": "SUPPORTED",
+   "note": "",
+   "time": "2026-10-13T06:25:31.323Z"
+  },
+  {
+   "item_id": "H100",
+   "label": "NOT_SUPPORTED",
+   "note": "",
+   "time": "2026-10-13T06:25:58.411Z"
+  },
+  {
+   "item_id": "H101",
+   "label": "NOT_SUPPORTED",
+   "note": "",
+   "time": "2026-10-13T06:28:53.595Z"
+  },
+  {
+   "item_id": "H102",
+   "label": "NOT_SUPPORTED",
+   "note": "",
+   "time": "2026-10-13T06:29:05.355Z"
+  },
+  {
+   "item_id": "H103",
+   "label": "NOT_SUPPORTED",
+   "note": "",
+   "time": "2026-10-13T06:30:19.787Z"
+  },
+  {
+   "item_id": "H104",
+   "label": "SUPPORTED",
+   "note": "",
+   "time": "2026-10-13T06:31:02.923Z"
+  },
+  {
+   "item_id": "H105",
+   "label": "NOT_SUPPORTED",
+   "note": "",
+   "time": "2026-10-13T06:32:42.355Z"
+  },
+  {
+   "item_id": "H106",
+   "label": "SUPPORTED",
+   "note": "",
+   "time": "2026-10-13T06:37:41.299Z"
+  },
+  {
+   "item_id": "H107",
+   "label": "NOT_SUPPORTED",
+   "note": "",
+   "time": "2026-10-13T06:40:36.474Z"
+  },
+  {
+   "item_id": "H108",
+   "label": "NOT_SUPPORTED",
+   "note": "",
+   "time": "2026-10-13T06:41:56.234Z"
+  },
+  {
+   "item_id": "H109",
+   "label": "SUPPORTED",
+   "note": "",
+   "time": "2026-10-13T06:42:11.858Z"
+  },
+  {
+   "item_id": "H110",
+   "label": "SUPPORTED",
+   "note": "",
+   "time": "2026-10-13T06:42:56.906Z"
+  },
+  {
+   "item_id": "H111",
+   "label": "SUPPORTED",
+   "note": "",
+   "time": "2026-10-13T06:43:32.234Z"
+  },
+  {
+   "item_id": "H112",
+   "label": "SUPPORTED",
+   "note": "",
+   "time": "2026-10-13T06:43:41.178Z"
+  },
+  {
+   "item_id": "H113",
+   "label": "SUPPORTED",
+   "note": "",
+   "time": "2026-10-13T06:43:43.058Z"
+  },
+  {
+   "item_id": "H114",
+   "label": "SUPPORTED",
+   "note": "",
+   "time": "2026-10-13T06:44:16.786Z"
+  },
+  {
+   "item_id": "H115",
+   "label": "SUPPORTED",
+   "note": "",
+   "time": "2026-10-13T06:59:32.736Z"
+  },
+  {
+   "item_id": "H116",
+   "label": "NOT_SUPPORTED",
+   "note": "",
+   "time": "2026-10-13T07:01:55.792Z"
+  },
+  {
+   "item_id": "H117",
+   "label": "SUPPORTED",
+   "note": "",
+   "time": "2026-10-13T07:02:00.200Z"
+  },
+  {
+   "item_id": "H118",
+   "label": "SUPPORTED",
+   "note": "",
+   "time": "2026-10-13T07:02:18.792Z"
+  },
+  {
+   "item_id": "H119",
+   "label": "SUPPORTED",
+   "note": "",
+   "time": "2026-10-13T07:03:41.047Z"
+  },
+  {
+   "item_id": "H120",
+   "label": "NOT_SUPPORTED",
+   "note": "",
+   "time": "2026-10-13T07:04:45.265Z"
+  },
+  {
+   "item_id": "H121",
+   "label": "SUPPORTED",
+   "note": "",
+   "time": "2026-10-14T06:15:46.497Z"
+  },
+  {
+   "item_id": "H122",
+   "label": "SUPPORTED",
+   "note": "",
+   "time": "2026-10-14T06:16:21.073Z"
+  },
+  {
+   "item_id": "H123",
+   "label": "SUPPORTED",
+   "note": "",
+   "time": "2026-10-14T06:17:30.944Z"
+  },
+  {
+   "item_id": "H124",
+   "label": "NOT_SUPPORTED",
+   "note": "",
+   "time": "2026-10-14T06:19:14.929Z"
+  },
+  {
+   "item_id": "H125",
+   "label": "NOT_SUPPORTED",
+   "note": "",
+   "time": "2026-10-14T06:21:00.288Z"
+  },
+  {
+   "item_id": "H126",
+   "label": "SUPPORTED",
+   "note": "",
+   "time": "2026-10-14T06:21:26.673Z"
+  },
+  {
+   "item_id": "H127",
+   "label": "SUPPORTED",
+   "note": "",
+   "time": "2026-10-14T06:22:45.144Z"
+  },
+  {
+   "item_id": "H128",
+   "label": "NOT_SUPPORTED",
+   "note": "",
+   "time": "2026-10-14T06:23:24.000Z"
+  },
+  {
+   "item_id": "H129",
+   "label": "SUPPORTED",
+   "note": "",
+   "time": "2026-10-14T06:23:29.576Z"
+  },
+  {
+   "item_id": "H130",
+   "label": "NOT_SUPPORTED",
+   "note": "",
+   "time": "2026-10-14T06:24:19.992Z"
+  },
+  {
+   "item_id": "H131",
+   "label": "NOT_SUPPORTED",
+   "note": "",
+   "time": "2026-10-14T06:25:36.120Z"
+  },
+  {
+   "item_id": "H132",
+   "label": "SUPPORTED",
+   "note": "",
+   "time": "2026-10-14T06:25:44.167Z"
+  },
+  {
+   "item_id": "H133",
+   "label": "SUPPORTED",
+   "note": "",
+   "time": "2026-10-14T06:26:26.696Z"
+  },
+  {
+   "item_id": "H134",
+   "label": "SUPPORTED",
+   "note": "",
+   "time": "2026-10-14T06:26:48.696Z"
+  },
+  {
+   "item_id": "H135",
+   "label": "SUPPORTED",
+   "note": "",
+   "time": "2026-10-14T06:28:08.448Z"
+  },
+  {
+   "item_id": "H136",
+   "label": "NOT_SUPPORTED",
+   "note": "",
+   "time": "2026-10-14T06:31:59.008Z"
+  },
+  {
+   "item_id": "H137",
+   "label": "SUPPORTED",
+   "note": "",
+   "time": "2026-10-14T06:33:19.055Z"
+  },
+  {
+   "item_id": "H138",
+   "label": "SUPPORTED",
+   "note": "",
+   "time": "2026-10-14T07:23:59.300Z"
+  },
+  {
+   "item_id": "H139",
+   "label": "NOT_SUPPORTED",
+   "note": "",
+   "time": "2026-10-14T08:13:03.067Z"
+  },
+  {
+   "item_id": "H140",
+   "label": "SUPPORTED",
+   "note": "",
+   "time": "2026-10-14T08:13:27.731Z"
+  },
+  {
+   "item_id": "H141",
+   "label": "NOT_SUPPORTED",
+   "note": "",
+   "time": "2026-10-14T08:13:58.155Z"
+  },
+  {
+   "item_id": "H142",
+   "label": "SUPPORTED",
+   "note": "",
+   "time": "2026-10-14T08:14:51.283Z"
+  },
+  {
+   "item_id": "H143",
+   "label": "SUPPORTED",
+   "note": "",
+   "time": "2026-10-14T08:15:31.890Z"
+  },
+  {
+   "item_id": "H144",
+   "label": "SUPPORTED",
+   "note": "",
+   "time": "2026-10-14T08:16:08.922Z"
+  },
+  {
+   "item_id": "H145",
+   "label": "NOT_SUPPORTED",
+   "note": "",
+   "time": "2026-10-14T08:16:20.754Z"
+  },
+  {
+   "item_id": "H146",
+   "label": "SUPPORTED",
+   "note": "",
+   "time": "2026-10-14T08:16:42.340Z"
+  },
+  {
+   "item_id": "H147",
+   "label": "NOT_SUPPORTED",
+   "note": "",
+   "time": "2026-10-14T08:17:17.146Z"
+  },
+  {
+   "item_id": "H148",
+   "label": "SUPPORTED",
+   "note": "",
+   "time": "2026-10-14T08:17:38.939Z"
+  },
+  {
+   "item_id": "H149",
+   "label": "SUPPORTED",
+   "note": "",
+   "time": "2026-10-14T08:17:48.506Z"
+  },
+  {
+   "item_id": "H150",
+   "label": "SUPPORTED",
+   "note": "",
+   "time": "2026-10-14T08:19:17.050Z"
+  },
+  {
+   "item_id": "H151",
+   "label": "NOT_SUPPORTED",
+   "note": "",
+   "time": "2026-10-14T08:20:26.170Z"
+  },
+  {
+   "item_id": "H152",
+   "label": "SUPPORTED",
+   "note": "",
+   "time": "2026-10-14T08:21:15.418Z"
+  },
+  {
+   "item_id": "H153",
+   "label": "SUPPORTED",
+   "note": "",
+   "time": "2026-10-14T08:23:24.562Z"
+  },
+  {
+   "item_id": "H154",
+   "label": "SUPPORTED",
+   "note": "",
+   "time": "2026-10-15T00:49:07.612Z"
+  },
+  {
+   "item_id": "H155",
+   "label": "NOT_SUPPORTED",
+   "note": "",
+   "time": "2026-10-15T00:49:26.451Z"
+  },
+  {
+   "item_id": "H156",
+   "label": "SUPPORTED",
+   "note": "",
+   "time": "2026-10-15T00:50:53.283Z"
+  },
+  {
+   "item_id": "H157",
+   "label": "SUPPORTED",
+   "note": "",
+   "time": "2026-10-15T00:52:04.078Z"
+  },
+  {
+   "item_id": "H158",
+   "label": "SUPPORTED",
+   "note": "",
+   "time": "2026-10-15T00:52:33.262Z"
+  },
+  {
+   "item_id": "H159",
+   "label": "NOT_SUPPORTED",
+   "note": "",
+   "time": "2026-10-15T00:52:40.430Z"
+  },
+  {
+   "item_id": "H160",
+   "label": "SUPPORTED",
+   "note": "",
+   "time": "2026-10-15T00:53:00.834Z"
+  },
+  {
+   "item_id": "H161",
+   "label": "NOT_SUPPORTED",
+   "note": "",
+   "time": "2026-10-15T00:53:17.458Z"
+  },
+  {
+   "item_id": "H162",
+   "label": "NOT_SUPPORTED",
+   "note": "",
+   "time": "2026-10-15T00:53:59.077Z"
+  },
+  {
+   "item_id": "H163",
+   "label": "NOT_SUPPORTED",
+   "note": "",
+   "time": "2026-10-15T00:54:31.910Z"
+  },
+  {
+   "item_id": "H164",
+   "label": "SUPPORTED",
+   "note": "",
+   "time": "2026-10-15T00:54:54.434Z"
+  },
+  {
+   "item_id": "H165",
+   "label": "SUPPORTED",
+   "note": "",
+   "time": "2026-10-15T00:56:16.301Z"
+  },
+  {
+   "item_id": "H166",
+   "label": "SUPPORTED",
+   "note": "",
+   "time": "2026-10-15T00:56:30.469Z"
+  },
+  {
+   "item_id": "H167",
+   "label": "NOT_SUPPORTED",
+   "note": "",
+   "time": "2026-10-15T00:57:07.721Z"
+  },
+  {
+   "item_id": "H168",
+   "label": "SUPPORTED",
+   "note": "",
+   "time": "2026-10-15T01:02:59.966Z"
+  },
+  {
+   "item_id": "H169",
+   "label": "SUPPORTED",
+   "note": "",
+   "time": "2026-10-15T01:03:28.854Z"
+  },
+  {
+   "item_id": "H170",
+   "label": "NOT_SUPPORTED",
+   "note": "",
+   "time": "2026-10-15T01:04:49.217Z"
+  },
+  {
+   "item_id": "H171",
+   "label": "SUPPORTED",
+   "note": "",
+   "time": "2026-10-16T06:22:43.100Z"
+  },
+  {
+   "item_id": "H172",
+   "label": "SUPPORTED",
+   "note": "",
+   "time": "2026-10-16T06:24:47.363Z"
+  },
+  {
+   "item_id": "H173",
+   "label": "NOT_SUPPORTED",
+   "note": "",
+   "time": "2026-10-16T06:25:34.507Z"
+  },
+  {
+   "item_id": "H174",
+   "label": "NOT_SUPPORTED",
+   "note": "",
+   "time": "2026-10-16T06:28:18.739Z"
+  },
+  {
+   "item_id": "H175",
+   "label": "NOT_SUPPORTED",
+   "note": "",
+   "time": "2026-10-16T06:29:24.804Z"
+  },
+  {
+   "item_id": "H176",
+   "label": "NOT_SUPPORTED",
+   "note": "",
+   "time": "2026-10-16T06:30:46.883Z"
+  },
+  {
+   "item_id": "H177",
+   "label": "NOT_SUPPORTED",
+   "note": "",
+   "time": "2026-10-16T06:32:57.316Z"
+  },
+  {
+   "item_id": "H178",
+   "label": "SUPPORTED",
+   "note": "",
+   "time": "2026-10-16T06:33:44.939Z"
+  },
+  {
+   "item_id": "H179",
+   "label": "SUPPORTED",
+   "note": "",
+   "time": "2026-10-16T06:33:57.395Z"
+  },
+  {
+   "item_id": "H180",
+   "label": "NOT_SUPPORTED",
+   "note": "",
+   "time": "2026-10-16T06:41:12.027Z"
+  },
+  {
+   "item_id": "H181",
+   "label": "SUPPORTED",
+   "note": "",
+   "time": "2026-10-16T06:43:02.371Z"
+  },
+  {
+   "item_id": "H182",
+   "label": "SUPPORTED",
+   "note": "",
+   "time": "2026-10-16T06:43:25.539Z"
+  },
+  {
+   "item_id": "H183",
+   "label": "SUPPORTED",
+   "note": "",
+   "time": "2026-10-16T06:43:50.827Z"
+  },
+  {
+   "item_id": "H184",
+   "label": "NOT_SUPPORTED",
+   "note": "",
+   "time": "2026-10-16T06:43:55.050Z"
+  },
+  {
+   "item_id": "H185",
+   "label": "NOT_SUPPORTED",
+   "note": "",
+   "time": "2026-10-16T06:43:59.771Z"
+  },
+  {
+   "item_id": "H186",
+   "label": "NOT_SUPPORTED",
+   "note": "",
+   "time": "2026-10-16T06:44:17.259Z"
+  },
+  {
+   "item_id": "H187",
+   "label": "SUPPORTED",
+   "note": "",
+   "time": "2026-10-16T06:44:59.875Z"
+  },
+  {
+   "item_id": "H188",
+   "label": "NOT_SUPPORTED",
+   "note": "",
+   "time": "2026-10-16T06:45:17.299Z"
+  },
+  {
+   "item_id": "H189",
+   "label": "SUPPORTED",
+   "note": "",
+   "time": "2026-10-16T06:45:29.011Z"
+  },
+  {
+   "item_id": "H190",
+   "label": "SUPPORTED",
+   "note": "",
+   "time": "2026-10-16T06:45:50.891Z"
+  },
+  {
+   "item_id": "H191",
+   "label": "SUPPORTED",
+   "note": "",
+   "time": "2026-10-16T06:46:08.779Z"
+  },
+  {
+   "item_id": "H192",
+   "label": "NOT_SUPPORTED",
+   "note": "",
+   "time": "2026-10-16T06:47:21.547Z"
+  },
+  {
+   "item_id": "H193",
+   "label": "SUPPORTED",
+   "note": "",
+   "time": "2026-10-16T06:48:11.562Z"
+  },
+  {
+   "item_id": "H194",
+   "label": "NOT_SUPPORTED",
+   "note": "",
+   "time": "2026-10-16T06:48:34.787Z"
+  },
+  {
+   "item_id": "H195",
+   "label": "SUPPORTED",
+   "note": "",
+   "time": "2026-10-16T06:48:44.283Z"
+  },
+  {
+   "item_id": "H196",
+   "label": "SUPPORTED",
+   "note": "",
+   "time": "2026-10-16T06:48:55.187Z"
+  },
+  {
+   "item_id": "H197",
+   "label": "NOT_SUPPORTED",
+   "note": "",
+   "time": "2026-10-16T06:49:52.667Z"
+  },
+  {
+   "item_id": "H198",
+   "label": "NOT_SUPPORTED",
+   "note": "",
+   "time": "2026-10-16T06:50:13.186Z"
+  },
+  {
+   "item_id": "H199",
+   "label": "NOT_SUPPORTED",
+   "note": "",
+   "time": "2026-10-16T06:51:33.546Z"
+  },
+  {
+   "item_id": "H200",
+   "label": "SUPPORTED",
+   "note": "",
+   "time": "2026-10-16T06:51:53.251Z"
+  }
+ ]
+}

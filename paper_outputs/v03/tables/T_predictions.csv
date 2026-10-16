@@ -1,0 +1,13 @@
+prediction,scope,holds,evidence
+P1,qwen_nq,True,"6 reportable EM ratios; upper CI bounds: R0 0.43, R2 0.44, R3 0.36, R4 0.36, R5 0.36, R6 0.45"
+P1,llama_nq,True,"6 reportable EM ratios; upper CI bounds: R0 0.42, R2 0.43, R3 0.42, R4 0.28, R5 0.26, R6 0.42"
+P1,qwen_hp,True,"5 reportable EM ratios; upper CI bounds: R2 0.82, R3 0.87, R4 1.00, R5 0.85, R6 0.64"
+P1,llama_hp,False,"5 reportable EM ratios; upper CI bounds: R2 0.85, R3 1.00, R4 1.10, R5 1.00, R6 0.69"
+P2,qwen_nq,True,R4-R5 EM -0.006 (Holm p 1); R6-R5 EM -0.018 (Holm p 0.271)
+P2,llama_nq,True,R4-R5 EM -0.004 (Holm p 1); R6-R5 EM -0.007 (Holm p 1)
+P2,qwen_hp,False,R4-R5 EM +0.028 (Holm p 0.0055); R6-R5 EM -0.030 (Holm p 0.00309)
+P2,llama_hp,False,R4-R5 EM +0.022 (Holm p 0.0402); R6-R5 EM -0.042 (Holm p 8.51e-06)
+P3,"NQ R0,R1,R2,R5",True,Kendall tau = 1.00 (v0.2 runs: 1.00)
+P4,qwen_nq,True,R0 -0.126 (Holm p 5.8e-42); R1 -0.120 (Holm p 7.4e-33); R2 -0.083 (Holm p 5.3e-18); R3 -0.078 (Holm p 2.3e-16); R4 -0.082 (Holm p 5.9e-17); R5 -0.078 (Holm p 9.1e-17); R6 -0.106 (Holm p 1.1e-26)
+P5,qwen_nq 500,True,"M1-MR EM -0.074, p = 2.2e-05"
+P6,qwen_nq 500,False,M1-M3 +0.016 (Holm p 0.94); M1-M5 +0.002 (Holm p 1); M3-M5 -0.014 (Holm p 0.94)

@@ -1,0 +1,5 @@
+retriever,name,ndcg10_sub_same_emb,ndcg10_sub_v02,ndcg10_full,hit5_sub_same_emb,hit5_full
+R0,BM25,0.2844,0.2844,0.2829,0.3728,0.3728
+R1,MiniLM-L6,0.5249,0.5250,0.4391,0.6729,0.5707
+R2,bge-small,0.5819,0.5820,0.4993,0.7291,0.6301
+R5,e5-base-v2,0.6651,0.6652,0.5823,0.8175,0.7271

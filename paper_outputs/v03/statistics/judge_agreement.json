@@ -1,0 +1,117 @@
+{
+ "n_items": 200,
+ "annotators": 1,
+ "cohen_kappa": 0.12738214643931794,
+ "kappa_ci95": [
+  -0.005689842708885638,
+  0.2611342523831385
+ ],
+ "bootstrap": {
+  "B": 10000,
+  "seed": 0
+ },
+ "decision_band": "slight: exclude from conclusions",
+ "decision_band_ci_low": "slight: exclude from conclusions",
+ "raw_agreement": 0.565,
+ "confusion_human_x_judge": {
+  "human_SUPPORTED__judge_SUPPORTED": 65,
+  "human_SUPPORTED__judge_NOT_SUPPORTED": 50,
+  "human_NOT_SUPPORTED__judge_SUPPORTED": 37,
+  "human_NOT_SUPPORTED__judge_NOT_SUPPORTED": 48
+ },
+ "human_supported_rate_sample": 0.575,
+ "judge_supported_rate_sample": 0.51,
+ "population_weighted": {
+  "agreement": 0.6201768707482993,
+  "kappa_ipw": 0.06701022560497574,
+  "judge_precision_for_SUPPORTED": 0.6358218125960061,
+  "judge_recall_for_SUPPORTED": 0.9076993925571808,
+  "human_supported_rate": 0.620421768707483,
+  "judge_supported_rate": 0.8857142857142857
+ },
+ "per_retriever": {
+  "R0": {
+   "n": 29,
+   "agreement": 0.5862068965517241,
+   "human_supported_rate_weighted": 0.5640000000000001,
+   "judge_supported_rate_weighted": 0.7899999999999999,
+   "judge_supported_rate_on_agreeing_items_weighted": 0.7979797979797981
+  },
+  "R1": {
+   "n": 29,
+   "agreement": 0.6551724137931034,
+   "human_supported_rate_weighted": 0.7657999999999999,
+   "judge_supported_rate_weighted": 0.8860000000000002,
+   "judge_supported_rate_on_agreeing_items_weighted": 0.925568033429094
+  },
+  "R2": {
+   "n": 29,
+   "agreement": 0.6206896551724138,
+   "human_supported_rate_weighted": 0.6423809523809524,
+   "judge_supported_rate_weighted": 0.8979999999999999,
+   "judge_supported_rate_on_agreeing_items_weighted": 0.9112786314873875
+  },
+  "R3": {
+   "n": 29,
+   "agreement": 0.6206896551724138,
+   "human_supported_rate_weighted": 0.5761999999999999,
+   "judge_supported_rate_weighted": 0.902,
+   "judge_supported_rate_on_agreeing_items_weighted": 0.8957298907646475
+  },
+  "R4": {
+   "n": 28,
+   "agreement": 0.5,
+   "human_supported_rate_weighted": 0.4999999999999999,
+   "judge_supported_rate_weighted": 0.9119999999999998,
+   "judge_supported_rate_on_agreeing_items_weighted": 0.912
+  },
+  "R5": {
+   "n": 28,
+   "agreement": 0.5357142857142857,
+   "human_supported_rate_weighted": 0.5654285714285713,
+   "judge_supported_rate_weighted": 0.916,
+   "judge_supported_rate_on_agreeing_items_weighted": 0.9257200606366852
+  },
+  "R6": {
+   "n": 28,
+   "agreement": 0.42857142857142855,
+   "human_supported_rate_weighted": 0.7291428571428571,
+   "judge_supported_rate_weighted": 0.896,
+   "judge_supported_rate_on_agreeing_items_weighted": 0.9773123909249564
+  }
+ },
+ "sensitivity": {
+  "ranking_judge_weighted": [
+   "R5",
+   "R4",
+   "R3",
+   "R2",
+   "R6",
+   "R1",
+   "R0"
+  ],
+  "ranking_human_weighted": [
+   "R1",
+   "R6",
+   "R2",
+   "R3",
+   "R5",
+   "R0",
+   "R4"
+  ],
+  "ranking_judge_on_agreeing_items": [
+   "R6",
+   "R5",
+   "R1",
+   "R4",
+   "R2",
+   "R3",
+   "R0"
+  ],
+  "note": "Rankings from ~28 items per retriever are noisy; they are reported, not tested."
+ },
+ "instructions_hash": "da33361c8520",
+ "annotator": "author",
+ "labelled_from": "2026-10-12T04:04:57.671Z",
+ "labelled_to": "2026-10-16T06:51:53.251Z"
+}
