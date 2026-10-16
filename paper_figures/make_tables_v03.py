@@ -28,9 +28,10 @@ def pval(p):
     return "$<$0.001" if p < 0.001 else f"{p:.3f}"
 
 
-def table(name, spec, header, rows, caption, label, notes=None, wide=False):
+def table(name, spec, header, rows, caption, label, notes=None, wide=False, compact=False):
     env = "table*" if wide else "table"
-    body = [f"\\begin{{{env}}}[t]", "\\centering", "\\small", f"\\caption{{{caption}}}", f"\\label{{{label}}}",
+    size = ["\\footnotesize", "\\setlength{\\tabcolsep}{3.5pt}"] if compact else ["\\small"]
+    body = [f"\\begin{{{env}}}[t]", "\\centering", *size, f"\\caption{{{caption}}}", f"\\label{{{label}}}",
             f"\\begin{{tabular}}{{{spec}}}", "\\toprule", header + r" \\", "\\midrule"]
     for r in rows:
         body.append(r if r.startswith("\\") else r + r" \\")
@@ -69,6 +70,113 @@ def t_main():
     OUT.mkdir(parents=True, exist_ok=True)
     (OUT / "tab_main.tex").write_text("\n".join(body) + "\n")
     print("wrote", OUT / "tab_main.tex")
+
+
+X = json.load(open(ROOT / "paper_outputs/v03/statistics/v03_extras.json"))
+
+
+def t_retrieval():
+    nq, hp = X["retrieval_nq"]["metrics"], X["retrieval_hp"]["metrics"]
+    rows = []
+    for r in R:
+        a = nq[r]
+        b = hp[r]
+        rows.append(f"{NAME[r]} & {a['hit@1']['mean']:.3f} & {a['hit@5']['mean']:.3f} & {a['hit@10']['mean']:.3f} & "
+                    f"{a['ndcg@10']['mean']:.3f} & {a['mrr@10']['mean']:.3f} & {b['hit@1']:.3f} & {b['hit@5']:.3f} & {b['both@5']:.3f} & "
+                    f"{b['ndcg@10']:.3f} & {b['mrr@10']:.3f}")
+    head = (r" & \multicolumn{5}{c}{NQ (" + f"{X['retrieval_nq']['n']:,}" + r" queries)} & \multicolumn{5}{c}{HotpotQA ("
+            + f"{X['retrieval_hp']['n']:,}" + r" queries)} \\ \cmidrule(lr){2-6}\cmidrule(lr){7-11}" + "\n"
+            "Retriever & Hit@1 & Hit@5 & Hit@10 & nDCG@10 & MRR@10 & Hit@1 & Hit@5 & Both@5 & nDCG@10 & MRR@10")
+    table("tab_retrieval", "l" + "c" * 10, head, rows,
+          "Retrieval quality on the generation queries of each dataset (300,000-passage sub-corpora, exact search).",
+          "tab:retrieval", "NQ intervals for Hit@5 and nDCG@10 are in Table~\\ref{tab:ci} and Fig.~\\ref{fig:retrieval}. "
+          "Both@5: both gold passages in the top five.", wide=True, compact=True)
+
+
+def t_deploy():
+    e = X["deployment_cost"]["efficiency"]
+    rows = []
+    for r in R:
+        v = e[r]
+        if r == "R0":
+            rows.append(f"BM25 & -- & -- & -- & -- & -- & {v['search_ms']:.1f} & {v['query_ms_cpu']:.1f} & --")
+            continue
+        rows.append(f"{NAME[r]} & {v['encode_gpu_s']:,.0f} & {v['gpu_peak_mib']:,.0f} & {v['throughput_cpu_pps']:.1f} & "
+                    f"{v['q_enc_gpu_ms']:.1f} & {v['q_enc_cpu_ms']:.1f} & {v['search_ms']:.1f} & {v['query_ms_cpu']:.1f} & {v['index_mb']:,.0f}")
+    table("tab_deploy", "lrrrrrrrr",
+          "Retriever & Enc.\\ 300k (s) & GPU MiB & CPU pass./s & Q-enc GPU & Q-enc CPU & Search & Query CPU & Index MB",
+          rows, "Deployment cost measured in Phase 1 (single measurements; one Tesla T4 and four virtual CPUs).", "tab:deploy",
+          "Enc.\\ 300k: T4 wall time to encode the 300,000-passage sub-corpus. Q-enc: batch-1 query encoding (ms, median). "
+          "Search: batch-1 exact inner-product search on the CPU (ms, median). Query CPU: query encoding plus search, all on the CPU. "
+          "Index: flat float32 FAISS index. Encoding throughput repeated five times in Phase 2 is in Table~\\ref{tab:cost}.", wide=True, compact=True)
+
+
+def t_idk():
+    a = X["idk"]
+    rows = []
+    for r in ("R0", "R1", "R4"):
+        v = a[r]
+        rows.append(f"{NAME[r]} & {v['n']} & {v['idk_rate']:.3f} & {v['idk_given_hit']:.3f} ({v['n_hit']}) & "
+                    f"{v['idk_given_miss']:.3f} ({v['n_miss']}) & {v['em_A1']:.3f} & {v['em_A3']:.3f} & {v['p_A3_vs_A1']:.2f}")
+    g = a["GOLD"]
+    rows.append(f"Gold passages & {g['n']} & {g['idk_rate']:.3f} & -- & -- & -- & -- & --")
+    table("tab_idk", "lrcccccc", "Context & $n$ & IDK rate & IDK $\\mid$ hit ($n$) & IDK $\\mid$ miss ($n$) & EM (A1) & EM (A3) & $p$",
+          rows, "Abstention prompt A3 (``I don't know'' allowed), Qwen reader, NQ, leading 200 queries of the seeded order (Phase 1).",
+          "tab:idk", "$p$: exact McNemar test of EM under A3 against the main prompt A1, unadjusted.")
+
+
+def t_transfer_k():
+    rows = []
+    by = {}
+    for t in X["transfer_by_k"]["rows"]:
+        by.setdefault(t["retriever"], {})[t["k"]] = t
+    for r in ["R0", "R2", "R3", "R4", "R5", "R6"]:
+        rows.append(f"{NAME[r]} & " + " & ".join(f"{by[r][k]['ratio']:.2f} [{by[r][k]['ci_lo']:.2f}, {by[r][k]['ci_hi']:.2f}]"
+                                                 for k in (1, 3, 5, 10)))
+    table("tab_transfer_k", "lcccc", "Retriever & $k=1$ & $k=3$ & $k=5$ & $k=10$", rows,
+          "Exploratory: transfer ratio against MiniLM-L6 at each $k$, with Hit@$k$ matched to the $k$ passages the reader saw "
+          "(Qwen reader, NQ, 2,255 queries; 95\\% paired bootstrap intervals).", "tab:transferk",
+          "Post hoc; the reporting rule of Section~\\ref{sec:ratio} is not applied. For BM25 the ratio describes a retrieval loss.", wide=True)
+
+
+def t_models():
+    import csv as _csv
+    rev = json.load(open(ROOT / "configs/resolved_revisions.json"))
+    rows = []
+    for row in _csv.DictReader(open(ROOT / "paper_outputs/paper/tables/T1_models.csv")):
+        if row["id"] == "R0":
+            rows.append("BM25 & bm25s 0.3.11, Lucene variant, $k_1=1.2$, $b=0.75$ & -- & -- & -- & --")
+            continue
+        pre = {"none": "none", "BGE instruction": "BGE instruction", "task instruction": "task instruction"}.get(row["query_prefix"],
+                                                                                                            "``query: ''")
+        rows.append(f"{row['retriever']} & {row['hf_model'].replace('_', chr(92) + '_')} & {rev[row['hf_model']][:8]} & "
+                    f"{S['corpus_hnsw_cost']['E7'][row['id']]['n_params'] / 1e6:.0f} & {row['dim']} & {pre}")
+    table("tab_models", "lllrrl", "Retriever & Model & Revision & Params (M) & Dim & Query prefix", rows,
+          "Retrievers. Dense encoders truncate at 256 tokens, run in half precision and use exact inner-product search over "
+          "normalised vectors.", "tab:models",
+          "BGE instruction: \\emph{Represent this sentence for searching relevant passages:}. e5-base-v2 also prefixes passages "
+          "with ``passage: ''. Qwen3-Embedding uses a task instruction per dataset.", wide=True, compact=True)
+
+
+def t_pairwise():
+    rows = []
+    order = R
+    for c, ds, rd in CELLS:
+        pw = {frozenset((t["a"], t["b"])): t for t in S["cells"][c]["pairwise_em"]}
+        rows.append(f"\\multicolumn{{7}}{{l}}{{\\emph{{{ds}, {rd}}}}} \\\\")
+        for i, a in enumerate(order[1:], start=1):
+            cols = []
+            for b in order[:-1]:
+                if order.index(b) >= i:
+                    cols.append("")
+                    continue
+                t = pw[frozenset((a, b))]
+                d = t["diff"] if t["a"] == a else -t["diff"]
+                cols.append(f"{d:+.3f}" + ("$^{*}$" if t["p_holm"] < 0.05 else ""))
+            rows.append(f"{NAME[a]} & " + " & ".join(cols))
+    table("tab_pairwise", "l" + "r" * 6, "Row $-$ column & " + " & ".join(NAME[r] for r in order[:-1]), rows,
+          "Pairwise EM differences (row minus column) in every reader--dataset cell.", "tab:pairwise",
+          "$^{*}$: exact McNemar test significant after Holm correction over the 21 pairs of the cell ($p<0.05$).", wide=True)
 
 
 def t_ci():
@@ -263,4 +371,4 @@ def t_judge():
 
 
 if __name__ == "__main__":
-    t_main(); t_ci(); t_transfer(); t_transfer_alt(); t_decomp(); t_predictions(); t_topk(); t_mechanism(); t_reranker(); t_cost(); t_corpus_hnsw(); t_gee(); t_judge()
+    t_main(); t_ci(); t_transfer(); t_transfer_alt(); t_decomp(); t_retrieval(); t_deploy(); t_idk(); t_transfer_k(); t_models(); t_pairwise(); t_predictions(); t_topk(); t_mechanism(); t_reranker(); t_cost(); t_corpus_hnsw(); t_gee(); t_judge()

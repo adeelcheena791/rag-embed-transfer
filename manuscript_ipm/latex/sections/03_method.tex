@@ -1,5 +1,14 @@
 \section{Method}\label{sec:method}
 
+Fig.~\ref{fig:system} shows the system under test. A question goes to one of seven retrievers, which searches a fixed corpus; the top $k$ passages go to one of two readers; the answer is scored against reference answers. Only the retriever changes between conditions within a reader--dataset cell.
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=\linewidth]{figs/fig7_system.pdf}
+\caption{System under test. Within a reader--dataset cell only the retriever changes. Cost is measured at the retrieval stage. The LLM judge was used only in Phase~1 and was later excluded (Section~\ref{sec:res-judge}).}
+\label{fig:system}
+\end{figure}
+
 \subsection{Transfer ratio}\label{sec:ratio}
 Let $Q$ be a fixed set of generation queries. For retriever $R$ and query $q$, let $h_R(q)\in\{0,1\}$ indicate that at least one gold passage of $q$ is among the top five passages, and let $e_R(q)\in\{0,1\}$ be the exact match of the reader's answer given those five passages. Write $\bar h_R$ and $\bar e_R$ for the means over $Q$. With MiniLM-L6 as the baseline $R_1$, the transfer ratio is
 \begin{equation}
@@ -27,7 +36,7 @@ We used the BEIR version of HotpotQA \citep{yang2018hotpotqa,thakur2021beir}: \e
 Encoding millions of passages with six encoders exceeds a free GPU budget, so each dataset uses a 300,000-passage sub-corpus. It contains the gold passages of all judged queries, BM25 top-$d$ non-gold passages for every judged query ($d$ = 42 for NQ and 19 for HotpotQA, set by a pre-registered formula), and a seeded random fill. The NQ sub-corpus has \ev{N.sc.nq.gold} gold, \ev{N.sc.nq.bm25} BM25 and \ev{N.sc.nq.rand} random passages; the HotpotQA sub-corpus has \ev{N.sc.hp.gold}, \ev{N.sc.hp.bm25} and \ev{N.sc.hp.rand}. Because every gold passage is present, absolute retrieval scores are higher than on the full corpus. Section~\ref{sec:res-cost} checks whether the ordering of retrievers changes.
 
 \subsection{Retrievers}\label{sec:retrievers}
-BM25 used the bm25s library \citep{lu2024bm25s} with the Lucene variant, $k_1=1.2$, $b=0.75$, lower-casing and no stemming or stop-word removal \citep{robertson2009bm25}. The six dense encoders were all-MiniLM-L6-v2 \citep{reimers2019sbert,wang2020minilm}, bge-small, bge-base and bge-large v1.5 \citep{xiao2024cpack}, e5-base-v2 \citep{wang2022e5} and Qwen3-Embedding-0.6B \citep{zhang2025qwen3emb}. Each model ran at a pinned revision in half precision with a maximum of 256 tokens and its documented query and passage prefixes. Dense search used exact inner-product search in FAISS \citep{johnson2021faiss}. Table~\ref{tab:cost} lists parameter counts.
+BM25 used the bm25s library \citep{lu2024bm25s} with the Lucene variant, $k_1=1.2$, $b=0.75$, lower-casing and no stemming or stop-word removal \citep{robertson2009bm25}. The six dense encoders were all-MiniLM-L6-v2 \citep{reimers2019sbert,wang2020minilm}, bge-small, bge-base and bge-large v1.5 \citep{xiao2024cpack}, e5-base-v2 \citep{wang2022e5} and Qwen3-Embedding-0.6B \citep{zhang2025qwen3emb}. Each model ran at a pinned revision in half precision with a maximum of 256 tokens and its documented query and passage prefixes. Dense search used exact inner-product search in FAISS \citep{johnson2021faiss}. Table~\ref{tab:models} in the appendix lists the models, revisions and prefixes.
 
 \subsection{Readers and prompts}\label{sec:readers}
 The readers were Qwen2.5-7B-Instruct \citep{qwen2025qwen25} and Llama-3.1-8B-Instruct \citep{grattafiori2024llama3}, both in 4-bit AWQ form \citep{lin2024awq}, served with vLLM \citep{kwon2023vllm} on one T4 each. Decoding was greedy with at most 32 new tokens and a stop at a newline. The main prompt (A1) gives the top $k=5$ passages in rank order, each as ``[i] title / text'', and asks for a short answer (Appendix~\ref{app:prompts}). Two reference conditions bound each cell: closed book (no passages) and gold passages only.
@@ -48,7 +57,14 @@ Phase~1 (Qwen reader, NQ) was designed and committed before any data were genera
 \item[P5] Gold plus four hard negatives gives lower EM than gold plus four random passages.
 \item[P6] The position of the gold passage (1, 3 or 5) changes EM.
 \end{description}
-The Qwen--NQ cell and the $k$ ablation for BM25, MiniLM-L6 and bge-large existed before registration. Their P1, P2 and P4 verdicts are therefore not confirmatory, and Table~\ref{tab:predictions} marks them. All other analyses are descriptive or secondary.
+Fig.~\ref{fig:phases} shows the sessions of both phases. The Qwen--NQ cell and the $k$ ablation for BM25, MiniLM-L6 and bge-large existed before registration. Their P1, P2 and P4 verdicts are therefore not confirmatory, and Table~\ref{tab:predictions} marks them. All other analyses are descriptive or secondary. Appendix~\ref{app:prereg} lists the design documents and their dates.
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=\linewidth]{figs/fig8_phases.pdf}
+\caption{Study phases and Kaggle sessions. Each phase started with a dated design document; Phase~2 added the second dataset, the second reader and the additional experiments.}
+\label{fig:phases}
+\end{figure}
 
 \subsection{Additional experiments}\label{sec:extra}
 \paragraph{Top-$k$ (E4)} The Qwen reader answered all NQ queries with $k\in\{1,3,5,10\}$ for all seven retrievers.

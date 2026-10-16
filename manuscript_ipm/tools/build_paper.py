@@ -23,6 +23,9 @@ def run(cmd, cwd=ROOT):
 
 
 def main():
+    run([sys.executable, "-m", "src.analysis.v03_extras"])
+    run([sys.executable, "paper_figures/make_tables_v03.py"])
+    run([sys.executable, "paper_figures/make_figures_v03.py"])
     run([sys.executable, "manuscript_ipm/tools/make_ledger.py"])
     run([sys.executable, "manuscript_ipm/tools/make_bib.py"])
     (TEX / "figs").mkdir(exist_ok=True)

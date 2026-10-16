@@ -25,7 +25,7 @@ def main():
     t = t.replace("\\ensuremath{-}", "\u2212")
     t = t.replace("\\title[mode=title]{", "\\title{")
     t = re.sub(r"\\RenewDocumentCommand\\printorcid\{\}\{\}", "", t)
-    t = re.sub(r"figs/(fig\d_[a-z_]+)\.pdf", lambda m: str(ROOT / "paper_figures/out" / (m.group(1) + ".png")), t)
+    t = re.sub(r"figs/(fig\d+_[a-z_]+)\.pdf", lambda m: str(ROOT / "paper_figures/out" / (m.group(1) + ".png")), t)
     t = re.sub(r"\\begin\{highlights\}.*?\\end\{highlights\}", "", t, flags=re.S)
     t = re.sub(r"\\begin\{keywords\}(.*?)\\end\{keywords\}",
                lambda m: "\\paragraph{Keywords} " + "; ".join(x.strip() for x in m.group(1).split("\\sep")), t, flags=re.S)

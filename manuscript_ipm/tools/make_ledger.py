@@ -352,6 +352,56 @@ add("CS.within", f"{CS['within_session_rerun_A2']['n_identical_outputs']}/{CS['w
 add("N.nq.joinrate", f"{nq['join_rate']:.3f}", "NQ join rate", "calculation", "proportion", "", "BEIR-NQ judged test queries", "",
     "nq_join_stats.json", V, "")
 
+# ---------------- carried over from Phase 1 / exploratory extension (src/analysis/v03_extras.py)
+XS = "paper_outputs/v03/statistics/v03_extras.json"
+X = json.load(open(ROOT / XS))
+for r, m in X["retrieval_nq"]["metrics"].items():
+    for met in ("hit@1", "hit@10", "ndcg@10", "mrr@10"):
+        add(f"RET.nq.{met.replace('@', '')}.{r}", f(m[met]["mean"]), f"{met} of {RNAME[r]} on the NQ generation queries", "observation",
+            met, "—", f"NQ, n = {X['retrieval_nq']['n']}", f"CI [{f(m[met]['ci_lo'])}, {f(m[met]['ci_hi'])}]", f"{XS} retrieval_nq", P,
+            "Phase 1 pipeline output (rq12_main.json); Hit@5 checked against top-10 lists")
+for r, m in X["retrieval_hp"]["metrics"].items():
+    for met in ("hit@1", "hit@10", "ndcg@10", "mrr@10"):
+        add(f"RET.hp.{met.replace('@', '')}.{r}", f(m[met]), f"{met} of {RNAME[r]} on the HotpotQA generation queries", "observation",
+            met, "—", f"HotpotQA, n = {X['retrieval_hp']['n']}", "", f"{XS} retrieval_hp", P, "retrieval summary file")
+for r, v in X["deployment_cost"]["efficiency"].items():
+    for key, lab, fmt in (("encode_gpu_s", "T4 time to encode 300,000 passages (s)", "{:,.0f}"), ("q_enc_cpu_ms", "CPU query encoding (ms)", "{:.1f}"),
+                          ("search_ms", "CPU exact search (ms)", "{:.1f}"), ("query_ms_cpu", "CPU query total (ms)", "{:.1f}"),
+                          ("index_mb", "flat index size (MB)", "{:,.0f}"), ("gpu_peak_mib", "peak GPU memory (MiB)", "{:,.0f}")):
+        if v.get(key) is None:
+            continue
+        add(f"DC.{key.split('_')[0] if key != 'query_ms_cpu' else 'qcpu'}.{key}.{r}".replace(f"{key.split('_')[0]}.{key}", key),
+            fmt.format(v[key]), f"{lab}, {RNAME[r]}", "observation", lab, "", "Phase 1, single measurement", "",
+            f"{XS} deployment_cost", P, "")
+for c, v in X["idk"].items():
+    add(f"IDK.rate.{c}", f(v["idk_rate"]), f"abstention rate under prompt A3, {RNAME[c]}", "observation", "share", "", f"Qwen / NQ, n = {v['n']}",
+        "", f"{XS} idk", P, "")
+    if c != "GOLD":
+        add(f"IDK.hit.{c}", f(v["idk_given_hit"]), f"abstention on hits, {RNAME[c]}", "observation", "share", "", f"n_hit = {v['n_hit']}", "",
+            f"{XS} idk", P, "")
+        add(f"IDK.miss.{c}", f(v["idk_given_miss"]), f"abstention on misses, {RNAME[c]}", "observation", "share", "", f"n_miss = {v['n_miss']}",
+            "", f"{XS} idk", P, "")
+        add(f"IDK.dem.{c}", sgn(v["em_A3"] - v["em_A1"]), f"EM under A3 minus A1, {RNAME[c]}", "inference", "ΔEM", "prompt A1", "n = 200",
+            f"p = {v['p_A3_vs_A1']:.2f}", f"{XS} idk", P, "")
+        add(f"IDK.p.{c}", f"{v['p_A3_vs_A1']:.2f}", f"exact McNemar p, A3 vs A1, {RNAME[c]}", "inference", "exact McNemar", "", "n = 200", "",
+            f"{XS} idk", P, "")
+for t in X["transfer_by_k"]["rows"]:
+    add(f"TKT.{t['retriever']}.k{t['k']}", f(t["ratio"], 2), f"exploratory transfer ratio at k = {t['k']}, {RNAME[t['retriever']]}",
+        "calculation", "dEM@k / dHit@k", "MiniLM-L6", "Qwen / NQ, n = 2255", f"CI [{t['ci_lo']:.2f}, {t['ci_hi']:.2f}]",
+        f"{XS} transfer_by_k", P, "post hoc, exploratory")
+    add(f"TKT.{t['retriever']}.k{t['k']}.ci", f"[{f(t['ci_lo'], 2)}, {f(t['ci_hi'], 2)}]", f"95% CI, exploratory ratio at k = {t['k']}",
+        "calculation", "bootstrap", "MiniLM-L6", "Qwen / NQ", "", f"{XS} transfer_by_k", P, "post hoc, exploratory")
+
+RQ12 = json.load(open(ROOT / "paper_inputs/results/statistics/rq12_main.json"))
+D1 = RQ12["d1b"]["per_retriever"]
+dd = [v["hit@5"]["diff"] for v in D1.values()]
+all0 = all(v["hit@5"]["ci"][0] <= 0 <= v["hit@5"]["ci"][1] for v in D1.values())
+assert all0
+add("D1B.min", sgn(min(dd)), "smallest Hit@5 difference joined minus unjoined NQ queries", "calculation", "ΔHit@5", "unjoined (1,197)",
+    "NQ judged, 7 retrievers", "every 95% CI includes 0", "paper_inputs/results/statistics/rq12_main.json d1b", P, "Phase 1 pipeline output")
+add("D1B.max", sgn(max(dd)), "largest Hit@5 difference joined minus unjoined NQ queries", "calculation", "ΔHit@5", "unjoined (1,197)",
+    "NQ judged, 7 retrievers", "every 95% CI includes 0", "paper_inputs/results/statistics/rq12_main.json d1b", P, "Phase 1 pipeline output")
+
 
 def main():
     ids = [r["claim_id"] for r in ROWS]

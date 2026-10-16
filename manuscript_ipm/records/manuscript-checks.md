@@ -13,9 +13,9 @@
 - highlight 65 chars: Higher EM given a hit carries 48\%--70\% of the HotpotQA transfer
 - highlight 73 chars: Encoding throughput on a free T4 GPU differed 27-fold across six encoders
 - highlight 68 chars: Three of six registered predictions failed in at least one condition
-- cited references: 60 of 69 in references.bib
+- cited references: 60 of 76 in references.bib
 - overfull hboxes > 5pt: 1 (max 117pt)
-- numbers typed in prose (design constants etc., review manually): 137
+- numbers typed in prose (design constants etc., review manually): 181
 
 ## Typed numbers (lexical screen)
 
@@ -34,6 +34,7 @@
 - 02_related.tex: 5
 - 02_related.tex: 5
 - 02_related.tex: 7
+- 03_method.tex: 1
 - 03_method.tex: 2
 - 03_method.tex: 5
 - 03_method.tex: 1
@@ -62,6 +63,7 @@
 - 03_method.tex: 1,
 - 03_method.tex: 3
 - 03_method.tex: 5
+- 03_method.tex: 2
 - 03_method.tex: 500
 - 03_method.tex: 1
 - 03_method.tex: 3
@@ -99,9 +101,29 @@
 - 04_setup.tex: 1,000
 - 04_setup.tex: 2
 - 04_setup.tex: 3.13,
+- 04_setup.tex: 1
+- 04_setup.tex: 499
+- 04_setup.tex: 500
+- 04_setup.tex: 1
+- 04_setup.tex: 1
+- 04_setup.tex: 24
 - 05_results.tex: 5
 - 05_results.tex: 5
 - 05_results.tex: 5
+- 05_results.tex: 1,
+- 05_results.tex: 10,
+- 05_results.tex: 10
+- 05_results.tex: 10,
+- 05_results.tex: 10
+- 05_results.tex: 5
+- 05_results.tex: 10
+- 05_results.tex: 95
+- 05_results.tex: 5
+- 05_results.tex: 10
+- 05_results.tex: 2,255
+- 05_results.tex: 5
+- 05_results.tex: 5
+- 05_results.tex: 2,000
 - 05_results.tex: 5.
 - 05_results.tex: 5
 - 05_results.tex: 95
@@ -115,6 +137,10 @@
 - 05_results.tex: 5
 - 05_results.tex: 5
 - 05_results.tex: 5
+- 05_results.tex: 5,
+- 05_results.tex: 1,
+- 05_results.tex: 200
+- 05_results.tex: 1
 - 05_results.tex: 5.
 - 05_results.tex: 1.
 - 05_results.tex: 2,255
@@ -130,6 +156,14 @@
 - 05_results.tex: 5
 - 05_results.tex: 50
 - 05_results.tex: 5
+- 05_results.tex: 1
+- 05_results.tex: 300,000
+- 05_results.tex: 384,
+- 05_results.tex: 768
+- 05_results.tex: 1,024
+- 05_results.tex: 10.
+- 05_results.tex: 1
+- 05_results.tex: 21
 - 05_results.tex: 128
 - 05_results.tex: 5
 - 05_results.tex: 10
@@ -152,7 +186,17 @@
 - 07_limitations.tex: 4
 - 07_limitations.tex: 7
 - 07_limitations.tex: 300,000
+- 07_limitations.tex: 1
+- 07_limitations.tex: 5
+- 07_limitations.tex: 95
 - 07_limitations.tex: 5
 - 07_limitations.tex: 500
+- 085_ethics.tex: 17
+- 085_ethics.tex: 2026
+- 085_ethics.tex: 4.0
+- 085_ethics.tex: 3.0
+- 085_ethics.tex: 4.0
+- 085_ethics.tex: 3.1
+- 085_ethics.tex: 200
 - 08_conclusion.tex: 5
 - 08_conclusion.tex: 5

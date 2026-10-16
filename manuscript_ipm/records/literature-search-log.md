@@ -43,3 +43,10 @@ Known metadata limits:
 
 ## C. Generated bibliography
 manuscript_ipm/tools/make_bib.py → manuscript_ipm/latex/references.bib (69 entries, built only from the files above).
+
+## D. Additions after the author's earlier draft (2026-10-16, afternoon)
+References used in the author's earlier draft were checked before reuse: arXiv API (2603.10765 RAGPerf, 2205.13147 Matryoshka,
+1803.05449 SentEval, 2104.06979 TSDAE, 2605.23618 Cirillo et al., 2607.23507 Baidya) → records/lit/arxiv3_2026-10-16.json;
+DBLP for the NeurIPS 2022 venue of Matryoshka; Crossref for Wilcoxon 1945 (10.2307/3001968) → records/lit/crossref2_2026-10-16.json.
+Direct quotations in the earlier draft (Baidya; Cirillo; Salemi & Zamani; Leto) are replaced by paraphrases of what the
+retrieved abstracts state, because the full texts were not re-read here.

@@ -1,0 +1,41 @@
+\begin{table*}[t]
+\centering
+\small
+\caption{Pairwise EM differences (row minus column) in every reader--dataset cell.}
+\label{tab:pairwise}
+\begin{tabular}{lrrrrrr}
+\toprule
+Row $-$ column & BM25 & MiniLM-L6 & bge-small & bge-base & bge-large & e5-base-v2 \\
+\midrule
+\multicolumn{7}{l}{\emph{NQ, Qwen}} \\
+MiniLM-L6 & +0.112$^{*}$ &  &  &  &  &  \\
+bge-small & +0.124$^{*}$ & +0.012 &  &  &  &  \\
+bge-base & +0.133$^{*}$ & +0.022 & +0.009 &  &  &  \\
+bge-large & +0.144$^{*}$ & +0.032$^{*}$ & +0.020 & +0.010 &  &  \\
+e5-base-v2 & +0.150$^{*}$ & +0.038$^{*}$ & +0.026$^{*}$ & +0.016 & +0.006 &  \\
+Qwen3-Emb-0.6B & +0.132$^{*}$ & +0.020 & +0.008 & $-$0.001 & $-$0.012 & $-$0.018 \\
+\multicolumn{7}{l}{\emph{NQ, Llama}} \\
+MiniLM-L6 & +0.108$^{*}$ &  &  &  &  &  \\
+bge-small & +0.120$^{*}$ & +0.012 &  &  &  &  \\
+bge-base & +0.137$^{*}$ & +0.029$^{*}$ & +0.017 &  &  &  \\
+bge-large & +0.129$^{*}$ & +0.021 & +0.009 & $-$0.008 &  &  \\
+e5-base-v2 & +0.132$^{*}$ & +0.024 & +0.012 & $-$0.004 & +0.004 &  \\
+Qwen3-Emb-0.6B & +0.125$^{*}$ & +0.018 & +0.006 & $-$0.011 & $-$0.003 & $-$0.007 \\
+\multicolumn{7}{l}{\emph{HotpotQA, Qwen}} \\
+MiniLM-L6 & $-$0.035$^{*}$ &  &  &  &  &  \\
+bge-small & +0.056$^{*}$ & +0.090$^{*}$ &  &  &  &  \\
+bge-base & +0.066$^{*}$ & +0.100$^{*}$ & +0.010 &  &  &  \\
+bge-large & +0.086$^{*}$ & +0.120$^{*}$ & +0.030$^{*}$ & +0.020$^{*}$ &  &  \\
+e5-base-v2 & +0.058$^{*}$ & +0.092$^{*}$ & +0.002 & $-$0.008 & $-$0.028$^{*}$ &  \\
+Qwen3-Emb-0.6B & +0.028$^{*}$ & +0.062$^{*}$ & $-$0.028$^{*}$ & $-$0.037$^{*}$ & $-$0.058$^{*}$ & $-$0.029$^{*}$ \\
+\multicolumn{7}{l}{\emph{HotpotQA, Llama}} \\
+MiniLM-L6 & $-$0.038$^{*}$ &  &  &  &  &  \\
+bge-small & +0.057$^{*}$ & +0.095$^{*}$ &  &  &  &  \\
+bge-base & +0.080$^{*}$ & +0.118$^{*}$ & +0.024$^{*}$ &  &  &  \\
+bge-large & +0.095$^{*}$ & +0.133$^{*}$ & +0.038$^{*}$ & +0.015 &  &  \\
+e5-base-v2 & +0.073$^{*}$ & +0.111$^{*}$ & +0.017 & $-$0.007 & $-$0.022$^{*}$ &  \\
+Qwen3-Emb-0.6B & +0.030$^{*}$ & +0.069$^{*}$ & $-$0.026$^{*}$ & $-$0.050$^{*}$ & $-$0.065$^{*}$ & $-$0.043$^{*}$ \\
+\bottomrule
+\end{tabular}
+\par\smallskip\parbox{\linewidth}{\footnotesize $^{*}$: exact McNemar test significant after Holm correction over the 21 pairs of the cell ($p<0.05$).}
+\end{table*}

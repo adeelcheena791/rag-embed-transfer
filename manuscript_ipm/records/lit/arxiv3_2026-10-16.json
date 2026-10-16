@@ -1,0 +1,79 @@
+[
+ {
+  "id": "2603.10765",
+  "published": "2026-03-11",
+  "title": "RAGPerf: An End-to-End Benchmarking Framework for Retrieval-Augmented Generation Systems",
+  "authors": [
+   "Shaobo Li",
+   "Yirui Zhou",
+   "Yuan Xu",
+   "Kevin Chen",
+   "Daniel Waddington",
+   "Swaminathan Sundararaman",
+   "Hubertus Franke",
+   "Jian Huang"
+  ],
+  "comment": null
+ },
+ {
+  "id": "2205.13147",
+  "published": "2022-05-26",
+  "title": "Matryoshka Representation Learning",
+  "authors": [
+   "Aditya Kusupati",
+   "Gantavya Bhatt",
+   "Aniket Rege",
+   "Matthew Wallingford",
+   "Aditya Sinha",
+   "Vivek Ramanujan",
+   "William Howard-Snyder",
+   "Kaifeng Chen",
+   "Sham Kakade",
+   "Prateek Jain",
+   "Ali Farhadi"
+  ],
+  "comment": null
+ },
+ {
+  "id": "1803.05449",
+  "published": "2018-03-14",
+  "title": "SentEval: An Evaluation Toolkit for Universal Sentence Representations",
+  "authors": [
+   "Alexis Conneau",
+   "Douwe Kiela"
+  ],
+  "comment": "LREC 2018"
+ },
+ {
+  "id": "2104.06979",
+  "published": "2021-04-14",
+  "title": "TSDAE: Using Transformer-based Sequential Denoising Auto-Encoder for Unsupervised Sentence Embedding Learning",
+  "authors": [
+   "Kexin Wang",
+   "Nils Reimers",
+   "Iryna Gurevych"
+  ],
+  "comment": "Accepted at EMNLP 2021 Findings"
+ },
+ {
+  "id": "2605.23618",
+  "published": "2026-05-22",
+  "title": "Benchmarking Google Embeddings 2 against Open-Source Models for Multilingual Dense Retrieval and RAG Systems",
+  "authors": [
+   "Stefano Cirillo",
+   "Domenico Desiato",
+   "Giuseppe Polese",
+   "Giandomenico Solimando"
+  ],
+  "comment": null
+ },
+ {
+  "id": "2607.23507",
+  "published": "2026-07-26",
+  "title": "Choosing a Text Embedding Model: A Practical Benchmarking and Decision Framework",
+  "authors": [
+   "Madhav S Baidya"
+  ],
+  "comment": "Technical report"
+ }
+]

@@ -35,3 +35,8 @@ Checks marked RUN were executed on the committed artifacts; outputs are in this 
 - F1 and AC were not independently re-implemented (only the shared pipeline + second-machine reproduction).
 - Bootstrap CIs were reproduced on a second machine with the same code, not with an independent implementation.
 - E12 answer presence in hard negatives (S9).
+
+## Addendum 2026-10-17: material carried over from the Phase 1 paper
+- Regenerated the Phase 1 tables (src/paper/make_figures_tables.py) in this environment from the committed inputs: T1–T4, T6b, T6e, T6f identical; T5, T6, T6c, T6d identical in all point estimates, but a few bootstrap interval bounds differ by 0.1–0.2 percentage points (numpy build difference in this container). The manuscript uses the committed rq12_main.json intervals.
+- New: src/analysis/v03_extras.py (retrieval metrics both datasets, Phase 1 deployment cost, abstention prompt A3, exploratory transfer ratio by k with matched Hit@k). Its NQ Hit@5 is asserted equal to the pipeline output; A3 numbers equal the Phase 1 table T6e.
+- Transfer-by-k is post hoc and labelled exploratory; the reporting rule is not applied.
