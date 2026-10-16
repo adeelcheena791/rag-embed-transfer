@@ -16,7 +16,7 @@ LEDGER = {r["claim_id"]: r["value"] for r in csv.DictReader(open(ROOT / "manuscr
 def flatten(path):
     t = path.read_text()
     t = re.sub(r"(?<!\\)%.*", "", t)
-    return re.sub(r"\\input\{([^}]*)\}", lambda m: "" if m.group(1) == "numbers" else flatten(TEX / (m.group(1) + ".tex")), t)
+    return re.sub(r"\\input\{([^}]*)\}", lambda m: "" if m.group(1) in ("numbers", "glyphtounicode") else flatten(TEX / (m.group(1) + ".tex")), t)
 
 
 def main():
