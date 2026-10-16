@@ -1,0 +1,147 @@
+[
+ {
+  "id": "2510.21440",
+  "published": "2025-10-24",
+  "title": "Redefining Retrieval Evaluation in the Era of LLMs",
+  "authors": [
+   "Giovanni Trappolini",
+   "Florin Cuconasu",
+   "Simone Filice",
+   "Yoelle Maarek",
+   "Fabrizio Silvestri"
+  ],
+  "comment": null
+ },
+ {
+  "id": "2604.01733",
+  "published": "2026-04-02",
+  "title": "From BM25 to Corrective RAG: Benchmarking Retrieval Strategies for Text-and-Table Documents",
+  "authors": [
+   "Meftun Akarsu",
+   "Recep Kaan Karaman",
+   "Christopher Mierbach"
+  ],
+  "comment": null
+ },
+ {
+  "id": "2212.09146",
+  "published": "2022-12-18",
+  "title": "Can Retriever-Augmented Language Models Reason? The Blame Game Between the Retriever and the Language Model",
+  "authors": [
+   "Parishad BehnamGhader",
+   "Santiago Miret",
+   "Siva Reddy"
+  ],
+  "comment": "Accepted in EMNLP2023 Findings"
+ },
+ {
+  "id": "2310.18077",
+  "published": "2023-10-27",
+  "title": "Detrimental Contexts in Open-Domain Question Answering",
+  "authors": [
+   "Philhoon Oh",
+   "James Thorne"
+  ],
+  "comment": "Findings of EMNLP 2023"
+ },
+ {
+  "id": "2606.21553",
+  "published": "2026-06-19",
+  "title": "Dissecting Agentic RAG: A Component Ablation for Multi-Hop QA with a Local 7B Model",
+  "authors": [
+   "Sheroz Shaikh"
+  ],
+  "comment": null
+ },
+ {
+  "id": "2608.12875",
+  "published": "2026-08-13",
+  "title": "The Embedder's Dilemma: LLMs Are Better, but at What Cost?",
+  "authors": [
+   "Adnan El Assadi",
+   "Niklas Muennighoff",
+   "Jinhyuk Lee"
+  ],
+  "comment": "Accepted to COLM 2026"
+ },
+ {
+  "id": "2403.09040",
+  "published": "2024-03-14",
+  "title": "RAGGED: Towards Informed Design of Scalable and Stable RAG Systems",
+  "authors": [
+   "Jennifer Hsia",
+   "Afreen Shaikh",
+   "Zhiruo Wang",
+   "Graham Neubig"
+  ],
+  "comment": "journal_ref: ICML 2025"
+ },
+ {
+  "id": "2601.21803",
+  "published": "2026-01-29",
+  "title": "Quantifying Retriever-Generator Alignment in RAG with Local Explanations",
+  "authors": [
+   "Korbinian Randl",
+   "Guido Rocchietti",
+   "Aron Henriksson",
+   "Ziawasch Abedjan",
+   "Tony Lindgren",
+   "John Pavlopoulos"
+  ],
+  "comment": "Accepted at EMNLP 2026"
+ },
+ {
+  "id": "2511.09545",
+  "published": "2025-11-12",
+  "title": "Practical RAG Evaluation: A Rarity-Aware Set-Based Metric and Cost-Latency-Quality Trade-offs",
+  "authors": [
+   "Etienne Dallaire"
+  ],
+  "comment": null
+ },
+ {
+  "id": "2410.05983",
+  "published": "2024-10-08",
+  "title": "Long-Context LLMs Meet RAG: Overcoming Challenges for Long Inputs in RAG",
+  "authors": [
+   "Bowen Jin",
+   "Jinsung Yoon",
+   "Jiawei Han",
+   "Sercan O. Arik"
+  ],
+  "comment": null
+ },
+ {
+  "id": "2605.27294",
+  "published": "2026-05-26",
+  "title": "Separating Semantic Competition from Context Length in RAG Reading",
+  "authors": [
+   "Vyzantinos Repantis",
+   "Ameya Gawde",
+   "Harshvardhan Singh",
+   "Rohit Alekar",
+   "Cien Zhang",
+   "Svetlana Karslioglu",
+   "Akash Vishwakarma"
+  ],
+  "comment": null
+ },
+ {
+  "id": "2604.27852",
+  "published": "2026-04-30",
+  "title": "NeocorRAG: Less Irrelevant Information, More Explicit Evidence, and More Effective Recall via Evidence Chains",
+  "authors": [
+   "Shiyao Peng",
+   "Qianhe Zheng",
+   "Zhuodi Hao",
+   "Zichen Tang",
+   "Rongjin Li",
+   "Qing Huang",
+   "Jiayu Huang",
+   "Jiacheng Liu",
+   "Yifan Zhu",
+   "Haihong E"
+  ],
+  "comment": "Accepted to WWW 2026; journal_ref Proc. ACM Web Conf. 2026, pages 1899-1910; doi 10.1145/3774904.3792093"
+ }
+]

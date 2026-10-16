@@ -1,0 +1,1044 @@
+[
+ {
+  "doi": "10.2307/2529310",
+  "title": "The Measurement of Observer Agreement for Categorical Data",
+  "first": "Landis",
+  "n_auth": 2,
+  "venue": "Biometrics",
+  "year": 1977,
+  "type": "journal-article",
+  "volume": "33",
+  "issue": "1",
+  "page": "159",
+  "publisher": "JSTOR",
+  "authors": [
+   [
+    "J. Richard",
+    "Landis"
+   ],
+   [
+    "Gary G.",
+    "Koch"
+   ]
+  ]
+ },
+ {
+  "doi": "10.18653/v1/p19-1612",
+  "title": "Latent Retrieval for Weakly Supervised Open Domain Question Answering",
+  "first": "Lee",
+  "n_auth": 3,
+  "venue": "Proceedings of the 57th Annual Meeting of the Association for Computational Linguistics",
+  "year": 2019,
+  "type": "proceedings-article",
+  "volume": null,
+  "issue": null,
+  "page": "6086-6096",
+  "publisher": "Association for Computational Linguistics",
+  "authors": [
+   [
+    "Kenton",
+    "Lee"
+   ],
+   [
+    "Ming-Wei",
+    "Chang"
+   ],
+   [
+    "Kristina",
+    "Toutanova"
+   ]
+  ]
+ },
+ {
+  "doi": "10.18653/v1/d18-1259",
+  "title": "HotpotQA: A Dataset for Diverse, Explainable Multi-hop Question Answering",
+  "first": "Yang",
+  "n_auth": 7,
+  "venue": "Proceedings of the 2018 Conference on Empirical Methods in Natural Language Processing",
+  "year": 2018,
+  "type": "proceedings-article",
+  "volume": null,
+  "issue": null,
+  "page": "2369-2380",
+  "publisher": "Association for Computational Linguistics",
+  "authors": [
+   [
+    "Zhilin",
+    "Yang"
+   ],
+   [
+    "Peng",
+    "Qi"
+   ],
+   [
+    "Saizheng",
+    "Zhang"
+   ],
+   [
+    "Yoshua",
+    "Bengio"
+   ],
+   [
+    "William",
+    "Cohen"
+   ],
+   [
+    "Ruslan",
+    "Salakhutdinov"
+   ],
+   [
+    "Christopher D.",
+    "Manning"
+   ]
+  ]
+ },
+ {
+  "doi": "10.18653/v1/2020.emnlp-main.550",
+  "title": "Dense Passage Retrieval for Open-Domain Question Answering",
+  "first": "Karpukhin",
+  "n_auth": 8,
+  "venue": "Proceedings of the 2020 Conference on Empirical Methods in Natural Language Processing (EMNLP)",
+  "year": 2020,
+  "type": "proceedings-article",
+  "volume": null,
+  "issue": null,
+  "page": "6769-6781",
+  "publisher": "Association for Computational Linguistics",
+  "authors": [
+   [
+    "Vladimir",
+    "Karpukhin"
+   ],
+   [
+    "Barlas",
+    "Oguz"
+   ],
+   [
+    "Sewon",
+    "Min"
+   ],
+   [
+    "Patrick",
+    "Lewis"
+   ],
+   [
+    "Ledell",
+    "Wu"
+   ],
+   [
+    "Sergey",
+    "Edunov"
+   ],
+   [
+    "Danqi",
+    "Chen"
+   ],
+   [
+    "Wen-tau",
+    "Yih"
+   ]
+  ]
+ },
+ {
+  "doi": "10.1109/tpami.2018.2889473",
+  "title": "Efficient and Robust Approximate Nearest Neighbor Search Using Hierarchical Navigable Small World Graphs",
+  "first": "Malkov",
+  "n_auth": 2,
+  "venue": "IEEE Transactions on Pattern Analysis and Machine Intelligence",
+  "year": 2020,
+  "type": "journal-article",
+  "volume": "42",
+  "issue": "4",
+  "page": "824-836",
+  "publisher": "Institute of Electrical and Electronics Engineers (IEEE)",
+  "authors": [
+   [
+    "Yu A.",
+    "Malkov"
+   ],
+   [
+    "D. A.",
+    "Yashunin"
+   ]
+  ]
+ },
+ {
+  "doi": "10.1561/1500000019",
+  "title": "The Probabilistic Relevance Framework: BM25 and Beyond",
+  "first": "Robertson",
+  "n_auth": 2,
+  "venue": "Foundations and Trends\u00ae in Information Retrieval",
+  "year": 2009,
+  "type": "journal-article",
+  "volume": "4",
+  "issue": "1-2",
+  "page": "1-174",
+  "publisher": "Emerald",
+  "authors": [
+   [
+    "Stephen",
+    "Robertson"
+   ],
+   [
+    "Hugo",
+    "Zaragoza"
+   ]
+  ]
+ },
+ {
+  "doi": "10.1145/3600006.3613165",
+  "title": "Efficient Memory Management for Large Language Model Serving with PagedAttention",
+  "first": "Kwon",
+  "n_auth": 9,
+  "venue": "Proceedings of the 29th Symposium on Operating Systems Principles",
+  "year": 2023,
+  "type": "proceedings-article",
+  "volume": null,
+  "issue": null,
+  "page": "611-626",
+  "publisher": "ACM",
+  "authors": [
+   [
+    "Woosuk",
+    "Kwon"
+   ],
+   [
+    "Zhuohan",
+    "Li"
+   ],
+   [
+    "Siyuan",
+    "Zhuang"
+   ],
+   [
+    "Ying",
+    "Sheng"
+   ],
+   [
+    "Lianmin",
+    "Zheng"
+   ],
+   [
+    "Cody Hao",
+    "Yu"
+   ],
+   [
+    "Joseph",
+    "Gonzalez"
+   ],
+   [
+    "Hao",
+    "Zhang"
+   ],
+   [
+    "Ion",
+    "Stoica"
+   ]
+  ]
+ },
+ {
+  "doi": "10.18653/v1/2023.eacl-main.148",
+  "title": "MTEB: Massive Text Embedding Benchmark",
+  "first": "Muennighoff",
+  "n_auth": 4,
+  "venue": "Proceedings of the 17th Conference of the European Chapter of the Association for Computational Linguistics",
+  "year": 2023,
+  "type": "proceedings-article",
+  "volume": null,
+  "issue": null,
+  "page": "2014-2037",
+  "publisher": "Association for Computational Linguistics",
+  "authors": [
+   [
+    "Niklas",
+    "Muennighoff"
+   ],
+   [
+    "Nouamane",
+    "Tazi"
+   ],
+   [
+    "Loic",
+    "Magne"
+   ],
+   [
+    "Nils",
+    "Reimers"
+   ]
+  ]
+ },
+ {
+  "doi": "10.18653/v1/2024.naacl-long.20",
+  "title": "ARES: An Automated Evaluation Framework for Retrieval-Augmented Generation Systems",
+  "first": "Saad-Falcon",
+  "n_auth": 4,
+  "venue": "Proceedings of the 2024 Conference of the North American Chapter of the Association for Computational Linguistics: Human Language Technologies (Volume 1: Long Papers)",
+  "year": 2024,
+  "type": "proceedings-article",
+  "volume": null,
+  "issue": null,
+  "page": "338-354",
+  "publisher": "Association for Computational Linguistics",
+  "authors": [
+   [
+    "Jon",
+    "Saad-Falcon"
+   ],
+   [
+    "Omar",
+    "Khattab"
+   ],
+   [
+    "Christopher",
+    "Potts"
+   ],
+   [
+    "Matei",
+    "Zaharia"
+   ]
+  ]
+ },
+ {
+  "doi": "10.1093/biomet/73.1.13",
+  "title": "Longitudinal data analysis using generalized linear models",
+  "first": "LIANG",
+  "n_auth": 2,
+  "venue": "Biometrika",
+  "year": 1986,
+  "type": "journal-article",
+  "volume": "73",
+  "issue": "1",
+  "page": "13-22",
+  "publisher": "Oxford University Press (OUP)",
+  "authors": [
+   [
+    "KUNG-YEE",
+    "LIANG"
+   ],
+   [
+    "SCOTT L.",
+    "ZEGER"
+   ]
+  ]
+ },
+ {
+  "doi": "10.1109/tbdata.2019.2921572",
+  "title": "Billion-Scale Similarity Search with GPUs",
+  "first": "Johnson",
+  "n_auth": 3,
+  "venue": "IEEE Transactions on Big Data",
+  "year": 2021,
+  "type": "journal-article",
+  "volume": "7",
+  "issue": "3",
+  "page": "535-547",
+  "publisher": "Institute of Electrical and Electronics Engineers (IEEE)",
+  "authors": [
+   [
+    "Jeff",
+    "Johnson"
+   ],
+   [
+    "Matthijs",
+    "Douze"
+   ],
+   [
+    "Herve",
+    "Jegou"
+   ]
+  ]
+ },
+ {
+  "doi": "10.18653/v1/p18-1128",
+  "title": "The Hitchhiker\u2019s Guide to Testing Statistical Significance in Natural Language Processing",
+  "first": "Dror",
+  "n_auth": 4,
+  "venue": "Proceedings of the 56th Annual Meeting of the Association for Computational Linguistics (Volume 1: Long Papers)",
+  "year": 2018,
+  "type": "proceedings-article",
+  "volume": null,
+  "issue": null,
+  "page": "1383-1392",
+  "publisher": "Association for Computational Linguistics",
+  "authors": [
+   [
+    "Rotem",
+    "Dror"
+   ],
+   [
+    "Gili",
+    "Baumer"
+   ],
+   [
+    "Segev",
+    "Shlomov"
+   ],
+   [
+    "Roi",
+    "Reichart"
+   ]
+  ]
+ },
+ {
+  "doi": "10.1145/2641383.2641385",
+  "title": "Statistical reform in information retrieval?",
+  "first": "Sakai",
+  "n_auth": 1,
+  "venue": "ACM SIGIR Forum",
+  "year": 2014,
+  "type": "journal-article",
+  "volume": "48",
+  "issue": "1",
+  "page": "3-12",
+  "publisher": "Association for Computing Machinery (ACM)",
+  "authors": [
+   [
+    "Tetsuya",
+    "Sakai"
+   ]
+  ]
+ },
+ {
+  "doi": "10.1162/tacl_a_00605",
+  "title": "In-Context Retrieval-Augmented Language Models",
+  "first": "Ram",
+  "n_auth": 7,
+  "venue": "Transactions of the Association for Computational Linguistics",
+  "year": 2023,
+  "type": "journal-article",
+  "volume": "11",
+  "issue": null,
+  "page": "1316-1331",
+  "publisher": "MIT Press",
+  "authors": [
+   [
+    "Ori",
+    "Ram"
+   ],
+   [
+    "Yoav",
+    "Levine"
+   ],
+   [
+    "Itay",
+    "Dalmedigos"
+   ],
+   [
+    "Dor",
+    "Muhlgay"
+   ],
+   [
+    "Amnon",
+    "Shashua"
+   ],
+   [
+    "Kevin",
+    "Leyton-Brown"
+   ],
+   [
+    "Yoav",
+    "Shoham"
+   ]
+  ]
+ },
+ {
+  "doi": "10.1007/bf02295996",
+  "title": "Note on the Sampling Error of the Difference Between Correlated Proportions or Percentages",
+  "first": "McNemar",
+  "n_auth": 1,
+  "venue": "Psychometrika",
+  "year": 1947,
+  "type": "journal-article",
+  "volume": "12",
+  "issue": "2",
+  "page": "153-157",
+  "publisher": "Cambridge University Press (CUP)",
+  "authors": [
+   [
+    "Quinn",
+    "McNemar"
+   ]
+  ]
+ },
+ {
+  "doi": "10.1145/1321440.1321528",
+  "title": "A comparison of statistical significance tests for information retrieval evaluation",
+  "first": "Smucker",
+  "n_auth": 3,
+  "venue": "Proceedings of the sixteenth ACM conference on Conference on information and knowledge management",
+  "year": 2007,
+  "type": "proceedings-article",
+  "volume": null,
+  "issue": null,
+  "page": "623-632",
+  "publisher": "ACM",
+  "authors": [
+   [
+    "Mark D.",
+    "Smucker"
+   ],
+   [
+    "James",
+    "Allan"
+   ],
+   [
+    "Ben",
+    "Carterette"
+   ]
+  ]
+ },
+ {
+  "doi": "10.18653/v1/2024.eacl-demo.16",
+  "title": "RAGAs: Automated Evaluation of Retrieval Augmented Generation",
+  "first": "Es",
+  "n_auth": 4,
+  "venue": "Proceedings of the 18th Conference of the European Chapter of the Association for Computational Linguistics: System Demonstrations",
+  "year": 2024,
+  "type": "proceedings-article",
+  "volume": null,
+  "issue": null,
+  "page": "150-158",
+  "publisher": "Association for Computational Linguistics",
+  "authors": [
+   [
+    "Shahul",
+    "Es"
+   ],
+   [
+    "Jithin",
+    "James"
+   ],
+   [
+    "Luis",
+    "Espinosa Anke"
+   ],
+   [
+    "Steven",
+    "Schockaert"
+   ]
+  ]
+ },
+ {
+  "doi": "10.18653/v1/2021.eacl-main.74",
+  "title": "Leveraging Passage Retrieval with Generative Models for Open Domain Question Answering",
+  "first": "Izacard",
+  "n_auth": 2,
+  "venue": "Proceedings of the 16th Conference of the European Chapter of the Association for Computational Linguistics: Main Volume",
+  "year": 2021,
+  "type": "proceedings-article",
+  "volume": null,
+  "issue": null,
+  "page": "874-880",
+  "publisher": "Association for Computational Linguistics",
+  "authors": [
+   [
+    "Gautier",
+    "Izacard"
+   ],
+   [
+    "Edouard",
+    "Grave"
+   ]
+  ]
+ },
+ {
+  "doi": "10.1145/3701228",
+  "title": "CRUD-RAG: A Comprehensive Chinese Benchmark for Retrieval-Augmented Generation of Large Language Models",
+  "first": "Lyu",
+  "n_auth": 10,
+  "venue": "ACM Transactions on Information Systems",
+  "year": 2025,
+  "type": "journal-article",
+  "volume": "43",
+  "issue": "2",
+  "page": "1-32",
+  "publisher": "Association for Computing Machinery (ACM)",
+  "authors": [
+   [
+    "Yuanjie",
+    "Lyu"
+   ],
+   [
+    "Zhiyu",
+    "Li"
+   ],
+   [
+    "Simin",
+    "Niu"
+   ],
+   [
+    "Feiyu",
+    "Xiong"
+   ],
+   [
+    "Bo",
+    "Tang"
+   ],
+   [
+    "Wenjin",
+    "Wang"
+   ],
+   [
+    "Hao",
+    "Wu"
+   ],
+   [
+    "Huanyong",
+    "Liu"
+   ],
+   [
+    "Tong",
+    "Xu"
+   ],
+   [
+    "Enhong",
+    "Chen"
+   ]
+  ]
+ },
+ {
+  "doi": "10.18653/v1/2021.naacl-main.200",
+  "title": "KILT: a Benchmark for Knowledge Intensive Language Tasks",
+  "first": "Petroni",
+  "n_auth": 13,
+  "venue": "Proceedings of the 2021 Conference of the North American Chapter of the Association for Computational Linguistics: Human Language Technologies",
+  "year": 2021,
+  "type": "proceedings-article",
+  "volume": null,
+  "issue": null,
+  "page": "2523-2544",
+  "publisher": "Association for Computational Linguistics",
+  "authors": [
+   [
+    "Fabio",
+    "Petroni"
+   ],
+   [
+    "Aleksandra",
+    "Piktus"
+   ],
+   [
+    "Angela",
+    "Fan"
+   ],
+   [
+    "Patrick",
+    "Lewis"
+   ],
+   [
+    "Majid",
+    "Yazdani"
+   ],
+   [
+    "Nicola",
+    "De Cao"
+   ],
+   [
+    "James",
+    "Thorne"
+   ],
+   [
+    "Yacine",
+    "Jernite"
+   ],
+   [
+    "Vladimir",
+    "Karpukhin"
+   ],
+   [
+    "Jean",
+    "Maillard"
+   ],
+   [
+    "Vassilis",
+    "Plachouras"
+   ],
+   [
+    "Tim",
+    "Rockt\u00e4schel"
+   ],
+   [
+    "Sebastian",
+    "Riedel"
+   ]
+  ]
+ },
+ {
+  "doi": "10.1177/001316446002000104",
+  "title": "A Coefficient of Agreement for Nominal Scales",
+  "first": "Cohen",
+  "n_auth": 1,
+  "venue": "Educational and Psychological Measurement",
+  "year": 1960,
+  "type": "journal-article",
+  "volume": "20",
+  "issue": "1",
+  "page": "37-46",
+  "publisher": "SAGE Publications",
+  "authors": [
+   [
+    "Jacob",
+    "Cohen"
+   ]
+  ]
+ },
+ {
+  "doi": "10.1145/3626772.3657957",
+  "title": "Evaluating Retrieval Quality in Retrieval-Augmented Generation",
+  "first": "Salemi",
+  "n_auth": 2,
+  "venue": "Proceedings of the 47th International ACM SIGIR Conference on Research and Development in Information Retrieval",
+  "year": 2024,
+  "type": "proceedings-article",
+  "volume": null,
+  "issue": null,
+  "page": "2395-2400",
+  "publisher": "ACM",
+  "authors": [
+   [
+    "Alireza",
+    "Salemi"
+   ],
+   [
+    "Hamed",
+    "Zamani"
+   ]
+  ]
+ },
+ {
+  "doi": "10.1007/978-1-4899-4541-9",
+  "title": "An Introduction to the Bootstrap",
+  "first": "Efron",
+  "n_auth": 2,
+  "venue": "",
+  "year": 1993,
+  "type": "book",
+  "volume": null,
+  "issue": null,
+  "page": null,
+  "publisher": "Springer US",
+  "authors": [
+   [
+    "Bradley",
+    "Efron"
+   ],
+   [
+    "Robert J.",
+    "Tibshirani"
+   ]
+  ]
+ },
+ {
+  "doi": "10.1162/tacl_a_00276",
+  "title": "Natural Questions: A Benchmark for Question Answering                     Research",
+  "first": "Kwiatkowski",
+  "n_auth": 18,
+  "venue": "Transactions of the Association for Computational Linguistics",
+  "year": 2019,
+  "type": "journal-article",
+  "volume": "7",
+  "issue": null,
+  "page": "453-466",
+  "publisher": "MIT Press",
+  "authors": [
+   [
+    "Tom",
+    "Kwiatkowski"
+   ],
+   [
+    "Jennimaria",
+    "Palomaki"
+   ],
+   [
+    "Olivia",
+    "Redfield"
+   ],
+   [
+    "Michael",
+    "Collins"
+   ],
+   [
+    "Ankur",
+    "Parikh"
+   ],
+   [
+    "Chris",
+    "Alberti"
+   ],
+   [
+    "Danielle",
+    "Epstein"
+   ],
+   [
+    "Illia",
+    "Polosukhin"
+   ],
+   [
+    "Jacob",
+    "Devlin"
+   ],
+   [
+    "Kenton",
+    "Lee"
+   ],
+   [
+    "Kristina",
+    "Toutanova"
+   ],
+   [
+    "Llion",
+    "Jones"
+   ],
+   [
+    "Matthew",
+    "Kelcey"
+   ],
+   [
+    "Ming-Wei",
+    "Chang"
+   ],
+   [
+    "Andrew M.",
+    "Dai"
+   ],
+   [
+    "Jakob",
+    "Uszkoreit"
+   ],
+   [
+    "Quoc",
+    "Le"
+   ],
+   [
+    "Slav",
+    "Petrov"
+   ]
+  ]
+ },
+ {
+  "doi": "10.18653/v1/2023.acl-long.307",
+  "title": "Evaluating Open-Domain Question Answering in the Era of Large Language Models",
+  "first": "Kamalloo",
+  "n_auth": 4,
+  "venue": "Proceedings of the 61st Annual Meeting of the Association for Computational Linguistics (Volume 1: Long Papers)",
+  "year": 2023,
+  "type": "proceedings-article",
+  "volume": null,
+  "issue": null,
+  "page": "5591-5606",
+  "publisher": "Association for Computational Linguistics",
+  "authors": [
+   [
+    "Ehsan",
+    "Kamalloo"
+   ],
+   [
+    "Nouha",
+    "Dziri"
+   ],
+   [
+    "Charles",
+    "Clarke"
+   ],
+   [
+    "Davood",
+    "Rafiei"
+   ]
+  ]
+ },
+ {
+  "doi": "10.18653/v1/2024.findings-emnlp.449",
+  "title": "BERGEN: A Benchmarking Library for Retrieval-Augmented Generation",
+  "first": "Rau",
+  "n_auth": 7,
+  "venue": "Findings of the Association for Computational Linguistics: EMNLP 2024",
+  "year": 2024,
+  "type": "proceedings-article",
+  "volume": null,
+  "issue": null,
+  "page": "7640-7663",
+  "publisher": "Association for Computational Linguistics",
+  "authors": [
+   [
+    "David",
+    "Rau"
+   ],
+   [
+    "Herv\u00e9",
+    "D\u00e9jean"
+   ],
+   [
+    "Nadezhda",
+    "Chirkova"
+   ],
+   [
+    "Thibault",
+    "Formal"
+   ],
+   [
+    "Shuai",
+    "Wang"
+   ],
+   [
+    "St\u00e9phane",
+    "Clinchant"
+   ],
+   [
+    "Vassilina",
+    "Nikoulina"
+   ]
+  ]
+ },
+ {
+  "doi": "10.1162/tacl_a_00638",
+  "title": "Lost in the Middle: How Language Models Use Long Contexts",
+  "first": "Liu",
+  "n_auth": 7,
+  "venue": "Transactions of the Association for Computational Linguistics",
+  "year": 2024,
+  "type": "journal-article",
+  "volume": "12",
+  "issue": null,
+  "page": "157-173",
+  "publisher": "MIT Press",
+  "authors": [
+   [
+    "Nelson F.",
+    "Liu"
+   ],
+   [
+    "Kevin",
+    "Lin"
+   ],
+   [
+    "John",
+    "Hewitt"
+   ],
+   [
+    "Ashwin",
+    "Paranjape"
+   ],
+   [
+    "Michele",
+    "Bevilacqua"
+   ],
+   [
+    "Fabio",
+    "Petroni"
+   ],
+   [
+    "Percy",
+    "Liang"
+   ]
+  ]
+ },
+ {
+  "doi": "10.1145/3626772.3657878",
+  "title": "C-Pack: Packed Resources For General Chinese Embeddings",
+  "first": "Xiao",
+  "n_auth": 6,
+  "venue": "Proceedings of the 47th International ACM SIGIR Conference on Research and Development in Information Retrieval",
+  "year": 2024,
+  "type": "proceedings-article",
+  "volume": null,
+  "issue": null,
+  "page": "641-649",
+  "publisher": "ACM",
+  "authors": [
+   [
+    "Shitao",
+    "Xiao"
+   ],
+   [
+    "Zheng",
+    "Liu"
+   ],
+   [
+    "Peitian",
+    "Zhang"
+   ],
+   [
+    "Niklas",
+    "Muennighoff"
+   ],
+   [
+    "Defu",
+    "Lian"
+   ],
+   [
+    "Jian-Yun",
+    "Nie"
+   ]
+  ]
+ },
+ {
+  "doi": "10.1145/3626772.3657834",
+  "title": "The Power of Noise: Redefining Retrieval for RAG Systems",
+  "first": "Cuconasu",
+  "n_auth": 8,
+  "venue": "Proceedings of the 47th International ACM SIGIR Conference on Research and Development in Information Retrieval",
+  "year": 2024,
+  "type": "proceedings-article",
+  "volume": null,
+  "issue": null,
+  "page": "719-729",
+  "publisher": "ACM",
+  "authors": [
+   [
+    "Florin",
+    "Cuconasu"
+   ],
+   [
+    "Giovanni",
+    "Trappolini"
+   ],
+   [
+    "Federico",
+    "Siciliano"
+   ],
+   [
+    "Simone",
+    "Filice"
+   ],
+   [
+    "Cesare",
+    "Campagnano"
+   ],
+   [
+    "Yoelle",
+    "Maarek"
+   ],
+   [
+    "Nicola",
+    "Tonellotto"
+   ],
+   [
+    "Fabrizio",
+    "Silvestri"
+   ]
+  ]
+ },
+ {
+  "doi": "10.18653/v1/d19-1410",
+  "title": "Sentence-BERT: Sentence Embeddings using Siamese BERT-Networks",
+  "first": "Reimers",
+  "n_auth": 2,
+  "venue": "Proceedings of the 2019 Conference on Empirical Methods in Natural Language Processing and the 9th International Joint Conference on Natural Language Processing (EMNLP-IJCNLP)",
+  "year": 2019,
+  "type": "proceedings-article",
+  "volume": null,
+  "issue": null,
+  "page": "3980-3990",
+  "publisher": "Association for Computational Linguistics",
+  "authors": [
+   [
+    "Nils",
+    "Reimers"
+   ],
+   [
+    "Iryna",
+    "Gurevych"
+   ]
+  ]
+ }
+]
