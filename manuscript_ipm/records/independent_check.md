@@ -27,3 +27,9 @@ Script: manuscript_ipm/tools/independent_check.py (standard library only, no pro
 
 ## 5. Cohen's kappa (own) vs analysis
 - kappa own = 0.127382, analysis = 0.127382; n = 200
+
+## 6. Other EM means (own mean over the documented query set) vs analysis
+- 43 EM means compared; largest absolute difference 0.00e+00
+
+## 7. Pairwise EM tests: own exact McNemar + own Holm (21 pairs per cell) vs analysis
+- 84 pairs: largest |p difference| 9.99e-16; largest |Holm p difference| 2.00e-15; pairs whose Holm significance at 0.05 differs: 0

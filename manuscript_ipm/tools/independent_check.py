@@ -160,5 +160,64 @@ pe = ph * pj + (1 - ph) * (1 - pj)
 k = (po - pe) / (1 - pe)
 log(f"- kappa own = {k:.6f}, analysis = {S['judge_agreement']['cohen_kappa']:.6f}; n = {n}")
 
+# ---------------- 6. all other EM means in the analysis file (CB, GOLD, top-k, mechanism, reranker)
+log("\n## 6. Other EM means (own mean over the documented query set) vs analysis")
+
+
+def mean_em(path, qs):
+    rows = {x["qid"]: x["em"] for x in jl(ROOT / path)}
+    return sum(rows[x] for x in qs) / len(qs)
+
+
+checks = []
+for cell, (adir, prefix, ds) in cells.items():
+    q = nq_order if ds == "NQ" else hp_order
+    for c, f in (("CB", "CB_A2"), ("GOLD", "GOLD_A1")):
+        checks.append((f"{cell} {c}", mean_em(f"{adir}/{prefix}__{f}__main.jsonl", q), S["cells"][cell]["answers"][c]["em"]["mean"]))
+for r, ks in S["topk"]["em_by_k"].items():
+    for k, v in ks.items():
+        if v["source"] == "v0.3":
+            path = f"paper_inputs/v03_nq/processed/answers/v03_nq_qwen__{r}_k{k}_A1__main.jsonl"
+        else:
+            path = f"paper_inputs/results/processed/answers/main__{r}_k{k}_A1__main.jsonl"
+        checks.append((f"top-k {r} k={k}", mean_em(path, nq_order), v["mean"]))
+for c in ("M1", "M3", "M5", "MR", "MG"):
+    checks.append((f"mechanism {c}", mean_em(f"paper_inputs/v03_nq_s4/processed/answers/v03_nq_qwen__{c}_k5_A1__main.jsonl", nq_order[:500]),
+                   S["mechanism"]["answers"][c]["em"]["mean"]))
+for c in ("X0", "X5"):
+    checks.append((f"reranker {c}", mean_em(f"paper_inputs/v03_nq_s4/processed/answers/v03_nq_qwen__{c}_k5_A1__main.jsonl", nq_order),
+                   S["reranker"]["answers"][c]["em"]["mean"]))
+worst = max(abs(a - b) for _, a, b in checks)
+log(f"- {len(checks)} EM means compared; largest absolute difference {worst:.2e}")
+for name, a, b in checks:
+    if abs(a - b) > 1e-12:
+        log(f"  - MISMATCH {name}: own {a:.6f} vs analysis {b:.6f}")
+
+# ---------------- 7. all 21 pairwise EM McNemar tests per cell with own Holm adjustment
+log("\n## 7. Pairwise EM tests: own exact McNemar + own Holm (21 pairs per cell) vs analysis")
+
+
+def holm(ps):
+    order = sorted(range(len(ps)), key=lambda i: ps[i])
+    adj, run = [0.0] * len(ps), 0.0
+    for rank, i in enumerate(order):
+        run = max(run, min(1.0, (len(ps) - rank) * ps[i]))
+        adj[i] = run
+    return adj
+
+
+worst_p, worst_h, n_sig_diff = 0.0, 0.0, 0
+for cell in cells:
+    hits, ems = vec[cell]
+    pw = S["cells"][cell]["pairwise_em"]
+    own = [mcnemar_p(ems[t["a"]], ems[t["b"]]) for t in pw]
+    own_h = holm(own)
+    for t, p, ph in zip(pw, own, own_h):
+        worst_p = max(worst_p, abs(p - t["p"]))
+        worst_h = max(worst_h, abs(ph - t["p_holm"]))
+        n_sig_diff += (ph < 0.05) != (t["p_holm"] < 0.05)
+log(f"- 84 pairs: largest |p difference| {worst_p:.2e}; largest |Holm p difference| {worst_h:.2e}; "
+    f"pairs whose Holm significance at 0.05 differs: {n_sig_diff}")
+
 (ROOT / "manuscript_ipm/records/independent_check.md").write_text(
     "# Independent recomputation (Gate 2)\n\nScript: manuscript_ipm/tools/independent_check.py (standard library only, no project imports).\n\n" + "\n".join(OUT) + "\n")

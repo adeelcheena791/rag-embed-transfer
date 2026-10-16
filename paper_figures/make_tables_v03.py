@@ -62,13 +62,37 @@ def t_main():
         rows.append(f"{NAME[r]} & " + " & ".join(cols))
     body = [f"\\begin{{table*}}[t]", "\\centering", "\\small",
             "\\caption{Retrieval (Hit@5) and answer quality (exact match) for each reader and dataset. "
-            "Hit@5 is computed on the generation queries; 95\\% bootstrap intervals are in the supplementary tables.}",
+            "Hit@5 is computed on the generation queries; 95\\% bootstrap intervals are in Table~\\ref{tab:ci}.}",
             "\\label{tab:main}", "\\begin{tabular}{l" + "rr" * 4 + "}", "\\toprule"] + rows[:1] + rows[1:2] + rows[2:] + \
         ["\\bottomrule", "\\end{tabular}", "\\end{table*}"]
     body = [b if (b.startswith("\\") or b.endswith(r"\\") or "\n" in b) else b + r" \\" for b in body]
     OUT.mkdir(parents=True, exist_ok=True)
     (OUT / "tab_main.tex").write_text("\n".join(body) + "\n")
     print("wrote", OUT / "tab_main.tex")
+
+
+def t_ci():
+    rows = []
+    for r in R + ["CB", "GOLD"]:
+        cols = []
+        for c, _, _ in CELLS:
+            e = S["cells"][c]["answers"][r]["em"]
+            cols.append(f"[{e['ci_lo']:.3f}, {e['ci_hi']:.3f}]")
+        rows.append(f"{NAME[r]} & " + " & ".join(cols))
+    rows.append("\\midrule")
+    rows.append("Retrieval & NQ Hit@5 & & HotpotQA Hit@5 & HotpotQA Both@5")
+    rows.append("\\midrule")
+    for r in R:
+        cols = []
+        for c, _, _ in CELLS[::2]:
+            h = S["cells"][c]["retrieval"][r]["hit@5"]
+            cols.append(f"[{h['ci_lo']:.3f}, {h['ci_hi']:.3f}]")
+        b = S["cells"]["qwen_hp"]["retrieval"][r]["both@5"]
+        rows.append(f"{NAME[r]} & {cols[0]} & & {cols[1]} & [{b['ci_lo']:.3f}, {b['ci_hi']:.3f}]")
+    table("tab_ci", "lcccc", "Condition & NQ Qwen & NQ Llama & HotpotQA Qwen & HotpotQA Llama", rows,
+          "95\\% percentile bootstrap intervals (10,000 resamples over queries, seed 0) for the values in Table~\\ref{tab:main}. "
+          "Upper block: exact match per reader and dataset. Lower block: retrieval metrics, which do not depend on the reader.",
+          "tab:ci", wide=True)
 
 
 def t_transfer():
@@ -86,7 +110,7 @@ def t_transfer():
 
 
 def t_predictions():
-    cellname = {"qwen_nq": "NQ, Qwen", "llama_nq": "NQ, Llama", "qwen_hp": "HotpotQA, Qwen", "llama_hp": "HotpotQA, Llama"}
+    cellname = {"qwen_nq": "NQ, Qwen$^\\dagger$", "llama_nq": "NQ, Llama", "qwen_hp": "HotpotQA, Qwen", "llama_hp": "HotpotQA, Llama"}
     ok = lambda b: "holds" if b else "\\textbf{fails}"                     # noqa: E731
     rows = []
     for c, lab in cellname.items():
@@ -100,7 +124,7 @@ def t_predictions():
     e9 = S["corpus_hnsw_cost"]["E9"]["P3"]
     rows.append(f"P3 & NQ, 4 retrievers & {ok(e9['holds'])} & Kendall's $\\tau$ = {e9['kendall_tau_primary']:.2f}")
     t = S["topk"]["k1_vs_k5"]
-    rows.append(f"P4 & NQ, Qwen & {ok(S['topk']['P4']['holds'])} & $k{{=}}1$ below $k{{=}}5$ for all 7 retrievers; "
+    rows.append(f"P4 & NQ, Qwen & {ok(S['topk']['P4']['holds'])} & $k{{=}}1$ below $k{{=}}5$ for all 7 retrievers$^\\ddagger$; "
                 f"$\\Delta$EM {min(x['diff'] for x in t):+.3f} to {max(x['diff'] for x in t):+.3f}; all $p_\\text{{Holm}}$ $<$0.001")
     m = S["mechanism"]
     rows.append(f"P5 & NQ, Qwen, 500 q. & {ok(m['P5']['holds'])} & hard vs random negatives: $\\Delta$EM {m['P5']['test']['diff']:+.3f}, $p$ {pval(m['P5']['test']['p'])}")
@@ -110,7 +134,10 @@ def t_predictions():
           "Pre-registered predictions and their outcomes.", "tab:predictions",
           "P1: every reportable EM transfer ratio has an upper 95\\% bound below 1. P2: no Holm-significant EM gain of bge-large or "
           "Qwen3-Emb-0.6B over e5-base-v2. P3: the full corpus keeps the nDCG@10 ordering. P4: EM at $k{=}1$ below $k{=}5$. "
-          "P5: hard negatives lower EM. P6: gold position changes EM.", wide=True)
+          "P5: hard negatives lower EM. P6: gold position changes EM. "
+          "$^\\dagger$Not confirmatory: this cell was observed in the first study phase, before the predictions were registered. "
+          "$^\\ddagger$Confirmatory for bge-small, bge-base, e5-base-v2 and Qwen3-Emb-0.6B only; the other three were observed before registration.",
+          wide=True)
 
 
 def t_topk():
@@ -204,4 +231,4 @@ def t_judge():
 
 
 if __name__ == "__main__":
-    t_main(); t_transfer(); t_predictions(); t_topk(); t_mechanism(); t_reranker(); t_cost(); t_corpus_hnsw(); t_gee(); t_judge()
+    t_main(); t_ci(); t_transfer(); t_predictions(); t_topk(); t_mechanism(); t_reranker(); t_cost(); t_corpus_hnsw(); t_gee(); t_judge()
