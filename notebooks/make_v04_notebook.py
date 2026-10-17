@@ -9,8 +9,44 @@ import sys
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).parent))
+import make_v03_notebooks as m3  # noqa: E402
 from make_main_notebooks import nb  # noqa: E402
 from make_v03_notebooks import GEN_FIX, MD, NQL, NQQ, PAR, SOFT, code_cell, setup, small_zip  # noqa: E402
+
+# Kaggle cannot save a notebook of ~11 MB ("unexpected end of JSON input"). Embed only what the session runs:
+# leave out the paper and manuscript folders (results, PDFs, figures) and every generated session notebook.
+EXCLUDE = ("paper_inputs", "paper_outputs", "paper", "paper_figures", "manuscript_ipm", "literature")
+
+
+def embedded_code(code_sha):
+    import base64
+    import subprocess
+    root = Path(__file__).resolve().parents[1]
+
+    def git(*a, inp=None):
+        return subprocess.run(["git", "-C", str(root), *a], check=True, capture_output=True, input=inp,
+                              text=not a or a[0] != "archive").stdout
+
+    def mktree(lines):
+        return git("mktree", inp="".join(l + "\n" for l in lines)).strip()
+
+    nb_lines = [l for l in git("ls-tree", f"{code_sha}:notebooks").splitlines()
+                if not (l.split("\t")[1].startswith(("v03_", "v04_")) and l.endswith(".ipynb"))]
+    top = []
+    for l in git("ls-tree", code_sha).splitlines():
+        meta, name = l.split("\t")
+        if name in EXCLUDE:
+            continue
+        if name == "notebooks":
+            meta = meta.rsplit(" ", 1)[0] + " " + mktree(nb_lines)
+        top.append(f"{meta}\t{name}")
+    keep = [l.split("\t")[1] for l in top]
+    tar = git("archive", "--format=tar.gz", code_sha, "--", *keep, ":(exclude)notebooks/v03_*.ipynb", ":(exclude)notebooks/v04_*.ipynb")
+    return base64.b64encode(tar).decode(), mktree(top)
+
+
+m3.EXCLUDE = EXCLUDE
+m3.embedded_code = embedded_code          # code_cell() and setup() look this up at call time
 
 FULL = "R0,R1,R2,R5"
 
