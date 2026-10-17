@@ -1,0 +1,144 @@
+\section{Results}\label{sec:results}
+
+\subsection{Retrieval}\label{sec:res-retrieval}
+Table~\ref{tab:retrieval} gives retrieval quality on the generation queries, and Table~\ref{tab:ci} gives the intervals. On NQ, the dense encoders differed widely. MiniLM-L6 reached \ev{HIT.nq.R1} and e5-base-v2 \ev{HIT.nq.R5}; bge-large (\ev{HIT.nq.R4}) came second. Qwen3-Embedding-0.6B (\ev{HIT.nq.R6}) placed between bge-small and bge-base. BM25 reached \ev{HIT.nq.R0}. On HotpotQA, Hit@5 nearly saturated: all dense encoders except MiniLM-L6 scored between \ev{HIT.hp.R6} and \ev{HIT.hp.R4}, against \ev{HIT.hp.R1} for MiniLM-L6 and \ev{HIT.hp.R0} for BM25. The stricter Both@5 separated them more clearly: bge-large found both supporting passages for \ev{BOTH.hp.R4} of the questions, e5-base-v2 for \ev{BOTH.hp.R5}, Qwen3-Embedding-0.6B for \ev{BOTH.hp.R6} and MiniLM-L6 for \ev{BOTH.hp.R1}. Table~\ref{tab:retrieval} also gives Hit@1, Hit@10, nDCG@10 and MRR@10, and Fig.~\ref{fig:retrieval} shows the main metrics with their intervals. On NQ, nDCG@10 ordered the retrievers as Hit@5 did, from \ev{RET.nq.ndcg10.R0} for BM25 and \ev{RET.nq.ndcg10.R1} for MiniLM-L6 to \ev{RET.nq.ndcg10.R5} for e5-base-v2. On HotpotQA, nDCG@10 ranged from \ev{RET.hp.ndcg10.R1} (MiniLM-L6) to \ev{RET.hp.ndcg10.R4} (bge-large).
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=\linewidth]{figs/fig9_retrieval.pdf}
+\caption{Retrieval quality on the generation queries with 95\% bootstrap intervals: NQ Hit@5 and nDCG@10 (2,255 queries), HotpotQA Hit@5 and Both@5 (2,000 queries).}
+\label{fig:retrieval}
+\end{figure}
+
+\input{tables/tab_retrieval}
+
+\subsection{Answers and transfer (RQ1)}\label{sec:res-transfer}
+Table~\ref{tab:main} gives EM for every cell with its two bounds, and Fig.~\ref{fig:hitem} plots EM against Hit@5. Retrieval closed only part of the gap between the closed-book and gold-passage conditions. With Qwen on NQ, closed-book EM was \ev{EM.qnq.CB}, gold passages gave \ev{EM.qnq.GOLD}, and the best retriever, e5-base-v2, gave \ev{EM.qnq.R5}. With Llama on NQ the best retriever was bge-base (\ev{EM.lnq.R3}) against a gold bound of \ev{EM.lnq.GOLD}. On HotpotQA, bge-large gave the highest EM for both readers (\ev{EM.qhp.R4} and \ev{EM.lhp.R4}), against gold bounds of \ev{EM.qhp.GOLD} and \ev{EM.lhp.GOLD}.
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=\linewidth]{figs/fig2_hit_vs_em.pdf}
+\caption{Exact match against Hit@5 for each retriever in the four reader--dataset cells. Vertical bars are 95\% bootstrap intervals for EM. Dashed lines mark the closed-book and gold-passage conditions. Note the different Hit@5 ranges of the two datasets.}
+\label{fig:hitem}
+\end{figure}
+
+Table~\ref{tab:transfer} and Fig.~\ref{fig:transfer} give the transfer ratios. On NQ, the dense encoders had ratios between \ev{T.lnq.R4} (bge-large and e5-base-v2 with Llama) and \ev{T.lnq.R3} (bge-base with Llama). With Qwen, e5-base-v2 gained \ev{DH.qnq.R5} in Hit@5 over MiniLM-L6 but only \ev{DE.qnq.R5} in EM, a ratio of \ev{T.qnq.R5} \ev{T.qnq.R5.ci}. The intervals for bge-small included zero in both NQ cells (Qwen \ev{T.qnq.R2.ci}, Llama \ev{T.lnq.R2.ci}), so its NQ ratio is uncertain in sign. No upper bound on NQ exceeded \ev{T.qnq.R6.hi}. BM25 retrieved worse than MiniLM-L6 on NQ, so its ratio (\ev{T.qnq.R0} with Qwen) describes how much of the retrieval loss reached the answer.
+
+With Hit@5 as the denominator, the HotpotQA ratios were larger for every encoder and reader (Section~\ref{sec:res-decomp} repeats them with Both@5). They ranged from \ev{T.qhp.R6} (Qwen3-Embedding-0.6B with Qwen) to \ev{T.lhp.R4} (bge-large with Llama). With Qwen, every upper bound stayed below 1, the largest being \ev{T.qhp.R4.hi3} for bge-large. With Llama, the bounds were \ev{T.lhp.R3.hi3} for bge-base, \ev{T.lhp.R5.hi3} for e5-base-v2 and \ev{T.lhp.R4.hi3} for bge-large; three of five bounds reached or exceeded 1. Prediction P1 therefore held in the two new NQ and Qwen--HotpotQA cells and failed in the Llama--HotpotQA cell (Table~\ref{tab:predictions}). The BM25 ratio was not estimable on HotpotQA, because BM25 and MiniLM-L6 differed by only \ev{DH.qhp.R0} in Hit@5.
+
+The ratios depend on the baseline (Table~\ref{tab:altbase}; post hoc). Against BM25 instead of MiniLM-L6, the NQ ratios of the dense encoders ranged from \ev{V4.b0.nq.min} to \ev{V4.b0.nq.max} and the HotpotQA ratios from \ev{V4.b0.hp.min} to \ev{V4.b0.hp.max}. The HotpotQA ratio exceeded the NQ ratio in \ev{V4.b0.hpgt} of 10 encoder--reader pairs. The exceptions were Qwen3-Embedding-0.6B, with \ev{V4.b0.qwen_hp.R6} and \ev{V4.b0.llama_hp.R6} on HotpotQA against \ev{V4.b0.qwen_nq.R6} and \ev{V4.b0.llama_nq.R6} on NQ.
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=\linewidth]{figs/fig1_transfer_ratios.pdf}
+\caption{Transfer ratio $T(R)=\Delta\mathrm{EM}/\Delta\mathrm{Hit@5}$ against MiniLM-L6 with 95\% bootstrap intervals. The dashed line marks $T=1$. n.e.: not estimable under the reporting rule.}
+\label{fig:transfer}
+\end{figure}
+
+\input{tables/tab_main}
+\input{tables/tab_transfer}
+
+The lenient answer metrics moved the ratios up but did not change the pattern (Table~\ref{tab:transferalt}). With token F1, the NQ ratios of the dense encoders stayed between \ev{TF.lnq.R2} and \ev{TF.lnq.R3}. On HotpotQA with Llama, the F1 ratio of bge-large was \ev{TF.lhp.R4} \ev{TF.lhp.R4.ci}, so under F1 a full transfer cannot be ruled out for that encoder.
+
+\subsection{Where the transfer comes from}\label{sec:res-decomp}
+The decomposition in Eq.~\ref{eq:decomp} separates two effects (Table~\ref{tab:decomp} and Fig.~\ref{fig:error}). One term, the hit--miss gap of MiniLM-L6, was similar in all cells: \ev{DB.qnq} and \ev{DB.lnq} on NQ, \ev{DB.qhp} and \ev{DB.lhp} on HotpotQA. The other term differed in sign between the datasets.
+
+On NQ it was negative for every dense encoder (from \ev{DR.lnq.R4} to \ev{DR.lnq.R3} with Llama; from \ev{DR.qnq.R2} to \ev{DR.qnq.R6} with Qwen). Better encoders found gold passages for more questions, but EM given a hit fell slightly (Qwen: \ev{PH.qnq.R1} for MiniLM-L6, \ev{PH.qnq.R5} for e5-base-v2). EM given a miss stayed near \ev{PM.qnq.R5}, well above closed-book EM (\ev{EM.qnq.CB}). A ``miss'' under the sparse NQ labels thus often still produced a correct answer.
+
+On HotpotQA the second term was positive and large, from \ev{DR.qhp.R6} (Qwen3-Embedding-0.6B with Qwen) to \ev{DR.lhp.R4} (bge-large with Llama). In the baseline-conditioned form of Eq.~\ref{eq:decomp} it made up \ev{DS.hp.min} to \ev{DS.hp.max} of the ratio; in the symmetric form, \ev{V4.sym.hp.min} to \ev{V4.sym.hp.max} (Table~\ref{tab:share}). The bootstrap intervals of these shares lay between \ev{V4.shareci.hp.lo} and \ev{V4.shareci.hp.hi}. On NQ we report only the two terms, because the EM gains there are small and the shares are unstable: every dense encoder's share interval was at least \ev{V4.nq.share.minwidth} wide, where 1 is the whole EM gain. EM given a hit rose with the encoder (Qwen: \ev{PH.qhp.R1} for MiniLM-L6, \ev{PH.qhp.R4} for bge-large), while EM given a miss was lower for the stronger encoders (Qwen: \ev{PM.qhp.R1} for MiniLM-L6, \ev{PM.qhp.R5} to \ev{PM.qhp.R6} for the others). The rise matches the Both@5 results: better encoders more often retrieved the second supporting passage, which Hit@5 does not count. In a post hoc check, the EM ranking of the seven retrievers equalled their Both@5 ranking in both HotpotQA cells (Spearman $\rho$ = \ev{RHOB.qhp} and \ev{RHOB.lhp}); against Hit@5 it was \ev{RHO.qhp} and \ev{RHO.lhp}. With Both@5 instead of Hit@5 as the denominator (post hoc; Table~\ref{tab:altbase}), the HotpotQA ratios of the dense encoders were \ev{V4.both.hp.min} to \ev{V4.both.hp.max} for both readers, and Qwen3-Embedding-0.6B no longer stood apart. The pattern came mainly from bridge questions. With Qwen, bridge EM rose from \ev{BT.qhp.bridge.R1} (MiniLM-L6) to \ev{BT.qhp.bridge.R4} (bge-large), while comparison EM moved from \ev{BT.qhp.comparison.R1} to \ev{BT.qhp.comparison.R4}, close to its gold bound of \ev{BT.qhp.comparison.GOLD}.
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=\linewidth]{figs/fig10_error.pdf}
+\caption{(a)--(d) Exact match given a hit (solid) and given a miss (hatched) at Hit@5, per reader--dataset cell; dotted line: closed-book EM. (e) Share of ``I don't know'' answers on hits and misses under the abstention prompt A3 (Phase~1, Qwen reader, NQ, 200 queries).}
+\label{fig:error}
+\end{figure}
+
+\paragraph{Abstention prompt}
+A Phase~1 check (Table~\ref{tab:idk}) is consistent with the reading that NQ ``misses'' often still contain usable evidence. When the prompt allowed ``I don't know'' (A3), the reader abstained mostly on misses: \ev{IDK.miss.R0} of BM25 misses, \ev{IDK.miss.R1} of MiniLM-L6 misses and \ev{IDK.miss.R4} of bge-large misses, against \ev{IDK.hit.R0} to \ev{IDK.hit.R4} of hits. Most misses were still answered. EM under A3 did not differ detectably from the main prompt (\ev{IDK.dem.R0}, \ev{IDK.dem.R1} and \ev{IDK.dem.R4}; $p\ge$ \ev{IDK.p.R4}).
+
+\subsection{Encoder comparisons (RQ2)}\label{sec:res-encoders}
+Prediction P2 held on NQ and failed on HotpotQA (Table~\ref{tab:predictions}). On NQ, neither bge-large nor Qwen3-Embedding-0.6B differed detectably from e5-base-v2 in EM with either reader. On HotpotQA, bge-large gave higher EM than e5-base-v2 with both readers (\ev{P2.qhp.R4}, Holm-adjusted $p$ = \ev{P2.qhp.R4.p}; \ev{P2.lhp.R4}, $p$ = \ev{P2.lhp.R4.p}), in line with its higher Both@5. Qwen3-Embedding-0.6B gave lower EM than e5-base-v2 on HotpotQA (\ev{P2.qhp.R6}, $p$ = \ev{P2.qhp.R6.p}; \ev{P2.lhp.R6}, $p$ = \ev{P2.lhp.R6.p}). The registered pooled model over all four cells (Table~\ref{tab:gee}; \ev{GEE.rows} answers in \ev{GEE.clusters} query clusters) gave odds ratios of \ev{GEE.or.R4} \ev{GEE.ci.R4} for bge-large and \ev{GEE.or.R6} \ev{GEE.ci.R6} for Qwen3-Embedding-0.6B, each against e5-base-v2. This main-effects model assumes the same retriever effect on both datasets, and the data do not support that assumption: the retriever $\times$ dataset terms were jointly significant (Wald $\chi^2_{\ev{V4.gee.int.df}}$ = \ev{V4.gee.int.chi}, $p$ = \ev{V4.gee.int.p}), while retriever $\times$ reader terms were not ($p$ = \ev{V4.gee.rxr.p}). In the interaction model (post hoc), bge-large had an odds ratio of \ev{V4.or.R4.nq} \ev{V4.or.R4.nq.ci} on NQ and \ev{V4.or.R4.hp} \ev{V4.or.R4.hp.ci} on HotpotQA; Qwen3-Embedding-0.6B had \ev{V4.or.R6.nq} \ev{V4.or.R6.nq.ci} and \ev{V4.or.R6.hp} \ev{V4.or.R6.hp.ci}. The small pooled advantage of bge-large thus averages no detected effect on NQ with a gain on HotpotQA, in line with the per-cell tests. Both models mix the two study phases and are secondary.
+
+\input{tables/tab_gee}
+
+\subsection{Context choices (RQ3)}\label{sec:res-context}
+\paragraph{Number of passages}
+Table~\ref{tab:topk} and Fig.~\ref{fig:topk} show EM for $k\in\{1,3,5,10\}$ with Qwen on NQ. One passage gave lower EM than five for every retriever (P4 held; differences from \ev{K1.R0} for BM25 to \ev{K1.R5} for e5-base-v2, all Holm-adjusted $p<0.001$). From five to ten passages, EM rose for six retrievers and stayed flat for e5-base-v2 (\ev{TK.R5.k5} and \ev{TK.R5.k10}). The gap between retrievers shrank with $k$: at $k=10$ all dense encoders gave EM between \ev{TK.R1.k10} and \ev{TK.R4.k10}. In an exploratory check (Table~\ref{tab:transferk}), we matched Hit@$k$ to the $k$ passages the reader saw. The transfer ratio then fell with $k$; for bge-large it was \ev{TKT.R4.k1} \ev{TKT.R4.k1.ci} at $k=1$, \ev{TKT.R4.k3} at $k=3$, \ev{TKT.R4.k5} at $k=5$ and \ev{TKT.R4.k10} \ev{TKT.R4.k10.ci} at $k=10$. The NQ ratios of Section~\ref{sec:res-transfer} therefore describe $k=5$ only. More passages also cost more reading: the mean prompt grew from \ev{TOK.R4_k1} tokens at $k=1$ to \ev{TOK.R4_k5} at $k=5$ and \ev{TOK.R4_k10} at $k=10$ for bge-large. In a second exploratory comparison, bge-large with one passage gave higher EM than BM25 with ten passages (\ev{X41.diff} \ev{X41.ci}; exact McNemar $p$ = \ev{X41.p}, uncorrected).
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=0.85\linewidth]{figs/fig3_topk.pdf}
+\caption{Exact match by number of passages $k$, Qwen reader on NQ (2,255 queries).}
+\label{fig:topk}
+\end{figure}
+
+\paragraph{Passage composition and position}
+Table~\ref{tab:mechanism} and Fig.~\ref{fig:mechanism} give the controlled context test on 500 NQ questions. With the gold passage at position 1, four top-ranked non-gold BM25 passages gave EM \ev{MC.M1}, and four random passages gave \ev{MC.MR}: a drop of \ev{P5.abs} (exact McNemar $p$ = \ev{P5.p}; P5 held). Adding four random passages to the gold passage changed EM by no detectable amount: gold at position 1 plus four random passages gave \ev{MC.MR}, and the gold passage alone gave \ev{MC.MG} (difference \ev{V4.mrmg.diff}, 95\% CI \ev{V4.mrmg.ci}; $p$ = \ev{MG.p}). No equivalence margin was registered, so this interval is not evidence that random passages have no effect; it only bounds the effect in this sample of 500 questions. The position of the gold passage among the hard negatives showed no detectable effect (EM \ev{MC.M1}, \ev{MC.M3} and \ev{MC.M5} at positions 1, 3 and 5; all Holm-adjusted $p\ge$ \ev{P6.M1M3.p}; P6 failed).
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=0.75\linewidth]{figs/fig4_mechanism.pdf}
+\caption{Exact match for five controlled contexts of five passages (Qwen reader, 500 NQ generation queries) with 95\% bootstrap intervals.}
+\label{fig:mechanism}
+\end{figure}
+
+\input{tables/tab_topk}
+\input{tables/tab_mechanism}
+
+\paragraph{Reranking}
+The cross-encoder helped BM25 and hurt e5-base-v2 (Table~\ref{tab:reranker}). On the NQ generation queries, reranking the BM25 top 50 raised Hit@5 by \ev{RR.X0_vs_R0.hit} and EM by \ev{RR.X0_vs_R0.em} (both $p<0.001$). Reranking the e5-base-v2 top 50 changed Hit@5 by \ev{RR.X5_vs_R5.hit} ($p$ = \ev{RR.X5_vs_R5.hit.p}); for EM the change was \ev{RR.X5_vs_R5.em} ($p$ = \ev{RR.X5_vs_R5.em.p}), and no difference was detected. Reranking cost a median of \ev{RR.lat.R0} to \ev{RR.lat.R5}~ms per query on a T4. These results come from one reranker at one depth.
+
+\input{tables/tab_reranker}
+
+\subsection{Cost and checks of the setup (RQ4)}\label{sec:res-cost}
+\paragraph{Encoding cost}
+Table~\ref{tab:cost} gives the measured cost. Throughput fell from \ev{E7.tp.R1} passages per second for MiniLM-L6 to \ev{E7.tp.R6} for Qwen3-Embedding-0.6B, a factor of \ev{E7.ratio.R1R6}. e5-base-v2 encoded \ev{E7.ratio.R5R4} times faster than bge-large. The five repetitions varied little (Table~\ref{tab:cost}): no two encoders had overlapping throughput ranges. The closest pair, bge-base and e5-base-v2, share the same architecture size, and bge-base was \ev{V4.tp.R3R5} faster at the median. Query encoding took \ev{E7.lat.R1} to \ev{E7.lat.R6}~ms per query; BM25 took \ev{E7.lat.R0}~ms on the CPU. Fig.~\ref{fig:cost} relates throughput to EM averaged over the four cells. bge-large had the highest average EM (\ev{EMBAR.R4}), bge-base and e5-base-v2 followed at \ev{EMBAR.R5} with \ev{E7.ratio.R5R4} times its throughput, and Qwen3-Embedding-0.6B (\ev{EMBAR.R6}) was both the slowest and below bge-small (\ev{EMBAR.R2}).
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=0.6\linewidth]{figs/fig5_cost_quality.pdf}
+\caption{Encoding throughput on one T4 GPU (median of five repetitions, log scale) against EM averaged over the four reader--dataset cells. The dashed line joins encoders that no other encoder beats on both axes.}
+\label{fig:cost}
+\end{figure}
+
+\input{tables/tab_cost}
+
+\paragraph{Deployment cost on a CPU}
+Phase~1 also measured the cost of serving queries without a GPU (Table~\ref{tab:deploy}; single measurements). Encoding the 300,000-passage sub-corpus on the T4 took \ev{DC.encode_gpu_s.R1}~s with MiniLM-L6, \ev{DC.encode_gpu_s.R5}~s with e5-base-v2, \ev{DC.encode_gpu_s.R4}~s with bge-large and \ev{DC.encode_gpu_s.R6}~s with Qwen3-Embedding-0.6B. On the CPU alone, one query (encoding plus exact search) took \ev{DC.qcpu.query_ms_cpu.R0}~ms with BM25, \ev{DC.qcpu.query_ms_cpu.R1}~ms with MiniLM-L6, \ev{DC.qcpu.query_ms_cpu.R5}~ms with e5-base-v2, \ev{DC.qcpu.query_ms_cpu.R4}~ms with bge-large and \ev{DC.qcpu.query_ms_cpu.R6}~ms with Qwen3-Embedding-0.6B. The flat index took \ev{DC.index_mb.R1}, \ev{DC.index_mb.R5} and \ev{DC.index_mb.R4}~MB at 384, 768 and 1,024 dimensions. Fig.~\ref{fig:pareto} places each retriever by CPU latency and EM in every cell. bge-large and Qwen3-Embedding-0.6B were dominated on NQ for both readers: a cheaper retriever gave at least the same EM. On HotpotQA, bge-large was on the frontier with both readers, and its step over the next retriever was significant only with Qwen. Fig.~\ref{fig:latency} in the appendix gives the same view for NQ nDCG@10. In an exploratory check that treats costs within 5\% as equal, only one frontier changed, on both cost axes: with Qwen on NQ, bge-base left the frontier, because its cost is within 5\% of e5-base-v2 and its EM is lower.
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=\linewidth]{figs/fig11_pareto.pdf}
+\caption{Exact match against per-query latency with query encoding and exact search on the CPU (Phase~1 cost measurements, log scale). The line joins retrievers that no other retriever beats on both axes; open markers are dominated. Step labels: $^{*}$ EM difference significant after Holm correction over the 21 pairs of the cell; n.s. not significant.}
+\label{fig:pareto}
+\end{figure}
+
+\input{tables/tab_deploy}
+
+\paragraph{Approximate search}
+HNSW search kept the exact top five almost unchanged (Table~\ref{tab:hnsw}). At efSearch 128 the top-5 overlap with exact search was \ev{E6.ov5.R2} or higher, Hit@5 changed by at most \ev{E6.dhitabs.max}, and the median query latency on the CPU fell from \ev{E6.lat.exact.R1}--\ev{E6.lat.exact.R5}~ms to \ev{E6.lat.ef128.R1}--\ev{E6.lat.ef128.R5}~ms. We did not run the readers on HNSW results, so this check covers retrieval and latency only.
+
+\input{tables/tab_hnsw}
+
+\paragraph{Sub-corpus versus full corpus}
+On the full NQ corpus the four tested retrievers kept their nDCG@10 order (Kendall's $\tau$ = \ev{E9.tau}; P3 held; Table~\ref{tab:fullcorpus} and Fig.~\ref{fig:fullcorpus}). The dense retrievers lost \ev{E9.dropabs.R2} to \ev{E9.dropabs.R1} in nDCG@10, and BM25 lost almost nothing (\ev{E9.dropabs.R0}). The sub-corpus therefore inflates absolute dense scores but not the order of these four retrievers. The drops also agree with the bias that the construction implies: the sub-corpus keeps BM25's own top-ranked passages for every judged query but not those of the dense encoders, so it favours the dense encoders relative to BM25. We did not run the readers on the full corpus, and this check covers NQ only.
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=0.6\linewidth]{figs/fig6_full_corpus.pdf}
+\caption{nDCG@10 on the 300,000-passage sub-corpus and on the full NQ corpus (all 3,452 judged queries).}
+\label{fig:fullcorpus}
+\end{figure}
+
+\input{tables/tab_full_corpus}
+
+\subsection{LLM judge validation}\label{sec:res-judge}
+The LLM judge agreed poorly with the author's labels (Table~\ref{tab:judge}). Cohen's $\kappa$ was \ev{JA.kappa} \ev{JA.ci}, with raw agreement \ev{JA.raw}. Weighted to the population, the judge labelled \ev{JA.jrate} of answers as supported, against \ev{JA.hrate} for the author, and its precision for the label supported was \ev{JA.prec}. Under the registered rule ($\kappa<0.2$) we excluded the judge's faithfulness labels from all conclusions. For completeness, Table~\ref{tab:judgerates} in the appendix lists the share of answers the judge labelled as supported, and Appendix~\ref{app:judge} gives the judge prompt and the annotation instructions.
+
+\input{tables/tab_judge}
+
+\subsection{Summary of the predictions}
+Table~\ref{tab:predictions} lists all six predictions. P3, P4 and P5 held. P1 failed in one of three new cells, P2 failed in both HotpotQA cells, and P6 failed. Where a verdict is not confirmatory, the table marks it.
+
+\input{tables/tab_predictions}

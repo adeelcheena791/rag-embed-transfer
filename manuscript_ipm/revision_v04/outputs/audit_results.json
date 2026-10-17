@@ -1,0 +1,310 @@
+{
+ "cells": {
+  "qwen_nq": {
+   "n": 2255
+  },
+  "llama_nq": {
+   "n": 2255
+  },
+  "qwen_hp": {
+   "n": 2000
+  },
+  "llama_hp": {
+   "n": 2000
+  }
+ },
+ "throughput": {
+  "MiniLM-L6": [
+   1768.3494453051587,
+   1794.8023013002266,
+   1807.2652720152923,
+   1814.6652182130836,
+   1863.3964126954668
+  ],
+  "bge-small": [
+   1135.9526659221385,
+   1149.3865365156628,
+   1155.4562896072903,
+   1155.815180828213,
+   1207.2259079914288
+  ],
+  "bge-base": [
+   501.0026450705185,
+   501.5216111392437,
+   501.5452217201271,
+   502.62086659865713,
+   502.6918680649066
+  ],
+  "e5-base-v2": [
+   490.6473216020221,
+   492.68771624765833,
+   492.8645378811599,
+   493.1100823324632,
+   495.85956391418114
+  ],
+  "bge-large": [
+   167.64690190349,
+   168.2043739737797,
+   168.25381257974587,
+   168.45889711787484,
+   168.62600160545705
+  ],
+  "Qwen3-Emb-0.6B": [
+   65.6883871221814,
+   65.73914545393198,
+   65.76962779032327,
+   65.78906639773417,
+   65.83294158537072
+  ]
+ },
+ "throughput_R3_over_R5_median": 1.0176127174340555,
+ "gee": {
+  "n_rows": 59570,
+  "n_clusters": 4255,
+  "models": {
+   "A_main_effects": {
+    "formula": "em ~ C(retriever, Treatment('R5')) + C(dataset) + C(reader)",
+    "working_corr": 0.5991128443895147,
+    "warnings": [],
+    "converged": true,
+    "OR_bge-large_vs_e5": [
+     1.0379810094137205,
+     1.0011182867812085,
+     1.0762010744680262
+    ],
+    "OR_Qwen3-Emb-0.6B_vs_e5": [
+     0.9086444478029377,
+     0.8750892144119395,
+     0.9434863542203894
+    ],
+    "matches_original": true
+   },
+   "B_retr_x_dataset": {
+    "formula": "em ~ C(retriever, Treatment('R5')) * C(dataset) + C(reader)",
+    "working_corr": 0.6000897502918069,
+    "warnings": [],
+    "converged": true,
+    "wald_retr_x_dataset": {
+     "terms": 6,
+     "chi2": 179.12180440782993,
+     "df": 6,
+     "p": 5.213133121550275e-36
+    },
+    "OR_bge-large_vs_e5_HotpotQA": [
+     1.1085485715717653,
+     1.0488002582813714,
+     1.171700641595493
+    ],
+    "OR_bge-large_vs_e5_NQ": [
+     0.9806634610518541,
+     0.9355233418736991,
+     1.027981644921946
+    ],
+    "OR_Qwen3-Emb-0.6B_vs_e5_HotpotQA": [
+     0.8587339464516694,
+     0.8109346715333559,
+     0.9093506748134229
+    ],
+    "OR_Qwen3-Emb-0.6B_vs_e5_NQ": [
+     0.9523373907896623,
+     0.9059354646068372,
+     1.00111601910812
+    ]
+   },
+   "C_retr_x_dataset_reader": {
+    "formula": "em ~ C(retriever, Treatment('R5')) * C(dataset) + C(retriever, Treatment('R5')) * C(reader)",
+    "working_corr": 0.6000467214781653,
+    "warnings": [],
+    "converged": true,
+    "wald_retr_x_dataset": {
+     "terms": 6,
+     "chi2": 179.11490124902033,
+     "df": 6,
+     "p": 5.2307590556117e-36
+    },
+    "wald_retr_x_reader": {
+     "terms": 6,
+     "chi2": 4.990426028206839,
+     "df": 6,
+     "p": 0.545041639037819
+    }
+   },
+   "D_saturated_cells": {
+    "formula": "em ~ C(retriever, Treatment('R5')) * C(dataset) * C(reader)",
+    "working_corr": 0.6001664687738287,
+    "warnings": [],
+    "converged": true
+   }
+  },
+  "stratified_mcnemar": {
+   "qwen_nq:bge-large-e5": {
+    "diff": -0.006208425720620843,
+    "ci": [
+     -0.021297117516629615,
+     0.008869179600886918
+    ],
+    "p_holm": 1.0
+   },
+   "qwen_nq:Qwen3-Emb-0.6B-e5": {
+    "diff": -0.017738359201773836,
+    "ci": [
+     -0.032815964523281595,
+     -0.0022172949002217295
+    ],
+    "p_holm": 0.2709254340092027
+   },
+   "llama_nq:bge-large-e5": {
+    "diff": -0.003547671840354767,
+    "ci": [
+     -0.01818181818181818,
+     0.01065410199556525
+    ],
+    "p_holm": 1.0
+   },
+   "llama_nq:Qwen3-Emb-0.6B-e5": {
+    "diff": -0.0066518847006651885,
+    "ci": [
+     -0.022172949002217297,
+     0.008869179600886918
+    ],
+    "p_holm": 1.0
+   },
+   "qwen_hp:bge-large-e5": {
+    "diff": 0.028,
+    "ci": [
+     0.012,
+     0.044
+    ],
+    "p_holm": 0.005497697675458937
+   },
+   "qwen_hp:Qwen3-Emb-0.6B-e5": {
+    "diff": -0.0295,
+    "ci": [
+     -0.0455,
+     -0.0135
+    ],
+    "p_holm": 0.003091902596456228
+   },
+   "llama_hp:bge-large-e5": {
+    "diff": 0.022,
+    "ci": [
+     0.0055,
+     0.038
+    ],
+    "p_holm": 0.040204891919453055
+   },
+   "llama_hp:Qwen3-Emb-0.6B-e5": {
+    "diff": -0.0425,
+    "ci": [
+     -0.0595,
+     -0.026
+    ],
+    "p_holm": 8.509686149239117e-06
+   }
+  }
+ },
+ "hnsw": {
+  "record_keys": [
+   "M",
+   "efConstruction",
+   "exact",
+   "faiss_threads",
+   "hnsw_build_seconds",
+   "hnsw_ef128",
+   "hnsw_ef64",
+   "model",
+   "n_queries",
+   "n_rows",
+   "run_id",
+   "selection_hash"
+  ],
+  "metrics_ef128": [
+   "hit@5",
+   "latency",
+   "ndcg@10",
+   "overlap@100",
+   "overlap@5"
+  ],
+  "reader_answer_files": [],
+  "retrievers": [
+   "R1",
+   "R2",
+   "R5"
+  ]
+ },
+ "random_passages": {
+  "MR_minus_MG": {
+   "diff": 0.006,
+   "ci_lo": -0.016,
+   "ci_hi": 0.026,
+   "p": 0.711071103811264,
+   "n_MR_correct_only": 16,
+   "n_MG_correct_only": 13
+  },
+  "MG_minus_MR": {
+   "diff": -0.006,
+   "ci_lo": -0.026,
+   "ci_hi": 0.016,
+   "test": "exact McNemar",
+   "p": 0.711071103811264,
+   "n10": 13,
+   "n01": 16,
+   "odds_ratio": 0.8125
+  },
+  "n": 500,
+  "M1_minus_MR": {
+   "diff": -0.074,
+   "ci_lo": -0.108,
+   "ci_hi": -0.04,
+   "test": "exact McNemar",
+   "p": 2.2429642158970264e-05,
+   "n10": 19,
+   "n01": 56,
+   "odds_ratio": 0.3392857142857143
+  }
+ },
+ "judge": {
+  "n": 200,
+  "kappa": 0.12738214643931794,
+  "raw_agreement": 0.565,
+  "human_supported_rate": 0.575,
+  "judge_supported_rate": 0.51,
+  "weighted_agreement": 0.6201768707482992,
+  "matches_original": true
+ },
+ "subcorpus": {
+  "hp_records": [
+   {
+    "size": 300000,
+    "n_gold": 13783,
+    "bm25_depth": 19,
+    "n_bm25_added": 118726,
+    "n_random": 167491,
+    "n_queries": 7405,
+    "name": "main",
+    "population": "judged",
+    "run_id": "20261012T044604573112Z_52e0a982fc",
+    "bm25_run": "/kaggle/working/rag/results/v03_hp/raw/runs/R0__full__20261012T043151031660Z_52e0a982fc.jsonl",
+    "path": "/kaggle/working/rag/data/processed/hp_subcorpus_main_ids.txt"
+   }
+  ],
+  "E9": {
+   "R0": {
+    "ndcg@10": -0.0015595333502840814,
+    "hit@5": 0.0
+   },
+   "R1": {
+    "ndcg@10": -0.08576833732089745,
+    "hit@5": -0.10225955967555045
+   },
+   "R2": {
+    "ndcg@10": -0.08253124710418125,
+    "hit@5": -0.09907300115874851
+   },
+   "R5": {
+    "ndcg@10": -0.08277823205784918,
+    "hit@5": -0.09038238702201629
+   }
+  }
+ }
+}

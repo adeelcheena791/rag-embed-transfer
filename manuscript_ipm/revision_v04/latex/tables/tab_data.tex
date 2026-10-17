@@ -1,0 +1,23 @@
+\begin{table}[t]
+\centering
+\small
+\caption{Data and sub-corpora.}
+\label{tab:data}
+\begin{tabular}{lll}
+\toprule
+Item & NQ & HotpotQA \\
+\midrule
+Full corpus (passages) & 2,681,468 & 5,233,329 \\
+Judged test queries & 3,452 & 7,405 \\
+Queries joined to reference answers & 2,255 & 7,405 \\
+Generation queries & 2,255 & 2,000 (1,616 bridge, 384 comparison) \\
+Unique gold passages per judged query & 1.22 & 1.86 \\
+Sub-corpus size & 300,000 & 300,000 \\
+\quad gold passages & 4,201 & 13,783 \\
+\quad BM25 non-gold passages (depth $d$) & 127,791 ($d$ = 42) & 118,726 ($d$ = 19) \\
+\quad random passages & 168,008 & 167,491 \\
+Reference answers & NQ-open (validation) & HotpotQA fullwiki (validation) \\
+\bottomrule
+\end{tabular}
+\par\smallskip\parbox{\linewidth}{\footnotesize Corpus sizes as distributed by BEIR. Joins: NQ by normalised question text, HotpotQA by question id.}
+\end{table}

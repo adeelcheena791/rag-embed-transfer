@@ -1,0 +1,26 @@
+\begin{table*}[t]
+\centering
+\small
+\caption{Sensitivity of the transfer ratio to the baseline and to the retrieval metric, with 95\% bootstrap intervals. Upper block: $\Delta\mathrm{EM}/\Delta\mathrm{Hit@5}$ against BM25 instead of MiniLM-L6. Lower block: HotpotQA, $\Delta\mathrm{EM}/\Delta\mathrm{Both@5}$ against MiniLM-L6. Same queries, readers and reporting rule. Post hoc.}
+\label{tab:altbase}
+\begin{tabular}{lcccc}
+\toprule
+Encoder & NQ Qwen & NQ Llama & HotpotQA Qwen & HotpotQA Llama \\
+\midrule
+\multicolumn{5}{l}{\emph{Baseline BM25, denominator Hit@5}} \\
+bge-small & 0.34 [0.29, 0.39] & 0.33 [0.28, 0.38] & 0.46 [0.31, 0.62] & 0.47 [0.31, 0.64] \\
+bge-base & 0.33 [0.28, 0.37] & 0.34 [0.29, 0.38] & 0.52 [0.37, 0.69] & 0.64 [0.49, 0.81] \\
+bge-large & 0.33 [0.29, 0.37] & 0.30 [0.25, 0.34] & 0.67 [0.51, 0.84] & 0.75 [0.59, 0.92] \\
+e5-base-v2 & 0.33 [0.29, 0.37] & 0.29 [0.25, 0.33] & 0.49 [0.33, 0.66] & 0.62 [0.46, 0.80] \\
+Qwen3-Emb-0.6B & 0.35 [0.30, 0.40] & 0.33 [0.28, 0.38] & 0.25 [0.09, 0.42] & 0.27 [0.12, 0.44] \\
+\midrule
+\multicolumn{5}{l}{\emph{Baseline MiniLM-L6, denominator Both@5}} \\
+bge-small & -- & -- & 0.29 [0.23, 0.35] & 0.30 [0.24, 0.36] \\
+bge-base & -- & -- & 0.29 [0.24, 0.35] & 0.34 [0.29, 0.40] \\
+bge-large & -- & -- & 0.31 [0.26, 0.35] & 0.34 [0.29, 0.39] \\
+e5-base-v2 & -- & -- & 0.29 [0.24, 0.35] & 0.35 [0.30, 0.41] \\
+Qwen3-Emb-0.6B & -- & -- & 0.29 [0.21, 0.37] & 0.32 [0.24, 0.40] \\
+\bottomrule
+\end{tabular}
+\par\smallskip\parbox{\linewidth}{\footnotesize BM25 with Both@5 is omitted: its Both@5 gain over MiniLM-L6 is 0.034 and its ratio is unstable (Qwen: 1.0 [0.5, 2.5]).}
+\end{table*}

@@ -1,0 +1,17 @@
+\begin{table}[t]
+\centering
+\small
+\caption{Cross-encoder reranking (bge-reranker-base, top 50) on NQ.}
+\label{tab:reranker}
+\begin{tabular}{lcccc}
+\toprule
+System & Hit@5 & nDCG@10 & EM & ms/query \\
+\midrule
+BM25 & 0.373 & 0.284 & 0.360 & -- \\
+BM25 + reranker & 0.658 & 0.542 & 0.456 & 208 \\
+e5-base-v2 & 0.817 & 0.665 & 0.510 & -- \\
+e5-base-v2 + reranker & 0.742 & 0.601 & 0.494 & 249 \\
+\bottomrule
+\end{tabular}
+\par\smallskip\parbox{\linewidth}{\footnotesize Retrieval on all 3,452 judged queries; EM on the 2,255 generation queries (Qwen). Latency: median per query, 50 pairs, one T4.}
+\end{table}

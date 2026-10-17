@@ -1,0 +1,49 @@
+cell,dataset,reader,retriever,baseline,n_queries,em_baseline,em_system,hit5_baseline,hit5_system,d_em,d_hit5,ratio,ci_lo,ci_hi,hit5_p_holm,status
+qwen_nq,NQ,Qwen2.5-7B,MiniLM-L6,BM25,2255,0.3596,0.4714,0.3632,0.6639,0.1118,0.3007,0.3717,0.3085,0.4332,5.2e-119,estimable
+qwen_nq,NQ,Qwen2.5-7B,bge-small,BM25,2255,0.3596,0.4838,0.3632,0.7290,0.1242,0.3659,0.3394,0.2871,0.3902,1.12e-167,estimable
+qwen_nq,NQ,Qwen2.5-7B,bge-base,BM25,2255,0.3596,0.4931,0.3632,0.7703,0.1335,0.4071,0.3279,0.2813,0.3749,7.87e-197,estimable
+qwen_nq,NQ,Qwen2.5-7B,bge-large,BM25,2255,0.3596,0.5033,0.3632,0.7960,0.1437,0.4328,0.3320,0.2884,0.3749,5.23e-224,estimable
+qwen_nq,NQ,Qwen2.5-7B,e5-base-v2,BM25,2255,0.3596,0.5095,0.3632,0.8164,0.1499,0.4532,0.3307,0.2894,0.3719,2.96e-239,estimable
+qwen_nq,NQ,Qwen2.5-7B,Qwen3-Emb-0.6B,BM25,2255,0.3596,0.4918,0.3632,0.7441,0.1322,0.3809,0.3469,0.2963,0.3970,2.12e-184,estimable
+qwen_nq,NQ,Qwen2.5-7B,BM25,bge-small,2255,0.4838,0.3596,0.7290,0.3632,-0.1242,-0.3659,0.3394,0.2871,0.3902,1.12e-167,estimable
+qwen_nq,NQ,Qwen2.5-7B,MiniLM-L6,bge-small,2255,0.4838,0.4714,0.7290,0.6639,-0.0124,-0.0652,0.1905,-0.0709,0.4422,7.71e-11,estimable
+qwen_nq,NQ,Qwen2.5-7B,bge-base,bge-small,2255,0.4838,0.4931,0.7290,0.7703,0.0093,0.0412,0.2258,-0.1333,0.6022,6.12e-07,estimable
+qwen_nq,NQ,Qwen2.5-7B,bge-large,bge-small,2255,0.4838,0.5033,0.7290,0.7960,0.0195,0.0670,0.2914,0.0641,0.5145,1.11e-14,estimable
+qwen_nq,NQ,Qwen2.5-7B,e5-base-v2,bge-small,2255,0.4838,0.5095,0.7290,0.8164,0.0257,0.0874,0.2944,0.1256,0.4664,7.93e-23,estimable
+qwen_nq,NQ,Qwen2.5-7B,Qwen3-Emb-0.6B,bge-small,2255,0.4838,0.4918,0.7290,0.7441,0.0080,0.0151,,,,0.108,|dHit@5| <= 2 pp
+llama_nq,NQ,Llama-3.1-8B,MiniLM-L6,BM25,2255,0.3401,0.4479,0.3632,0.6639,0.1078,0.3007,0.3584,0.2973,0.4224,5.2e-119,estimable
+llama_nq,NQ,Llama-3.1-8B,bge-small,BM25,2255,0.3401,0.4599,0.3632,0.7290,0.1197,0.3659,0.3273,0.2780,0.3761,1.12e-167,estimable
+llama_nq,NQ,Llama-3.1-8B,bge-base,BM25,2255,0.3401,0.4767,0.3632,0.7703,0.1366,0.4071,0.3355,0.2896,0.3818,7.87e-197,estimable
+llama_nq,NQ,Llama-3.1-8B,bge-large,BM25,2255,0.3401,0.4687,0.3632,0.7960,0.1286,0.4328,0.2971,0.2543,0.3394,5.23e-224,estimable
+llama_nq,NQ,Llama-3.1-8B,e5-base-v2,BM25,2255,0.3401,0.4723,0.3632,0.8164,0.1322,0.4532,0.2916,0.2512,0.3323,2.96e-239,estimable
+llama_nq,NQ,Llama-3.1-8B,Qwen3-Emb-0.6B,BM25,2255,0.3401,0.4656,0.3632,0.7441,0.1255,0.3809,0.3295,0.2831,0.3784,2.12e-184,estimable
+llama_nq,NQ,Llama-3.1-8B,BM25,bge-small,2255,0.4599,0.3401,0.7290,0.3632,-0.1197,-0.3659,0.3273,0.2780,0.3761,1.12e-167,estimable
+llama_nq,NQ,Llama-3.1-8B,MiniLM-L6,bge-small,2255,0.4599,0.4479,0.7290,0.6639,-0.0120,-0.0652,0.1837,-0.0833,0.4274,7.71e-11,estimable
+llama_nq,NQ,Llama-3.1-8B,bge-base,bge-small,2255,0.4599,0.4767,0.7290,0.7703,0.0169,0.0412,0.4086,0.0533,0.8104,6.12e-07,estimable
+llama_nq,NQ,Llama-3.1-8B,bge-large,bge-small,2255,0.4599,0.4687,0.7290,0.7960,0.0089,0.0670,0.1325,-0.1045,0.3579,1.11e-14,estimable
+llama_nq,NQ,Llama-3.1-8B,e5-base-v2,bge-small,2255,0.4599,0.4723,0.7290,0.8164,0.0124,0.0874,0.1421,-0.0328,0.3098,7.93e-23,estimable
+llama_nq,NQ,Llama-3.1-8B,Qwen3-Emb-0.6B,bge-small,2255,0.4599,0.4656,0.7290,0.7441,0.0058,0.0151,,,,0.108,|dHit@5| <= 2 pp
+qwen_hp,HotpotQA,Qwen2.5-7B,MiniLM-L6,BM25,2000,0.3385,0.3040,0.8330,0.8170,-0.0345,-0.0160,,,,0.837,|dHit@5| <= 2 pp
+qwen_hp,HotpotQA,Qwen2.5-7B,bge-small,BM25,2000,0.3385,0.3940,0.8330,0.9535,0.0555,0.1205,0.4606,0.3089,0.6214,6.28e-44,estimable
+qwen_hp,HotpotQA,Qwen2.5-7B,bge-base,BM25,2000,0.3385,0.4040,0.8330,0.9580,0.0655,0.1250,0.5240,0.3727,0.6908,4.19e-49,estimable
+qwen_hp,HotpotQA,Qwen2.5-7B,bge-large,BM25,2000,0.3385,0.4240,0.8330,0.9605,0.0855,0.1275,0.6706,0.5125,0.8444,1.49e-52,estimable
+qwen_hp,HotpotQA,Qwen2.5-7B,e5-base-v2,BM25,2000,0.3385,0.3960,0.8330,0.9505,0.0575,0.1175,0.4894,0.3333,0.6600,3.21e-44,estimable
+qwen_hp,HotpotQA,Qwen2.5-7B,Qwen3-Emb-0.6B,BM25,2000,0.3385,0.3665,0.8330,0.9445,0.0280,0.1115,0.2511,0.0878,0.4163,5.09e-39,estimable
+qwen_hp,HotpotQA,Qwen2.5-7B,BM25,bge-small,2000,0.3940,0.3385,0.9535,0.8330,-0.0555,-0.1205,0.4606,0.3089,0.6214,6.28e-44,estimable
+qwen_hp,HotpotQA,Qwen2.5-7B,MiniLM-L6,bge-small,2000,0.3940,0.3040,0.9535,0.8170,-0.0900,-0.1365,0.6593,0.5205,0.8165,1.77e-61,estimable
+qwen_hp,HotpotQA,Qwen2.5-7B,bge-base,bge-small,2000,0.3940,0.4040,0.9535,0.9580,0.0100,0.0045,,,,1,|dHit@5| <= 2 pp
+qwen_hp,HotpotQA,Qwen2.5-7B,bge-large,bge-small,2000,0.3940,0.4240,0.9535,0.9605,0.0300,0.0070,,,,0.837,|dHit@5| <= 2 pp
+qwen_hp,HotpotQA,Qwen2.5-7B,e5-base-v2,bge-small,2000,0.3940,0.3960,0.9535,0.9505,0.0020,-0.0030,,,,1,|dHit@5| <= 2 pp
+qwen_hp,HotpotQA,Qwen2.5-7B,Qwen3-Emb-0.6B,bge-small,2000,0.3940,0.3665,0.9535,0.9445,-0.0275,-0.0090,,,,0.837,|dHit@5| <= 2 pp
+llama_hp,HotpotQA,Llama-3.1-8B,MiniLM-L6,BM25,2000,0.3355,0.2975,0.8330,0.8170,-0.0380,-0.0160,,,,0.837,|dHit@5| <= 2 pp
+llama_hp,HotpotQA,Llama-3.1-8B,bge-small,BM25,2000,0.3355,0.3920,0.8330,0.9535,0.0565,0.1205,0.4689,0.3127,0.6371,6.28e-44,estimable
+llama_hp,HotpotQA,Llama-3.1-8B,bge-base,BM25,2000,0.3355,0.4155,0.8330,0.9580,0.0800,0.1250,0.6400,0.4857,0.8101,4.19e-49,estimable
+llama_hp,HotpotQA,Llama-3.1-8B,bge-large,BM25,2000,0.3355,0.4305,0.8330,0.9605,0.0950,0.1275,0.7451,0.5889,0.9167,1.49e-52,estimable
+llama_hp,HotpotQA,Llama-3.1-8B,e5-base-v2,BM25,2000,0.3355,0.4085,0.8330,0.9505,0.0730,0.1175,0.6213,0.4634,0.7973,3.21e-44,estimable
+llama_hp,HotpotQA,Llama-3.1-8B,Qwen3-Emb-0.6B,BM25,2000,0.3355,0.3660,0.8330,0.9445,0.0305,0.1115,0.2735,0.1179,0.4353,5.09e-39,estimable
+llama_hp,HotpotQA,Llama-3.1-8B,BM25,bge-small,2000,0.3920,0.3355,0.9535,0.8330,-0.0565,-0.1205,0.4689,0.3127,0.6371,6.28e-44,estimable
+llama_hp,HotpotQA,Llama-3.1-8B,MiniLM-L6,bge-small,2000,0.3920,0.2975,0.9535,0.8170,-0.0945,-0.1365,0.6923,0.5502,0.8532,1.77e-61,estimable
+llama_hp,HotpotQA,Llama-3.1-8B,bge-base,bge-small,2000,0.3920,0.4155,0.9535,0.9580,0.0235,0.0045,,,,1,|dHit@5| <= 2 pp
+llama_hp,HotpotQA,Llama-3.1-8B,bge-large,bge-small,2000,0.3920,0.4305,0.9535,0.9605,0.0385,0.0070,,,,0.837,|dHit@5| <= 2 pp
+llama_hp,HotpotQA,Llama-3.1-8B,e5-base-v2,bge-small,2000,0.3920,0.4085,0.9535,0.9505,0.0165,-0.0030,,,,1,|dHit@5| <= 2 pp
+llama_hp,HotpotQA,Llama-3.1-8B,Qwen3-Emb-0.6B,bge-small,2000,0.3920,0.3660,0.9535,0.9445,-0.0260,-0.0090,,,,0.837,|dHit@5| <= 2 pp

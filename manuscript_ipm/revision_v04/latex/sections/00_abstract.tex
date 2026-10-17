@@ -1,0 +1,15 @@
+\begin{abstract}
+Builders of retrieval-augmented generation (RAG) systems often pick an embedding model by its retrieval score. We measured how much retrieval gain reaches the answer, and at what cost, on free GPUs. We compared BM25 and six open embedding models (\ev{E7.par.R1}--\ev{E7.par.R6}M parameters) on Natural Questions (NQ, \ev{N.nq.joined} queries) and HotpotQA (\ev{N.hp.gen} queries), with two quantised 7--8B readers. The transfer ratio $T$ divides the exact-match (EM) gain by the Hit@5 gain over a small baseline encoder on the same queries. We report bootstrap intervals and registered six predictions before the second phase. On NQ, $T$ for the dense encoders ranged from \ev{T.lnq.R4} to \ev{T.lnq.R3}, and no upper 95\% bound exceeded \ev{T.qnq.R6.hi}. On HotpotQA, $T$ was larger (\ev{T.qhp.R6}--\ev{T.lhp.R4}); with Llama, three of five upper bounds reached 1, so the prediction $T<1$ failed in one of four cells. Against BM25, NQ ratios were \ev{V4.b0.nq.min}--\ev{V4.b0.nq.max}. A post hoc decomposition assigns \ev{DS.hp.min}--\ev{DS.hp.max} of the HotpotQA transfer (\ev{V4.sym.hp.min}--\ev{V4.sym.hp.max} in a symmetric variant) to higher EM given a hit. With Both@5 as denominator, HotpotQA ratios were \ev{V4.both.hp.min}--\ev{V4.both.hp.max}. On HotpotQA, bge-large gave higher EM than e5-base-v2 (\ev{P2.qhp.R4} and \ev{P2.lhp.R4}, Holm-adjusted $p \le$ \ev{P2.lhp.R4.p}); on NQ, no difference was detected. Encoding throughput on one T4 differed \ev{E7.ratio.R1R6}-fold. Top-ranked non-gold passages lowered EM by \ev{P5.abs} against random passages; gold position showed no detectable effect. An LLM faithfulness judge agreed poorly with annotator labels ($\kappa$ = \ev{JA.kappa}) and was excluded. Within this setup, retrieval gains overstate answer gains on single-hop questions, and encoder cost should be weighed with retrieval scores.
+\end{abstract}
+
+\begin{highlights}
+\item On NQ, dense encoders passed at most \ev{T.lnq.R3} EM points per Hit@5 point
+\item HotpotQA transfer was larger per Hit@5 but \ev{V4.both.hp.min}--\ev{V4.both.hp.max} per Both@5
+\item Post hoc: higher EM given a hit carries \ev{DS.hp.min}--\ev{DS.hp.max} of HotpotQA transfer
+\item Encoding throughput on a free T4 GPU differed \ev{E7.ratio.R1R6}-fold across six encoders
+\item Three of six registered predictions failed in at least one condition
+\end{highlights}
+
+\begin{keywords}
+retrieval-augmented generation \sep dense retrieval \sep text embeddings \sep question answering \sep evaluation \sep reproducibility \sep computational cost
+\end{keywords}

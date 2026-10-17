@@ -1,0 +1,8 @@
+\section*{Ethics statement}
+\paragraph{Data and licences} We used public resources under their licences, as listed on their Hugging Face cards (accessed 17 October 2026): the BEIR versions of Natural Questions and HotpotQA (CC BY-SA 4.0), NQ-open (CC BY-SA 3.0) and HotpotQA (CC BY-SA 4.0). The encoders are released under Apache-2.0 (all-MiniLM-L6-v2, Qwen3-Embedding-0.6B) or MIT (bge, e5 and bge-reranker-base); Qwen2.5-7B-Instruct-AWQ and Mistral-7B-Instruct-v0.3 under Apache-2.0; and the Llama-3.1-8B-Instruct AWQ build under the Llama 3.1 Community License. We used each for research evaluation. The questions are public benchmark questions over Wikipedia; we collected no personal data.
+
+\paragraph{Human annotation} The 200 judge-validation items were labelled by one member of the study team, with the same instructions the judge received and without seeing its verdicts. No external participants were involved.
+
+\paragraph{Risks} The study compares existing models and creates no new model. Readers may over-generalise the comparison to other readers, corpora or languages; we scope each claim to the tested setup. The excluded LLM judge should not be used as evidence that a system gives faithful answers.
+
+\paragraph{Compute} All experiments ran on free Kaggle sessions with Tesla T4 GPUs; the study had no monetary cost.

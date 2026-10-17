@@ -1,0 +1,25 @@
+\begin{table*}[t]
+\centering
+\small
+\caption{Pre-registered predictions and their outcomes.}
+\label{tab:predictions}
+\begin{tabular}{lllp{0.55\linewidth}}
+\toprule
+ID & Scope & Result & Evidence \\
+\midrule
+P1 & NQ, Qwen$^\dagger$ & holds & 6 ratios; largest upper bound 0.455 (Qwen3-Emb-0.6B) \\
+P1 & NQ, Llama & holds & 6 ratios; largest upper bound 0.427 (bge-small) \\
+P1 & HotpotQA, Qwen & holds & 5 ratios; largest upper bound 0.996 (bge-large) \\
+P1 & HotpotQA, Llama & \textbf{fails} & 5 ratios; largest upper bound 1.096 (bge-large) \\
+P2 & NQ, Qwen$^\dagger$ & holds & bge-large $-$ e5: $-$0.006 ($p_\text{Holm}$ 1.000); Qwen3-Emb-0.6B $-$ e5: $-$0.018 ($p_\text{Holm}$ 0.271) \\
+P2 & NQ, Llama & holds & bge-large $-$ e5: $-$0.004 ($p_\text{Holm}$ 1.000); Qwen3-Emb-0.6B $-$ e5: $-$0.007 ($p_\text{Holm}$ 1.000) \\
+P2 & HotpotQA, Qwen & \textbf{fails} & bge-large $-$ e5: +0.028 ($p_\text{Holm}$ 0.005); Qwen3-Emb-0.6B $-$ e5: $-$0.030 ($p_\text{Holm}$ 0.003) \\
+P2 & HotpotQA, Llama & \textbf{fails} & bge-large $-$ e5: +0.022 ($p_\text{Holm}$ 0.040); Qwen3-Emb-0.6B $-$ e5: $-$0.042 ($p_\text{Holm}$ $<$0.001) \\
+P3 & NQ, 4 retrievers & holds & Kendall's $\tau$ = 1.00 \\
+P4 & NQ, Qwen & holds & $k{=}1$ below $k{=}5$ for all 7 retrievers$^\ddagger$; $\Delta$EM $-$0.126 to $-$0.078; all $p_\text{Holm}$ $<$0.001 \\
+P5 & NQ, Qwen, 500 q. & holds & hard vs random negatives: $\Delta$EM $-$0.074, $p$ $<$0.001 \\
+P6 & NQ, Qwen, 500 q. & \textbf{fails} & gold at position 1/3/5: largest $|\Delta$EM$|$ 0.016; smallest $p_\text{Holm}$ 0.94 \\
+\bottomrule
+\end{tabular}
+\par\smallskip\parbox{\linewidth}{\footnotesize P1: every reportable EM transfer ratio has an upper 95\% bound below 1. P2: no Holm-significant EM gain of bge-large or Qwen3-Emb-0.6B over e5-base-v2. P3: the full corpus keeps the nDCG@10 ordering. P4: EM at $k{=}1$ below $k{=}5$. P5: hard negatives lower EM. P6: gold position changes EM. $^\dagger$Not confirmatory: this cell was observed in Phase 1 of the study, before the predictions were registered. $^\ddagger$Confirmatory for bge-small, bge-base, e5-base-v2 and Qwen3-Emb-0.6B only; the other three were observed before registration.}
+\end{table*}

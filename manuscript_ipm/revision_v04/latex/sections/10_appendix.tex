@@ -1,0 +1,88 @@
+\section{Reader prompts}\label{app:prompts}
+Each prompt was rendered with the reader's own chat template. Passages appear in rank order as ``[$i$] title'' followed by the passage text on the next line, separated by blank lines.
+
+\paragraph{A1 (with passages)} System: \emph{``You are a question answering assistant. Answer the question using the passages provided. If the passages do not contain the answer, give your best short answer anyway. Reply with the answer only, as a short phrase of a few words, with no explanation.''} User: \emph{``Passages: \ldots\ Question: \{question\} Answer:''}
+
+\paragraph{A2 (closed book)} System: \emph{``You are a question answering assistant. Reply with the answer only, as a short phrase of a few words, with no explanation.''} User: \emph{``Question: \{question\} Answer:''}
+
+The gold-passage condition uses A1 with the gold passages only.
+
+\section{Judge prompt and annotation instructions}\label{app:judge}
+The LLM judge (Mistral-7B-Instruct-v0.3, greedy decoding, at most 8 new tokens) received one user message:
+
+\begin{quote}\small
+\emph{You will be given PASSAGES, a QUESTION, and an ANSWER. Decide whether the ANSWER is fully supported by the PASSAGES. An answer is SUPPORTED only if the passages state it or directly imply it. Do not use outside knowledge. Do not judge whether the answer is true in the real world.}\\
+\emph{PASSAGES:} [the same five passages the reader saw, formatted as in Appendix~\ref{app:prompts}]\\
+\emph{QUESTION:} \{question\} \quad \emph{ANSWER:} \{answer\}\\
+\emph{Reply with exactly one word: SUPPORTED or NOT\_SUPPORTED.}
+\end{quote}
+
+The verdict was the label SUPPORTED or NOT\_SUPPORTED found at the start of the output; there were no parse failures. The human annotator saw the same text, without the judge's verdict, plus the instruction: \emph{``Label each item SUPPORTED or NOT\_SUPPORTED. If unsure, choose NOT\_SUPPORTED and add a note.''} The 200 items were drawn by a seeded, stratified sampler that over-represents NOT\_SUPPORTED verdicts; population-weighted statistics use the inverse inclusion probabilities.
+
+\section{Models, data and software}\label{app:repro}
+\begin{table}[h]
+\centering
+\small
+\caption{Pinned revisions (leading eight characters of the Hugging Face commit).}
+\label{tab:revisions}
+\begin{tabular}{ll}
+\toprule
+Resource & Revision \\
+\midrule
+sentence-transformers/all-MiniLM-L6-v2 & 1110a243 \\
+BAAI/bge-small-en-v1.5 & 5c38ec7c \\
+BAAI/bge-base-en-v1.5 & a5beb1e3 \\
+BAAI/bge-large-en-v1.5 & d4aa6901 \\
+intfloat/e5-base-v2 & f52bf8ec \\
+Qwen/Qwen3-Embedding-0.6B & 97b0c614 \\
+Qwen/Qwen2.5-7B-Instruct-AWQ & b2503754 \\
+hugging-quants/Meta-Llama-3.1-8B-Instruct-AWQ-INT4 & db1f81ad \\
+BAAI/bge-reranker-base & 2cfc18c9 \\
+mistralai/Mistral-7B-Instruct-v0.3 (judge) & c170c708 \\
+BeIR/nq & b7253e6c \\
+BeIR/nq-qrels & 519acd4e \\
+google-research-datasets/nq\_open & 5dd9790a \\
+BeIR/hotpotqa & a7e8bab2 \\
+BeIR/hotpotqa-qrels & b15429e9 \\
+hotpotqa/hotpot\_qa & 1908d6af \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Retrieval used bm25s 0.3.11 and faiss-cpu 1.15.1; readers used vLLM 0.30.0 with PyTorch 2.13.0 (CUDA 13.0) and Transformers 5.17.0, in half precision with a maximum model length of 4,096 tokens.
+
+\input{tables/tab_models}
+\input{tables/tab_data}
+
+\section{Design documents}\label{app:prereg}
+The design document and its addenda are dated and versioned in the study repository. Each was written before the stage it governs.
+\begin{itemize}
+\item \textbf{v0.2 (26 September 2026).} Research questions, retrievers, reader, judge, metrics, statistical tests, the transfer-ratio reporting rule and the pilot plan.
+\item \textbf{v0.2.1--v0.2.2 (26 September 2026).} Follow-up rules (abstention-prompt check, judge fallback, GPU stopping rules) and the change of the NQ join gate (deviation~1).
+\item \textbf{v0.2.3 (27 September 2026).} Pilot verification; the sub-corpus membership rule for all judged queries; dropping the RAGAS cross-check.
+\item \textbf{v0.2.4 (27--29 September 2026).} Execution records of Phase~1, the failed initial reading session, the cost-estimate error and the cut dimension ablation.
+\item \textbf{v0.3 (12 October 2026).} Phase~2 experiments E1--E12 and predictions P1--P6, written before any Phase~2 run.
+\item \textbf{v0.3.1 (12 and 14 October 2026).} The Python~3.13 image change and the torchaudio fix.
+\item \textbf{v0.3.2 (15 October 2026).} Implementation of E5, E6, E7, E9 and E12 before the session that ran them, including the reduced scope of E6.
+\end{itemize}
+Pilot numbers were used only for planning and are not reported as results.
+
+\section{Additional tables}\label{app:tables}
+Table~\ref{tab:ci} gives the bootstrap intervals for Table~\ref{tab:main}. Table~\ref{tab:transferalt} repeats the transfer ratios with token F1 and answer containment. Table~\ref{tab:decomp} gives EM given a hit and given a miss, which enter Eq.~\ref{eq:decomp}. Table~\ref{tab:idk} gives the abstention-prompt check, Table~\ref{tab:transferk} the exploratory transfer ratios at each $k$, Table~\ref{tab:pairwise} all pairwise EM tests, and Table~\ref{tab:judgerates} the excluded judge labels. Table~\ref{tab:share} gives the decomposition shares for HotpotQA under both orderings, and Table~\ref{tab:altbase} the transfer ratios against BM25.
+
+\input{tables/tab_ci}
+\input{tables/tab_share}
+\input{tables/tab_alt_baseline}
+\input{tables/tab_transfer_alt}
+\input{tables/tab_decomp}
+\input{tables/tab_idk}
+\input{tables/tab_transfer_k}
+\input{tables/tab_pairwise}
+\input{tables/tab_judge_rates}
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=\linewidth]{figs/fig12_latency.pdf}
+\caption{NQ nDCG@10 against per-query latency (Phase~1 batch-1 medians, log scale): (a) query encoding on the T4 and exact search on the CPU; (b) both on the CPU.}
+\label{fig:latency}
+\end{figure}

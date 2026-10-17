@@ -1,0 +1,10 @@
+*.aux
+*.log
+*.out
+*.fls
+*.fdb_latexmk
+*.bbl
+*.blg
+*.abs
+*.spl
+manuscript_flat.tex

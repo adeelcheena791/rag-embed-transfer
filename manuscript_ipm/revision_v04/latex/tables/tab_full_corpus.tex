@@ -1,0 +1,17 @@
+\begin{table}[t]
+\centering
+\small
+\caption{Sub-corpus (300k) vs full NQ corpus (2.68M), all 3,452 judged queries.}
+\label{tab:fullcorpus}
+\begin{tabular}{lcccc}
+\toprule
+Retriever & nDCG@10 sub & nDCG@10 full & Hit@5 sub & Hit@5 full \\
+\midrule
+BM25 & 0.284 & 0.283 & 0.373 & 0.373 \\
+MiniLM-L6 & 0.525 & 0.439 & 0.673 & 0.571 \\
+bge-small & 0.582 & 0.499 & 0.729 & 0.630 \\
+e5-base-v2 & 0.665 & 0.582 & 0.817 & 0.727 \\
+\bottomrule
+\end{tabular}
+\par\smallskip\parbox{\linewidth}{\footnotesize Kendall's $\tau$ between the two orderings = 1.00.}
+\end{table}

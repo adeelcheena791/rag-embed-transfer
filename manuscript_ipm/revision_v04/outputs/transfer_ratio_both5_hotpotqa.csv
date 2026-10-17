@@ -1,0 +1,13 @@
+cell,retriever,d_both5,d_em,both5_p_holm,status,ratio_em_per_both5,ci_lo,ci_hi
+qwen_hp,BM25,0.0340,0.0345,0.00523,estimable,1.015,0.500,2.539
+qwen_hp,bge-small,0.3110,0.0900,3.43e-149,estimable,0.289,0.233,0.347
+qwen_hp,bge-base,0.3420,0.1000,4.47e-172,estimable,0.292,0.238,0.347
+qwen_hp,bge-large,0.3910,0.1200,5.65e-201,estimable,0.307,0.260,0.355
+qwen_hp,e5-base-v2,0.3145,0.0920,7.49e-152,estimable,0.293,0.236,0.351
+qwen_hp,Qwen3-Emb-0.6B,0.2140,0.0625,1.64e-84,estimable,0.292,0.214,0.370
+llama_hp,BM25,0.0340,0.0380,0.00523,estimable,1.118,0.559,2.738
+llama_hp,bge-small,0.3110,0.0945,3.43e-149,estimable,0.304,0.245,0.364
+llama_hp,bge-base,0.3420,0.1180,4.47e-172,estimable,0.345,0.291,0.401
+llama_hp,bge-large,0.3910,0.1330,5.65e-201,estimable,0.340,0.293,0.387
+llama_hp,e5-base-v2,0.3145,0.1110,7.49e-152,estimable,0.353,0.296,0.412
+llama_hp,Qwen3-Emb-0.6B,0.2140,0.0685,1.64e-84,estimable,0.320,0.241,0.400
