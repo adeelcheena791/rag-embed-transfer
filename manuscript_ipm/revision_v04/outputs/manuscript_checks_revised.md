@@ -6,43 +6,56 @@
 
 ## Notes
 
-- abstract words (macros expanded): 248 (limit 250)
+- abstract words (macros expanded): 221 (limit 250)
 - keywords: 7 (limit 1-7)
-- highlight 67 chars: On NQ, dense encoders passed at most 0.27 EM points per Hit@5 point
-- highlight 64 chars: HotpotQA transfer was larger per Hit@5 but 0.29--0.35 per Both@5
-- highlight 71 chars: Post hoc: higher EM given a hit carries 48\%--70\% of HotpotQA transfer
-- highlight 73 chars: Encoding throughput on a free T4 GPU differed 27-fold across six encoders
-- highlight 68 chars: Three of six registered predictions failed in at least one condition
+- highlight 72 chars: On NQ, dense encoders passed 0.16--0.27 EM points per Hit@5 point gained
+- highlight 78 chars: New NQ hits raised EM; queries that kept or lost a hit offset part of the gain
+- highlight 77 chars: HotpotQA ratios fell from 0.49--0.93 to 0.29--0.35 when Both@5 replaced Hit@5
+- highlight 64 chars: HotpotQA EM gains sat in queries that gained supporting passages
+- highlight 75 chars: Retrieval-stage throughput on a T4 GPU differed 27-fold across six encoders
 - cited references: 61 of 77 in references.bib
 - overfull hboxes > 5pt: 1 (max 117pt)
-- numbers typed in prose (design constants etc., review manually): 201
+- numbers typed in prose (design constants etc., review manually): 230
 
 ## Typed numbers (lexical screen)
 
 - 00_abstract.tex: 7
 - 00_abstract.tex: 5
 - 00_abstract.tex: 95
-- 00_abstract.tex: 1,
+- 00_abstract.tex: 1
+- 00_abstract.tex: 5
+- 00_abstract.tex: 5,
 - 00_abstract.tex: 5
 - 00_abstract.tex: 5
 - 00_abstract.tex: 5
-- 00_abstract.tex: 5
+- 01_introduction.tex: 5
 - 01_introduction.tex: 5,
 - 01_introduction.tex: 1
-- 01_introduction.tex: 5
+- 01_introduction.tex: 5,
 - 01_introduction.tex: 0
+- 01_introduction.tex: 1
 - 01_introduction.tex: 7
 - 01_introduction.tex: 5
 - 01_introduction.tex: 1
 - 01_introduction.tex: 2,
+- 01_introduction.tex: 5
+- 01_introduction.tex: 5
 - 02_related.tex: 5
 - 02_related.tex: 7
 - 02_related.tex: 5
 - 02_related.tex: 7
 - 03_method.tex: 1
+- 03_method.tex: 1
+- 03_method.tex: 1.
 - 03_method.tex: 2
 - 03_method.tex: 5
 - 03_method.tex: 1
+- 03_method.tex: 5
+- 03_method.tex: 5
+- 03_method.tex: 5
+- 03_method.tex: 0,
+- 03_method.tex: 1
+- 03_method.tex: 2
 - 03_method.tex: 2,681,468
 - 03_method.tex: 5,233,329
 - 03_method.tex: 300,000
@@ -53,13 +66,15 @@
 - 03_method.tex: 32
 - 03_method.tex: 5
 - 03_method.tex: 1
-- 03_method.tex: 5,
+- 03_method.tex: 5
+- 03_method.tex: 1
 - 03_method.tex: 10
 - 03_method.tex: 1
 - 03_method.tex: 21
 - 03_method.tex: 95
 - 03_method.tex: 10,000
 - 03_method.tex: 0
+- 03_method.tex: 5
 - 03_method.tex: 1
 - 03_method.tex: 2
 - 03_method.tex: 95
@@ -85,7 +100,7 @@
 - 03_method.tex: 500
 - 03_method.tex: 200
 - 04_setup.tex: 15
-- 04_setup.tex: 31
+- 04_setup.tex: 31.3
 - 04_setup.tex: 2.13.0
 - 04_setup.tex: 13.0,
 - 04_setup.tex: 0.30.0,
@@ -94,6 +109,10 @@
 - 04_setup.tex: 3.13.15,
 - 04_setup.tex: 2.0.2
 - 04_setup.tex: 2.1.3.
+- 04_setup.tex: 2.10.0
+- 04_setup.tex: 2.11.0
+- 04_setup.tex: 12.8,
+- 04_setup.tex: 5.0.0
 - 04_setup.tex: 1
 - 04_setup.tex: 1
 - 04_setup.tex: 100
@@ -136,15 +155,27 @@
 - 05_results.tex: 5
 - 05_results.tex: 5
 - 05_results.tex: 1,
-- 05_results.tex: 1.
-- 05_results.tex: 5.
-- 05_results.tex: 10
-- 05_results.tex: 95
 - 05_results.tex: 1
+- 05_results.tex: 5.
+- 05_results.tex: 95
+- 05_results.tex: 1.
 - 05_results.tex: 5
 - 05_results.tex: 5
+- 05_results.tex: 5,
+- 05_results.tex: 10
+- 05_results.tex: 5.
+- 05_results.tex: 3,
+- 05_results.tex: 5
+- 05_results.tex: 10
 - 05_results.tex: 5
 - 05_results.tex: 5
+- 05_results.tex: 10
+- 05_results.tex: 10
+- 05_results.tex: 10
+- 05_results.tex: 10
+- 05_results.tex: 10
+- 05_results.tex: 10
+- 05_results.tex: 1
 - 05_results.tex: 5
 - 05_results.tex: 5
 - 05_results.tex: 5,
@@ -163,29 +194,25 @@
 - 05_results.tex: 5
 - 05_results.tex: 500
 - 05_results.tex: 95
+- 05_results.tex: 5
+- 05_results.tex: 5
 - 05_results.tex: 50
 - 05_results.tex: 5
 - 05_results.tex: 50
 - 05_results.tex: 5
 - 05_results.tex: 1
-- 05_results.tex: 300,000
-- 05_results.tex: 384,
-- 05_results.tex: 768
-- 05_results.tex: 1,024
-- 05_results.tex: 10.
-- 05_results.tex: 5
-- 05_results.tex: 5
-- 05_results.tex: 1
-- 05_results.tex: 21
-- 05_results.tex: 128
+- 05_results.tex: 128,
+- 05_results.tex: 100
+- 05_results.tex: 3,452
 - 05_results.tex: 5
 - 05_results.tex: 10
 - 05_results.tex: 10,
 - 05_results.tex: 10
 - 05_results.tex: 300,000
 - 05_results.tex: 3,452
+- 05_results.tex: 1.000
 - 06_discussion.tex: 5
-- 06_discussion.tex: 5
+- 06_discussion.tex: 1
 - 06_discussion.tex: 5
 - 06_discussion.tex: 5
 - 06_discussion.tex: 5
@@ -195,6 +222,9 @@
 - 06_discussion.tex: 5
 - 06_discussion.tex: 5,
 - 06_discussion.tex: 5
+- 06_discussion.tex: 5
+- 06_discussion.tex: 5,
+- 06_discussion.tex: 1.
 - 06_discussion.tex: 10
 - 06_discussion.tex: 4
 - 06_discussion.tex: 7
@@ -215,8 +245,7 @@
 - 085_ethics.tex: 3.1
 - 085_ethics.tex: 200
 - 08_conclusion.tex: 5
-- 08_conclusion.tex: 5
-- 08_conclusion.tex: 5
+- 08_conclusion.tex: 1
 - 08_conclusion.tex: 5
 - 08_conclusion.tex: 5
 - 08_conclusion.tex: 5

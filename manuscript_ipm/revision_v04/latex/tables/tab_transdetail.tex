@@ -1,0 +1,53 @@
+\begin{table*}[t]
+\centering
+\footnotesize
+\caption{Query-level transitions for bge-large and e5-base-v2 against MiniLM-L6. All 20 encoder--reader--dataset combinations are in the repository (transitions\_hit5.csv). Post hoc, descriptive.}
+\label{tab:transdetail}
+\begin{tabular}{lcccccc}
+\toprule
+Group & $n$ & EM MiniLM-L6 & EM encoder & wrong$\to$right / right$\to$wrong & Contribution & 95\% CI \\
+\midrule
+\multicolumn{7}{l}{\emph{NQ Qwen, bge-large}} \\
+\quad miss $\to$ hit & 406 & 0.264 & 0.569 & 138 / 14 & +0.0550 & [0.0443, 0.0656] \\
+\quad hit $\to$ hit & 1,389 & 0.588 & 0.567 & 71 / 99 & \ensuremath{-}0.0124 & [\ensuremath{-}0.0239, \ensuremath{-}0.0009] \\
+\quad hit $\to$ miss & 108 & 0.537 & 0.333 & 5 / 27 & \ensuremath{-}0.0098 & [\ensuremath{-}0.0146, \ensuremath{-}0.0049] \\
+\quad miss $\to$ miss & 352 & 0.233 & 0.227 & 21 / 23 & \ensuremath{-}0.0009 & [\ensuremath{-}0.0067, 0.0049] \\
+\multicolumn{7}{l}{\emph{NQ Qwen, e5-base-v2}} \\
+\quad miss $\to$ hit & 436 & 0.296 & 0.569 & 139 / 20 & +0.0528 & [0.0421, 0.0634] \\
+\quad hit $\to$ hit & 1,405 & 0.588 & 0.569 & 66 / 92 & \ensuremath{-}0.0115 & [\ensuremath{-}0.0222, \ensuremath{-}0.0009] \\
+\quad hit $\to$ miss & 92 & 0.522 & 0.370 & 3 / 17 & \ensuremath{-}0.0062 & [\ensuremath{-}0.0102, \ensuremath{-}0.0022] \\
+\quad miss $\to$ miss & 322 & 0.186 & 0.208 & 20 / 13 & +0.0031 & [\ensuremath{-}0.0018, 0.0080] \\
+\multicolumn{7}{l}{\emph{NQ Llama, bge-large}} \\
+\quad miss $\to$ hit & 406 & 0.264 & 0.527 & 125 / 18 & +0.0475 & [0.0373, 0.0576] \\
+\quad hit $\to$ hit & 1,389 & 0.552 & 0.534 & 64 / 89 & \ensuremath{-}0.0111 & [\ensuremath{-}0.0217, \ensuremath{-}0.0004] \\
+\quad hit $\to$ miss & 108 & 0.583 & 0.287 & 4 / 36 & \ensuremath{-}0.0142 & [\ensuremath{-}0.0195, \ensuremath{-}0.0089] \\
+\quad miss $\to$ miss & 352 & 0.207 & 0.199 & 20 / 23 & \ensuremath{-}0.0013 & [\ensuremath{-}0.0071, 0.0044] \\
+\multicolumn{7}{l}{\emph{NQ Llama, e5-base-v2}} \\
+\quad miss $\to$ hit & 436 & 0.268 & 0.525 & 133 / 21 & +0.0497 & [0.0390, 0.0603] \\
+\quad hit $\to$ hit & 1,405 & 0.559 & 0.525 & 52 / 100 & \ensuremath{-}0.0213 & [\ensuremath{-}0.0319, \ensuremath{-}0.0111] \\
+\quad hit $\to$ miss & 92 & 0.478 & 0.315 & 5 / 20 & \ensuremath{-}0.0067 & [\ensuremath{-}0.0111, \ensuremath{-}0.0022] \\
+\quad miss $\to$ miss & 322 & 0.196 & 0.214 & 22 / 16 & +0.0027 & [\ensuremath{-}0.0027, 0.0080] \\
+\multicolumn{7}{l}{\emph{HotpotQA Qwen, bge-large}} \\
+\quad miss $\to$ hit & 307 & 0.098 & 0.414 & 106 / 9 & +0.0485 & [0.0385, 0.0590] \\
+\quad hit $\to$ hit & 1,614 & 0.352 & 0.443 & 225 / 79 & +0.0730 & [0.0565, 0.0900] \\
+\quad hit $\to$ miss & 20 & 0.150 & 0.000 & 0 / 3 & \ensuremath{-}0.0015 & [\ensuremath{-}0.0035, 0.0000] \\
+\quad miss $\to$ miss & 59 & 0.102 & 0.102 & 1 / 1 & +0.0000 & [\ensuremath{-}0.0015, 0.0015] \\
+\multicolumn{7}{l}{\emph{HotpotQA Qwen, e5-base-v2}} \\
+\quad miss $\to$ hit & 290 & 0.107 & 0.383 & 85 / 5 & +0.0400 & [0.0310, 0.0495] \\
+\quad hit $\to$ hit & 1,611 & 0.354 & 0.421 & 196 / 88 & +0.0540 & [0.0375, 0.0710] \\
+\quad hit $\to$ miss & 23 & 0.087 & 0.000 & 0 / 2 & \ensuremath{-}0.0010 & [\ensuremath{-}0.0025, 0.0000] \\
+\quad miss $\to$ miss & 76 & 0.066 & 0.040 & 0 / 2 & \ensuremath{-}0.0010 & [\ensuremath{-}0.0025, 0.0000] \\
+\multicolumn{7}{l}{\emph{HotpotQA Llama, bge-large}} \\
+\quad miss $\to$ hit & 307 & 0.072 & 0.397 & 107 / 7 & +0.0500 & [0.0400, 0.0605] \\
+\quad hit $\to$ hit & 1,614 & 0.351 & 0.455 & 239 / 72 & +0.0835 & [0.0665, 0.1005] \\
+\quad hit $\to$ miss & 20 & 0.100 & 0.050 & 1 / 2 & \ensuremath{-}0.0005 & [\ensuremath{-}0.0025, 0.0010] \\
+\quad miss $\to$ miss & 59 & 0.068 & 0.068 & 0 / 0 & +0.0000 & [0.0000, 0.0000] \\
+\multicolumn{7}{l}{\emph{HotpotQA Llama, e5-base-v2}} \\
+\quad miss $\to$ hit & 290 & 0.079 & 0.417 & 105 / 7 & +0.0490 & [0.0390, 0.0590] \\
+\quad hit $\to$ hit & 1,611 & 0.350 & 0.429 & 211 / 83 & +0.0640 & [0.0475, 0.0805] \\
+\quad hit $\to$ miss & 23 & 0.217 & 0.043 & 1 / 5 & \ensuremath{-}0.0020 & [\ensuremath{-}0.0045, 0.0000] \\
+\quad miss $\to$ miss & 76 & 0.040 & 0.040 & 0 / 0 & +0.0000 & [0.0000, 0.0000] \\
+\bottomrule
+\end{tabular}
+\par\smallskip\parbox{\linewidth}{\footnotesize Intervals: percentile bootstrap over queries ($B=10{,}000$, seed 0); each query keeps its group, so group sizes vary across resamples and the interval is for the group's contribution to the population EM difference.}
+\end{table*}

@@ -1,9 +1,23 @@
 \section{Reader prompts}\label{app:prompts}
-Each prompt was rendered with the reader's own chat template. Passages appear in rank order as ``[$i$] title'' followed by the passage text on the next line, separated by blank lines.
+The prompts below are copied from the code that ran the readers (\texttt{src/generation/prompts.py}). Every generation record stores a hash of the system prompt; all \ev{IC.n} scored answers carry the hash of the prompt printed here (A1: \ev{N.gen.A1}, A2: \ev{N.gen.A2}, A3: \ev{N.gen.A3} records). Each prompt was rendered with the reader's own chat template.
 
-\paragraph{A1 (with passages)} System: \emph{``You are a question answering assistant. Answer the question using the passages provided. If the passages do not contain the answer, give your best short answer anyway. Reply with the answer only, as a short phrase of a few words, with no explanation.''} User: \emph{``Passages: \ldots\ Question: \{question\} Answer:''}
+\paragraph{User message (A1 and A3)} Passages appear in rank order, each as ``[$i$] title'', a line break and the passage text, separated by blank lines:
+\begin{quote}\small\ttfamily
+Passages:\\
+{[}1{]} \{title 1\}\\
+\{text 1\}\\[0.5ex]
+{[}2{]} \{title 2\}\\
+\{text 2\}\\
+\ldots\\[0.5ex]
+Question: \{question\}\\
+Answer:
+\end{quote}
 
-\paragraph{A2 (closed book)} System: \emph{``You are a question answering assistant. Reply with the answer only, as a short phrase of a few words, with no explanation.''} User: \emph{``Question: \{question\} Answer:''}
+\paragraph{A1 (main prompt, with passages)} System: \emph{``You are a question answering assistant. Answer the question using the passages provided. If the passages do not contain the answer, give your best short answer anyway. Reply with the answer only, as a short phrase of a few words, with no explanation.''}
+
+\paragraph{A2 (closed book)} System: \emph{``You are a question answering assistant. Reply with the answer only, as a short phrase of a few words, with no explanation.''} User: \texttt{Question: \{question\}} followed by a line break and \texttt{Answer:}.
+
+\paragraph{A3 (abstention check, Phase~1 only)} System: \emph{``You are a question answering assistant. Answer the question using only the passages provided. If the passages do not contain the answer, reply exactly: I don't know. Otherwise reply with the answer only, as a short phrase of a few words, with no explanation.''} User message as for A1.
 
 The gold-passage condition uses A1 with the gold passages only.
 
@@ -49,8 +63,9 @@ hotpotqa/hotpot\_qa & 1908d6af \\
 \end{tabular}
 \end{table}
 
-Retrieval used bm25s 0.3.11 and faiss-cpu 1.15.1; readers used vLLM 0.30.0 with PyTorch 2.13.0 (CUDA 13.0) and Transformers 5.17.0, in half precision with a maximum model length of 4,096 tokens.
+Retrieval used bm25s 0.3.11 and faiss-cpu 1.15.1; readers used vLLM 0.30.0 with PyTorch 2.13.0 (CUDA 13.0) and Transformers 5.17.0, in half precision with a maximum model length of 4,096 tokens. Table~\ref{tab:env} lists the software of every session.
 
+\input{tables/tab_env}
 \input{tables/tab_models}
 \input{tables/tab_data}
 
@@ -67,10 +82,25 @@ The design document and its addenda are dated and versioned in the study reposit
 \end{itemize}
 Pilot numbers were used only for planning and are not reported as results.
 
+\section{Retrieval-stage cost on a CPU}\label{app:deploy}
+Phase~1 also measured the cost of serving queries without a GPU (Table~\ref{tab:deploy}; single measurements). Encoding the 300,000-passage sub-corpus on the T4 took \ev{DC.encode_gpu_s.R1}~s with MiniLM-L6, \ev{DC.encode_gpu_s.R5}~s with e5-base-v2, \ev{DC.encode_gpu_s.R4}~s with bge-large and \ev{DC.encode_gpu_s.R6}~s with Qwen3-Embedding-0.6B. On the CPU alone, one query (encoding plus exact search) took \ev{DC.qcpu.query_ms_cpu.R0}~ms with BM25, \ev{DC.qcpu.query_ms_cpu.R1}~ms with MiniLM-L6, \ev{DC.qcpu.query_ms_cpu.R5}~ms with e5-base-v2, \ev{DC.qcpu.query_ms_cpu.R4}~ms with bge-large and \ev{DC.qcpu.query_ms_cpu.R6}~ms with Qwen3-Embedding-0.6B. The flat index took \ev{DC.index_mb.R1}, \ev{DC.index_mb.R5} and \ev{DC.index_mb.R4}~MB at 384, 768 and 1,024 dimensions. Fig.~\ref{fig:pareto} places each retriever by CPU latency and EM in every cell. bge-large and Qwen3-Embedding-0.6B were dominated on NQ for both readers: a cheaper retriever gave at least the same EM. On HotpotQA, bge-large was on the frontier with both readers, and its step over the next retriever was significant only with Qwen. Fig.~\ref{fig:latency} in the appendix gives the same view for NQ nDCG@10. In an exploratory check that treats costs within 5\% as equal, only one frontier changed, on both cost axes: with Qwen on NQ, bge-base left the frontier, because its cost is within 5\% of e5-base-v2 and its EM is lower.
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=\linewidth]{figs/fig11_pareto.pdf}
+\caption{Exact match against per-query latency with query encoding and exact search on the CPU (Phase~1 cost measurements, log scale). The line joins retrievers that no other retriever beats on both axes; open markers are dominated. Step labels: $^{*}$ EM difference significant after Holm correction over the 21 pairs of the cell; n.s. not significant.}
+\label{fig:pareto}
+\end{figure}
+
+\input{tables/tab_deploy}
+
+
 \section{Additional tables}\label{app:tables}
-Table~\ref{tab:ci} gives the bootstrap intervals for Table~\ref{tab:main}. Table~\ref{tab:transferalt} repeats the transfer ratios with token F1 and answer containment. Table~\ref{tab:decomp} gives EM given a hit and given a miss, which enter Eq.~\ref{eq:decomp}. Table~\ref{tab:idk} gives the abstention-prompt check, Table~\ref{tab:transferk} the exploratory transfer ratios at each $k$, Table~\ref{tab:pairwise} all pairwise EM tests, and Table~\ref{tab:judgerates} the excluded judge labels. Table~\ref{tab:share} gives the decomposition shares for HotpotQA under both orderings, and Table~\ref{tab:altbase} the transfer ratios against BM25.
+Table~\ref{tab:ci} gives the bootstrap intervals for Table~\ref{tab:main}. Table~\ref{tab:transferalt} repeats the transfer ratios with token F1 and answer containment. Table~\ref{tab:decomp} gives EM given a hit and given a miss, which enter Eq.~\ref{eq:decomp}. Table~\ref{tab:idk} gives the abstention-prompt check, Table~\ref{tab:transferk} the exploratory transfer ratios at each $k$, Table~\ref{tab:pairwise} all pairwise EM tests, and Table~\ref{tab:judgerates} the excluded judge labels. Table~\ref{tab:components} gives the three decomposition terms with intervals, Table~\ref{tab:transdetail} the query-level transitions for two encoders, Table~\ref{tab:share} the HotpotQA shares under both orderings, and Table~\ref{tab:altbase} the ratios against BM25 and with Both@5.
 
 \input{tables/tab_ci}
+\input{tables/tab_components}
+\input{tables/tab_transdetail}
 \input{tables/tab_share}
 \input{tables/tab_alt_baseline}
 \input{tables/tab_transfer_alt}

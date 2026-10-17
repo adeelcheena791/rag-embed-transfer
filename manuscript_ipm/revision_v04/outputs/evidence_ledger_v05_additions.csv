@@ -1,0 +1,93 @@
+claim_id,claim,value,source,produced_by,status
+N.gen.A1,generation records with prompt A1 (hash verified),"122,545",paper_inputs/**/raw/generations,make_v05_tex.py,computed from committed outputs
+N.gen.A2,generation records with prompt A2 (hash verified),"8,510",paper_inputs/**/raw/generations,make_v05_tex.py,computed from committed outputs
+N.gen.A3,generation records with prompt A3 (hash verified),800,paper_inputs/**/raw/generations,make_v05_tex.py,computed from committed outputs
+V5.nq.ubmax,largest upper 95% bound of a dense-encoder NQ ratio (unrounded 0.4545),0.455,v03_analysis.json,make_v05_tex.py,computed from committed outputs
+V5.nq.ubmax2,NQ upper bounds stay below this (2 dp),0.46,v03_analysis.json,make_v05_tex.py,computed from committed outputs
+V5.cmp.nq.prev,"hit-prevalence term, NQ",+0.021 to +0.051,decomposition_components.csv,make_v05_tex.py,computed from committed outputs
+V5.cmp.nq.hits,"EM-among-hits term, NQ",\ensuremath{-}0.024 to \ensuremath{-}0.009,decomposition_components.csv,make_v05_tex.py,computed from committed outputs
+V5.cmp.nq.miss,"EM-among-misses term, NQ",\ensuremath{-}0.004 to +0.007,decomposition_components.csv,make_v05_tex.py,computed from committed outputs
+V5.cmp.nq.hits.pos,"hits-term intervals above 0, NQ",0,decomposition_components.csv,make_v05_tex.py,computed from committed outputs
+V5.cmp.nq.hits.neg,"hits-term intervals below 0, NQ",2,decomposition_components.csv,make_v05_tex.py,computed from committed outputs
+V5.cmp.nq.miss.zero,"misses-term intervals containing 0, NQ",10,decomposition_components.csv,make_v05_tex.py,computed from committed outputs
+V5.cmp.hp.prev,"hit-prevalence term, HotpotQA",+0.032 to +0.040,decomposition_components.csv,make_v05_tex.py,computed from committed outputs
+V5.cmp.hp.hits,"EM-among-hits term, HotpotQA",+0.031 to +0.093,decomposition_components.csv,make_v05_tex.py,computed from committed outputs
+V5.cmp.hp.miss,"EM-among-misses term, HotpotQA",\ensuremath{-}0.003 to +0.000,decomposition_components.csv,make_v05_tex.py,computed from committed outputs
+V5.cmp.hp.hits.pos,"hits-term intervals above 0, HotpotQA",10,decomposition_components.csv,make_v05_tex.py,computed from committed outputs
+V5.cmp.hp.hits.neg,"hits-term intervals below 0, HotpotQA",0,decomposition_components.csv,make_v05_tex.py,computed from committed outputs
+V5.cmp.hp.miss.zero,"misses-term intervals containing 0, HotpotQA",8,decomposition_components.csv,make_v05_tex.py,computed from committed outputs
+V5.tr.nq.misshit.share,"share of queries, miss_to_hit, NQ",14--19\%,transitions_hit5.csv,make_v05_tex.py,computed from committed outputs
+V5.tr.nq.misshit.within,"EM difference within miss_to_hit, NQ",+0.26 to +0.34,transitions_hit5.csv,make_v05_tex.py,computed from committed outputs
+V5.tr.nq.misshit.contrib,"contribution to dEM, miss_to_hit, NQ",+0.040 to +0.055,transitions_hit5.csv,make_v05_tex.py,computed from committed outputs
+V5.tr.nq.misshit.embase,"MiniLM-L6 EM within miss_to_hit, NQ",0.23--0.30,transitions_hit5.csv,make_v05_tex.py,computed from committed outputs
+V5.tr.nq.misshit.neg,"contribution intervals below 0, miss_to_hit, NQ",0,transitions_hit5.csv,make_v05_tex.py,computed from committed outputs
+V5.tr.nq.misshit.zero,"contribution intervals containing 0, miss_to_hit, NQ",0,transitions_hit5.csv,make_v05_tex.py,computed from committed outputs
+V5.tr.hp.misshit.share,"share of queries, miss_to_hit, HotpotQA",14--15\%,transitions_hit5.csv,make_v05_tex.py,computed from committed outputs
+V5.tr.hp.misshit.within,"EM difference within miss_to_hit, HotpotQA",+0.22 to +0.34,transitions_hit5.csv,make_v05_tex.py,computed from committed outputs
+V5.tr.hp.misshit.contrib,"contribution to dEM, miss_to_hit, HotpotQA",+0.030 to +0.050,transitions_hit5.csv,make_v05_tex.py,computed from committed outputs
+V5.tr.hp.misshit.embase,"MiniLM-L6 EM within miss_to_hit, HotpotQA",0.07--0.11,transitions_hit5.csv,make_v05_tex.py,computed from committed outputs
+V5.tr.hp.misshit.neg,"contribution intervals below 0, miss_to_hit, HotpotQA",0,transitions_hit5.csv,make_v05_tex.py,computed from committed outputs
+V5.tr.hp.misshit.zero,"contribution intervals containing 0, miss_to_hit, HotpotQA",0,transitions_hit5.csv,make_v05_tex.py,computed from committed outputs
+V5.tr.nq.hithit.share,"share of queries, hit_to_hit, NQ",59--62\%,transitions_hit5.csv,make_v05_tex.py,computed from committed outputs
+V5.tr.nq.hithit.within,"EM difference within hit_to_hit, NQ",\ensuremath{-}0.03 to \ensuremath{-}0.01,transitions_hit5.csv,make_v05_tex.py,computed from committed outputs
+V5.tr.nq.hithit.contrib,"contribution to dEM, hit_to_hit, NQ",\ensuremath{-}0.021 to \ensuremath{-}0.007,transitions_hit5.csv,make_v05_tex.py,computed from committed outputs
+V5.tr.nq.hithit.embase,"MiniLM-L6 EM within hit_to_hit, NQ",0.55--0.59,transitions_hit5.csv,make_v05_tex.py,computed from committed outputs
+V5.tr.nq.hithit.neg,"contribution intervals below 0, hit_to_hit, NQ",7,transitions_hit5.csv,make_v05_tex.py,computed from committed outputs
+V5.tr.nq.hithit.zero,"contribution intervals containing 0, hit_to_hit, NQ",3,transitions_hit5.csv,make_v05_tex.py,computed from committed outputs
+V5.tr.hp.hithit.share,"share of queries, hit_to_hit, HotpotQA",81\%,transitions_hit5.csv,make_v05_tex.py,computed from committed outputs
+V5.tr.hp.hithit.within,"EM difference within hit_to_hit, HotpotQA",+0.04 to +0.10,transitions_hit5.csv,make_v05_tex.py,computed from committed outputs
+V5.tr.hp.hithit.contrib,"contribution to dEM, hit_to_hit, HotpotQA",+0.035 to +0.084,transitions_hit5.csv,make_v05_tex.py,computed from committed outputs
+V5.tr.hp.hithit.embase,"MiniLM-L6 EM within hit_to_hit, HotpotQA",0.35,transitions_hit5.csv,make_v05_tex.py,computed from committed outputs
+V5.tr.hp.hithit.neg,"contribution intervals below 0, hit_to_hit, HotpotQA",0,transitions_hit5.csv,make_v05_tex.py,computed from committed outputs
+V5.tr.hp.hithit.zero,"contribution intervals containing 0, hit_to_hit, HotpotQA",0,transitions_hit5.csv,make_v05_tex.py,computed from committed outputs
+V5.tr.nq.hitmiss.share,"share of queries, hit_to_miss, NQ",4--7\%,transitions_hit5.csv,make_v05_tex.py,computed from committed outputs
+V5.tr.nq.hitmiss.within,"EM difference within hit_to_miss, NQ",\ensuremath{-}0.30 to \ensuremath{-}0.15,transitions_hit5.csv,make_v05_tex.py,computed from committed outputs
+V5.tr.nq.hitmiss.contrib,"contribution to dEM, hit_to_miss, NQ",\ensuremath{-}0.019 to \ensuremath{-}0.006,transitions_hit5.csv,make_v05_tex.py,computed from committed outputs
+V5.tr.nq.hitmiss.embase,"MiniLM-L6 EM within hit_to_miss, NQ",0.48--0.58,transitions_hit5.csv,make_v05_tex.py,computed from committed outputs
+V5.tr.nq.hitmiss.neg,"contribution intervals below 0, hit_to_miss, NQ",10,transitions_hit5.csv,make_v05_tex.py,computed from committed outputs
+V5.tr.nq.hitmiss.zero,"contribution intervals containing 0, hit_to_miss, NQ",0,transitions_hit5.csv,make_v05_tex.py,computed from committed outputs
+V5.tr.hp.hitmiss.share,"share of queries, hit_to_miss, HotpotQA",1\%,transitions_hit5.csv,make_v05_tex.py,computed from committed outputs
+V5.tr.hp.hitmiss.within,"EM difference within hit_to_miss, HotpotQA",\ensuremath{-}0.33 to +0.00,transitions_hit5.csv,make_v05_tex.py,computed from committed outputs
+V5.tr.hp.hitmiss.contrib,"contribution to dEM, hit_to_miss, HotpotQA",\ensuremath{-}0.003 to +0.000,transitions_hit5.csv,make_v05_tex.py,computed from committed outputs
+V5.tr.hp.hitmiss.embase,"MiniLM-L6 EM within hit_to_miss, HotpotQA",0.06--0.39,transitions_hit5.csv,make_v05_tex.py,computed from committed outputs
+V5.tr.hp.hitmiss.neg,"contribution intervals below 0, hit_to_miss, HotpotQA",3,transitions_hit5.csv,make_v05_tex.py,computed from committed outputs
+V5.tr.hp.hitmiss.zero,"contribution intervals containing 0, hit_to_miss, HotpotQA",7,transitions_hit5.csv,make_v05_tex.py,computed from committed outputs
+V5.tr.nq.missmiss.share,"share of queries, miss_to_miss, NQ",14--20\%,transitions_hit5.csv,make_v05_tex.py,computed from committed outputs
+V5.tr.nq.missmiss.within,"EM difference within miss_to_miss, NQ",\ensuremath{-}0.01 to +0.04,transitions_hit5.csv,make_v05_tex.py,computed from committed outputs
+V5.tr.nq.missmiss.contrib,"contribution to dEM, miss_to_miss, NQ",\ensuremath{-}0.002 to +0.007,transitions_hit5.csv,make_v05_tex.py,computed from committed outputs
+V5.tr.nq.missmiss.embase,"MiniLM-L6 EM within miss_to_miss, NQ",0.19--0.25,transitions_hit5.csv,make_v05_tex.py,computed from committed outputs
+V5.tr.nq.missmiss.neg,"contribution intervals below 0, miss_to_miss, NQ",0,transitions_hit5.csv,make_v05_tex.py,computed from committed outputs
+V5.tr.nq.missmiss.zero,"contribution intervals containing 0, miss_to_miss, NQ",9,transitions_hit5.csv,make_v05_tex.py,computed from committed outputs
+V5.tr.hp.missmiss.share,"share of queries, miss_to_miss, HotpotQA",3--5\%,transitions_hit5.csv,make_v05_tex.py,computed from committed outputs
+V5.tr.hp.missmiss.within,"EM difference within miss_to_miss, HotpotQA",\ensuremath{-}0.03 to +0.02,transitions_hit5.csv,make_v05_tex.py,computed from committed outputs
+V5.tr.hp.missmiss.contrib,"contribution to dEM, miss_to_miss, HotpotQA",\ensuremath{-}0.001 to +0.001,transitions_hit5.csv,make_v05_tex.py,computed from committed outputs
+V5.tr.hp.missmiss.embase,"MiniLM-L6 EM within miss_to_miss, HotpotQA",0.04--0.10,transitions_hit5.csv,make_v05_tex.py,computed from committed outputs
+V5.tr.hp.missmiss.neg,"contribution intervals below 0, miss_to_miss, HotpotQA",0,transitions_hit5.csv,make_v05_tex.py,computed from committed outputs
+V5.tr.hp.missmiss.zero,"contribution intervals containing 0, miss_to_miss, HotpotQA",10,transitions_hit5.csv,make_v05_tex.py,computed from committed outputs
+V5.tr.nq.netshare,"net dEM as a share of the miss->hit contribution, NQ",29--72\%,transitions_hit5.csv,make_v05_tex.py,computed from committed outputs
+V5.ev.gained.share,"share of HotpotQA queries, evidence_gained",34--48\%,transitions_hotpotqa_evidence.csv,make_v05_tex.py,computed from committed outputs
+V5.ev.gained.contrib,"contribution to dEM, evidence_gained",+0.081 to +0.134,transitions_hotpotqa_evidence.csv,make_v05_tex.py,computed from committed outputs
+V5.ev.gained.pct,"share of dEM, evidence_gained",100--130\%,transitions_hotpotqa_evidence.csv,make_v05_tex.py,computed from committed outputs
+V5.ev.gained.pos,"contribution intervals above 0, evidence_gained",10,transitions_hotpotqa_evidence.csv,make_v05_tex.py,computed from committed outputs
+V5.ev.same.share,"share of HotpotQA queries, evidence_same",50--62\%,transitions_hotpotqa_evidence.csv,make_v05_tex.py,computed from committed outputs
+V5.ev.same.contrib,"contribution to dEM, evidence_same",\ensuremath{-}0.011 to +0.002,transitions_hotpotqa_evidence.csv,make_v05_tex.py,computed from committed outputs
+V5.ev.same.pct,"share of dEM, evidence_same",\ensuremath{-}11 to 1\%,transitions_hotpotqa_evidence.csv,make_v05_tex.py,computed from committed outputs
+V5.ev.same.pos,"contribution intervals above 0, evidence_same",0,transitions_hotpotqa_evidence.csv,make_v05_tex.py,computed from committed outputs
+V5.ev.lost.share,"share of HotpotQA queries, evidence_lost",2--4\%,transitions_hotpotqa_evidence.csv,make_v05_tex.py,computed from committed outputs
+V5.ev.lost.contrib,"contribution to dEM, evidence_lost",\ensuremath{-}0.012 to \ensuremath{-}0.002,transitions_hotpotqa_evidence.csv,make_v05_tex.py,computed from committed outputs
+V5.ev.lost.pct,"share of dEM, evidence_lost",\ensuremath{-}18 to \ensuremath{-}2\%,transitions_hotpotqa_evidence.csv,make_v05_tex.py,computed from committed outputs
+V5.ev.lost.pos,"contribution intervals above 0, evidence_lost",0,transitions_hotpotqa_evidence.csv,make_v05_tex.py,computed from committed outputs
+V5.ev.c12.contrib,contribution of 1->2 supporting passages,+0.049 to +0.085,transitions_hotpotqa_evidence.csv,make_v05_tex.py,computed from committed outputs
+V5.ev.c12.pct,share of dEM from 1->2 supporting passages,62--81\%,transitions_hotpotqa_evidence.csv,make_v05_tex.py,computed from committed outputs
+V5.k1.range,"NQ dense ratios at k=1 (Qwen, exploratory)",0.41--0.83,v03_extras.json transfer_by_k,make_v05_tex.py,computed from committed outputs
+V5.k1.ubmax,largest upper bound at k=1,1.22,v03_extras.json transfer_by_k,make_v05_tex.py,computed from committed outputs
+V5.k3.range,"NQ dense ratios at k=3 (Qwen, exploratory)",0.32--0.37,v03_extras.json transfer_by_k,make_v05_tex.py,computed from committed outputs
+V5.k3.ubmax,largest upper bound at k=3,0.59,v03_extras.json transfer_by_k,make_v05_tex.py,computed from committed outputs
+V5.k10.range,"NQ dense ratios at k=10 (Qwen, exploratory)",0.05--0.19,v03_extras.json transfer_by_k,make_v05_tex.py,computed from committed outputs
+V5.k10.ubmax,largest upper bound at k=10,0.42,v03_extras.json transfer_by_k,make_v05_tex.py,computed from committed outputs
+V5.f1.nq,NQ dense F1 ratios,0.23--0.33,v03_analysis.json,make_v05_tex.py,computed from committed outputs
+V5.ac.nq,NQ dense containment ratios,0.27--0.39,v03_analysis.json,make_v05_tex.py,computed from committed outputs
+V5.nq.allub,largest NQ upper bound over EM/F1/AC and both baselines (k = 5),0.60,v03_analysis.json; transfer_ratio_alt_baselines.csv,make_v05_tex.py,computed from committed outputs
+V5.hnsw.ov5.min128,smallest top-5 overlap at ef 128,0.996,hnsw.jsonl,make_v05_tex.py,computed from committed outputs
+V5.hnsw.ov100.min128,smallest top-100 overlap at ef 128,0.964,hnsw.jsonl,make_v05_tex.py,computed from committed outputs
+V5.hnsw.n,rows in the HNSW index,"300,000",hnsw.jsonl,make_v05_tex.py,computed from committed outputs

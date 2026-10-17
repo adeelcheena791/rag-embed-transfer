@@ -1,0 +1,19 @@
+\begin{table*}[t]
+\centering
+\footnotesize
+\caption{Where the EM gain over MiniLM-L6 sits: queries grouped by their Hit@5 under MiniLM-L6 and under the dense encoder. Ranges over the five dense encoders and two readers per dataset. Post hoc, descriptive.}
+\label{tab:transitions}
+\begin{tabular}{lcccccc}
+\toprule
+ & \multicolumn{3}{c}{NQ} & \multicolumn{3}{c}{HotpotQA} \\ \cmidrule(lr){2-4}\cmidrule(lr){5-7} Hit@5 (MiniLM-L6 $\to$ encoder) & \% queries & $\Delta$EM within & Contribution & \% queries & $\Delta$EM within & Contribution \\
+\midrule
+miss $\to$ hit & 14--19 & +0.26 to +0.34 & +0.040 to +0.055 & 14--15 & +0.22 to +0.34 & +0.030 to +0.050 \\
+hit $\to$ hit & 59--62 & \ensuremath{-}0.03 to \ensuremath{-}0.01 & \ensuremath{-}0.021 to \ensuremath{-}0.007 & 81 & +0.04 to +0.10 & +0.035 to +0.084 \\
+hit $\to$ miss & 4--7 & \ensuremath{-}0.30 to \ensuremath{-}0.15 & \ensuremath{-}0.019 to \ensuremath{-}0.006 & 1 & \ensuremath{-}0.33 to +0.00 & \ensuremath{-}0.003 to +0.000 \\
+miss $\to$ miss & 14--20 & \ensuremath{-}0.01 to +0.04 & \ensuremath{-}0.002 to +0.007 & 3--5 & \ensuremath{-}0.03 to +0.02 & \ensuremath{-}0.001 to +0.001 \\
+\midrule
+all queries & 100 & & +0.012 to +0.038 & 100 & & +0.062 to +0.133 \\
+\bottomrule
+\end{tabular}
+\par\smallskip\parbox{\linewidth}{\footnotesize $\Delta$EM within: EM of the encoder minus EM of MiniLM-L6 among the queries of the group. Contribution: the group's share of the overall EM difference, (sum of paired EM differences in the group) / all queries; the four contributions add up to the overall $\Delta$EM exactly. Groups are defined by retrieval outcomes and describe where the EM difference sits, not why. Per-encoder values with 95\% bootstrap intervals: Table~\ref{tab:transdetail}.}
+\end{table*}

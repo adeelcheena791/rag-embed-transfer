@@ -10,7 +10,12 @@ From the repository root, with the packages in `requirements-retrieval.txt` (num
 python3 -m src.analysis.v03_analysis --out /tmp/rerun/stats --tables /tmp/rerun/tables   # original analysis, for comparison
 python3 manuscript_ipm/revision_v04/scripts/audit_v04.py          # ratios, decomposition, baselines, GEE, throughput, κ
 python3 manuscript_ipm/revision_v04/scripts/both5_ratio.py        # HotpotQA ratios with Both@5 denominator
-python3 manuscript_ipm/revision_v04/scripts/make_v04_tex.py       # new macros and tables for the revised LaTeX
+python3 manuscript_ipm/revision_v04/scripts/make_v04_tex.py       # v0.4 macros and tables
+python3 manuscript_ipm/revision_v04/scripts/transitions_v05.py     # v0.5: query-level transitions
+python3 manuscript_ipm/revision_v04/scripts/components_v05.py      # v0.5: decomposition components
+python3 manuscript_ipm/revision_v04/scripts/make_v05_tex.py       # v0.5 macros and tables
+python3 -I manuscript_ipm/revision_v04/scripts/independent_check_v05.py  # standalone recomputation
+python3 -m pytest -q manuscript_ipm/revision_v04/tests          # targeted checks
 python3 manuscript_ipm/revision_v04/scripts/numeric_report.py manuscript_ipm/revision_v04/latex   # every printed number
 cd manuscript_ipm/revision_v04/latex && latexmk -pdf manuscript.tex && cd -
 python3 manuscript_ipm/revision_v04/scripts/check_revised.py     # word limits, banned words, citations, log
@@ -21,6 +26,7 @@ python3 manuscript_ipm/revision_v04/scripts/make_docx_revised.py # Word copy (ne
 
 | File | What it is |
 |---|---|
+| `revision_v05_report.md` | v0.5: errors fixed, new analyses, open issues, approval request for one GPU run |
 | `audit_report.md` | full audit: inventory, reproducibility, numbers, priority audits, literature, readiness |
 | `study_specification.md` | verified design, with the source of each item |
 | `statistical_audit.md` | transfer ratio, decomposition, GEE, HNSW, random passages, corpus, judge |

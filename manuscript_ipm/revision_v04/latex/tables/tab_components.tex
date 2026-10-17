@@ -1,0 +1,37 @@
+\begin{table*}[t]
+\centering
+\footnotesize
+\caption{Components of the EM gain over MiniLM-L6 (Eq.~\ref{eq:decomp} multiplied by $\Delta\bar h$), with 95\% bootstrap intervals. Post hoc, descriptive.}
+\label{tab:components}
+\begin{tabular}{lcccc}
+\toprule
+Encoder & $\Delta$EM & Hit prevalence & EM among hits & EM among misses \\
+\midrule
+\multicolumn{5}{l}{\emph{NQ Qwen}} \\
+bge-small & +0.012 & +0.022 [0.015, 0.029] & \ensuremath{-}0.012 [\ensuremath{-}0.026, 0.003] & +0.003 [\ensuremath{-}0.007, 0.012] \\
+bge-base & +0.022 & +0.036 [0.028, 0.043] & \ensuremath{-}0.016 [\ensuremath{-}0.031, 0.000] & +0.002 [\ensuremath{-}0.007, 0.011] \\
+bge-large & +0.032 & +0.044 [0.036, 0.052] & \ensuremath{-}0.013 [\ensuremath{-}0.029, 0.004] & +0.001 [\ensuremath{-}0.008, 0.009] \\
+e5-base-v2 & +0.038 & +0.051 [0.043, 0.060] & \ensuremath{-}0.012 [\ensuremath{-}0.028, 0.005] & \ensuremath{-}0.001 [\ensuremath{-}0.009, 0.007] \\
+Qwen3-Emb-0.6B & +0.020 & +0.027 [0.020, 0.034] & \ensuremath{-}0.009 [\ensuremath{-}0.024, 0.006] & +0.003 [\ensuremath{-}0.007, 0.012] \\
+\multicolumn{5}{l}{\emph{NQ Llama}} \\
+bge-small & +0.012 & +0.021 [0.014, 0.027] & \ensuremath{-}0.009 [\ensuremath{-}0.024, 0.006] & +0.000 [\ensuremath{-}0.009, 0.009] \\
+bge-base & +0.029 & +0.034 [0.027, 0.041] & \ensuremath{-}0.012 [\ensuremath{-}0.028, 0.003] & +0.007 [\ensuremath{-}0.001, 0.016] \\
+bge-large & +0.021 & +0.042 [0.034, 0.050] & \ensuremath{-}0.017 [\ensuremath{-}0.034, \ensuremath{-}0.002] & \ensuremath{-}0.004 [\ensuremath{-}0.012, 0.004] \\
+e5-base-v2 & +0.024 & +0.048 [0.040, 0.057] & \ensuremath{-}0.024 [\ensuremath{-}0.040, \ensuremath{-}0.008] & \ensuremath{-}0.000 [\ensuremath{-}0.008, 0.008] \\
+Qwen3-Emb-0.6B & +0.018 & +0.025 [0.019, 0.032] & \ensuremath{-}0.013 [\ensuremath{-}0.028, 0.003] & +0.005 [\ensuremath{-}0.004, 0.014] \\
+\multicolumn{5}{l}{\emph{HotpotQA Qwen}} \\
+bge-small & +0.090 & +0.034 [0.028, 0.041] & +0.058 [0.038, 0.078] & \ensuremath{-}0.003 [\ensuremath{-}0.005, \ensuremath{-}0.000] \\
+bge-base & +0.100 & +0.035 [0.029, 0.042] & +0.066 [0.046, 0.087] & \ensuremath{-}0.002 [\ensuremath{-}0.004, 0.001] \\
+bge-large & +0.120 & +0.036 [0.029, 0.043] & +0.085 [0.065, 0.105] & \ensuremath{-}0.001 [\ensuremath{-}0.003, 0.001] \\
+e5-base-v2 & +0.092 & +0.034 [0.027, 0.040] & +0.062 [0.042, 0.082] & \ensuremath{-}0.003 [\ensuremath{-}0.005, \ensuremath{-}0.001] \\
+Qwen3-Emb-0.6B & +0.062 & +0.032 [0.026, 0.039] & +0.031 [0.013, 0.050] & \ensuremath{-}0.001 [\ensuremath{-}0.003, 0.002] \\
+\multicolumn{5}{l}{\emph{HotpotQA Llama}} \\
+bge-small & +0.095 & +0.038 [0.031, 0.045] & +0.058 [0.038, 0.078] & \ensuremath{-}0.001 [\ensuremath{-}0.003, 0.001] \\
+bge-base & +0.118 & +0.039 [0.033, 0.046] & +0.080 [0.059, 0.100] & \ensuremath{-}0.001 [\ensuremath{-}0.003, 0.001] \\
+bge-large & +0.133 & +0.040 [0.033, 0.047] & +0.093 [0.073, 0.114] & \ensuremath{-}0.000 [\ensuremath{-}0.002, 0.002] \\
+e5-base-v2 & +0.111 & +0.037 [0.031, 0.044] & +0.075 [0.056, 0.096] & \ensuremath{-}0.002 [\ensuremath{-}0.004, 0.001] \\
+Qwen3-Emb-0.6B & +0.069 & +0.035 [0.029, 0.042] & +0.033 [0.015, 0.052] & +0.000 [\ensuremath{-}0.002, 0.003] \\
+\bottomrule
+\end{tabular}
+\par\smallskip\parbox{\linewidth}{\footnotesize Hit prevalence: $\Delta\bar h\,(a_{R_1}-b_{R_1})$; EM among hits: $\bar h_R\,\Delta a$; EM among misses: $(1-\bar h_R)\,\Delta b$. The three terms add up to $\Delta$EM exactly. Intervals recompute every term in each resample.}
+\end{table*}

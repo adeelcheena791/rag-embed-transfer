@@ -1,0 +1,180 @@
+{
+ "qwen_nq": {
+  "bge-small": {
+   "miss_to_hit": 0.042572062084257206,
+   "hit_to_hit": -0.011086474501108648,
+   "hit_to_miss": -0.01729490022172949,
+   "miss_to_miss": -0.0017738359201773836,
+   "total": 0.012416851441241685
+  },
+  "bge-base": {
+   "miss_to_hit": 0.04656319290465632,
+   "hit_to_hit": -0.01729490022172949,
+   "hit_to_miss": -0.009312638580931265,
+   "miss_to_miss": 0.0017738359201773836,
+   "total": 0.021729490022172948
+  },
+  "bge-large": {
+   "miss_to_hit": 0.054988913525498895,
+   "hit_to_hit": -0.012416851441241685,
+   "hit_to_miss": -0.00975609756097561,
+   "miss_to_miss": -0.0008869179600886918,
+   "total": 0.031929046563192905
+  },
+  "e5-base-v2": {
+   "miss_to_hit": 0.05277161862527716,
+   "hit_to_hit": -0.011529933481152993,
+   "hit_to_miss": -0.006208425720620843,
+   "miss_to_miss": 0.0031042128603104213,
+   "total": 0.03813747228381375
+  },
+  "Qwen3-Emb-0.6B": {
+   "miss_to_hit": 0.050997782705099776,
+   "hit_to_hit": -0.015964523281596452,
+   "hit_to_miss": -0.015521064301552107,
+   "miss_to_miss": 0.0008869179600886918,
+   "total": 0.020399113082039913
+  }
+ },
+ "llama_nq": {
+  "bge-small": {
+   "miss_to_hit": 0.03991130820399113,
+   "hit_to_hit": -0.007095343680709534,
+   "hit_to_miss": -0.019068736141906874,
+   "miss_to_miss": -0.0017738359201773836,
+   "total": 0.01197339246119734
+  },
+  "bge-base": {
+   "miss_to_hit": 0.04745011086474501,
+   "hit_to_hit": -0.012860310421286032,
+   "hit_to_miss": -0.012416851441241685,
+   "miss_to_miss": 0.0066518847006651885,
+   "total": 0.028824833702882482
+  },
+  "bge-large": {
+   "miss_to_hit": 0.04745011086474501,
+   "hit_to_hit": -0.011086474501108648,
+   "hit_to_miss": -0.014190687361419069,
+   "miss_to_miss": -0.0013303769401330377,
+   "total": 0.020842572062084258
+  },
+  "e5-base-v2": {
+   "miss_to_hit": 0.04966740576496674,
+   "hit_to_hit": -0.021286031042128603,
+   "hit_to_miss": -0.0066518847006651885,
+   "miss_to_miss": 0.0026607538802660754,
+   "total": 0.024390243902439025
+  },
+  "Qwen3-Emb-0.6B": {
+   "miss_to_hit": 0.04124168514412417,
+   "hit_to_hit": -0.00753880266075388,
+   "hit_to_miss": -0.015964523281596452,
+   "miss_to_miss": 0.0,
+   "total": 0.017738359201773836
+  }
+ },
+ "qwen_hp": {
+  "bge-small": {
+   "miss_to_hit": 0.0385,
+   "hit_to_hit": 0.0535,
+   "hit_to_miss": -0.001,
+   "miss_to_miss": -0.001,
+   "total": 0.09,
+   "evidence_gained": 0.1005,
+   "evidence_same": -0.003,
+   "evidence_lost": -0.0075
+  },
+  "bge-base": {
+   "miss_to_hit": 0.0395,
+   "hit_to_hit": 0.0605,
+   "hit_to_miss": 0.0,
+   "miss_to_miss": 0.0,
+   "total": 0.1,
+   "evidence_gained": 0.1135,
+   "evidence_same": -0.0105,
+   "evidence_lost": -0.003
+  },
+  "bge-large": {
+   "miss_to_hit": 0.0485,
+   "hit_to_hit": 0.073,
+   "hit_to_miss": -0.0015,
+   "miss_to_miss": 0.0,
+   "total": 0.12,
+   "evidence_gained": 0.133,
+   "evidence_same": -0.008,
+   "evidence_lost": -0.005
+  },
+  "e5-base-v2": {
+   "miss_to_hit": 0.04,
+   "hit_to_hit": 0.054,
+   "hit_to_miss": -0.001,
+   "miss_to_miss": -0.001,
+   "total": 0.092,
+   "evidence_gained": 0.1035,
+   "evidence_same": -0.006,
+   "evidence_lost": -0.0055
+  },
+  "Qwen3-Emb-0.6B": {
+   "miss_to_hit": 0.0305,
+   "hit_to_hit": 0.0345,
+   "hit_to_miss": -0.0025,
+   "miss_to_miss": 0.0,
+   "total": 0.0625,
+   "evidence_gained": 0.081,
+   "evidence_same": -0.007,
+   "evidence_lost": -0.0115
+  }
+ },
+ "llama_hp": {
+  "bge-small": {
+   "miss_to_hit": 0.0435,
+   "hit_to_hit": 0.053,
+   "hit_to_miss": -0.0025,
+   "miss_to_miss": 0.0005,
+   "total": 0.0945,
+   "evidence_gained": 0.102,
+   "evidence_same": -0.0005,
+   "evidence_lost": -0.007
+  },
+  "bge-base": {
+   "miss_to_hit": 0.047,
+   "hit_to_hit": 0.073,
+   "hit_to_miss": -0.0015,
+   "miss_to_miss": -0.0005,
+   "total": 0.118,
+   "evidence_gained": 0.1205,
+   "evidence_same": 0.001,
+   "evidence_lost": -0.0035
+  },
+  "bge-large": {
+   "miss_to_hit": 0.05,
+   "hit_to_hit": 0.0835,
+   "hit_to_miss": -0.0005,
+   "miss_to_miss": 0.0,
+   "total": 0.133,
+   "evidence_gained": 0.1335,
+   "evidence_same": 0.0015,
+   "evidence_lost": -0.002
+  },
+  "e5-base-v2": {
+   "miss_to_hit": 0.049,
+   "hit_to_hit": 0.064,
+   "hit_to_miss": -0.002,
+   "miss_to_miss": 0.0,
+   "total": 0.111,
+   "evidence_gained": 0.1175,
+   "evidence_same": -0.0015,
+   "evidence_lost": -0.005
+  },
+  "Qwen3-Emb-0.6B": {
+   "miss_to_hit": 0.035,
+   "hit_to_hit": 0.0355,
+   "hit_to_miss": -0.003,
+   "miss_to_miss": 0.001,
+   "total": 0.0685,
+   "evidence_gained": 0.084,
+   "evidence_same": -0.0035,
+   "evidence_lost": -0.012
+  }
+ }
+}

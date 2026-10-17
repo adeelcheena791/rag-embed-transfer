@@ -1,0 +1,20 @@
+\begin{table*}[t]
+\centering
+\footnotesize
+\caption{Software in each Kaggle session, read from the environment log that each session wrote.}
+\label{tab:env}
+\begin{tabular}{lllllll}
+\toprule
+Session & Python & PyTorch & CUDA & Transformers & vLLM & NumPy \\
+\midrule
+Phase 1, NQ retrieval and encoding & 3.12.13 & 2.10.0 & 12.8 & 5.0.0 & -- & 2.0.2 \\
+Phase 1, Qwen reader (NQ) & 3.12.13 & 2.13.0 & 13.0 & 5.17.0 & 0.30.0 & 2.0.2 \\
+Phase 1, judge and CPU cost & 3.12.13 & 2.13.0 & 13.0 & 5.17.0 & 0.30.0 & 2.0.2 \\
+Phase 2, HotpotQA retrieval & 3.13.15 & 2.11.0 & 12.8 & 5.0.0 & -- & 2.1.3 \\
+Phase 2, HotpotQA readers & 3.13.15 & 2.13.0 & 13.0 & 5.17.0 & 0.30.0 & 2.1.3 \\
+Phase 2, Llama reader (NQ), top-$k$ & 3.13.15 & 2.13.0 & 13.0 & 5.17.0 & 0.30.0 & 2.1.3 \\
+Phase 2, E5, E6, E7, E9, E12 & 3.13.15 & 2.13.0 & 13.0 & 5.17.0 & 0.30.0 & 2.1.3 \\
+\bottomrule
+\end{tabular}
+\par\smallskip\parbox{\linewidth}{\footnotesize All sessions: bm25s 0.3.11, faiss 1.15.1, sentence-transformers 5.4.1, 4 vCPUs, 31.3 GiB memory, 2 Tesla T4 (14,911 MiB each).}
+\end{table*}

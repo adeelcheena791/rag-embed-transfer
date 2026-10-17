@@ -11,13 +11,14 @@ Full corpus (passages) & 2,681,468 & 5,233,329 \\
 Judged test queries & 3,452 & 7,405 \\
 Queries joined to reference answers & 2,255 & 7,405 \\
 Generation queries & 2,255 & 2,000 (1,616 bridge, 384 comparison) \\
-Unique gold passages per judged query & 1.22 & 1.86 \\
+Gold passages per judged query & 1.22 (range 1--4) & 2 (every query) \\
+Distinct gold passages in the corpus & 4,201 & 13,783 (shared across queries) \\
 Sub-corpus size & 300,000 & 300,000 \\
 \quad gold passages & 4,201 & 13,783 \\
-\quad BM25 non-gold passages (depth $d$) & 127,791 ($d$ = 42) & 118,726 ($d$ = 19) \\
+\quad top-$d$ BM25 passages, non-gold (depth $d$) & 127,791 ($d$ = 42) & 118,726 ($d$ = 19) \\
 \quad random passages & 168,008 & 167,491 \\
 Reference answers & NQ-open (validation) & HotpotQA fullwiki (validation) \\
 \bottomrule
 \end{tabular}
-\par\smallskip\parbox{\linewidth}{\footnotesize Corpus sizes as distributed by BEIR. Joins: NQ by normalised question text, HotpotQA by question id.}
+\par\smallskip\parbox{\linewidth}{\footnotesize Corpus sizes as distributed by BEIR. Joins: NQ by normalised question text, HotpotQA by question id. Each HotpotQA query has exactly two distinct gold passages; 14,810 gold references point to 13,783 distinct passages because some passages support several questions. Both@5 requires both gold passages of the query in the top five.}
 \end{table}

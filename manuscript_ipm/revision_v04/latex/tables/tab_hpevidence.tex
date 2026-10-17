@@ -1,0 +1,16 @@
+\begin{table}[t]
+\centering
+\small
+\caption{HotpotQA: EM gain over MiniLM-L6 by change in the number of supporting passages (0, 1 or 2) in the top five. Ranges over five dense encoders and two readers. Post hoc, descriptive.}
+\label{tab:hpevidence}
+\begin{tabular}{lccc}
+\toprule
+Supporting passages in top 5 (encoder vs MiniLM-L6) & \% queries & Contribution to $\Delta$EM & \% of $\Delta$EM \\
+\midrule
+more supporting passages & 34--48 & +0.081 to +0.134 & 100--130 \\
+same number & 50--62 & \ensuremath{-}0.011 to +0.002 & \ensuremath{-}11 to 1 \\
+fewer supporting passages & 2--4 & \ensuremath{-}0.012 to \ensuremath{-}0.002 & \ensuremath{-}18 to \ensuremath{-}2 \\
+\bottomrule
+\end{tabular}
+\par\smallskip\parbox{\linewidth}{\footnotesize The three contributions add up to $\Delta$EM exactly. Shares above 100\% occur because the other two groups contribute small losses.}
+\end{table}

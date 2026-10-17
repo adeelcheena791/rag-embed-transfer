@@ -39,7 +39,8 @@ Not committed (affects re-analysis, not reproduction): full-corpus E9 top-k list
 | M6 | pooled GEE "same picture" | interaction rejected (p = 5.2 × 10⁻³⁶) | dataset-specific ORs added |
 | M7 | decomposition 48–70% "exact" | correct for its formulation; formulation not named | symmetric 44–64% and intervals 26–76% added |
 | M8 | abstract: "one upper bound reached 1.10" | incomplete (three of five ≥ 1) | reworded |
-| M9–M12 | NQ upper bound, throughput table, typed counts, prompt growth | verified | none |
+| M9 | "no NQ upper bound exceeded 0.45" | marked verified in v0.4, but the bound is 0.4545: **an error the v0.4 audit missed**; corrected in v0.5 (see revision_v05_report.md, A) | corrected in v0.5 |
+| M10–M12 | throughput table, typed counts, prompt growth | verified | none |
 | M13 | baseline dependence stated without numbers | — | BM25-baseline sensitivity added |
 
 ## 4. Priority audits A–H (details in `statistical_audit.md`)

@@ -14,7 +14,8 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[3]
 TEX = ROOT / "manuscript_ipm/revision_v04/latex"
 LEDGER = {r["claim_id"]: r["value"] for r in csv.DictReader(open(ROOT / "manuscript_ipm/records/evidence-ledger.csv", encoding="utf-8"))}
-LEDGER.update({r["claim_id"]: r["value"] for r in csv.DictReader(open(ROOT / "manuscript_ipm/revision_v04/outputs/evidence_ledger_v04_additions.csv", encoding="utf-8"))})
+for _f in ("v04", "v05"):
+    LEDGER.update({r["claim_id"]: r["value"] for r in csv.DictReader(open(ROOT / f"manuscript_ipm/revision_v04/outputs/evidence_ledger_{_f}_additions.csv", encoding="utf-8"))})
 BANNED = ["delve", "crucial", "landscape", "notably", "furthermore", "moreover", "pivotal", "groundbreaking", "seamless", "robust",
           "additionally"]
 NOVELTY = [r"\bthe first\b", r"\bnovel\b", r"\bunprecedented\b", r"\bno prior work\b", r"\bnot aware\b", r"\bstate-of-the-art\b"]

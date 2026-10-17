@@ -82,7 +82,7 @@ def main():
         rows.append(f"{name} & " + " & ".join(cells) + " \\\\")
     (TEX / "tables/tab_share.tex").write_text(
         "\\begin{table}[t]\n\\centering\n\\small\n"
-        "\\caption{Share of the HotpotQA EM gain over MiniLM-L6 that comes from changed conditional EM (percent), under the "
+        "\\caption{Share of the HotpotQA EM gain over MiniLM-L6 carried by the two conditional terms together (EM among hits and EM among misses; percent), under the "
         "baseline-conditioned decomposition of Eq.~\\ref{eq:decomp} with a 95\\% bootstrap interval, and under the symmetric "
         "decomposition. Post hoc.}\n\\label{tab:share}\n\\begin{tabular}{lcccc}\n\\toprule\n"
         " & \\multicolumn{2}{c}{Qwen reader} & \\multicolumn{2}{c}{Llama reader} \\\\\n"
