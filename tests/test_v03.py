@@ -149,6 +149,7 @@ def test_v03_restore_runs_before_anything_writes_results():
         assert any("src.env_report" in c for c in cmds[idx[0]:]) and any("src.check_env" in c for c in cmds[idx[0]:])
 
 
+@pytest.mark.skipif(not (ROOT / "paper_inputs").exists(), reason="paper_inputs not present (e.g. inside a Kaggle notebook)")
 def test_hp_configs_pinned_to_s1_revisions():
     recorded = {"hp_corpus": "a7e8bab212f5a89f9be1bc9b654aa6dfa317f32b", "hp_qrels": "b15429e9244c8ec966985d7778427c3b1543b314",
                 "hp_answers": "1908d6afbbead072334abe2965f91bd2709910ab"}

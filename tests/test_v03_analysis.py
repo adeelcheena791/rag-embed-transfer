@@ -5,6 +5,8 @@ from pathlib import Path
 import pytest
 
 ROOT = Path(__file__).resolve().parents[1]
+if not (ROOT / "paper_inputs").exists():
+    pytest.skip("paper_inputs not present (e.g. inside a Kaggle notebook)", allow_module_level=True)
 OUT = ROOT / "results/statistics/v03/v03_analysis.json"
 
 

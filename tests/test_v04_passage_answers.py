@@ -2,6 +2,8 @@
 import json
 from pathlib import Path
 
+import pytest
+
 from src.analysis.passage_answers import contains_answer, hard_negatives
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -20,6 +22,7 @@ def test_hard_negatives_rule():
     assert hard_negatives(["g2", "g1"], ["a", "g1", "b", "g2", "c", "d"]) == ["a", "b", "c", "d"]
 
 
+@pytest.mark.skipif(not (ROOT / "paper_inputs").exists(), reason="paper_inputs not present (e.g. inside a Kaggle notebook)")
 def test_hard_negatives_reproduce_committed_e12_contexts():
     """h1..h4 rebuilt from the committed BM25 top 10 must equal the passages after gold in the committed M1 run."""
     qrels = {}

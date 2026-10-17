@@ -10,6 +10,8 @@ from pathlib import Path
 import pytest
 
 ROOT = Path(__file__).resolve().parents[3]
+if not (ROOT / "paper_outputs/v03/statistics/v03_analysis.json").exists():
+    pytest.skip("paper_outputs not present (e.g. inside a Kaggle notebook)", allow_module_level=True)
 OUT = ROOT / "manuscript_ipm/revision_v04/outputs"
 TEX = ROOT / "manuscript_ipm/revision_v04/latex"
 S = json.load(open(ROOT / "paper_outputs/v03/statistics/v03_analysis.json"))
