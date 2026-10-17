@@ -95,3 +95,8 @@ All in `manuscript_ipm/revision_v04/`: this report; `study_specification.md`; `s
 ## 8. Readiness
 
 No printed number was wrong. Five prose claims exceeded the evidence and are corrected. Two new checks (baseline, Both@5) weaken the original HotpotQA headline, and the revision says so. The largest remaining risk is that all answer results rest on a sub-corpus that favours dense encoders, with no full-corpus reader run. **REVISION REQUIRED** if that experiment is to be run before submission; **SUBMISSION CANDIDATE** if the author accepts it as a stated limitation. The author-side blockers from earlier sessions remain: repository public or anonymised mirror (O1), title-page facts (O5), wording of the AI-use declaration (O6). None of this predicts acceptance or a Q1 ranking.
+
+
+## 9. Update v0.6 (2026-10-18)
+
+The largest remaining risk named in §8, that all answer results rest on a sub-corpus that favours dense encoders, was tested by the registered Phase 3 (addendum v0.4): for BM25, MiniLM-L6, bge-small and e5-base-v2, both readers on full-corpus NQ retrieval gave transfer ratios inside the sub-corpus intervals (P7, P8 met). Remaining author-side items: the registered human audit of misses (`annotation/v04_miss_audit/`), O1, O5, O6. Status: **SUBMISSION CANDIDATE** once the human audit is labelled or explicitly reported as not done; this is not a prediction of acceptance.

@@ -49,3 +49,19 @@ Environment: Linux container, Python 3.11.15, numpy/scipy 1.17.1/pandas 3.0.2/st
 | Unresolved issues disclosed | ✔ | skeptical_reviewer_report.md; experiment_plan.md |
 | Final manuscript independently reviewed | ◐ AI review pass only, not independent | skeptical_reviewer_report.md |
 | Validation report accurate | ✔ | this file |
+
+---
+
+## v0.6 validation (2026-10-18, Phase 3)
+
+| # | Command | Result |
+|---|---|---|
+| V1 | `python -m src.analysis.v04_full` | completed; asserts: reader passages = run top 5, readers saw the same passages, passage_answers hits = recomputed hits (main and full), sub-corpus T intervals = committed v0.3 values |
+| V2 | `python3 -I manuscript_ipm/revision_v04/scripts/independent_check_v06.py` | 18,040 answers re-scored, 0 disagreements; 0 mismatches |
+| V3 | `python3 manuscript_ipm/revision_v04/scripts/make_v05_tex.py && make_v06_tex.py && make_v06_figs.py` | 92 + 95 macros; tables and figures regenerated |
+| V4 | `python3 manuscript_ipm/revision_v04/scripts/numeric_report.py manuscript_ipm/revision_v04/latex` | 306 macros; 71 independently recomputed and matching; 0 mismatches or missing |
+| V5 | `latexmk -pdf manuscript.tex` | 36 pages; no undefined references; one overfull box (117 pt, class front matter, present in v0.5) |
+| V6 | `check_revised.py` | no hard failures |
+| V7 | `pytest -q manuscript_ipm/revision_v04/tests` | 14 passed |
+| V8 | `pytest -q` (repository) | 282 passed; the repository-layout test failed only because the new files were not yet tracked, and passed (66) after staging |
+| V9 | `make_docx_revised.py` | Word copy written |

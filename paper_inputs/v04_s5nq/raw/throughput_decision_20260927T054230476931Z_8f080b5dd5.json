@@ -1,0 +1,12 @@
+{
+  "run_id": "20260927T054230476931Z_8f080b5dd5",
+  "device": "cpu",
+  "full_corpus_rows": 2681468,
+  "r6_cpu": {
+    "R6": {
+      "projected_cpu_hours": 272.93540282450004,
+      "max_cpu_hours": 4.0,
+      "decision": "drop_R6"
+    }
+  }
+}

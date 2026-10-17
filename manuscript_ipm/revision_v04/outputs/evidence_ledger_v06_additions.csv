@@ -1,0 +1,96 @@
+claim_id,claim,value,source,produced_by,status
+V6.T.q.R0,"full-corpus EM transfer ratio, Qwen, BM25 vs MiniLM-L6",0.44,v04_full_analysis.json,make_v06_tex.py,computed from committed outputs
+V6.T.q.R0.ci,its 95% bootstrap interval,"[0.35, 0.53]",v04_full_analysis.json,make_v06_tex.py,computed from committed outputs
+V6.DH.q.R0,"full-corpus Hit@5 difference vs MiniLM-L6, BM25",\ensuremath{-}0.200,v04_full_analysis.json,make_v06_tex.py,computed from committed outputs
+V6.DE.q.R0,"full-corpus EM difference vs MiniLM-L6, Qwen, BM25",\ensuremath{-}0.088,v04_full_analysis.json,make_v06_tex.py,computed from committed outputs
+V6.T.q.R2,"full-corpus EM transfer ratio, Qwen, bge-small vs MiniLM-L6",0.15,v04_full_analysis.json,make_v06_tex.py,computed from committed outputs
+V6.T.q.R2.ci,its 95% bootstrap interval,"[\ensuremath{-}0.12, 0.40]",v04_full_analysis.json,make_v06_tex.py,computed from committed outputs
+V6.DH.q.R2,"full-corpus Hit@5 difference vs MiniLM-L6, bge-small",+0.066,v04_full_analysis.json,make_v06_tex.py,computed from committed outputs
+V6.DE.q.R2,"full-corpus EM difference vs MiniLM-L6, Qwen, bge-small",+0.010,v04_full_analysis.json,make_v06_tex.py,computed from committed outputs
+V6.T.q.R5,"full-corpus EM transfer ratio, Qwen, e5-base-v2 vs MiniLM-L6",0.23,v04_full_analysis.json,make_v06_tex.py,computed from committed outputs
+V6.T.q.R5.ci,its 95% bootstrap interval,"[0.13, 0.33]",v04_full_analysis.json,make_v06_tex.py,computed from committed outputs
+V6.DH.q.R5,"full-corpus Hit@5 difference vs MiniLM-L6, e5-base-v2",+0.164,v04_full_analysis.json,make_v06_tex.py,computed from committed outputs
+V6.DE.q.R5,"full-corpus EM difference vs MiniLM-L6, Qwen, e5-base-v2",+0.038,v04_full_analysis.json,make_v06_tex.py,computed from committed outputs
+V6.dT.q,"T_full - T_sub, e5-base-v2, Qwen",\ensuremath{-}0.02,v04_full_analysis.json,make_v06_tex.py,computed from committed outputs
+V6.dT.q.ci,its paired bootstrap interval,"[\ensuremath{-}0.12, +0.09]",v04_full_analysis.json,make_v06_tex.py,computed from committed outputs
+V6.P8.q.sub,"sub-corpus interval of T(e5), Qwen (P8 target)","[0.147, 0.356]",v04_full_analysis.json,make_v06_tex.py,computed from committed outputs
+V6.T3.q.R5,"T_full(e5), Qwen, 3 dp",0.233,v04_full_analysis.json,make_v06_tex.py,computed from committed outputs
+V6.T.l.R0,"full-corpus EM transfer ratio, Llama, BM25 vs MiniLM-L6",0.44,v04_full_analysis.json,make_v06_tex.py,computed from committed outputs
+V6.T.l.R0.ci,its 95% bootstrap interval,"[0.34, 0.54]",v04_full_analysis.json,make_v06_tex.py,computed from committed outputs
+V6.DH.l.R0,"full-corpus Hit@5 difference vs MiniLM-L6, BM25",\ensuremath{-}0.200,v04_full_analysis.json,make_v06_tex.py,computed from committed outputs
+V6.DE.l.R0,"full-corpus EM difference vs MiniLM-L6, Llama, BM25",\ensuremath{-}0.088,v04_full_analysis.json,make_v06_tex.py,computed from committed outputs
+V6.T.l.R2,"full-corpus EM transfer ratio, Llama, bge-small vs MiniLM-L6",0.22,v04_full_analysis.json,make_v06_tex.py,computed from committed outputs
+V6.T.l.R2.ci,its 95% bootstrap interval,"[\ensuremath{-}0.05, 0.48]",v04_full_analysis.json,make_v06_tex.py,computed from committed outputs
+V6.DH.l.R2,"full-corpus Hit@5 difference vs MiniLM-L6, bge-small",+0.066,v04_full_analysis.json,make_v06_tex.py,computed from committed outputs
+V6.DE.l.R2,"full-corpus EM difference vs MiniLM-L6, Llama, bge-small",+0.015,v04_full_analysis.json,make_v06_tex.py,computed from committed outputs
+V6.T.l.R5,"full-corpus EM transfer ratio, Llama, e5-base-v2 vs MiniLM-L6",0.20,v04_full_analysis.json,make_v06_tex.py,computed from committed outputs
+V6.T.l.R5.ci,its 95% bootstrap interval,"[0.09, 0.30]",v04_full_analysis.json,make_v06_tex.py,computed from committed outputs
+V6.DH.l.R5,"full-corpus Hit@5 difference vs MiniLM-L6, e5-base-v2",+0.164,v04_full_analysis.json,make_v06_tex.py,computed from committed outputs
+V6.DE.l.R5,"full-corpus EM difference vs MiniLM-L6, Llama, e5-base-v2",+0.032,v04_full_analysis.json,make_v06_tex.py,computed from committed outputs
+V6.dT.l,"T_full - T_sub, e5-base-v2, Llama",+0.04,v04_full_analysis.json,make_v06_tex.py,computed from committed outputs
+V6.dT.l.ci,its paired bootstrap interval,"[\ensuremath{-}0.06, +0.14]",v04_full_analysis.json,make_v06_tex.py,computed from committed outputs
+V6.P8.l.sub,"sub-corpus interval of T(e5), Llama (P8 target)","[0.053, 0.265]",v04_full_analysis.json,make_v06_tex.py,computed from committed outputs
+V6.T3.l.R5,"T_full(e5), Llama, 3 dp",0.195,v04_full_analysis.json,make_v06_tex.py,computed from committed outputs
+V6.T.dense.range,range of full-corpus dense ratios (both readers),0.15--0.23,v04_full_analysis.json,make_v06_tex.py,computed from committed outputs
+V6.T.ubmax,largest upper bound of a full-corpus dense ratio,0.483,v04_full_analysis.json,make_v06_tex.py,computed from committed outputs
+V6.T.ubmax.e5,"largest upper bound, e5-base-v2, full corpus",0.334,v04_full_analysis.json,make_v06_tex.py,computed from committed outputs
+V6.dEM.dense,"EM full minus sub, dense retrievers (MiniLM, bge-small, e5), both readers",\ensuremath{-}0.028 to \ensuremath{-}0.018,v04_full_analysis.json,make_v06_tex.py,computed from committed outputs
+V6.dEM.dense.abs,"EM loss full vs sub, dense retrievers, absolute",0.018--0.028,v04_full_analysis.json,make_v06_tex.py,computed from committed outputs
+V6.dEM.dense.pmax,"largest Holm-adjusted (4) McNemar p, dense, EM full vs sub",0.014,v04_full_analysis.json,make_v06_tex.py,computed from committed outputs
+V6.dEM.R0,"EM full minus sub, BM25",\ensuremath{-}0.005 to \ensuremath{-}0.001,v04_full_analysis.json,make_v06_tex.py,computed from committed outputs
+V6.dEM.R0.pmin,"smallest Holm p, BM25 EM full vs sub",0.16,v04_full_analysis.json,make_v06_tex.py,computed from committed outputs
+V6.dHit.dense,"Hit@5 full minus sub, dense retrievers",\ensuremath{-}0.100 to \ensuremath{-}0.089,v04_full_analysis.json,make_v06_tex.py,computed from committed outputs
+V6.dHit.dense.abs,"Hit@5 loss full vs sub, dense, absolute",0.089--0.100,v04_full_analysis.json,make_v06_tex.py,computed from committed outputs
+V6.dHit.R0,"Hit@5 full minus sub, BM25",+0.000,v04_full_analysis.json,make_v06_tex.py,computed from committed outputs
+V6.lossratio,"EM loss per Hit@5 loss, full vs sub, dense (not pre-specified)",0.20--0.28,v04_full_analysis.json,make_v06_tex.py,computed from committed outputs
+V6.EM.q.R0,"full-corpus EM, Qwen, BM25",0.358,v04_full_analysis.json,make_v06_tex.py,computed from committed outputs
+V6.EM.q.R1,"full-corpus EM, Qwen, MiniLM-L6",0.446,v04_full_analysis.json,make_v06_tex.py,computed from committed outputs
+V6.EM.q.R2,"full-corpus EM, Qwen, bge-small",0.456,v04_full_analysis.json,make_v06_tex.py,computed from committed outputs
+V6.EM.q.R5,"full-corpus EM, Qwen, e5-base-v2",0.484,v04_full_analysis.json,make_v06_tex.py,computed from committed outputs
+V6.EM.l.R0,"full-corpus EM, Llama, BM25",0.335,v04_full_analysis.json,make_v06_tex.py,computed from committed outputs
+V6.EM.l.R1,"full-corpus EM, Llama, MiniLM-L6",0.423,v04_full_analysis.json,make_v06_tex.py,computed from committed outputs
+V6.EM.l.R2,"full-corpus EM, Llama, bge-small",0.437,v04_full_analysis.json,make_v06_tex.py,computed from committed outputs
+V6.EM.l.R5,"full-corpus EM, Llama, e5-base-v2",0.455,v04_full_analysis.json,make_v06_tex.py,computed from committed outputs
+V6.HIT.R0,"full-corpus Hit@5 on the generation queries, BM25",0.364,v04_full_analysis.json,make_v06_tex.py,computed from committed outputs
+V6.HIT.R1,"full-corpus Hit@5 on the generation queries, MiniLM-L6",0.564,v04_full_analysis.json,make_v06_tex.py,computed from committed outputs
+V6.HIT.R2,"full-corpus Hit@5 on the generation queries, bge-small",0.630,v04_full_analysis.json,make_v06_tex.py,computed from committed outputs
+V6.HIT.R5,"full-corpus Hit@5 on the generation queries, e5-base-v2",0.728,v04_full_analysis.json,make_v06_tex.py,computed from committed outputs
+V6.b0.full,"dense ratios against BM25, full corpus, both readers",0.33--0.38,v04_full_analysis.json,make_v06_tex.py,computed from committed outputs
+V6.b0.sub,"dense ratios against BM25, sub corpus, both readers",0.29--0.34,v04_full_analysis.json,make_v06_tex.py,computed from committed outputs
+V6.unparsed.max,"largest share of unparsed reader outputs, full corpus",1.0\%,v04_full_analysis.json,make_v06_tex.py,computed from committed outputs
+V6.tr.misshit.contrib,"miss->hit contribution, full",+0.043 to +0.062,v04_full_analysis.json,make_v06_tex.py,computed from committed outputs
+V6.tr.hithit.contrib,"hit->hit contribution, full",\ensuremath{-}0.020 to \ensuremath{-}0.011,v04_full_analysis.json,make_v06_tex.py,computed from committed outputs
+V6.tr.hitmiss.contrib,"hit->miss contribution, full",\ensuremath{-}0.022 to \ensuremath{-}0.010,v04_full_analysis.json,make_v06_tex.py,computed from committed outputs
+V6.tr.missmiss.contrib,"miss->miss contribution, full",+0.001 to +0.005,v04_full_analysis.json,make_v06_tex.py,computed from committed outputs
+V6.tr.misshit.within,"EM gain within miss->hit, full",+0.27 to +0.30,v04_full_analysis.json,make_v06_tex.py,computed from committed outputs
+V6.tr.hithit.neg,hit->hit intervals below zero (of 4),3,v04_full_analysis.json,make_v06_tex.py,computed from committed outputs
+V6.tr.hithit.zero,hit->hit intervals containing zero (of 4),1,v04_full_analysis.json,make_v06_tex.py,computed from committed outputs
+V6.as.miss.sub.dense,"share of Hit@5 misses with an answer string in the top 5, sub, dense",0.41--0.55,v04_full_analysis.json,make_v06_tex.py,computed from committed outputs
+V6.as.miss.full.dense,"same, full corpus, dense",0.44--0.58,v04_full_analysis.json,make_v06_tex.py,computed from committed outputs
+V6.as.miss.sub.R0,"same, sub, BM25",0.33,v04_full_analysis.json,make_v06_tex.py,computed from committed outputs
+V6.as.miss.full.R0,"same, full, BM25",0.33,v04_full_analysis.json,make_v06_tex.py,computed from committed outputs
+V6.as.miss.sub.R5,"same, sub, e5",0.50,v04_full_analysis.json,make_v06_tex.py,computed from committed outputs
+V6.as.miss.sub.R5.ci,its interval,"[0.45, 0.55]",v04_full_analysis.json,make_v06_tex.py,computed from committed outputs
+V6.as.miss.sub.R5.n,e5 sub misses,414,v04_full_analysis.json,make_v06_tex.py,computed from committed outputs
+V6.as.hit.all,share of hits with an answer string,0.92--0.94,v04_full_analysis.json,make_v06_tex.py,computed from committed outputs
+V6.as.gold,share of queries whose gold passage(s) contain an answer string (rule check),0.93,v04_full_analysis.json,make_v06_tex.py,computed from committed outputs
+V6.as.gold.ci,its interval,"[0.92, 0.94]",v04_full_analysis.json,make_v06_tex.py,computed from committed outputs
+V6.o8.n,E12 queries with >=1 hard negative containing an answer string,167,v04_full_analysis.json,make_v06_tex.py,computed from committed outputs
+V6.o8.share,their share of 500,0.33,v04_full_analysis.json,make_v06_tex.py,computed from committed outputs
+V6.o8.wilson,Wilson 95% interval,"[0.29, 0.38]",v04_full_analysis.json,make_v06_tex.py,computed from committed outputs
+V6.o8.clean.n,E12 queries with no such hard negative,333,v04_full_analysis.json,make_v06_tex.py,computed from committed outputs
+V6.o8.clean.M1,"EM gold@1 + 4 hard, clean subset",0.535,v04_full_analysis.json,make_v06_tex.py,computed from committed outputs
+V6.o8.clean.MR,"EM gold@1 + 4 random, clean subset",0.637,v04_full_analysis.json,make_v06_tex.py,computed from committed outputs
+V6.o8.clean.diff,P5 difference on the clean subset,\ensuremath{-}0.102,v04_full_analysis.json,make_v06_tex.py,computed from committed outputs
+V6.o8.clean.ci,its interval,"[\ensuremath{-}0.144, \ensuremath{-}0.060]",v04_full_analysis.json,make_v06_tex.py,computed from committed outputs
+V6.o8.clean.p,"exact McNemar p, clean subset",$<$0.001,v04_full_analysis.json,make_v06_tex.py,computed from committed outputs
+V6.o8.ans.M1,EM M1 on queries with an answer-bearing hard negative (not pre-specified),0.671,v04_full_analysis.json,make_v06_tex.py,computed from committed outputs
+V6.o8.ans.MR,EM MR on the same queries,0.689,v04_full_analysis.json,make_v06_tex.py,computed from committed outputs
+V6.enc.R1,"minutes to encode the full NQ corpus, MiniLM-L6",28,encode.jsonl,make_v06_tex.py,computed from committed outputs
+V6.enc.R2,"minutes to encode the full NQ corpus, bge-small",42,encode.jsonl,make_v06_tex.py,computed from committed outputs
+V6.enc.R5,"minutes to encode the full NQ corpus, e5-base-v2",95,encode.jsonl,make_v06_tex.py,computed from committed outputs
+V6.enc.rows,passages encoded,"2,681,468",encode.jsonl,make_v06_tex.py,computed from committed outputs
+V6.read.q,"reader minutes, Qwen, 4 conditions x 2,255 queries",92,generation_timing.jsonl,make_v06_tex.py,computed from committed outputs
+V6.read.l,"reader minutes, Llama, 4 conditions x 2,255 queries",102,generation_timing.jsonl,make_v06_tex.py,computed from committed outputs
+V6.e9.repro,re-encoded full-corpus Hit@5 and nDCG@10 equal the E9 summaries,identical,v04_full_analysis.json,make_v06_tex.py,computed from committed outputs
+V6.n.gen,"reader outputs in Phase 3 (all prompt A1, hash verified)","18,040",paper_inputs/v04_s5nq/raw/generations,make_v06_tex.py,computed from committed outputs

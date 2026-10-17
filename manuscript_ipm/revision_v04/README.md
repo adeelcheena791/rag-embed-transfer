@@ -14,6 +14,11 @@ python3 manuscript_ipm/revision_v04/scripts/make_v04_tex.py       # v0.4 macros 
 python3 manuscript_ipm/revision_v04/scripts/transitions_v05.py     # v0.5: query-level transitions
 python3 manuscript_ipm/revision_v04/scripts/components_v05.py      # v0.5: decomposition components
 python3 manuscript_ipm/revision_v04/scripts/make_v05_tex.py       # v0.5 macros and tables
+python3 -m src.analysis.v04_full                                   # v0.6: Phase 3 analysis (addendum v0.4)
+python3 manuscript_ipm/revision_v04/scripts/make_v06_tex.py       # v0.6 macros and tables
+python3 manuscript_ipm/revision_v04/scripts/make_v06_figs.py      # v0.6 figures (phases, sub vs full ratios)
+python3 -I manuscript_ipm/revision_v04/scripts/independent_check_v06.py  # Phase 3 standalone recomputation
+python3 manuscript_ipm/revision_v04/scripts/make_audit_sheet.py   # human-audit workbook (seeded sample)
 python3 -I manuscript_ipm/revision_v04/scripts/independent_check_v05.py  # standalone recomputation
 python3 -m pytest -q manuscript_ipm/revision_v04/tests          # targeted checks
 python3 manuscript_ipm/revision_v04/scripts/numeric_report.py manuscript_ipm/revision_v04/latex   # every printed number
@@ -26,6 +31,7 @@ python3 manuscript_ipm/revision_v04/scripts/make_docx_revised.py # Word copy (ne
 
 | File | What it is |
 |---|---|
+| `revision_v06_report.md` | v0.6: Phase 3 session integrity, P7/P8, secondary results, open items |
 | `revision_v05_report.md` | v0.5: errors fixed, new analyses, open issues, approval request for one GPU run |
 | `audit_report.md` | full audit: inventory, reproducibility, numbers, priority audits, literature, readiness |
 | `study_specification.md` | verified design, with the source of each item |

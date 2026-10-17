@@ -14,9 +14,9 @@ Budget: $0, Kaggle free T4 quota only. Nothing in Tiers 3–4 was started. No ex
 | Pooled GEE heterogeneity (M6) | yes | interaction models — done | no | 2 — done | CPU, < 1 min | common-effect assumption rejected (p ≈ 5e-36) |
 | Decomposition formulation (M7) | yes | symmetric form + bootstrap — done | no | 2 — done | CPU | share depends on ordering |
 | Baseline dependence of T (M13) | yes | BM25 and bge-small baselines — done | no | 2 — done | CPU | open review item D1 |
-| Full-corpus reader evaluation | no | — | yes | 3 — open | ≈ 4–4.5 T4-hours: the E9 full-corpus run lists were not committed (only summaries), so re-encode 2.68 M passages for MiniLM-L6, bge-small and e5-base-v2 (≈ 0.4 + 0.6 + 1.5 h at the measured throughput) and rerun BM25 on CPU; then 4 reader conditions at ≈ 0.4 h each | tests whether T and the dense-vs-BM25 gap hold without the sub-corpus bias |
+| Full-corpus reader evaluation | — | — | yes | 3 — **done** (Phase 3, 17 Oct 2026; addendum v0.4) | MiniLM-L6 28 min, bge-small 42 min, e5-base-v2 95 min encoding; readers 92 and 102 min in parallel | P7 and P8 met for both readers; see revision_v06_report.md |
 | HotpotQA full-corpus check | no | — | yes (retrieval only) | 3 — open | encoding 5.2 M passages × 4 encoders exceeds the free quota for bge-large/Qwen3; MiniLM/bge-small/e5 ≈ 4–6 T4-hours | sub-corpus effect on HotpotQA is untested |
-| Hard negatives containing the answer (O8) | no (passage text not committed) | answer-string search | no GPU | 2 — open | CPU only, ≈ 30 min on Kaggle (corpus download) | could shrink the measured P5 effect |
+| Hard negatives containing the answer (O8) | — | answer-string search | no GPU | 2 — **done** (Phase 3) | — | 167/500 affected; P5 holds without them (−0.102) |
 | Second annotator for the judge | no | — | human time | 3 — optional | ≈ 2–3 h of annotation | the judge is already excluded; affects only the appendix |
 | Equivalence test for random passages | yes | possible, but margin would be post hoc | no | 4 — not recommended | — | no registered margin; any margin chosen now is post hoc |
 | Larger / proprietary readers, other domains | no | — | yes | 4 — future work | beyond free budget | generality, stated in limitations |
@@ -27,4 +27,4 @@ Budget: $0, Kaggle free T4 quota only. Nothing in Tiers 3–4 was started. No ex
 
 **Reader on HNSW results (Tier 3).** Same design, efSearch 128, three encoders. Pre-specify any non-inferiority margin before running. Design v0.2 computed a minimum detectable EM difference of about 3.4 points for 2,255 paired queries, so a margin much smaller than that would probably end inconclusive; if no margin is registered, report only the difference and its interval.
 
-Neither run was started: both need GPU quota and a dated addendum written before the run, which is the author's decision.
+Update 2026-10-18: the full-corpus reader run was done as Phase 3 (addendum v0.4); results in revision_v06_report.md. The HNSW reader run was not started.

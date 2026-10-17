@@ -245,12 +245,28 @@ def predictions():
     rows.append(f"P5 & NQ, Qwen, 500 q. & {met(m['P5']['holds'])} & hard vs random negatives: $\\Delta$EM {m['P5']['test']['diff']:+.3f}, $p$ {pval(m['P5']['test']['p'])}")
     rows.append(f"P6 & NQ, Qwen, 500 q. & {met(m['P6']['holds'])} & gold at position 1/3/5: largest $|\\Delta$EM$|$ "
                 f"{max(abs(x['diff']) for x in m['P6']['tests']):.3f}; smallest $p_\\text{{Holm}}$ {min(x['p_holm'] for x in m['P6']['tests']):.2f}")
+    fp = ROOT / "paper_outputs/v04/v04_full_analysis.json"
+    if fp.exists():                                     # Phase 3 (addendum v0.4): P7, P8 on the full NQ corpus
+        F = json.load(open(fp))
+        for rd, lab in (("qwen", "Qwen"), ("llama", "Llama")):
+            p7 = F["readers"][rd]["P7"]
+            worst = max(p7["upper_bounds"].items(), key=lambda kv: kv[1])
+            rows.append(f"P7 & NQ full corpus, {lab} & {met(p7['holds'])} & {p7['n_reportable_dense']} dense-encoder ratios; "
+                        f"largest upper bound {worst[1]:.3f} ({NAME[worst[0]]})")
+        for rd, lab in (("qwen", "Qwen"), ("llama", "Llama")):
+            p8 = F["readers"][rd]["P8"]
+            d = F["readers"][rd]["T_full_minus_T_sub"]["R5"]
+            lo, hi = p8["sub_interval_unrounded"]
+            rows.append(f"P8 & NQ full corpus, {lab} & {met(p8['holds'])} & e5-base-v2: $T_\\text{{full}}$ {p8['T_full_e5']:.3f} in "
+                        f"[{lo:.3f}, {hi:.3f}]; $T_\\text{{full}}-T_\\text{{sub}}$ {d['diff']:+.3f} [{d['ci_lo']:+.3f}, {d['ci_hi']:+.3f}]")
     table("tab_predictions", "lllp{0.55\\linewidth}", "ID & Scope & Criterion & Evidence", rows,
           "Registered predictions: whether each stated criterion was met.", "tab:predictions",
           "P1: every reportable EM transfer ratio of a dense encoder has an upper 95\\% bound below 1 (unrounded; a bound of exactly "
           "1.000 does not meet it). P2: no Holm-significant EM gain of bge-large or Qwen3-Emb-0.6B over e5-base-v2. P3: the full "
           "corpus keeps the nDCG@10 ordering. P4: EM at $k{=}1$ below $k{=}5$. P5: hard negatives lower EM. P6: gold position "
-          "changes EM. $^\\dagger$Not confirmatory: observed in Phase 1, before registration. $^\\ddagger$Confirmatory for "
+          "changes EM. P7 (registered before Phase 3): every reportable full-corpus EM ratio of a dense encoder has an upper "
+          "95\\% bound below 1. P8: the full-corpus ratio of e5-base-v2 lies inside its sub-corpus 95\\% interval. "
+          "$^\\dagger$Not confirmatory: observed in Phase 1, before registration. $^\\ddagger$Confirmatory for "
           "bge-small, bge-base, e5-base-v2 and Qwen3-Emb-0.6B only. The v0.3 analysis code also counted BM25 in the NQ P1 checks "
           "(six ratios); the registered criterion covers dense encoders, and the verdict is the same either way.", wide=True)
 
@@ -313,7 +329,7 @@ def env_table():
     lab = {"env_main_S1": "Phase 1, NQ retrieval and encoding", "env_main_S3a": "Phase 1, Qwen reader (NQ)",
            "env_main_S4": "Phase 1, judge and CPU cost", "env_v03_S1hp": "Phase 2, HotpotQA retrieval",
            "env_v03_S2hp": "Phase 2, HotpotQA readers", "env_v03_S3nq": "Phase 2, Llama reader (NQ), top-$k$",
-           "env_v03_S4nq": "Phase 2, E5, E6, E7, E9, E12"}
+           "env_v03_S4nq": "Phase 2, E5, E6, E7, E9, E12", "env_v04_S5nq": "Phase 3, full-corpus NQ readers (S5)"}
     for f in sorted(glob.glob(str(ROOT / "paper_inputs/**/env*.json"), recursive=True)):
         k = Path(f).stem
         if k not in lab:
@@ -334,6 +350,8 @@ def prompt_counts():
     from src.generation.prompts import PROMPT_HASH
     c, bad = {}, 0
     for f in glob.glob(str(ROOT / "paper_inputs/**/raw/generations/*.jsonl"), recursive=True):
+        if "v04_s5nq" in f:                             # Phase 3 records are counted by make_v06_tex.py
+            continue
         for line in open(f):
             r = json.loads(line)
             c[r["prompt"]] = c.get(r["prompt"], 0) + 1

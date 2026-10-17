@@ -1,0 +1,1 @@
+{"n_beir_judged": 3452, "n_joined": 2255, "n_unmatched": 1197, "n_ambiguous": 0, "join_rate": 0.65324449594438, "n_nq_open": 3610, "run_id": "20260927T024818738403Z_8f080b5dd5", "min_joined": 1000, "passed": true, "v0_2_rate_threshold": 0.7, "v0_2_rule_would_pass": false, "seed": 20260926}

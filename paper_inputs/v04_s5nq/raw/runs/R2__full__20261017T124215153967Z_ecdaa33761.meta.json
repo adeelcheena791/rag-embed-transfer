@@ -1,0 +1,39 @@
+{
+  "retriever": "R2",
+  "corpus": "full",
+  "run_id": "20261017T124215153967Z_ecdaa33761",
+  "n_queries": 3452,
+  "model": "R2",
+  "manifest": {
+    "model": "R2",
+    "corpus": "full",
+    "selection_hash": "3383203755612cf5",
+    "n_rows": 2681468,
+    "shard_size": 100000,
+    "encoder": {
+      "key": "R2",
+      "model_id": "BAAI/bge-small-en-v1.5",
+      "revision": "5c38ec7c405ec4b44b94cc5a9bb96e735b38267a",
+      "device": "cuda",
+      "fp16": true,
+      "max_seq_length": 256,
+      "dim": 384,
+      "n_params": 33360000,
+      "attn_implementation": "sdpa",
+      "query_prefix": "Represent this sentence for searching relevant passages: ",
+      "passage_prefix": ""
+    },
+    "dim": 384,
+    "complete": true,
+    "batch_sizes_used": [
+      128
+    ],
+    "n_queries": 3452,
+    "corpus_seconds": 2495.5279939869997
+  },
+  "topk": 100,
+  "search_seconds_total": 44.04899691599985,
+  "query_set": "judged",
+  "faiss_version": "1.15.1",
+  "index": "IndexFlatIP (exact), sharded + merged"
+}

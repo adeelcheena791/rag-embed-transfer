@@ -1,0 +1,39 @@
+{
+  "retriever": "R5",
+  "corpus": "full",
+  "run_id": "20261017T124309806428Z_ecdaa33761",
+  "n_queries": 3452,
+  "model": "R5",
+  "manifest": {
+    "model": "R5",
+    "corpus": "full",
+    "selection_hash": "3383203755612cf5",
+    "n_rows": 2681468,
+    "shard_size": 100000,
+    "encoder": {
+      "key": "R5",
+      "model_id": "intfloat/e5-base-v2",
+      "revision": "f52bf8ec8c7124536f0efb74aca902b2995e5bcd",
+      "device": "cuda",
+      "fp16": true,
+      "max_seq_length": 256,
+      "dim": 768,
+      "n_params": 109482240,
+      "attn_implementation": "sdpa",
+      "query_prefix": "query: ",
+      "passage_prefix": "passage: "
+    },
+    "dim": 768,
+    "complete": true,
+    "batch_sizes_used": [
+      128
+    ],
+    "n_queries": 3452,
+    "corpus_seconds": 5717.986018943999
+  },
+  "topk": 100,
+  "search_seconds_total": 81.42195758400067,
+  "query_set": "judged",
+  "faiss_version": "1.15.1",
+  "index": "IndexFlatIP (exact), sharded + merged"
+}

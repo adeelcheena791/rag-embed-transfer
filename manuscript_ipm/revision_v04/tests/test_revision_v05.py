@@ -86,9 +86,51 @@ def test_no_v03_phrases_that_the_audit_corrected():
 
 def test_every_macro_defined():
     defined = set()
-    for f in ("numbers.tex", "numbers_v04.tex", "numbers_v05.tex"):
+    for f in ("numbers.tex", "numbers_v04.tex", "numbers_v05.tex", "numbers_v06.tex"):
         defined |= set(re.findall(r"ev@([^\\]+)\\endcsname", (TEX / f).read_text()))
     used = set()
     for p in list((TEX / "sections").glob("*.tex")) + list((TEX / "tables").glob("*.tex")):
         used |= set(re.findall(r"\\ev\{([^}]+)\}", p.read_text()))
     assert not (used - defined), sorted(used - defined)
+
+
+# ---------------------------------------------------------------- v0.6 (Phase 3, addendum v0.4)
+F = json.load(open(ROOT / "paper_outputs/v04/v04_full_analysis.json"))
+
+
+def test_phase3_predictions_in_table():
+    t = (TEX / "tables/tab_predictions.tex").read_text()
+    for p in ("P7", "P8"):
+        for rd, lab in (("qwen", "Qwen"), ("llama", "Llama")):
+            line = next(l for l in t.splitlines() if l.startswith(f"{p} & NQ full corpus, {lab}"))
+            assert ("not met" in line) == (not F["readers"][rd][p]["holds"])
+
+
+def test_phase3_p8_uses_unrounded_interval_and_matches_v03():
+    for rd in ("qwen", "llama"):
+        t = next(x for x in S["cells"][f"{rd}_nq"]["transfer_vs_R1"]["em"] if x["retriever"] == "R5")
+        assert F["readers"][rd]["P8"]["sub_interval_unrounded"] == [t["ci_lo"], t["ci_hi"]]
+        assert F["readers"][rd]["T_full_minus_T_sub"]["R5"]["T_sub"] == t["ratio"]
+
+
+def test_phase3_reproduces_e9_and_independent_check():
+    for v in F["checks"]["e9_reproduction"].values():
+        assert v["hit@5_now"] == v["hit@5_e9"] and abs(v["ndcg@10_now"] - v["ndcg@10_e9"]) < 1e-12
+    ic = json.load(open(OUT / "independent_check_v06.json"))
+    assert ic["rescore"]["disagree"] == 0
+    for rd in ("qwen", "llama"):
+        assert abs(ic[f"T.{rd}.R5"] - F["readers"][rd]["P8"]["T_full_e5"]) < 1e-12
+        assert ic[f"P7.{rd}"] == F["readers"][rd]["P7"]["holds"] and ic[f"P8.{rd}"] == F["readers"][rd]["P8"]["holds"]
+
+
+def test_phase3_transitions_add_up():
+    for rd in ("qwen", "llama"):
+        for r, tr in F["readers"][rd]["transitions_full"].items():
+            assert abs(sum(v["contribution"] for k, v in tr.items() if k != "total") - tr["total"]) < 1e-12
+
+
+def test_no_stale_full_corpus_claims():
+    text = " ".join(p.read_text() for p in (TEX / "sections").glob("*.tex"))
+    for bad in ("We did not run the readers on the full corpus", "Whether the ratios themselves hold on the full corpus was not tested",
+                "whether the ratios hold on the full corpus", "the passage texts are not stored"):
+        assert bad not in text, bad

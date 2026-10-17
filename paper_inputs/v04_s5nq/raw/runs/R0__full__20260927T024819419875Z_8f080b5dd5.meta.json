@@ -1,0 +1,20 @@
+{
+  "retriever": "R0",
+  "corpus": "full",
+  "run_id": "20260927T024819419875Z_8f080b5dd5",
+  "n_queries": 3452,
+  "k1": 1.2,
+  "b": 0.75,
+  "method": "lucene",
+  "token_pattern": "(?u)\\b\\w+\\b",
+  "stopwords": [],
+  "stemmer": null,
+  "lower": true,
+  "topk": 100,
+  "n_docs": 2681468,
+  "selection_hash": "3383203755612cf5",
+  "query_set": "judged",
+  "index_seconds": 262.01850436099994,
+  "search_seconds_total": 77.95242833499992,
+  "bm25s_version": "0.3.11"
+}

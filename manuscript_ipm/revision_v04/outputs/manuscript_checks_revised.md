@@ -6,26 +6,29 @@
 
 ## Notes
 
-- abstract words (macros expanded): 221 (limit 250)
+- abstract words (macros expanded): 247 (limit 250)
 - keywords: 7 (limit 1-7)
 - highlight 72 chars: On NQ, dense encoders passed 0.16--0.27 EM points per Hit@5 point gained
+- highlight 65 chars: NQ ratios held on the full 2.68M-passage corpus with both readers
 - highlight 78 chars: New NQ hits raised EM; queries that kept or lost a hit offset part of the gain
 - highlight 77 chars: HotpotQA ratios fell from 0.49--0.93 to 0.29--0.35 when Both@5 replaced Hit@5
-- highlight 64 chars: HotpotQA EM gains sat in queries that gained supporting passages
 - highlight 75 chars: Retrieval-stage throughput on a T4 GPU differed 27-fold across six encoders
 - cited references: 61 of 77 in references.bib
 - overfull hboxes > 5pt: 1 (max 117pt)
-- numbers typed in prose (design constants etc., review manually): 230
+- numbers typed in prose (design constants etc., review manually): 279
 
 ## Typed numbers (lexical screen)
 
 - 00_abstract.tex: 7
 - 00_abstract.tex: 5
 - 00_abstract.tex: 95
+- 00_abstract.tex: 2.68
 - 00_abstract.tex: 1
+- 00_abstract.tex: 5
 - 00_abstract.tex: 5
 - 00_abstract.tex: 5,
 - 00_abstract.tex: 5
+- 00_abstract.tex: 2.68
 - 00_abstract.tex: 5
 - 00_abstract.tex: 5
 - 01_introduction.tex: 5
@@ -38,6 +41,8 @@
 - 01_introduction.tex: 5
 - 01_introduction.tex: 1
 - 01_introduction.tex: 2,
+- 01_introduction.tex: 3,
+- 01_introduction.tex: 300,000
 - 01_introduction.tex: 5
 - 01_introduction.tex: 5
 - 02_related.tex: 5
@@ -83,7 +88,12 @@
 - 03_method.tex: 1,
 - 03_method.tex: 3
 - 03_method.tex: 5
+- 03_method.tex: 3
+- 03_method.tex: 95
+- 03_method.tex: 1.
+- 03_method.tex: 95
 - 03_method.tex: 2
+- 03_method.tex: 3
 - 03_method.tex: 500
 - 03_method.tex: 1
 - 03_method.tex: 3
@@ -93,6 +103,10 @@
 - 03_method.tex: 200,
 - 03_method.tex: 64
 - 03_method.tex: 128
+- 03_method.tex: 3
+- 03_method.tex: 100
+- 03_method.tex: 1
+- 03_method.tex: 3
 - 03_method.tex: 20,000
 - 03_method.tex: 128,
 - 03_method.tex: 500
@@ -105,15 +119,25 @@
 - 04_setup.tex: 13.0,
 - 04_setup.tex: 0.30.0,
 - 04_setup.tex: 5.17.0
+- 04_setup.tex: 1
+- 04_setup.tex: 2
 - 04_setup.tex: 3.12.13
 - 04_setup.tex: 3.13.15,
 - 04_setup.tex: 2.0.2
-- 04_setup.tex: 2.1.3.
+- 04_setup.tex: 2.1.3
+- 04_setup.tex: 3
+- 04_setup.tex: 2.
 - 04_setup.tex: 2.10.0
 - 04_setup.tex: 2.11.0
 - 04_setup.tex: 12.8,
 - 04_setup.tex: 5.0.0
 - 04_setup.tex: 1
+- 04_setup.tex: 2
+- 04_setup.tex: 1
+- 04_setup.tex: 3
+- 04_setup.tex: 1
+- 04_setup.tex: 1
+- 04_setup.tex: 2
 - 04_setup.tex: 1
 - 04_setup.tex: 100
 - 04_setup.tex: 20260926
@@ -121,6 +145,10 @@
 - 04_setup.tex: 0
 - 04_setup.tex: 5
 - 04_setup.tex: 84
+- 04_setup.tex: 3
+- 04_setup.tex: 5
+- 04_setup.tex: 10
+- 04_setup.tex: 3
 - 04_setup.tex: 0.70
 - 04_setup.tex: 1,000
 - 04_setup.tex: 2
@@ -131,6 +159,10 @@
 - 04_setup.tex: 1
 - 04_setup.tex: 1
 - 04_setup.tex: 24
+- 04_setup.tex: 3
+- 04_setup.tex: 3
+- 04_setup.tex: 100
+- 04_setup.tex: 3
 - 05_results.tex: 5
 - 05_results.tex: 5
 - 05_results.tex: 1,
@@ -168,11 +200,22 @@
 - 05_results.tex: 5
 - 05_results.tex: 10
 - 05_results.tex: 5
+- 05_results.tex: 300,000
+- 05_results.tex: 3
+- 05_results.tex: 5
+- 05_results.tex: 5,
+- 05_results.tex: 1
+- 05_results.tex: 4
+- 05_results.tex: 5
+- 05_results.tex: 95
+- 05_results.tex: 2,255
 - 05_results.tex: 5
 - 05_results.tex: 10
 - 05_results.tex: 10
 - 05_results.tex: 10
 - 05_results.tex: 10
+- 05_results.tex: 5
+- 05_results.tex: 5
 - 05_results.tex: 10
 - 05_results.tex: 10
 - 05_results.tex: 1
@@ -189,6 +232,8 @@
 - 05_results.tex: 1
 - 05_results.tex: 95
 - 05_results.tex: 500
+- 05_results.tex: 500
+- 05_results.tex: 95
 - 05_results.tex: 1,
 - 05_results.tex: 3
 - 05_results.tex: 5
@@ -225,18 +270,22 @@
 - 06_discussion.tex: 5
 - 06_discussion.tex: 5,
 - 06_discussion.tex: 1.
-- 06_discussion.tex: 10
 - 06_discussion.tex: 4
 - 06_discussion.tex: 7
 - 07_limitations.tex: 0.6
 - 07_limitations.tex: 4
 - 07_limitations.tex: 7
+- 07_limitations.tex: 3,
 - 07_limitations.tex: 300,000
+- 07_limitations.tex: 3
 - 07_limitations.tex: 1
 - 07_limitations.tex: 5
 - 07_limitations.tex: 95
 - 07_limitations.tex: 5
+- 07_limitations.tex: 333
 - 07_limitations.tex: 500
+- 07_limitations.tex: 1
+- 07_limitations.tex: 2.
 - 085_ethics.tex: 17
 - 085_ethics.tex: 2026
 - 085_ethics.tex: 4.0

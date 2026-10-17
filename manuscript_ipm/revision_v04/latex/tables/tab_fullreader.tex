@@ -1,0 +1,24 @@
+\begin{table*}[t]
+\centering
+\footnotesize
+\caption{NQ readers on the 300,000-passage sub-corpus and on the full 2,681,468-passage corpus (Phase 3), 2,255 generation queries, $k=5$. Intervals are 95\% bootstrap intervals.}
+\label{tab:fullreader}
+\begin{tabular}{lccccccll}
+\toprule
+& \multicolumn{2}{c}{Hit@5} & \multicolumn{2}{c}{EM} & & & \multicolumn{2}{c}{$T$ vs MiniLM-L6 [95\% CI]} \\ \cmidrule(lr){2-3}\cmidrule(lr){4-5}\cmidrule(lr){8-9} Retriever & sub & full & sub & full & $\Delta$EM full$-$sub & $p_\text{Holm}$ & sub & full \\
+\midrule
+\multicolumn{9}{l}{\textit{Qwen2.5-7B}} \\
+BM25 & 0.363 & 0.364 & 0.360 & 0.358 & \ensuremath{-}0.001 & 0.798 & 0.37 [0.31, 0.43] & 0.44 [0.35, 0.53] \\
+MiniLM-L6 & 0.664 & 0.564 & 0.471 & 0.446 & \ensuremath{-}0.025 & $<$0.001 & -- & -- \\
+bge-small & 0.729 & 0.630 & 0.484 & 0.456 & \ensuremath{-}0.028 & $<$0.001 & 0.19 [\ensuremath{-}0.07, 0.44] & 0.15 [\ensuremath{-}0.12, 0.40] \\
+e5-base-v2 & 0.816 & 0.728 & 0.510 & 0.484 & \ensuremath{-}0.025 & $<$0.001 & 0.25 [0.15, 0.36] & 0.23 [0.13, 0.33] \\
+\midrule
+\multicolumn{9}{l}{\textit{Llama-3.1-8B}} \\
+BM25 & 0.363 & 0.364 & 0.340 & 0.335 & \ensuremath{-}0.005 & 0.155 & 0.36 [0.30, 0.42] & 0.44 [0.34, 0.54] \\
+MiniLM-L6 & 0.664 & 0.564 & 0.448 & 0.423 & \ensuremath{-}0.025 & $<$0.001 & -- & -- \\
+bge-small & 0.729 & 0.630 & 0.460 & 0.437 & \ensuremath{-}0.023 & 0.002 & 0.18 [\ensuremath{-}0.08, 0.43] & 0.22 [\ensuremath{-}0.05, 0.48] \\
+e5-base-v2 & 0.816 & 0.728 & 0.472 & 0.455 & \ensuremath{-}0.018 & 0.014 & 0.16 [0.05, 0.26] & 0.20 [0.09, 0.30] \\
+\bottomrule
+\end{tabular}
+\par\smallskip\parbox{\linewidth}{\footnotesize Sub-corpus values are those of Table~\ref{tab:transfer}. $\Delta$EM: paired difference full $-$ sub (intervals in the repository), exact McNemar test, Holm over the four retrievers per reader. Full-corpus ratios use the reporting rule with Holm over the six pairs among the four retrievers. BM25's ratio relates an EM loss to a Hit@5 loss.}
+\end{table*}

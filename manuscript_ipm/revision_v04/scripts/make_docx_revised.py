@@ -12,14 +12,14 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[3]
 TEX = ROOT / "manuscript_ipm/revision_v04/latex"
 LEDGER = {r["claim_id"]: r["value"] for r in csv.DictReader(open(ROOT / "manuscript_ipm/records/evidence-ledger.csv", encoding="utf-8"))}
-for _f in ("v04", "v05"):
+for _f in ("v04", "v05", "v06"):
     LEDGER.update({r["claim_id"]: r["value"] for r in csv.DictReader(open(ROOT / f"manuscript_ipm/revision_v04/outputs/evidence_ledger_{_f}_additions.csv", encoding="utf-8"))})
 
 
 def flatten(path):
     t = path.read_text()
     t = re.sub(r"(?<!\\)%.*", "", t)
-    return re.sub(r"\\input\{([^}]*)\}", lambda m: "" if m.group(1) in ("numbers", "numbers_v04", "numbers_v05", "glyphtounicode") else flatten(TEX / (m.group(1) + ".tex")), t)
+    return re.sub(r"\\input\{([^}]*)\}", lambda m: "" if m.group(1) in ("numbers", "numbers_v04", "numbers_v05", "numbers_v06", "glyphtounicode") else flatten(TEX / (m.group(1) + ".tex")), t)
 
 
 def main():

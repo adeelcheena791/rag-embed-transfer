@@ -1,0 +1,21 @@
+{
+  "runs": {
+    "main:R0": "R0__main__20260927T025425366072Z_8f080b5dd5.jsonl",
+    "main:R1": "R1__main__20260927T053526976852Z_8f080b5dd5.jsonl",
+    "main:R2": "R2__main__20260927T053605026076Z_8f080b5dd5.jsonl",
+    "main:R3": "R3__main__20260927T053643041382Z_8f080b5dd5.jsonl",
+    "main:R4": "R4__main__20260927T053859193650Z_8f080b5dd5.jsonl",
+    "main:R5": "R5__main__20260927T053751831671Z_8f080b5dd5.jsonl",
+    "main:R6": "R6__main__20260927T054044809106Z_8f080b5dd5.jsonl",
+    "full:R0": "R0__full__20260927T024819419875Z_8f080b5dd5.jsonl",
+    "full:R1": "R1__full__20261017T124118727738Z_ecdaa33761.jsonl",
+    "full:R2": "R2__full__20261017T124215153967Z_ecdaa33761.jsonl",
+    "full:R5": "R5__full__20261017T124309806428Z_ecdaa33761.jsonl"
+  },
+  "k": 5,
+  "n_queries": 2255,
+  "n_audit_queries": 1106,
+  "n_audit_passages": 13286,
+  "e12_queries": 500,
+  "rule": "normalised answer alias as a whole-token span of the normalised 'title text'"
+}

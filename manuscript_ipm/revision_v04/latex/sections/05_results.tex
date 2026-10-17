@@ -47,16 +47,36 @@ The stable finding is therefore that, with three to ten passages read ($k$ = 3, 
 
 \input{tables/tab_sensitivity}
 
+\subsection{Do the NQ ratios hold on the full corpus?}\label{sec:res-full}
+All results so far use the 300,000-passage sub-corpus, which favours the dense encoders relative to BM25. In Phase~3 both readers answered the NQ generation queries from retrieval on the full corpus of \ev{V6.enc.rows} passages (Table~\ref{tab:fullreader} and Fig.~\ref{fig:fulltransfer}). On the full corpus the dense encoders lost \ev{V6.dHit.dense.abs} in Hit@5 and \ev{V6.dEM.dense.abs} in EM (all Holm-adjusted $p\le$ \ev{V6.dEM.dense.pmax}). BM25 kept its Hit@5, and its EM changed by no detectable amount (\ev{V6.dEM.R0}; $p\ge$ \ev{V6.dEM.R0.pmin}).
+
+The transfer ratios hardly moved. With e5-base-v2, $T$ was \ev{V6.T3.q.R5} \ev{V6.T.q.R5.ci} with Qwen, inside its sub-corpus interval \ev{V6.P8.q.sub}, and \ev{V6.T3.l.R5} \ev{V6.T.l.R5.ci} with Llama, inside \ev{V6.P8.l.sub}. The paired differences from the sub-corpus ratios were \ev{V6.dT.q} \ev{V6.dT.q.ci} and \ev{V6.dT.l} \ev{V6.dT.l.ci}. The bge-small ratios were \ev{V6.T.q.R2} \ev{V6.T.q.R2.ci} and \ev{V6.T.l.R2} \ev{V6.T.l.R2.ci}; as on the sub-corpus, their intervals included zero. Every dense upper bound stayed below 1 (largest \ev{V6.T.ubmax}), so P7 and P8 were met for both readers. Against BM25, the dense ratios were \ev{V6.b0.full} on the full corpus and \ev{V6.b0.sub} on the sub-corpus.
+
+The query-level accounting also kept its shape. Queries that moved from miss to hit contributed \ev{V6.tr.misshit.contrib} to the EM gain, those that hit under both retrievers \ev{V6.tr.hithit.contrib} (interval below zero in \ev{V6.tr.hithit.neg} of 4 encoder--reader pairs) and those that lost their hit \ev{V6.tr.hitmiss.contrib}. In a comparison that was not pre-specified, the full corpus cost the three dense encoders \ev{V6.lossratio} EM points per Hit@5 point lost, about the size of the transfer ratios themselves. At most \ev{V6.unparsed.max} of the full-corpus outputs could not be parsed.
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=0.75\linewidth]{figs/fig13_fullcorpus_T.pdf}
+\caption{NQ transfer ratios against MiniLM-L6 on the sub-corpus (open circles) and on the full corpus (filled squares), with 95\% bootstrap intervals; 2,255 queries, $k=5$. The dashed line marks $T=1$.}
+\label{fig:fulltransfer}
+\end{figure}
+
+\input{tables/tab_fullreader}
+
 \subsection{Where the gain sits}\label{sec:res-decomp}
 \paragraph{Query-level accounting}
 Table~\ref{tab:transitions} groups the queries by their Hit@5 under MiniLM-L6 and under each dense encoder (per-encoder values with intervals in Table~\ref{tab:transdetail}). On NQ, \ev{V5.tr.nq.misshit.share} of the queries moved from miss to hit. Their EM rose by \ev{V5.tr.nq.misshit.within} within the group, from a MiniLM-L6 level of \ev{V5.tr.nq.misshit.embase}: many of these ``misses'' had already been answered correctly. This group contributed \ev{V5.tr.nq.misshit.contrib} to the EM gain. Two groups gave part of it back. The \ev{V5.tr.nq.hithit.share} of queries that hit under both retrievers contributed \ev{V5.tr.nq.hithit.contrib} (interval below zero in \ev{V5.tr.nq.hithit.neg} of 10 encoder--reader pairs), and the \ev{V5.tr.nq.hitmiss.share} that lost their hit contributed \ev{V5.tr.nq.hitmiss.contrib} (below zero in \ev{V5.tr.nq.hitmiss.neg} of 10). Queries that missed under both contributed \ev{V5.tr.nq.missmiss.contrib}, an interval that contained zero in \ev{V5.tr.nq.missmiss.zero} of 10 pairs. The net NQ gain was \ev{V5.tr.nq.netshare} of the gain from new hits alone.
 
 On HotpotQA, \ev{V5.tr.hp.hithit.share} of the queries hit under both retrievers, and this group made the largest contribution in every encoder--reader pair (\ev{V5.tr.hp.hithit.contrib}, all 10 intervals above zero). Table~\ref{tab:hpevidence} shows where this gain sits: grouped by the number of supporting passages in the top five, the queries for which the encoder retrieved more supporting passages (\ev{V5.ev.gained.share}) carried \ev{V5.ev.gained.pct} of the EM gain, most of it from queries that went from one supporting passage to two (\ev{V5.ev.c12.pct}). Queries with the same number of supporting passages contributed \ev{V5.ev.same.contrib}, and those with fewer \ev{V5.ev.lost.contrib}.
 
-These groups are defined by retrieval outcomes and are not randomised, so they describe where the EM gain sits, not why. The NQ pattern is consistent with sparse relevance labels and with answers the reader already knew, and the HotpotQA pattern with the second supporting passage being the useful one; neither reading was tested directly.
+These groups are defined by retrieval outcomes and are not randomised, so they describe where the EM gain sits, not why. The NQ pattern is consistent with sparse relevance labels and with answers the reader already knew, and the HotpotQA pattern with the second supporting passage being the useful one.
+
+\paragraph{Answer strings in NQ misses}
+Table~\ref{tab:answerstr} checks the label-sparsity reading for NQ. Among the Hit@5 misses of the dense encoders, \ev{V6.as.miss.sub.dense} had a reference answer string in their top five passages on the sub-corpus (e5-base-v2: \ev{V6.as.miss.sub.R5} \ev{V6.as.miss.sub.R5.ci} of \ev{V6.as.miss.sub.R5.n} misses) and \ev{V6.as.miss.full.dense} on the full corpus; for BM25 the share was \ev{V6.as.miss.sub.R0}. Among hits it was \ev{V6.as.hit.all}. The check is lexical and incomplete in both directions. A passage can mention the answer without supporting it, and the gold passages themselves contained an answer string for only \ev{V6.as.gold} \ev{V6.as.gold.ci} of the queries. Even so, a large part of what Hit@5 counts as a miss gave the reader a passage with the answer in it.
 
 \input{tables/tab_transitions}
 \input{tables/tab_hpevidence}
+\input{tables/tab_answerstr}
 
 \paragraph{Decomposition}
 The rate-based decomposition of Eq.~\ref{eq:decomp} agrees with this accounting (Tables~\ref{tab:components}, \ref{tab:decomp} and Fig.~\ref{fig:error}). The baseline hit--miss gap of MiniLM-L6 was similar in all cells: \ev{DB.qnq} and \ev{DB.lnq} on NQ, \ev{DB.qhp} and \ev{DB.lhp} on HotpotQA. On NQ, the hit-prevalence term was \ev{V5.cmp.nq.prev}, the EM-among-hits term \ev{V5.cmp.nq.hits} (interval below zero for \ev{V5.cmp.nq.hits.neg} of 10 pairs) and the EM-among-misses term \ev{V5.cmp.nq.miss} (interval containing zero for \ev{V5.cmp.nq.miss.zero} of 10). EM given a miss stayed near \ev{PM.qnq.R5}, well above closed-book EM (\ev{EM.qnq.CB}). On HotpotQA, the EM-among-hits term was \ev{V5.cmp.hp.hits}, with every interval above zero, while the EM-among-misses term was \ev{V5.cmp.hp.miss}. The two conditional terms together made up \ev{DS.hp.min} to \ev{DS.hp.max} of the HotpotQA gain in the baseline-conditioned form and \ev{V4.sym.hp.min} to \ev{V4.sym.hp.max} in the symmetric form (Table~\ref{tab:share}); the hits term alone made up \ev{V4.hit.hp.min} to \ev{V4.hit.hp.max}. On NQ we do not report shares: the EM gains are small and every dense encoder's share interval was at least \ev{V4.nq.share.minwidth} wide, where 1 is the whole gain.
@@ -90,7 +110,7 @@ Table~\ref{tab:topk} and Fig.~\ref{fig:topk} show EM for $k\in\{1,3,5,10\}$ with
 \end{figure}
 
 \paragraph{Passage composition and position}
-Table~\ref{tab:mechanism} and Fig.~\ref{fig:mechanism} give the controlled context test on 500 NQ questions. With the gold passage at position 1, four top-ranked non-gold BM25 passages gave EM \ev{MC.M1}, and four random passages gave \ev{MC.MR}: a drop of \ev{P5.abs} (exact McNemar $p$ = \ev{P5.p}; P5 criterion met). Adding four random passages to the gold passage changed EM by no detectable amount: gold at position 1 plus four random passages gave \ev{MC.MR}, and the gold passage alone gave \ev{MC.MG} (difference \ev{V4.mrmg.diff}, 95\% CI \ev{V4.mrmg.ci}; $p$ = \ev{MG.p}). No equivalence margin was registered, so this interval is not evidence that random passages have no effect; it only bounds the effect in this sample of 500 questions. The position of the gold passage among the hard negatives showed no detectable effect (EM \ev{MC.M1}, \ev{MC.M3} and \ev{MC.M5} at positions 1, 3 and 5; all Holm-adjusted $p\ge$ \ev{P6.M1M3.p}; P6 criterion not met).
+Table~\ref{tab:mechanism} and Fig.~\ref{fig:mechanism} give the controlled context test on 500 NQ questions. With the gold passage at position 1, four top-ranked non-gold BM25 passages gave EM \ev{MC.M1}, and four random passages gave \ev{MC.MR}: a drop of \ev{P5.abs} (exact McNemar $p$ = \ev{P5.p}; P5 criterion met). Adding four random passages to the gold passage changed EM by no detectable amount: gold at position 1 plus four random passages gave \ev{MC.MR}, and the gold passage alone gave \ev{MC.MG} (difference \ev{V4.mrmg.diff}, 95\% CI \ev{V4.mrmg.ci}; $p$ = \ev{MG.p}). No equivalence margin was registered, so this interval is not evidence that random passages have no effect; it only bounds the effect in this sample of 500 questions. Under the answer-string rule, at least one hard negative contained an answer for \ev{V6.o8.n} of the 500 questions (\ev{V6.o8.share}, Wilson interval \ev{V6.o8.wilson}). On the \ev{V6.o8.clean.n} questions without such a passage, the drop was larger: EM \ev{V6.o8.clean.M1} with hard negatives against \ev{V6.o8.clean.MR} with random passages (\ev{V6.o8.clean.diff}, 95\% CI \ev{V6.o8.clean.ci}; $p$ \ev{V6.o8.clean.p}). On the other questions the two contexts gave \ev{V6.o8.ans.M1} and \ev{V6.o8.ans.MR} (not pre-specified). Answer-bearing hard negatives therefore made the registered P5 effect smaller, not larger. The position of the gold passage among the hard negatives showed no detectable effect (EM \ev{MC.M1}, \ev{MC.M3} and \ev{MC.M5} at positions 1, 3 and 5; all Holm-adjusted $p\ge$ \ev{P6.M1M3.p}; P6 criterion not met).
 
 \begin{figure}[t]
 \centering
@@ -128,7 +148,7 @@ HNSW search kept the exact top five almost unchanged (Table~\ref{tab:hnsw}). At 
 \input{tables/tab_hnsw}
 
 \paragraph{Sub-corpus versus full corpus}
-On the full NQ corpus the four tested retrievers kept their nDCG@10 order (Kendall's $\tau$ = \ev{E9.tau}; P3 criterion met; Table~\ref{tab:fullcorpus} and Fig.~\ref{fig:fullcorpus}). The dense retrievers lost \ev{E9.dropabs.R2} to \ev{E9.dropabs.R1} in nDCG@10, and BM25 lost almost nothing (\ev{E9.dropabs.R0}). The sub-corpus therefore inflates absolute dense scores but not the order of these four retrievers. The drops also agree with the bias that the construction implies: the sub-corpus keeps BM25's own top-ranked passages for every judged query but not those of the dense encoders, so it favours the dense encoders relative to BM25. We did not run the readers on the full corpus, and this check covers NQ only.
+On the full NQ corpus the four tested retrievers kept their nDCG@10 order (Kendall's $\tau$ = \ev{E9.tau}; P3 criterion met; Table~\ref{tab:fullcorpus} and Fig.~\ref{fig:fullcorpus}). The dense retrievers lost \ev{E9.dropabs.R2} to \ev{E9.dropabs.R1} in nDCG@10, and BM25 lost almost nothing (\ev{E9.dropabs.R0}). The sub-corpus therefore inflates absolute dense scores but not the order of these four retrievers. The drops also agree with the bias that the construction implies: the sub-corpus keeps BM25's own top-ranked passages for every judged query but not those of the dense encoders, so it favours the dense encoders relative to BM25. Section~\ref{sec:res-full} gives the readers on full-corpus retrieval; HotpotQA was not run on its full corpus.
 
 \begin{figure}[t]
 \centering
@@ -145,6 +165,6 @@ The LLM judge agreed poorly with the author's labels (Table~\ref{tab:judge}). Co
 \input{tables/tab_judge}
 
 \subsection{Summary of the predictions}
-Table~\ref{tab:predictions} lists all six registered criteria. P3, P4 and P5 were met. P1 was not met in one of three new cells (an upper bound of 1.000 or more), P2 was not met in either HotpotQA cell, and P6 was not met. Where a verdict is not confirmatory, the table marks it.
+Table~\ref{tab:predictions} lists all eight registered criteria. P3, P4, P5, P7 and P8 were met. P1 was not met in one of three new cells (an upper bound of 1.000 or more), P2 was not met in either HotpotQA cell, and P6 was not met. Where a verdict is not confirmatory, the table marks it.
 
 \input{tables/tab_predictions}
