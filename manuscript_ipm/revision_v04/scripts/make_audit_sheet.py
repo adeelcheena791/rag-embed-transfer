@@ -86,14 +86,20 @@ def main():
             for j in lab:
                 row[j - 1].fill = fill
         ws.freeze_panes = "B2"
-    for ws, col in ((s1, "I"), (s2, "F")):
-        dv = DataValidation(type="list", formula1='"yes,no,unsure"', allow_blank=True)
-        ws.add_data_validation(dv); dv.add(f"{col}2:{col}101")
-    for ws, col in ((s1, "K"), (s2, "G")):
-        dv = DataValidation(type="list", formula1='"yes,no"', allow_blank=True)
-        ws.add_data_validation(dv); dv.add(f"{col}2:{col}101")
-    dv = DataValidation(type="whole", operator="between", formula1="1", formula2="5", allow_blank=True)
-    s1.add_data_validation(dv); dv.add("J2:J101")
+    # dropdown lists on a hidden sheet (shown as a drop-down arrow in Excel, WPS, LibreOffice and Google Sheets)
+    li = wb.create_sheet("Lists")
+    for r, (a, b, c) in enumerate(zip(["yes", "no", "unsure", "", ""], ["yes", "no", "", "", ""], [1, 2, 3, 4, 5]), 1):
+        li.cell(r, 1, a or None), li.cell(r, 2, b or None), li.cell(r, 3, c)
+    li.sheet_state = "hidden"
+    lists = {"ynu": "Lists!$A$1:$A$3", "yn": "Lists!$B$1:$B$2", "p": "Lists!$C$1:$C$5"}
+    for ws, col, key, prompt in ((s1, "I", "ynu", "Choose yes / no / unsure"), (s1, "J", "p", "If A = yes: choose the passage number 1-5"),
+                                 (s1, "K", "yn", "If A = yes: choose yes / no"), (s2, "F", "ynu", "Choose yes / no / unsure"),
+                                 (s2, "G", "yn", "If C = yes and EM = 0: choose yes / no")):
+        dv = DataValidation(type="list", formula1=lists[key], allow_blank=True, showDropDown=False,
+                            showInputMessage=True, promptTitle="Select", prompt=prompt,
+                            showErrorMessage=True, errorTitle="Not in the list", error="Please choose a value from the list.")
+        ws.add_data_validation(dv)
+        dv.add(f"{col}2:{col}101")
     OUT.mkdir(parents=True, exist_ok=True)
     wb.save(OUT / "miss_audit_v04.xlsx")
     with open(OUT / "key.csv", "w") as f:       # do not open before labelling
