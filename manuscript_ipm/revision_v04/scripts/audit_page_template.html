@@ -90,6 +90,7 @@ textarea{font:inherit;width:100%;min-height:58px;padding:8px;border:1px solid va
     <button class="btn" id="prev" aria-label="Previous item">← Prev</button>
     <input id="jump" type="number" min="1" max="100" value="1" aria-label="Go to item">
     <button class="btn primary" id="next" aria-label="Next item">Next →</button>
+    <button class="btn" id="showTop" style="border-color:var(--accent);font-weight:700">Get my labels</button>
   </div>
   <span class="status" id="status">Connecting…</span>
 </div></div>
@@ -311,6 +312,7 @@ function showText(){
   $("csvOut").scrollIntoView({block: "center"});
 }
 $("show").addEventListener("click", showText);
+$("showTop").addEventListener("click", showText);
 $("copy").addEventListener("click", async () => {
   const t = $("csvOut");
   try { await navigator.clipboard.writeText(t.value); $("copyMsg").textContent = "Copied. Now paste it in the chat."; }
