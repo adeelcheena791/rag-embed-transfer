@@ -332,7 +332,7 @@ def env_table():
            "env_v03_S4nq": "Phase 2, E5, E6, E7, E9, E12", "env_v04_S5nq": "Phase 3, full-corpus NQ readers (S5)"}
     for f in sorted(glob.glob(str(ROOT / "paper_inputs/**/env*.json"), recursive=True)):
         k = Path(f).stem
-        if k not in lab:
+        if k not in lab or ("v04_s5nq" in f and k != "env_v04_S5nq"):   # the S5 archive also holds a restored S1 log
             continue
         d = json.load(open(f))
         p = d["packages"]

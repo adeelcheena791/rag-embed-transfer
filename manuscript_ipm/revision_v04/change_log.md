@@ -117,3 +117,9 @@ v0.6 adds the results of the registered Phase 3 session (S5-NQ, run 17 October 2
 - `make_v05_tex.py`: P7/P8 rows in Table predictions; S5 row in Table env; prompt counts exclude Phase 3 (counted and hash-verified by `make_v06_tex.py`).
 - `numeric_report.py`: reads the v0.6 ledger and the independent v0.6 check; range dash no longer parsed as a minus sign.
 - `check_revised.py`, `make_docx_revised.py`: include `numbers_v06`.
+
+## v0.6 proofreading pass (2026-10-18)
+- Table env: the "Phase 1, NQ retrieval and encoding" row appeared twice (the Phase 3 archive contains a restored copy of that log); the generator now skips restored logs.
+- Setup: cross-phase sentence now says "the software change between Phase 1 and the later phases" (Phase 3 runs used the Phase 2 image).
+- Results §5.4 and Discussion §6.4: the BM25-baseline full-corpus ranges are scoped to bge-small and e5-base-v2 (the sub-corpus range for all five encoders is 0.29–0.35).
+- References: BEIR cited as published (NeurIPS 2021 Datasets and Benchmarks track; title spelling "Heterogeneous", verified on the proceedings page); "arXiv" no longer capitalised as "ArXiv" in notes.
