@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Export Audit Labels</title>
+<style>
+body{font-family:system-ui,"Segoe UI",sans-serif;background:#f3f5f4;color:#18211f;margin:0;padding:24px 16px}
+main{max-width:900px;margin:0 auto;display:grid;gap:14px}
+h1{font-size:22px;margin:0}
+.ok{color:#2f7d32;font-weight:700}.bad{color:#9a5b00;font-weight:700}
+button,a.btn{font:inherit;font-weight:700;background:#0f6b5c;color:#fff;border:0;border-radius:7px;padding:10px 16px;cursor:pointer;text-decoration:none;display:inline-block}
+textarea{width:100%;min-height:320px;font-family:Consolas,monospace;font-size:12px;box-sizing:border-box}
+</style></head><body><main>
+<h1>Export audit labels</h1>
+<p>Open this file in the <b>same browser (Edge)</b> where you labelled the questions.</p>
+<p id="msg"></p>
+<div><a class="btn" id="dl" download="miss_audit_labels.csv">Download CSV</a> <button id="copy">Copy all</button> <span id="cm"></span></div>
+<textarea id="out" readonly></textarea>
+</main>
+<script>
+let L = {};
+try { L = JSON.parse(localStorage.getItem("missAuditLabels") || "{}") || {}; } catch(e) {}
+const q = v => { const s = v == null ? "" : String(v); return /[",\n]/.test(s) ? '"' + s.replace(/"/g, '""') + '"' : s; };
+const rows = [["item","A","A_passage","B","note_screen1","C","D","note_screen2","labelled_at"].join(",")];
+let n1 = 0, n2 = 0;
+for (let i = 1; i <= 100; i++) {
+  const x = L["item_" + String(i).padStart(3, "0")] || {};
+  if (x.a) n1++; if (x.c) n2++;
+  rows.push([i, x.a, x.ap, x.b, x.n1, x.c, x.d, x.n2, x.t].map(q).join(","));
+}
+const csv = rows.join("\n") + "\n";
+document.getElementById("out").value = csv;
+const m = document.getElementById("msg");
+if (n1 || n2) { m.className = "ok"; m.textContent = `Found labels: Screen 1 ${n1} of 100, Screen 2 ${n2} of 100.`; }
+else { m.className = "bad"; m.textContent = "No labels found. Open this file in the same browser you used, and keep it in the same Downloads folder."; }
+document.getElementById("dl").href = URL.createObjectURL(new Blob([csv], {type: "text/csv"}));
+document.getElementById("copy").onclick = async () => {
+  const t = document.getElementById("out");
+  try { await navigator.clipboard.writeText(t.value); document.getElementById("cm").textContent = "Copied."; }
+  catch(e) { t.focus(); t.select(); document.getElementById("cm").textContent = "Selected: press Ctrl+C."; }
+};
+</script></body></html>
