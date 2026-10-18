@@ -134,3 +134,13 @@ def test_no_stale_full_corpus_claims():
     for bad in ("We did not run the readers on the full corpus", "Whether the ratios themselves hold on the full corpus was not tested",
                 "whether the ratios hold on the full corpus", "the passage texts are not stored"):
         assert bad not in text, bad
+
+
+def test_human_audit_counts_and_blinding_inputs():
+    U = json.load(open(OUT / "audit_v04_results.json"))
+    lab = list(csv.DictReader(open(ROOT / "annotation/v04_miss_audit/labels_author.csv")))
+    assert len(lab) == 100 and U["A"]["yes"]["k"] + U["A"]["no"]["k"] + U["A"]["unsure"]["k"] == 100
+    assert U["C"]["yes"]["k"] + U["C"]["no"]["k"] + U["C"]["unsure"]["k"] == 100
+    page = (ROOT / "annotation/v04_miss_audit/miss_audit_page.html").read_text()
+    assert "gold" not in page.split("const ITEMS")[1].split(";")[0]          # no gold ids in the embedded data
+    assert "auto_answer" not in page

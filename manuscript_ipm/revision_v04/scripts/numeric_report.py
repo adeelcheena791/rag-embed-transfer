@@ -113,6 +113,11 @@ def main():
                     return [IC6[f"EM.full.{RD6[p[2]]}.{p[3]}"]], "independent_check_v06.json"
                 if p[1] == "HIT":
                     return [IC6[f"hit.full.{p[2]}"]], "independent_check_v06.json"
+                if p[1] == "au" and cid in ("V6.au.A.yes", "V6.au.C.yes", "V6.au.EM", "V6.au.CyEM0", "V6.au.D.yes"):
+                    return [IC6["au." + ".".join(p[2:])]], "independent_check_v06.json"
+                if cid in ("V6.au.A.yes.ci", "V6.au.C.yes.ci"):
+                    k = "au." + ".".join(p[2:4])
+                    return [IC6[k + ".lo"], IC6[k + ".hi"]], "independent_check_v06.json"
                 if cid == "V6.as.miss.sub.R5":
                     return [IC6["as.main.R5"]], "independent_check_v06.json"
                 if cid == "V6.o8.clean.diff":

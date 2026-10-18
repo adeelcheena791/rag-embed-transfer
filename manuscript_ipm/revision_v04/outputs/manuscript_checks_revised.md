@@ -6,7 +6,7 @@
 
 ## Notes
 
-- abstract words (macros expanded): 247 (limit 250)
+- abstract words (macros expanded): 249 (limit 250)
 - keywords: 7 (limit 1-7)
 - highlight 72 chars: On NQ, dense encoders passed 0.16--0.27 EM points per Hit@5 point gained
 - highlight 65 chars: NQ ratios held on the full 2.68M-passage corpus with both readers
@@ -15,7 +15,7 @@
 - highlight 75 chars: Retrieval-stage throughput on a T4 GPU differed 27-fold across six encoders
 - cited references: 61 of 77 in references.bib
 - overfull hboxes > 5pt: 1 (max 117pt)
-- numbers typed in prose (design constants etc., review manually): 278
+- numbers typed in prose (design constants etc., review manually): 297
 
 ## Typed numbers (lexical screen)
 
@@ -24,7 +24,7 @@
 - 00_abstract.tex: 95
 - 00_abstract.tex: 2.68
 - 00_abstract.tex: 1
-- 00_abstract.tex: 5
+- 00_abstract.tex: 100
 - 00_abstract.tex: 5
 - 00_abstract.tex: 5,
 - 00_abstract.tex: 5
@@ -107,6 +107,13 @@
 - 03_method.tex: 100
 - 03_method.tex: 1
 - 03_method.tex: 3
+- 03_method.tex: 3
+- 03_method.tex: 5
+- 03_method.tex: 100
+- 03_method.tex: 3
+- 03_method.tex: 100
+- 03_method.tex: 0,
+- 03_method.tex: 95
 - 03_method.tex: 20,000
 - 03_method.tex: 128,
 - 03_method.tex: 500
@@ -158,7 +165,6 @@
 - 04_setup.tex: 1
 - 04_setup.tex: 1
 - 04_setup.tex: 24
-- 04_setup.tex: 3
 - 04_setup.tex: 3
 - 04_setup.tex: 100
 - 04_setup.tex: 3
@@ -215,6 +221,14 @@
 - 05_results.tex: 10
 - 05_results.tex: 5
 - 05_results.tex: 5
+- 05_results.tex: 5
+- 05_results.tex: 100
+- 05_results.tex: 100
+- 05_results.tex: 95
+- 05_results.tex: 100
+- 05_results.tex: 100
+- 05_results.tex: 0,
+- 05_results.tex: 5
 - 05_results.tex: 10
 - 05_results.tex: 10
 - 05_results.tex: 1
@@ -257,6 +271,7 @@
 - 05_results.tex: 1.000
 - 06_discussion.tex: 5
 - 06_discussion.tex: 1
+- 06_discussion.tex: 100
 - 06_discussion.tex: 5
 - 06_discussion.tex: 5
 - 06_discussion.tex: 5
@@ -268,6 +283,7 @@
 - 06_discussion.tex: 5
 - 06_discussion.tex: 5
 - 06_discussion.tex: 5,
+- 06_discussion.tex: 100
 - 06_discussion.tex: 1.
 - 06_discussion.tex: 4
 - 06_discussion.tex: 7
@@ -277,9 +293,11 @@
 - 07_limitations.tex: 3,
 - 07_limitations.tex: 300,000
 - 07_limitations.tex: 3
+- 07_limitations.tex: 100
 - 07_limitations.tex: 1
 - 07_limitations.tex: 5
 - 07_limitations.tex: 95
+- 07_limitations.tex: 100
 - 07_limitations.tex: 5
 - 07_limitations.tex: 333
 - 07_limitations.tex: 500
@@ -294,6 +312,7 @@
 - 085_ethics.tex: 200
 - 08_conclusion.tex: 5
 - 08_conclusion.tex: 1
+- 08_conclusion.tex: 100
 - 08_conclusion.tex: 5
 - 08_conclusion.tex: 5
 - 08_conclusion.tex: 5

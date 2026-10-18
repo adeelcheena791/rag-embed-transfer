@@ -12,4 +12,5 @@ Record only; it changes nothing in addendum v0.4.
 - Analyses not listed in addendum v0.4 and reported as not pre-specified: EM loss per Hit@5 loss between corpora; M1 vs MR on the
   E12 questions that have an answer-bearing hard negative; T_full − T_sub for bge-small.
 - Human audit: workbook generated with the registered seed (`annotation/v04_miss_audit/`, 414 e5-base-v2 sub-corpus misses, 100
-  sampled). Labelling by the author had not started on 18 October 2026.
+  sampled). Labelled by the author on 18 October 2026 on a web page with the same items and order (the workbook's selection
+  lists did not work on the author's computer); gold and automatic flag hidden; Screen 2 locked until Screen 1 was complete.

@@ -1,0 +1,18 @@
+\begin{table}[t]
+\centering
+\footnotesize
+\caption{Blinded human audit of 100 seeded Hit@5 misses of e5-base-v2 (NQ sub-corpus, Qwen reader; one annotator, the author).}
+\label{tab:humanaudit}
+\begin{tabular}{p{0.42\linewidth}lll}
+\toprule
+Label & Value & Count & 95\% CI \\
+\midrule
+A: a passage contains a correct answer & yes / no / unsure & 41 / 53 / 6 & [0.32, 0.51] \\
+B: that passage is about the question (of A = yes) & yes & 41 of 41 & [0.91, 1.00] \\
+C: reader answer factually correct & yes / no / unsure & 59 / 31 / 10 & [0.49, 0.68] \\
+\quad EM = 1 (automatic) & & 24 & [0.17, 0.33] \\
+D: alias or formatting only (of C = yes, EM = 0) & yes & 21 of 35 & [0.44, 0.74] \\
+\bottomrule
+\end{tabular}
+\par\smallskip\parbox{\linewidth}{\footnotesize Wilson intervals for the first value of each row. Screen 2 (C, D) was opened only after all Screen 1 labels (A, B) were complete. Not pre-specified: the automatic answer-string flag agreed with A on 92 of 94 yes/no items ($\kappa$ = 0.96).}
+\end{table}

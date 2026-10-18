@@ -246,6 +246,39 @@ check("o8 diff", RES["o8.clean.diff"], A["O8"]["P5_clean_subset"]["diff"])
 check("o8 p", RES["o8.clean.p"], A["O8"]["P5_clean_subset"]["p"], 1e-12 + 1e-6 * RES["o8.clean.p"])
 log(f"- {len(clean)} clean questions; M1 - MR = {RES['o8.clean.diff']:+.4f}, p = {RES['o8.clean.p']:.3g}")
 
+# ------------------------------------------------------------------ 8. human audit counts (own Wilson)
+log("## 7. Human audit of misses")
+import csv as _csv
+lab = {int(r["item"]): r for r in _csv.DictReader(open(ROOT / "annotation/v04_miss_audit/labels_author.csv"))}
+key = {int(r["item"]): r for r in _csv.DictReader(open(ROOT / "annotation/v04_miss_audit/key.csv"))}
+sample = json.load(open(ROOT / "annotation/v04_miss_audit/sample.json"))["qids"]
+miss5 = [q for q in Q if not set(sub_top["R5"][q][:5]) & qrels[q]]
+assert sample == [miss5[i] for i in np.random.default_rng(20261017).choice(len(miss5), 100, replace=False)]
+assert [key[i]["qid"] for i in range(1, 101)] == sample
+
+
+def wil(k, m, z=1.959963984540054):
+    p = k / m
+    d = 1 + z * z / m
+    c = (p + z * z / (2 * m)) / d
+    h = z * math.sqrt(p * (1 - p) / m + z * z / (4 * m * m)) / d
+    return c - h, c + h
+
+
+RES["au.A.yes"] = sum(r["A"] == "yes" for r in lab.values())
+RES["au.A.yes.lo"], RES["au.A.yes.hi"] = wil(RES["au.A.yes"], 100)
+RES["au.C.yes"] = sum(r["C"] == "yes" for r in lab.values())
+RES["au.C.yes.lo"], RES["au.C.yes.hi"] = wil(RES["au.C.yes"], 100)
+RES["au.EM"] = sum(int(key[i]["em"]) for i in lab)
+cy0 = [i for i in lab if lab[i]["C"] == "yes" and key[i]["em"] == "0"]
+RES["au.CyEM0"], RES["au.D.yes"] = len(cy0), sum(lab[i]["D"] == "yes" for i in cy0)
+U = json.load(open(OUT / "audit_v04_results.json"))
+for a_, b_ in ((RES["au.A.yes"], U["A"]["yes"]["k"]), (RES["au.C.yes"], U["C"]["yes"]["k"]), (RES["au.EM"], U["EM"]["k"]),
+               (RES["au.D.yes"], U["D_yes_given_C_yes_EM0"]["k"]), (RES["au.A.yes.lo"], U["A"]["yes"]["wilson"][0])):
+    check("audit", a_, b_)
+log(f"- sample re-drawn from the seed and equal to the audited items; A yes {RES['au.A.yes']}, C yes {RES['au.C.yes']}, "
+    f"EM {RES['au.EM']}, D yes {RES['au.D.yes']} of {RES['au.CyEM0']}")
+
 log(f"\n**Result: {len(BAD)} mismatches.**")
 for b in BAD:
     log(f"- {b}")

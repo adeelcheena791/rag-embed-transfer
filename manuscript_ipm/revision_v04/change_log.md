@@ -123,3 +123,9 @@ v0.6 adds the results of the registered Phase 3 session (S5-NQ, run 17 October 2
 - Setup: cross-phase sentence now says "the software change between Phase 1 and the later phases" (Phase 3 runs used the Phase 2 image).
 - Results §5.4 and Discussion §6.4: the BM25-baseline full-corpus ranges are scoped to bge-small and e5-base-v2 (the sub-corpus range for all five encoders is 0.29–0.35).
 - References: BEIR cited as published (NeurIPS 2021 Datasets and Benchmarks track; title spelling "Heterogeneous", verified on the proceedings page); "arXiv" no longer capitalised as "ArXiv" in notes.
+
+## v0.6 human audit (2026-10-18)
+- The registered audit of 100 seeded e5-base-v2 sub-corpus misses was labelled by the author (labels: `annotation/v04_miss_audit/labels_author.csv`, sha256 6ef274f6…; results: `outputs/audit_v04_results.json`).
+- Results §5.5 (new paragraph and Table humanaudit), Method §3.8 (audit procedure), Abstract, Discussion §6.1/6.4, Limitations, Conclusion: A = yes 41/100 [0.32, 0.51]; B = yes 41/41; C = yes 59/100 [0.49, 0.68] vs EM 24; of 35 correct answers with EM 0, 21 alias/format. Not pre-specified: automatic flag agreed on 92 of 94 yes/no items (κ = 0.96).
+- Deviation 8 rewritten: audit done; labelling tool changed from spreadsheet to web page (same items and order; gold and flag hidden; Screen 2 locked until Screen 1 complete; only the last change time per item is recorded).
+- Abstract trimmed to 249 words (no claim changed).

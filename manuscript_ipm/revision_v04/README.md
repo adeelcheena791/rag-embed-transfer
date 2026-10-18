@@ -19,6 +19,7 @@ python3 manuscript_ipm/revision_v04/scripts/make_v06_tex.py       # v0.6 macros 
 python3 manuscript_ipm/revision_v04/scripts/make_v06_figs.py      # v0.6 figures (phases, sub vs full ratios)
 python3 -I manuscript_ipm/revision_v04/scripts/independent_check_v06.py  # Phase 3 standalone recomputation
 python3 manuscript_ipm/revision_v04/scripts/make_audit_sheet.py   # human-audit workbook (seeded sample)
+python3 manuscript_ipm/revision_v04/scripts/audit_v04_results.py   # human-audit counts and Wilson intervals
 python3 -I manuscript_ipm/revision_v04/scripts/independent_check_v05.py  # standalone recomputation
 python3 -m pytest -q manuscript_ipm/revision_v04/tests          # targeted checks
 python3 manuscript_ipm/revision_v04/scripts/numeric_report.py manuscript_ipm/revision_v04/latex   # every printed number

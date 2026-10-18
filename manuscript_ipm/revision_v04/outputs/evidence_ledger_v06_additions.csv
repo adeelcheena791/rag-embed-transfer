@@ -94,3 +94,21 @@ V6.read.q,"reader minutes, Qwen, 4 conditions x 2,255 queries",92,generation_tim
 V6.read.l,"reader minutes, Llama, 4 conditions x 2,255 queries",102,generation_timing.jsonl,make_v06_tex.py,computed from committed outputs
 V6.e9.repro,re-encoded full-corpus Hit@5 and nDCG@10 equal the E9 summaries,identical,v04_full_analysis.json,make_v06_tex.py,computed from committed outputs
 V6.n.gen,"reader outputs in Phase 3 (all prompt A1, hash verified)","18,040",paper_inputs/v04_s5nq/raw/generations,make_v06_tex.py,computed from committed outputs
+V6.au.A.yes,audit: A = yes (of 100),41,audit_v04_results.json,make_v06_tex.py,computed from committed outputs
+V6.au.A.no,audit: A = no (of 100),53,audit_v04_results.json,make_v06_tex.py,computed from committed outputs
+V6.au.A.unsure,audit: A = unsure (of 100),6,audit_v04_results.json,make_v06_tex.py,computed from committed outputs
+V6.au.A.yes.ci,"Wilson interval, A = yes","[0.32, 0.51]",audit_v04_results.json,make_v06_tex.py,computed from committed outputs
+V6.au.B.yes,audit: B = yes among A = yes,41,audit_v04_results.json,make_v06_tex.py,computed from committed outputs
+V6.au.C.yes,audit: reader answer judged correct (of 100),59,audit_v04_results.json,make_v06_tex.py,computed from committed outputs
+V6.au.C.yes.ci,"Wilson interval, C = yes","[0.49, 0.68]",audit_v04_results.json,make_v06_tex.py,computed from committed outputs
+V6.au.C.no,audit: C = no,31,audit_v04_results.json,make_v06_tex.py,computed from committed outputs
+V6.au.C.unsure,audit: C = unsure,10,audit_v04_results.json,make_v06_tex.py,computed from committed outputs
+V6.au.EM,EM = 1 among the 100 audited misses,24,audit_v04_results.json,make_v06_tex.py,computed from committed outputs
+V6.au.CyEM0,correct answers with EM = 0,35,audit_v04_results.json,make_v06_tex.py,computed from committed outputs
+V6.au.D.yes,"of these, alias or formatting difference",21,audit_v04_results.json,make_v06_tex.py,computed from committed outputs
+V6.au.D.no,"of these, other (no reference matches)",14,audit_v04_results.json,make_v06_tex.py,computed from committed outputs
+V6.au.auto,automatic answer-string flag among the 100 (not pre-specified),45,audit_v04_results.json,make_v06_tex.py,computed from committed outputs
+V6.au.agree,human yes/no labels agreeing with the flag,92 of 94,audit_v04_results.json,make_v06_tex.py,computed from committed outputs
+V6.au.kappa,"Cohen's kappa, A vs flag, yes/no items",0.96,audit_v04_results.json,make_v06_tex.py,computed from committed outputs
+V6.au.CbyA.yes,correct answers when A = yes,35 of 41,audit_v04_results.json,make_v06_tex.py,computed from committed outputs
+V6.au.CbyA.no,correct answers when A = no,21 of 53,audit_v04_results.json,make_v06_tex.py,computed from committed outputs

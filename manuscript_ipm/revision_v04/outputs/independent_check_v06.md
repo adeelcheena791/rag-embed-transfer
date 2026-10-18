@@ -16,5 +16,7 @@
 - full R5: 358 of 614 misses (0.5831)
 ## 6. P5 without answer-bearing hard negatives
 - 333 clean questions; M1 - MR = -0.1021, p = 3.39e-06
+## 7. Human audit of misses
+- sample re-drawn from the seed and equal to the audited items; A yes 41, C yes 59, EM 24, D yes 21 of 35
 
 **Result: 0 mismatches.**

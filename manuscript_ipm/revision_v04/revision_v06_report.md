@@ -32,3 +32,6 @@ Not pre-specified (labelled in the text): EM loss per Hit@5 loss on the full cor
 ## Open
 - **Human audit (registered):** `annotation/v04_miss_audit/miss_audit_v04.xlsx`, 100 seeded e5-base-v2 misses. The author labels Screen1 first, then Screen2; do not open `key.csv` before. Until done, the manuscript reports it as a deviation (item 8).
 - O1 repository public/anonymised mirror; O5 title-page facts; O6 AI-use declaration wording (unchanged).
+
+## Human audit (done 2026-10-18)
+Labels by the author on the labeling page (`annotation/v04_miss_audit/miss_audit_page.html`; same 100 items and order as the workbook; the page ran from a downloaded copy, so labels were exported with `export_my_labels.html`). All 100 complete and internally consistent. A yes 41 [0.32, 0.51], no 53, unsure 6; B yes 41/41; C yes 59 [0.49, 0.68], no 31, unsure 10; EM 24; D yes 21 of 35. Sample re-drawn from the seed and recounted by `independent_check_v06.py`: 0 mismatches. Limits: one annotator; the export keeps only each item's last change time, so the order of Screen 1 and Screen 2 work is guaranteed by the page lock, not by the record.
