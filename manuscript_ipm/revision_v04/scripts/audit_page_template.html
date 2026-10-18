@@ -155,8 +155,15 @@ textarea{font:inherit;width:100%;min-height:58px;padding:8px;border:1px solid va
   </aside>
 
   <div class="foot">
+    <button class="btn primary" id="show">Show my labels as text</button>
     <button class="btn" id="dl">Download labels (CSV)</button>
     <span id="footMsg">Labels save automatically each time you choose.</span>
+    <div id="textBox" hidden style="width:100%;display:grid;gap:8px">
+      <p style="margin:0;color:var(--ink)">Copy everything in the box below and paste it into the chat with Claude.
+        <span id="countInfo" style="font-variant-numeric:tabular-nums"></span></p>
+      <div style="display:flex;gap:8px;flex-wrap:wrap"><button class="btn primary" id="copy">Copy all</button><span id="copyMsg"></span></div>
+      <textarea id="csvOut" readonly style="min-height:220px;font-family:var(--f-mono);font-size:12px" aria-label="Labels as text"></textarea>
+    </div>
   </div>
 </div>
 
@@ -297,11 +304,23 @@ function csv(){
   return [head.join(","), ...rows].join("\n") + "\n";
 }
 
+function showText(){
+  $("csvOut").value = csv();
+  $("countInfo").textContent = `(Screen 1: ${count1()} of ${N} done, Screen 2: ${count2()} of ${N} done)`;
+  $("textBox").hidden = false;
+  $("csvOut").scrollIntoView({block: "center"});
+}
+$("show").addEventListener("click", showText);
+$("copy").addEventListener("click", async () => {
+  const t = $("csvOut");
+  try { await navigator.clipboard.writeText(t.value); $("copyMsg").textContent = "Copied. Now paste it in the chat."; }
+  catch(e){ t.focus(); t.select(); $("copyMsg").textContent = "Text selected: press Ctrl+C (or long-press → Copy), then paste it in the chat."; }
+});
 $("dl").addEventListener("click", async () => {
   const dls = window.claude ? await claude.use("downloads") : null;
-  if (!dls) { $("footMsg").textContent = "Downloads are not available here; your labels are saved in the database."; return; }
+  if (!dls) { $("footMsg").textContent = "Download is not available here. Use “Show my labels as text” instead."; showText(); return; }
   try { await dls.save({filename: "miss_audit_labels.csv", data: csv()}); $("footMsg").textContent = "Downloaded miss_audit_labels.csv."; }
-  catch(e){ $("footMsg").textContent = e && e.code === "declined" ? "Download cancelled." : "Download failed; your labels are still saved."; }
+  catch(e){ $("footMsg").textContent = "Download did not work here. Use the text box below instead."; showText(); }
 });
 
 loadLocal();
