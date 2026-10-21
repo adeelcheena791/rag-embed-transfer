@@ -20,7 +20,7 @@ The study ran in three phases. Phase~1 covered one reader on NQ. Before Phase~2,
 
 The study makes four contributions.
 \begin{itemize}
-\item Paired estimates of the answer gain per unit of retrieval gain for six retrievers, two readers and two datasets, with bootstrap intervals and a reporting rule fixed in advance, their sensitivity to the answer metric, the baseline, the retrieval metric and the number of passages read, and a registered replication of the NQ ratios on the full corpus (Sections~\ref{sec:res-transfer}--\ref{sec:res-full}).
+\item Paired estimates of the answer gain per unit of retrieval gain for six retrievers, two readers and two datasets, with bootstrap intervals and a reporting rule fixed in advance, their sensitivity to the answer metric, the baseline, the retrieval metric and the number of passages read, and a registered full-corpus replication of the NQ ratios for two dense encoders (Sections~\ref{sec:res-transfer}--\ref{sec:res-full}).
 \item Evidence that, for multi-hop questions, the size of the transfer depends on whether retrieval is scored by complete evidence: with Both@5 instead of Hit@5 the HotpotQA ratios fall to the NQ range (Section~\ref{sec:res-sens}).
 \item A query-level accounting that splits each EM gain exactly into queries that gained, kept or lost labelled evidence, which shows where the NQ and HotpotQA gains sit, and an answer-string check of the passages behind NQ retrieval misses (Section~\ref{sec:res-decomp}).
 \item Measured retrieval-stage cost of each encoder on a free GPU, controlled checks of context composition, reranking, approximate search and the sub-corpus, and a full record of every deviation and failed run (Sections~\ref{sec:res-context}--\ref{sec:res-cost} and~\ref{sec:deviations}).

@@ -129,3 +129,8 @@ v0.6 adds the results of the registered Phase 3 session (S5-NQ, run 17 October 2
 - Results §5.5 (new paragraph and Table humanaudit), Method §3.8 (audit procedure), Abstract, Discussion §6.1/6.4, Limitations, Conclusion: A = yes 41/100 [0.32, 0.51]; B = yes 41/41; C = yes 59/100 [0.49, 0.68] vs EM 24; of 35 correct answers with EM 0, 21 alias/format. Not pre-specified: automatic flag agreed on 92 of 94 yes/no items (κ = 0.96).
 - Deviation 8 rewritten: audit done; labelling tool changed from spreadsheet to web page (same items and order; gold and flag hidden; Screen 2 locked until Screen 1 complete; only the last change time per item is recorded).
 - Abstract trimmed to 249 words (no claim changed).
+
+## v0.7 (21 October 2026): check of an external review prompt
+- Abstract, highlight 2 and the Introduction contribution list now name the two dense encoders (bge-small, e5-base-v2)
+  that were rerun on the full NQ corpus, instead of "the dense ratios"/"NQ ratios"; the body already stated this scope.
+- The other seven issues of the prompt were already resolved in v0.4-v0.6; see external_prompt_check_v07.md.

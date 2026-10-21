@@ -9,7 +9,7 @@
 - abstract words (macros expanded): 249 (limit 250)
 - keywords: 7 (limit 1-7)
 - highlight 72 chars: On NQ, dense encoders passed 0.16--0.27 EM points per Hit@5 point gained
-- highlight 65 chars: NQ ratios held on the full 2.68M-passage corpus with both readers
+- highlight 81 chars: On the full 2.68M-passage NQ corpus, two dense encoders gave ratios of 0.15--0.23
 - highlight 78 chars: New NQ hits raised EM; queries that kept or lost a hit offset part of the gain
 - highlight 77 chars: HotpotQA ratios fell from 0.49--0.93 to 0.29--0.35 when Both@5 replaced Hit@5
 - highlight 75 chars: Retrieval-stage throughput on a T4 GPU differed 27-fold across six encoders
