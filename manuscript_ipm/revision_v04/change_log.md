@@ -134,3 +134,5 @@ v0.6 adds the results of the registered Phase 3 session (S5-NQ, run 17 October 2
 - Abstract, highlight 2 and the Introduction contribution list now name the two dense encoders (bge-small, e5-base-v2)
   that were rerun on the full NQ corpus, instead of "the dense ratios"/"NQ ratios"; the body already stated this scope.
 - The other seven issues of the prompt were already resolved in v0.4-v0.6; see external_prompt_check_v07.md.
+- Data availability (Sec. 9): no longer says the repository will be made public only on acceptance, because the
+  editor receives its link on the title page; the archived DOI on acceptance stays. See ipm_presubmission_audit_v07.md.
