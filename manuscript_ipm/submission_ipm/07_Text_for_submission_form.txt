@@ -1,0 +1,17 @@
+TITLE
+How much retrieval gain reaches the answer? Transfer ratios and retrieval-stage cost of open embedding models in retrieval-augmented question answering
+
+SHORT / RUNNING TITLE
+Retrieval-to-answer transfer of open embedding models
+
+ABSTRACT (249 words)
+Retrieval-augmented generation (RAG) systems are often built around the embedding model with the best retrieval score. We asked how much of a paired retrieval gain reaches the answer. On Natural Questions (NQ, 2,255 queries) and HotpotQA (2,000 queries), we compared BM25 and six open embedding models (23–596M parameters) under two quantised 7–8B readers, with corpus, prompt and decoding fixed, and registered predictions before the second and third study phases. The transfer ratio T divides the exact-match (EM) gain over a small baseline encoder by the Hit@5 gain on the same queries. On NQ, T of the five dense encoders was 0.16–0.27 (largest upper 95% bound 0.455). On the full 2.68-million-passage corpus, bge-small and e5-base-v2 had ratios of 0.15–0.23 with both readers, and e5-base-v2 stayed inside its sub-corpus intervals. T stayed well below 1 under F1, answer containment and a BM25 baseline, and rose when the reader saw one passage. Queries that newly retrieved a gold passage gained EM, queries that kept or lost a hit gave some back, and a blinded audit found a correct answer in the passages of 41 of 100 misses. On HotpotQA, T was 0.49–0.93 with Hit@5 but 0.29–0.35 with Both@5, which requires both supporting passages; queries that gained supporting passages carried the whole EM gain. Retrieval-stage throughput on one T4 GPU differed 27-fold across encoders, and larger encoders gave no detected EM gain over e5-base-v2 on NQ. In this setting, retrieval gains overstate answer gains, and multi-hop retrieval should be scored by complete evidence.
+
+KEYWORDS (one per box)
+retrieval-augmented generation
+dense retrieval
+text embeddings
+question answering
+evaluation
+reproducibility
+computational cost

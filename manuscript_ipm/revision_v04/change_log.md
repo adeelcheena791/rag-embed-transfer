@@ -136,3 +136,9 @@ v0.6 adds the results of the registered Phase 3 session (S5-NQ, run 17 October 2
 - The other seven issues of the prompt were already resolved in v0.4-v0.6; see external_prompt_check_v07.md.
 - Data availability (Sec. 9): no longer says the repository will be made public only on acceptance, because the
   editor receives its link on the title page; the archived DOI on acceptance stays. See ipm_presubmission_audit_v07.md.
+
+## Submission package (24 October 2026)
+- Title page: ORCID 0009-0006-8541-4422 (checksum valid); no funding, no competing interests confirmed by the author.
+- Ethics statement: now also names the 100-miss human audit (same annotator, blinding in Section 5.5).
+- scripts/make_submission_package.py builds manuscript_ipm/submission_ipm/: cover letter, title page, anonymised
+  manuscript PDF, compile-tested LaTeX source zip, highlights, competing-interest declaration, form text, guide.

@@ -15,7 +15,7 @@
 - highlight 75 chars: Retrieval-stage throughput on a T4 GPU differed 27-fold across six encoders
 - cited references: 61 of 77 in references.bib
 - overfull hboxes > 5pt: 1 (max 117pt)
-- numbers typed in prose (design constants etc., review manually): 297
+- numbers typed in prose (design constants etc., review manually): 298
 
 ## Typed numbers (lexical screen)
 
@@ -310,6 +310,7 @@
 - 085_ethics.tex: 4.0
 - 085_ethics.tex: 3.1
 - 085_ethics.tex: 200
+- 085_ethics.tex: 100
 - 08_conclusion.tex: 5
 - 08_conclusion.tex: 1
 - 08_conclusion.tex: 100
