@@ -1,4 +1,4 @@
-%% Title page (separate file for double-anonymised review). Items marked TBD need the author's confirmation.
+%% Title page (separate file for double-anonymised review).
 \documentclass[a4paper,fleqn]{cas-sc}
 \usepackage{xcolor}
 \usepackage{url}
@@ -9,6 +9,7 @@
 \usepackage[expansion=false]{microtype}
 \input{glyphtounicode}
 \pdfgentounicode=1
+\RenewDocumentCommand\printorcid{}{}% no ORCID iD: suppress the empty footnote
 \begin{document}
 \let\WriteBookmarks\relax
 \shorttitle{Retrieval-to-answer transfer of open embedding models}
@@ -16,7 +17,7 @@
 
 \title[mode=title]{How much retrieval gain reaches the answer? Transfer ratios and retrieval-stage cost of open embedding models in retrieval-augmented question answering}
 
-\author[1]{Muhammad Adeel}[orcid=\textcolor{red}{TBD}]
+\author[1]{Muhammad Adeel}
 \cormark[1]
 \ead{muhammadadeel167@stu.zzu.edu.cn}
 \credit{Conceptualization, Methodology, Software, Investigation, Formal analysis, Data curation, Visualization, Writing -- original draft, Writing -- review \& editing}
@@ -36,13 +37,10 @@ See the anonymised manuscript.
 \textbf{Muhammad Adeel:} Conceptualization, Methodology, Software, Investigation, Formal analysis, Data curation, Visualization, Writing -- original draft, Writing -- review \& editing.
 
 \section*{Declaration of competing interest}
-The author declares that he has no known competing financial interests or personal relationships that could have appeared to influence the work reported in this paper. \textcolor{red}{[TBD: author to confirm]}
+The author declares that he has no known competing financial interests or personal relationships that could have appeared to influence the work reported in this paper.
 
 \section*{Funding}
-This research did not receive any specific grant from funding agencies in the public, commercial, or not-for-profit sectors. \textcolor{red}{[TBD: author to confirm]}
-
-\section*{Acknowledgements}
-\textcolor{red}{[TBD: optional; e.g. Kaggle for free GPU time]}
+This research did not receive any specific grant from funding agencies in the public, commercial, or not-for-profit sectors.
 
 \section*{Data availability}
 Code, prompts, design documents, raw model outputs and analysis scripts: \url{https://github.com/adeelcheena791/rag-embed-transfer}. An archived copy with a DOI will be deposited on acceptance.

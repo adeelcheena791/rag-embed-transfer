@@ -8,7 +8,7 @@ Verdict: ready for submission after the author-side items below; no scientific b
 
 | ID | Priority | Location | Issue | Action | Status |
 |---|---|---|---|---|---|
-| 1 | P0 | Title page | ORCID, competing-interest and funding statements marked TBD | Author confirms; remove red TBD marks | open (author) |
+| 1 | P0 | Title page | ORCID, competing-interest and funding statements marked TBD | Author has no ORCID iD (optional) and no funding; TBD marks removed, empty ORCID footnote suppressed | done (24 Oct) |
 | 2 | P0 | Data availability (title page + Sec. 9) | Title page links a private GitHub repository, so the editor cannot open it; Sec. 9 said the repository would be made public only on acceptance | Sec. 9 wording changed (archived DOI on acceptance); author makes the repository public before submitting | text fixed; repo still private |
 | 3 | P1 | Abstract, highlight 2, Introduction | Full-corpus claim not scoped to the two dense encoders rerun | Fixed in v0.7 | done |
 | 4 | P1 | Submission plan | Guide: under double-anonymised review, do not post a preprint before the final decision | No arXiv posting before decision | advice corrected |
