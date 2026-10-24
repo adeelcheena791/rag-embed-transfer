@@ -9,6 +9,9 @@
 \usepackage[expansion=false]{microtype}
 \input{glyphtounicode}
 \pdfgentounicode=1
+\ExplSyntaxOn
+\cs_set:Npn \__first_footerline: { }% footer: page number only, no template default text
+\ExplSyntaxOff
 \begin{document}
 \let\WriteBookmarks\relax
 \shorttitle{Retrieval-to-answer transfer of open embedding models}
