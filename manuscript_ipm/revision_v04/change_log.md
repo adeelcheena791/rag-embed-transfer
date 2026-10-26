@@ -143,3 +143,4 @@ v0.6 adds the results of the registered Phase 3 session (S5-NQ, run 17 October 2
 - scripts/make_submission_package.py builds manuscript_ipm/submission_ipm/: cover letter, title page, anonymised
   manuscript PDF, compile-tested LaTeX source zip, highlights, competing-interest declaration, form text, guide.
 - Footer: template text 'Preprint submitted to Elsevier' (and 'Anonymous:') removed; page numbers only. Cover letter: preprint sentence removed.
+- Title page: Acknowledgements section added (Kaggle GPU sessions), as the IP&M submission form lists it.

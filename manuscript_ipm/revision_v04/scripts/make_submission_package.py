@@ -96,6 +96,7 @@ def main():
     d.add_paragraph(f"{AUTHOR}\nORCID: {ORCID}\n{AFFIL}\nCorresponding author: {AUTHOR}, {EMAIL}")
     for h, t in (("CRediT authorship contribution statement", CREDIT), ("Declaration of competing interest", COI),
                  ("Funding", FUND),
+                 ("Acknowledgements", "The experiments ran on free GPU sessions provided by Kaggle."),
                  ("Declaration of generative AI and AI-assisted technologies in the manuscript preparation process",
                   "Given in the anonymised manuscript, before the references."),
                  ("Data availability", f"Code, prompts, design documents, raw model outputs and analysis scripts: "
