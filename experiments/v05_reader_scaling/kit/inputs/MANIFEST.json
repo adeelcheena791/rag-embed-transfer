@@ -1,0 +1,7 @@
+{
+ "corpus_spec.json": "b516d104f3c56a5bf69d10647f3c178a1aedcdbc154f7ed337ffc19bac9a7424",
+ "items_hp.jsonl": "5d1ee612ddc96094c583fdececd6cbbf17bd77813bc3d9e7f407e64657e7b549",
+ "items_nq.jsonl": "079ab7b76c6b86e39a27fdacb73ec0bec93be7df53074bf5f66a8dc65027154d",
+ "samples.json": "9f1e8e8f714e771c1ada0759dca026fdbaff4939d958dd05ea21cb27050989ca",
+ "spotcheck_nq.json": "ee39c719488572deba3ca5b9f99b8c59897730b28f6a644cdbf7896c7c161f5a"
+}
