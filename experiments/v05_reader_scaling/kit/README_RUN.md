@@ -36,6 +36,14 @@ checks itself and records any change. If something does not work, stop and send 
 - Settings → System → Power → "When plugged in, put my device to sleep after" → **Never**.
 - Put the laptop on a hard surface with free airflow. Close games and heavy programs while it runs.
 
+**Shortcut.** After Step 2 you can run Steps 3–8 (without the optional Gemini step) with one command, in its own
+PowerShell window opened in this folder:
+```
+powershell -NoExit -ExecutionPolicy Bypass -File .\run_all.ps1
+```
+It downloads only missing models, runs everything in the order below, and creates the results zip after Part A and at the
+end. If it stops, start the same command again; it continues. Codex users: see `CODEX_PROMPT.md`.
+
 ## Step 3. Prepare the data (once, about 20–40 minutes, needs internet)
 ```
 python v05.py prepare

@@ -2,9 +2,10 @@
 
 This folder is a frozen research-experiment kit. The person using you only runs it; the procedure is in `README_RUN.md`.
 Guide them through `README_RUN.md` one step at a time and help only with their computer environment.
+The whole run can be started with `run_all.ps1` in its own PowerShell window (see `CODEX_PROMPT.md`); it resumes when restarted.
 
 Strict rules — these protect the scientific validity of the experiment:
-1. **Never modify** `v05.py`, anything in `inputs/`, `KIT_SHA256.txt` or `VERSION`. Do not rewrite, refactor, "improve",
+1. **Never modify** `v05.py`, `run_all.ps1`, anything in `inputs/`, `KIT_SHA256.txt` or `VERSION`. Do not rewrite, refactor, "improve",
    reformat or patch them, even if you see a possible bug or a faster way. If you think the script itself must change,
    stop and tell me to contact the author.
 2. **Never change the experiment**: not the model names or tags, not the order of runs, not the `--plan` values, not the

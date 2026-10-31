@@ -193,6 +193,8 @@ def cmd_check(_):
     verify_inputs()
     print("Inputs: verified against MANIFEST.json")
     print("RESULT:", "ready" if ok else "fix the items marked above")
+    if not ok:
+        sys.exit(1)
 
 
 # ---------------- prepare ----------------
