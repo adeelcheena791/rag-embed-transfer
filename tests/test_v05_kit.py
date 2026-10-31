@@ -35,3 +35,9 @@ def test_plan_sizes():
     s = json.loads((KIT / "inputs/samples.json").read_text())
     assert len(s["nq_all"]) == 2255 and len(s["hp_all"]) == 2000
     assert s["nq_first500"] == s["nq_all"][:500] and s["hp_first1000"] == s["hp_all"][:1000]
+
+
+def test_kit_hash_recorded():
+    ref = (KIT / "KIT_SHA256.txt").read_text().split()[0]
+    assert ref == hashlib.sha256((KIT / "v05.py").read_bytes()).hexdigest()
+    assert "large" in _kit().PLANS

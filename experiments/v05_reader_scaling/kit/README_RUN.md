@@ -1,58 +1,66 @@
-# Phase 4 experiment: laptop par chalane ka tareeqa (Roman Urdu)
+# Phase 4 experiment: how to run it on the laptop
 
-Yeh kit paper ke naye experiment ke liye hai: Qwen3 ke 4 sizes (1.7B, 4B, 8B, 14B) ko **wahi passages** de kar dekhna
-ke bara reader retrieval gain ka zyada faida uthata hai ya nahi. Retrieval dobara nahi chalti; sirf reader chalta hai.
+**What this does.** The kit gives several language models (the "readers") exactly the same questions and the same five
+Wikipedia passages that earlier readers saw in our study, and records their short answers. Retrieval is not rerun; only the
+readers run. We then measure whether larger readers turn retrieval gains into more correct answers.
 
-Laptop: RTX 4070 Laptop GPU (8 GB), 16 GB RAM, Windows. Disk: kam az kam **35 GB khaali** (models ~23 GB + corpus ~5 GB).
+**Machine.** RTX 4070 Laptop GPU (8 GB), 16 GB RAM, Windows. Free disk: **at least 45 GB** (models about 36 GB, corpus
+about 5 GB, results under 1 GB).
+
+**The one rule.** Do not edit `v05.py` or anything in `inputs/`, and do not change any command or setting below. The script
+checks itself and records any change. If something does not work, stop and send the error to the author (see the end).
 
 ---
 
-## Step 1: Zaroori cheezein install karo (sirf ek dafa)
+## Step 1. Install the tools (once)
 
-1. **Python** (3.10 ya naya): https://www.python.org/downloads/ se install karo.
-   Install karte waqt neeche **"Add python.exe to PATH"** par tick zaroor lagana.
-2. **Ollama**: https://ollama.com/download se Windows wala install karo. Install ke baad Ollama khud chalta rehta hai
-   (neeche taskbar mein llama ka icon).
-3. Is kit ki zip ko kisi folder mein extract karo, jaise `C:\v05_kit`. Phir us folder mein khaali jagah par
-   **Shift + Right click → "Open in Terminal"** (ya PowerShell). Saari commands isi window mein chalengi.
-4. Python packages:
+1. **Python 3.10 or newer** from https://www.python.org/downloads/. During installation, tick
+   **"Add python.exe to PATH"**.
+2. **Ollama for Windows** from https://ollama.com/download. After installation Ollama runs in the background
+   (llama icon in the taskbar).
+3. Extract this zip to a short folder path, for example `C:\v05_kit`. Open that folder, right-click on an empty area and
+   choose **"Open in Terminal"** (PowerShell). Run every command below in this window, inside this folder.
+4. Install the two Python packages:
    ```
    python -m pip install pyarrow huggingface_hub
    ```
-5. Check:
+5. Check the setup:
    ```
    python v05.py check
    ```
-   Aakhir mein **"RESULT: ready"** aana chahiye, aur GPU mein RTX 4070 likha hona chahiye.
+   The output must end with **`RESULT: ready`**, show **`Kit file: unmodified`**, and list the RTX 4070 under GPU.
 
-## Step 2: Laptop ko sone se roko
-- Charger laga kar rakho.
+## Step 2. Keep the laptop awake
+
+- Keep the charger connected.
 - Settings → System → Power → "When plugged in, put my device to sleep after" → **Never**.
-- Laptop ko hawa wali jagah rakho (neeche se band na ho); games ya bhari apps band rakho.
+- Put the laptop on a hard surface with free airflow. Close games and heavy programs while it runs.
 
-## Step 3: Data aur prompts tayyar karo (sirf ek dafa, ~20–40 minute, internet chahiye)
+## Step 3. Prepare the data (once, about 20–40 minutes, needs internet)
 ```
 python v05.py prepare
 ```
-Yeh do pinned Wikipedia corpus download kar ke check karta hai aur saare prompts bana deta hai.
-Aakhir mein "prepare: done" aana chahiye. Agar **STOP** likha aaye to `results\log.txt` mujhe bhejo.
-Is ke baad `work` folder delete kar sakte ho (disk bachane ke liye).
+This downloads two pinned Wikipedia corpora, checks them against the study's records and builds all prompts. It must end
+with `prepare: done`. If it prints **STOP**, do not continue; send `results\log.txt` to the author.
+Afterwards you may delete the `work` folder to free about 5 GB.
 
-## Step 4: Models download karo (internet, ~23 GB)
+## Step 4. Download the models (needs internet, about 36 GB)
 ```
+ollama pull qwen3:0.6b-q4_K_M
 ollama pull qwen3:1.7b-q4_K_M
 ollama pull qwen3:4b-q4_K_M
 ollama pull qwen3:8b-q4_K_M
 ollama pull qwen3:14b-q4_K_M
 ollama pull qwen2.5:7b-instruct-q4_K_M
+ollama pull gemma3:1b-it-q4_K_M
+ollama pull gemma3:4b-it-q4_K_M
+ollama pull gemma3:12b-it-q4_K_M
 ```
-**Experiment shuru hone ke baad kisi model ko dobara pull/update mat karna.**
+**Do not pull or update any of these models again once the runs have started.**
 
-## Step 5: Experiment chalao (isi tarteeb mein)
-Har command ko chalne do. Beech mein band ho jaye (bijli, restart, Ctrl+C) to **wahi command dobara chalao**;
-jo ho chuka hai woh skip ho jata hai.
-
+## Step 5. Run Part A (required), in this order
 ```
+python v05.py run qwen3:0.6b-q4_K_M --plan core
 python v05.py run qwen3:1.7b-q4_K_M --plan core
 python v05.py run qwen3:4b-q4_K_M --plan core
 python v05.py run qwen3:8b-q4_K_M --plan core
@@ -60,42 +68,57 @@ python v05.py run qwen2.5:7b-instruct-q4_K_M --plan bridge
 python v05.py determinism
 python v05.py run qwen3:14b-q4_K_M --plan 14b
 ```
-- Pehle 5 jawab screen par dikhte hain (jaise `nq R0 -> 'Darlene Cates'`). Chhote, seedhe jawab hone chahiyein.
-- Har 500 items ke baad speed aur **bacha hua waqt** (about X h left) dikhta hai.
-- 14B slow hai; agar bohat slow nikla to script khud pehle se tay shuda chhota sample (first500) le leta hai.
-- Andaza: 1.7B, 4B aur 8B mila kar takreeban 1 din; 14B aur takreeban 1 din. Asal waqt laptop par depend karta hai.
-- Progress dekhne ke liye (doosri terminal window mein): `python v05.py status`
+- Each command can be stopped (power cut, restart, Ctrl+C) and **started again with the same command**; finished items are
+  kept and skipped.
+- The first five answers are printed, e.g. `nq R0 -> 'Darlene Cates'`. They should be short answers, not sentences.
+- Every 500 items the script prints progress and the estimated time left.
+- The 14B model is partly on the CPU and is slow. If it is too slow, the script switches by itself to the smaller sample
+  fixed in the design. This is expected.
+- Rough time: the four core runs together about one day; 14B about one more day. Your laptop decides the real time.
+- To see progress from a second terminal window in the same folder: `python v05.py status`
 
-## Step 6 (optional): Gemini anchor
-Yeh kisi bhi computer par chal sakta hai (GPU nahi chahiye), lekin Step 3 (prepare) wahan bhi hona chahiye
-— ya isi laptop par saath saath chala lo.
+**After Part A, send the results** (Step 8). The author can start the analysis while Part B runs.
 
-1. https://aistudio.google.com se free API key banao. **Key kisi ko na bhejo, Claude ko bhi nahi.**
-2. Key sirf is terminal window ke liye set karo (file mein save nahi hoti):
+## Step 6. Run Part B (second model family; run if time allows)
+```
+python v05.py run gemma3:1b-it-q4_K_M --plan core
+python v05.py run gemma3:4b-it-q4_K_M --plan core
+python v05.py run gemma3:12b-it-q4_K_M --plan large
+```
+
+## Step 7 (optional). Gemini comparison
+This needs no GPU and can run on any computer where Step 3 has been done (or in a second window on the same laptop).
+
+1. Create a free API key at https://aistudio.google.com. **Never share the key with anyone, including the author or any
+   AI assistant, and never paste it into a file.**
+2. Set the key for this terminal window only:
    ```
-   $env:GEMINI_API_KEY="yahan-apni-key"
+   $env:GEMINI_API_KEY="paste-your-key-here"
    ```
-   (Command Prompt ho to: `set GEMINI_API_KEY=yahan-apni-key`)
-3. Kaun se models hain:
+   (In Command Prompt instead of PowerShell: `set GEMINI_API_KEY=paste-your-key-here`)
+3. List the available Flash models:
    ```
    python v05.py gemini --list-models
    ```
-   List mein se ek **Flash** model ka naam chuno (jaise `gemini-2.5-flash` agar maujood ho) aur mujhe bata do.
-4. Chalao:
+   Pick one Flash model id (for example `gemini-2.5-flash` if it is listed) and tell the author which one you used.
+4. Run it:
    ```
-   python v05.py gemini --model <model-ka-naam>
+   python v05.py gemini --model <model-id>
    ```
-   Free quota khatam ho jaye to script khud ruk jayega; **agle din wahi command** chalao.
+   When the free daily quota is used up, the script stops by itself. Run **the same command the next day**; it continues.
 
-## Step 7: Results bhejo
+## Step 8. Send the results
 ```
 python v05.py pack
 ```
-Yeh `v05_results_<tareekh>.zip` banata hai. Yeh **ek zip** mujhe bhej do (Google Drive / WeTransfer link bhi chalega).
-Beech mein bhi bhej sakte ho (jaise 1.7B aur 8B ke baad) — main analysis shuru kar dunga.
+This creates `v05_results_<date>.zip` in the kit folder. Send this one file to the author (Google Drive or WeTransfer link
+is fine). You can send it after Part A and again at the end.
 
-## Masla aaye to
-- `Ollama: NOT REACHABLE` → Ollama app start karo (Start menu → Ollama).
-- `model ... is not pulled` → us model ka `ollama pull ...` chalao.
-- `STOP: ... thinking text` → ruk jao, `results\log.txt` aur results file mujhe bhejo.
-- Koi aur error → terminal ka screenshot aur `results\log.txt` bhejo.
+## If something goes wrong
+| Message | What to do |
+|---|---|
+| `Ollama: NOT REACHABLE` | Start Ollama from the Start menu, then rerun the same command. |
+| `model ... is not pulled` | Run the `ollama pull ...` line for that model, then rerun. |
+| `STOP: ... thinking text` | Stop. Send `results\log.txt` and the results file to the author. |
+| `WARNING: v05.py has been modified` | Extract the original zip again; do not edit the script. |
+| Anything else | Take a screenshot of the terminal and send it with `results\log.txt` to the author. |

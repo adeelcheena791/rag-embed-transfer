@@ -8,6 +8,7 @@ One file, Python 3.10+, runs on Windows, macOS or Linux. Commands (run them in t
     python v05.py run qwen3:4b-q4_K_M   --plan core
     python v05.py run qwen3:8b-q4_K_M   --plan core
     python v05.py run qwen3:14b-q4_K_M  --plan 14b
+    python v05.py run gemma3:12b-it-q4_K_M --plan large   # Part B (second model family), addendum v0.5.1
     python v05.py run qwen2.5:7b-instruct-q4_K_M --plan bridge
     python v05.py determinism           # rerun 100 prompts with qwen3:8b, compare
     python v05.py gemini --model <id>   # optional anchor; needs GEMINI_API_KEY in the environment
@@ -79,10 +80,13 @@ PLANS = {
             "fallback_after": 200, "fallback_median_s": 8.0},
     "bridge": {"sample": "first500", "conds": ["R1", "R5"], "datasets": ["nq"]},
 }
+PLANS["large"] = PLANS["14b"]          # addendum v0.5.1: same plan for gemma3:12b
 GEMINI_ORDER = [["R1", "R5"], ["R4"], ["GOLD"], ["CB"]]
 OPTIONS = {"temperature": 0, "top_k": 1, "top_p": 1.0, "repeat_penalty": 1.0, "seed": 0, "num_ctx": 4096,
            "num_predict": 32, "stop": ["\n"]}
 THINK_RE = re.compile(r"<think>.*?</think>", re.S)
+THINK_MODELS: dict[str, bool] = {}
+KIT_SHA = hashlib.sha256(Path(__file__).read_bytes()).hexdigest()
 
 
 def now() -> str:
@@ -161,6 +165,11 @@ def gpu_info() -> str:
 
 def cmd_check(_):
     print("Kit version:", VERSION)
+    ref = (KIT / "KIT_SHA256.txt").read_text().split()[0] if (KIT / "KIT_SHA256.txt").exists() else None
+    if ref and ref != KIT_SHA:
+        print("WARNING: v05.py has been modified. Use the kit exactly as received, or tell the author.")
+    else:
+        print("Kit file: unmodified")
     print("Python:", sys.version.split()[0], platform.platform())
     ok = True
     for mod in ("pyarrow", "huggingface_hub"):
@@ -285,16 +294,21 @@ def ollama_meta(model: str) -> dict:
     if not hit:
         sys.exit(f"STOP: model {model} is not pulled. Run:  ollama pull {model}")
     show = http("POST", f"{OLLAMA}/api/show", {"model": model})
+    caps = show.get("capabilities") or []
+    THINK_MODELS[model] = "thinking" in caps or model.startswith("qwen3")
     return {"model": model, "digest": hit[0].get("digest"), "size": hit[0].get("size"),
             "details": show.get("details"), "parameters": show.get("parameters"), "template": show.get("template"),
-            "ollama_version": http("GET", f"{OLLAMA}/api/version")["version"], "gpu": gpu_info(),
-            "platform": platform.platform(), "kit_version": VERSION, "options": OPTIONS, "think": False}
+            "capabilities": caps, "ollama_version": http("GET", f"{OLLAMA}/api/version")["version"], "gpu": gpu_info(),
+            "platform": platform.platform(), "kit_version": VERSION, "kit_sha256": KIT_SHA, "options": OPTIONS,
+            "think_sent": (False if THINK_MODELS[model] else None)}
 
 
 def call_ollama(model: str, msgs: list[dict]) -> dict:
     t0 = time.perf_counter()
-    r = http("POST", f"{OLLAMA}/api/chat", {"model": model, "messages": msgs, "stream": False, "think": False,
-                                            "options": OPTIONS, "keep_alive": "30m"})
+    body = {"model": model, "messages": msgs, "stream": False, "options": OPTIONS, "keep_alive": "30m"}
+    if THINK_MODELS.get(model, True):          # think=false only for models that can think (Qwen3)
+        body["think"] = False
+    r = http("POST", f"{OLLAMA}/api/chat", body)
     lat = time.perf_counter() - t0
     raw = r.get("message", {}).get("content", "")
     clean = THINK_RE.sub("", raw)
@@ -364,6 +378,9 @@ def cmd_run(args):
     out = RES / f"gen__{safe(model)}__{plan}.jsonl"
     meta_p = RES / f"gen__{safe(model)}__{plan}.meta.json"
     meta = ollama_meta(model)
+    ref = (KIT / "KIT_SHA256.txt").read_text().split()[0] if (KIT / "KIT_SHA256.txt").exists() else None
+    if ref and ref != KIT_SHA:
+        log("WARNING: v05.py differs from KIT_SHA256.txt (kit modified); recorded in the meta file")
     old = json.loads(meta_p.read_text()) if meta_p.exists() else None
     if old and old.get("digest") != meta["digest"]:
         sys.exit(f"STOP: model digest changed since this run started ({old.get('digest')} -> {meta['digest']}). "
@@ -373,12 +390,12 @@ def cmd_run(args):
     meta_p.write_text(json.dumps(meta, indent=1))
     pl = PLANS[plan]
     sample = pl["sample"]
-    if plan == "14b" and out.with_suffix(".fallback").exists():
+    if pl.get("fallback") and out.with_suffix(".fallback").exists():
         sample = out.with_suffix(".fallback").read_text().strip()
     items = plan_items(plan, sample)
     decided = out.with_suffix(".decision.json").exists()
     switch = ((pl["fallback_after"], pl["fallback_median_s"])
-              if plan == "14b" and sample == pl["sample"] and not decided else None)
+              if pl.get("fallback") and sample == pl["sample"] and not decided else None)
     run_items(model, items, out, f"{model} [{plan}, {sample}]", pl, switch)
     if switch and out.with_suffix(".fallback").exists():
         items = plan_items(plan, "first500")
@@ -389,6 +406,8 @@ def cmd_run(args):
 
 def cmd_determinism(args):
     model = args.model
+    RES.mkdir(exist_ok=True)
+    (RES / f"det__{safe(model)}.meta.json").write_text(json.dumps(ollama_meta(model), indent=1))
     samples = json.loads((INP / "samples.json").read_text())
     prompts = {(p["condition"], p["qid"]): p for p in load_prompts()["nq"]}
     items = [dict(prompts[("R5", q)], item_id="det|" + prompts[("R5", q)]["item_id"]) for q in samples["nq_all"][:100]]
